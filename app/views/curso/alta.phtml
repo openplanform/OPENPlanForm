@@ -1,0 +1,166 @@
+<?php
+	$this->addJavascriptInclude('/js/curso.js');
+	
+	if ( !is_null($this->popup) ){
+    	echo '<script type="text/javascript">ventana' . ucfirst($this->popup['estado']) . '("' . $this->popup['titulo'] . '", "' . $this->popup['mensaje'] . '", "' . $this->popup['url'] . '");</script>'; 
+	}
+?>
+    
+    <form id="altaCurso" action="/curso/alta.html" method="post">
+        <fieldset>
+        
+            <legend>Alta de Curso</legend>
+        
+        	<input type="hidden" value="1" name="send" />
+        
+            <div class="campo controlado">
+                <label for="nombre">Nombre*</label>
+                <input type="text" name="nombre" id="nombre" class="campoTexto" />
+                <p id="errorNombre" class="errorInput"><?=$this->errorNombre?></p>
+            </div>
+			
+			<div class="campo controlado">
+            	<label for="plan">Plan*</label>
+	            <select class="grande" name="plan" id="plan">
+	            	<option value=""></option>
+					<?
+					
+					// Plan
+					foreach ( $this->planesIDX as $clave => $nombre) {
+						
+						?><option value="<?= $clave ?>" ><?= $nombre ?></option><?
+						
+					}
+					
+					?>
+				</select>
+				<p id="errorPlan" class="errorInput"><?= $this->errorPlan ?></p>
+			</div>
+			
+			<div class="campo controlado">
+            	<label for="categoria">Categoría*</label>
+	            <select class="grande" name="categoria" id="categoria">
+	            	<option value=""></option>
+					<?
+					
+					// Categorias
+					echo $this->htmlSelectCategorias;
+					
+					?>
+				</select>
+				<p id="errorCategoria" class="errorInput"><?= $this->errorCategoria ?></p>
+			</div>
+			
+			<div class="campo controlado multi">
+            	<label for="sector">Sector*</label>
+	            <select class="grande" name="sector" id="sector">
+	            	<option value=""></option>
+					<?
+					
+					// Sector
+					foreach ( $this->sectoresIDX as $clave => $nombre) {
+						
+						?><option value="<?= $clave ?>" ><?= $nombre ?></option><?
+						
+					}
+					
+					?>
+				</select>
+				<p id="errorSector" class="errorInput"><?= $this->errorSector ?></p>
+			</div>
+			
+			<div class="campo controlado multi">
+            	<label for="colectivo">Colectivo*</label>
+	            <select class="grande" name="colectivo" id="colectivo">
+	            	<option value=""></option>
+					<?
+					
+					// Colectivo
+					foreach ( $this->colectivosIDX as $clave => $nombre) {
+						
+						?><option value="<?= $clave ?>" ><?= $nombre ?></option><?
+						
+					}
+					
+					?>
+				</select>
+				<p id="errorColectivo" class="errorInput"><?= $this->errorColectivo ?></p>
+			</div>
+			
+			<div class="campo controlado clear">
+            	<label for="modalidad">Modalidad*</label>
+	            <select class="grande" name="modalidad" id="modalidad">
+	            	<option value=""></option>
+					<?
+					
+					// Modalidad
+					foreach ( $this->modalidadesIDX as $clave => $nombre) {
+						
+						?><option value="<?= $clave ?>" ><?= $nombre ?></option><?
+						
+					}
+					
+					?>
+				</select>
+				<p id="errorModalidad" class="errorInput"><?= $this->errorModalidad ?></p>
+			</div>
+			
+			<div class="campo controlado clear">
+            	<label for="aula">Aula*</label>
+	            <select class="grande" name="aula" id="aula">
+	            	<option value=""></option>
+					<?
+					
+					// Aula
+					foreach ( $this->aulasIDX as $clave => $nombre) {
+						
+						?><option value="<?= $clave ?>" ><?= $nombre ?></option><?
+						
+					}
+					
+					?>
+				</select>
+				<p id="errorAula" class="errorInput"><?= $this->errorAula ?></p>
+			</div>
+			
+			 <div class="campo multi">
+                <label for="horasP">Horas presenciales</label>
+                <input type="text" name="horasP" id="horasP" class="campoTexto numerico" />
+            </div>
+			
+			<div class="campo multi">
+                <label for="horasD">Horas a distacia</label>
+                <input type="text" name="horasD" id="horasD" class="campoTexto numerico" />
+            </div>
+			
+			<div class="campo clear">
+                <label for="horasT">Horas de tutoría</label>
+                <input type="text" name="horasT" id="horasT" class="campoTexto numerico" />
+            </div>
+			
+			<div class="campo">
+                <label for="alumnos">Número de alumnos</label>
+                <input type="text" name="alumnos" id="alumnos" class="campoTexto numerico" />
+            </div>
+            
+            <div class="campo multi">
+                <label for="inicio">Fecha de inicio</label>
+                <input type="text" name="inicio" id="inicio" class="campoTexto" onkeypress="return false;" />
+            </div>
+            
+            <div class="campo multi">
+                <label for="fin">Fecha de fin</label>
+                <input type="text" name="fin" id="fin" class="campoTexto" onkeypress="return false;" />
+            </div>
+            
+            <input class="oculto" type="submit" value="Guardar" />
+            
+            <noscript>
+            	<div class="campo">
+            		<input type="submit" value="Guardar" />
+            	</div>
+            </noscript>
+            
+        </fieldset>
+    </form>
+    <p>* Campos obligatorios</p>

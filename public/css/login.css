@@ -1,0 +1,35 @@
+#wrapper{
+	text-align: center;
+}
+#login{
+	width: 250px;
+	height: 250px;
+	margin: 0 auto;
+	position: absolute;
+	top: 40%;
+	left: 50%;
+	margin-left: -125px;
+	margin-top: -125px;
+	border: 1px solid #808080;
+	background-color: #E0E7EF; 
+	-moz-box-shadow: 3px 4px 6px 0 #BBBBBB;
+}
+#login p{
+	margin: 0 0 10px 0;
+	color: red;
+}
+#login .mensaje{
+    margin: 0;
+}
+#login .inner{
+	width: 200px;
+	margin-left: 25px;
+	margin-top: 25px;
+	text-align: left;
+}
+#login .campo{
+	text-align: left;
+}
+#login .campo .campoTexto{
+	width: 195px;
+}

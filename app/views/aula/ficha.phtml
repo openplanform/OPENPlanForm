@@ -1,0 +1,40 @@
+<h2>Ficha de Aula</h2>
+
+<?
+
+	if ( !is_null($this->aulaDO) ){
+		
+?>
+		<div class="ficha">
+			<p><label>Nombre:</label> <?= $this->aulaDO->getVNombre() ?></p>
+			<p><label>Centro:</label> <?= $this->aulaDO->getTblCentro()->getVNombre() ?></p>
+			<p><label>Capacidad:</label> <?= $this->aulaDO->getICapacidad() ?></p>
+			<p><label>País:</label> <?= $this->aulaDO->getTblPais()->getVNombre() ?></p>
+			<p><label>Provincia:</label> <?= $this->aulaDO->getTblProvincia()->getVNombre() ?></p>
+			<?
+			
+			$poblacion = $this->aulaDO->getVPoblacion();
+			if ( !empty($poblacion) ){
+				?><p><label>Población:</label> <?= $poblacion ?></p><?
+			}
+			
+			$direccion = $this->aulaDO->getVDireccion();
+			if ( !empty($direccion) ){
+				?><p><label>Dirección:</label> <?= $direccion ?></p><?
+			}
+			
+			$descripcion = $this->aulaDO->getVDescripcion();
+			if ( !empty($descripcion) ){
+				?><p><label>Descripción:</label> <?= $descripcion ?></p><?
+			}
+			
+			?>
+		</div>
+<?
+		
+	} else {
+		
+		?><h3>No se ha encontrado el centro</h3><?
+		
+	}
+?>

@@ -1,0 +1,16 @@
+
+<div class="boton">
+    <a href="">
+        <span class="dec1"></span>
+        <span class="dec2"></span>
+        Enviar
+    </a>
+</div>
+
+<div class="boton ko">
+    <a href="">
+        <span class="dec1"></span>
+        <span class="dec2"></span>
+        Enviar
+    </a>
+</div>

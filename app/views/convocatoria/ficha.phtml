@@ -1,0 +1,59 @@
+<h2>Ficha de Convocatoria</h2>
+
+<?
+
+	if ( !is_null($this->convocatoriaDO) ){
+		
+?>
+		<div class="ficha">
+			<p><label>Nombre:</label> <?= $this->convocatoriaDO->getVNombre() ?></p>
+			<p><label>Tipo:</label> <?= $this->tiposConvocatoriaIDX[$this->convocatoriaDO->getFkTipoConvocatoria()] ?></p>
+			<p><label>Presupuesto:</label> <?= NingenNumeric::decimalFormatoEuropeo($this->convocatoriaDO->getEPresupuesto(), 2) ?>€</p>
+			<?
+			
+			$descripcion = $this->convocatoriaDO->getVDescripcion();
+			if ( !empty($descripcion) ){
+				?><p><label>Descripción:</label> <?= $descripcion ?></p><?
+			}
+			
+			?>
+		<?
+		
+		// Requisitos
+		if ( !is_null($this->arrRequisitosConvocatoriaDO) ){
+			
+			?><p><label>Requisitos: </label><?
+			
+			$contador = 0;
+			foreach ( $this->arrRequisitosConvocatoriaDO as $requisitoConvocatoriaDO ){
+				echo ($contador)?', ':'';
+				echo $this->requisitosIDX[$requisitoConvocatoriaDO->getFkRequisito()];
+				$contador++;
+			}
+			?></p><?
+			
+		}
+		
+		// Planes
+		$arrPlanesDO = $this->convocatoriaDO->getTblPlans();
+		if ( !empty($arrPlanesDO) ){
+
+			?><br/><h3>Planes</h3><?
+			
+			foreach ( $arrPlanesDO as $planDO ){
+				echo '<p><a href="/plan/ficha/' . $planDO->getIdPlan() . '">' . $planDO->getVNombre() . '</a></p>';
+			}
+			
+		}
+		
+		
+		?>
+		</div>
+<?
+		
+	} else {
+		
+		?><h3>No se ha encontrado la convocatoria</h3><?
+		
+	}
+?>

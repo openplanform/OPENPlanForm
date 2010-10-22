@@ -1,0 +1,78 @@
+<?php
+	$this->addJavascriptInclude('/js/convocatoria.js');
+	
+	if ( !is_null($this->popup) ){
+    	echo '<script type="text/javascript">ventana' . ucfirst($this->popup['estado']) . '("' . $this->popup['titulo'] . '", "' . $this->popup['mensaje'] . '", "' . $this->popup['url'] . '");</script>'; 
+	}
+?>
+    
+    <form id="altaConvocatoria" action="/convocatoria/alta.html" method="post">
+        <fieldset>
+        
+            <legend>Alta de Convocatoria</legend>
+        
+        	<input type="hidden" value="1" name="send" />
+        
+            <div class="campo controlado">
+                <label for="nombre">Nombre*</label>
+                <input type="text" name="nombre" id="nombre" class="campoTexto" />
+                <p id="errorNombre" class="errorInput"><?=$this->errorNombre?></p>
+            </div>
+            
+            <div class="campo controlado">
+            	<label for="tipoConvocatoria">Tipo de Convocatoria*</label>
+	            <select class="mediano" name="tipoConvocatoria" id="tipoConvocatoria">
+	            	<option value=""></option>
+					<?
+					
+					//Tipo Convocatoria
+					foreach ( $this->tiposConvocatoriaIDX as $clave => $nombre) {
+						
+						?><option value="<?= $clave ?>" ><?= $nombre ?></option><?
+						
+					}
+					
+					?>
+				</select>
+				<p id="errorTipoConvocatoria" class="errorInput"><?=$this->errorTipo?></p>
+			</div>
+			
+            <div class="campo">
+                <label for="descripcion">Descripción</label>
+                <textarea rows="5" cols="40" name="descripcion" id="descripcion"></textarea>
+            </div>
+            
+            <div class="campo controlado">
+                <label for="presupuesto">Presupuesto*</label>
+                <input class="campoTexto dinero" type="text" name="presupuesto" id="presupuesto" />
+                <p id="errorPresupuesto" class="errorInput"><?=$this->errorPresupuesto?></p>
+                <p class="tooltip" id="presupuestoTooltip">Utilice la coma(,) para separar decimales y el punto(.) para los miles</p>
+            </div>
+            
+            <h3>Requisitos</h3>
+            <div class="campo">
+	            <?
+	            
+	            foreach ( $this->requisitosIDX as $clave => $nombre ){
+	            	
+	            	?>
+	            	<label class="alter" for="requisito_<?=$clave?>"><?=$nombre?></label>
+	            	<input class="checkbox" type="checkbox" name="requisito_<?=$clave?>" id="requisito_<?=$clave?>" />
+	            	<?
+	            	
+	            }
+	            
+	            ?>
+            </div>
+            
+            <input class="oculto" type="submit" value="Guardar" />
+            
+            <noscript>
+            	<div class="campo">
+            		<input type="submit" value="Guardar" />
+            	</div>
+            </noscript>
+            
+        </fieldset>
+    </form>
+    <p>* Campos obligatorios</p>

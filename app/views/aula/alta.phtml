@@ -1,0 +1,104 @@
+<?php
+	$this->addJavascriptInclude('/js/aula.js');
+	
+	if ( !is_null($this->popup) ){
+    	echo '<script type="text/javascript">ventana' . ucfirst($this->popup['estado']) . '("' . $this->popup['titulo'] . '", "' . $this->popup['mensaje'] . '", "' . $this->popup['url'] . '");</script>'; 
+	}
+?>
+    
+    <form id="altaAula" action="/aula/alta.html" method="post">
+        <fieldset>
+        
+            <legend>Alta de Aula</legend>
+        
+        	<input type="hidden" value="1" name="send" />
+        
+            <div class="campo controlado">
+                <label for="nombre">Nombre*</label>
+                <input type="text" name="nombre" id="nombre" class="campoTexto" />
+                <p id="errorNombre" class="errorInput"><?=$this->errorNombre?></p>
+            </div>
+			
+			<div class="campo controlado">
+            	<label for="centro">Centro*</label>
+	            <select class="grande" name="centro" id="centro">
+	            	<option value=""></option>
+					<?
+					
+					// Centro
+					foreach ( $this->centrosIDX as $clave => $nombre) {
+						?><option value="<?= $clave ?>" ><?= $nombre ?></option><?
+						
+					}
+					
+					?>
+				</select>
+				<p id="errorCentro" class="errorInput"><?= $this->errorCentro ?></p>
+			</div>
+			
+			<div class="campo controlado">
+                <label for="capacidad">Capacidad*</label>
+                <input type="text" name="capacidad" id="capacidad" class="campoTexto numerico" />
+                <p id="errorCapacidad" class="errorInput"><?=$this->errorCapacidad?></p>
+                <p class="tooltip" id="capacidadTooltip">Nº de personas</p>
+            </div>
+			
+			<div class="campo">
+            	<label for="pais">País</label>
+	            <select class="grande" name="pais" id="pais">
+	            	<option value=""></option>
+					<?
+					
+					// País
+					foreach ( $this->paisesCOL as $paisDO) {
+						?><option value="<?= $paisDO->getVIso() ?>" ><?= $paisDO->getVNombre() ?></option><?
+						
+					}
+					
+					?>
+				</select>
+			</div>
+			
+			<div class="campo">
+            	<label for="provincia">Provincia</label>
+	            <select class="grande" name="provincia" id="provincia">
+	            	<option value=""></option>
+					<?
+					
+					// Provincia
+					foreach ( $this->provinciasCOL as $provinciaDO) {
+						
+						?><option value="<?= $provinciaDO->getIdProvincia() ?>" ><?= $provinciaDO->getVNombre() ?></option><?
+						
+					}
+					
+					?>
+				</select>
+			</div>
+			
+			<div class="campo">
+            	<label for="poblacion">Población</label>
+	            <input type="text" name="poblacion" id="poblacion" class="campoTexto" />
+			</div>
+			
+			<div class="campo">
+            	<label for="direccion">Dirección</label>
+	            <input type="text" name="direccion" id="direccion" class="campoTexto" />
+			</div>
+			
+            <div class="campo">
+                <label for="descripcion">Descripción</label>
+                <textarea rows="5" cols="40" name="descripcion" id="descripcion"></textarea>
+            </div>
+            
+            <input class="oculto" type="submit" value="Guardar" />
+            
+            <noscript>
+            	<div class="campo">
+            		<input type="submit" value="Guardar" />
+            	</div>
+            </noscript>
+            
+        </fieldset>
+    </form>
+    <p>* Campos obligatorios</p>

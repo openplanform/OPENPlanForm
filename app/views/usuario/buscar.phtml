@@ -1,0 +1,32 @@
+<h2>Buscar Usuarios</h2>
+
+<table class="listado">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Nombre</th>
+            <th>Roles</th>
+            <th>Eliminar</th>
+        </tr>
+    </thead>
+    <tbody><?
+    
+        $alter = true;
+    
+        foreach ($this->result as $clave => $usuario){
+    
+            $alter = !$alter;
+            
+            ?><tr <?= $alter ? 'class="alter"' : '' ?>>
+                <td><?= $clave ?></td>
+                <td><a href="/usuario/ficha/<?= $clave ?>"><?= $usuario['nombre'] ?></a></td>
+                <td><?= $usuario['roles'] ?></td>
+                <td class="accion"><a href="/usuario/eliminar/<?= $clave ?>" class="btnEliminar usuario" title="Eliminar Usuario"><span>eliminar</span></a></td>
+            </tr><?
+        
+        }
+        
+        ?>
+    </tbody>
+</table>
+<div id="paginadorContainer"><?= $this->paginador ?></div>

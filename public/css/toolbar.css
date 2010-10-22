@@ -1,0 +1,57 @@
+#toolbarPrincipal{
+	height: 60px;
+	background-color: #F2F2F2;
+	border-bottom: 1px solid #808080;
+	padding-left: 25px;
+	padding-right: 25px;
+}
+#toolbarPrincipal ul{
+	clear: both;
+	float: none;
+	overflow: hidden;
+}
+#toolbarPrincipal ul li{
+	display: block;
+	width: 56px;
+	height: 56px;
+	float: left;
+	margin: 2px 5px 1px 0;
+}
+#toolbarPrincipal ul li a{
+	display: block;
+	text-decoration: none;
+	color: #000;
+    text-align: center;
+    padding-top: 39px;
+    border: 1px solid #F2F2F2;
+}
+#toolbarPrincipal ul li a:hover{
+	border-top: 1px solid #C7C7C7;
+	border-left: 1px solid #C7C7C7;
+	border-right: 1px solid #707070;
+	border-bottom: 1px solid #707070;
+}
+#toolbarPrincipal ul li.limpiar a{
+    background: url(/img/iconos/limpiar.png) 50% 4px no-repeat;
+}
+#toolbarPrincipal ul li.guardar a{
+    background: url(/img/iconos/guardar.png) 50% 4px no-repeat;    
+}
+#toolbarPrincipal ul li.eliminar a{
+    background: url(/img/iconos/eliminar.png) 50% 4px no-repeat;    
+}
+#toolbarPrincipal ul li.anadir a{
+    background: url(/img/iconos/anadir.png) 50% 4px no-repeat;    
+}
+#toolbarPrincipal ul li.editar a{
+    background: url(/img/iconos/editar32.png) 50% 4px no-repeat;    
+}
+#toolbarPrincipal ul li.buscar a{
+    background: url(/img/iconos/buscar32.png) 50% 4px no-repeat;    
+}
+#toolbarPrincipal ul li.listado a{
+    background: url(/img/iconos/listado32.png) 50% 4px no-repeat;    
+}
+#toolbarPrincipal ul li.duplicar a{
+    background: url(/img/iconos/duplicar32.png) 50% 4px no-repeat;    
+}

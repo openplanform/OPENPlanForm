@@ -1,0 +1,61 @@
+<h2>Ficha de Academia</h2>
+
+<?
+
+	if ( !is_null($this->academiaDO) ){
+		
+?>
+		<div class="ficha">
+			<h3>Datos del usuario</h3>
+			<p><label>Nombre:</label> <?= $this->usuarioDO->getVNombre() ?></p>
+			<p><label>Email:</label> <?= $this->usuarioDO->getVEmail() ?></p>
+		</div>
+		
+		<div class="ficha">
+			<h3>Datos de la academia</h3>
+			<p><label>Nombre:</label> <?= $this->academiaDO->getVNombre() ?></p>
+			<p><label>CIF:</label> <?= $this->academiaDO->getVCif() ?></p>
+			<p><label>País:</label> <?= $this->academiaDO->getTblPais()->getVNombre() ?></p>
+			<p><label>Provincia:</label> <?= $this->academiaDO->getTblProvincia()->getVNombre() ?></p>
+			<?
+			
+			$poblacion = $this->academiaDO->getVPoblacion();
+			if ( !empty($poblacion) ){
+				?><p><label>Población:</label> <?= $poblacion ?></p><?
+			}
+			
+			$direccion = $this->academiaDO->getVDireccion();
+			if ( !empty($direccion) ){
+				?><p><label>Dirección:</label> <?= $direccion ?></p><?
+			}
+			
+			$cp = $this->academiaDO->getVCp();
+			if ( !empty($cp) ){
+				?><p><label>CP:</label> <?= $cp ?></p><?
+			}
+			
+			$telefono1 = $this->academiaDO->getVTelefono();
+			if ( !empty($telefono1) ){
+				?><p><label>Teléfono 1:</label> <?= $telefono1 ?></p><?
+			}
+			
+			$telefono2 = $this->academiaDO->getVTelefono2();
+			if ( !empty($telefono2) ){
+				?><p><label>Teléfono 2:</label> <?= $telefono2 ?></p><?
+			}
+			
+			$fax = $this->academiaDO->getVFax();
+			if ( !empty($fax) ){
+				?><p><label>Fax:</label> <?= $fax ?></p><?
+			}
+			
+			?>
+		</div>
+<?
+		
+	} else {
+		
+		?><h3>No se ha encontrado la academia</h3><?
+		
+	}
+?>

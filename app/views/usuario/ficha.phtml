@@ -1,0 +1,93 @@
+<?php
+
+
+?><h2>Ficha de Usuario</h2>
+<h3>Datos de acceso:</h3>
+
+<div class="ficha">
+    
+    <p><label>Identificador:</label> <?= $this->usuarioBO->getId() ?></p>
+    <p><label>Nombre de usuario:</label> <?= $this->usuarioBO->getNombre() ?></p>
+    <p><label>Roles asignados:</label> <? 
+    
+        $rolesUsuario = $this->usuarioBO->getRoles();
+        $rolesUsuarioLabels = array();
+        foreach ($rolesUsuario as $rolUsuario){
+            $rolesUsuarioLabels[] = $this->rolesIDX[$rolUsuario];
+        }
+        echo implode(', ', $rolesUsuarioLabels);
+        
+    ?></p>
+    <p><label>Correo electrónico:</label> <?= $this->usuarioBO->getEmail() ?></p>
+
+</div>
+
+<div id="datosEntidad" class="ficha"><?
+
+    if ($this->tipo == 'persona'){
+        
+        // FICHA DE PERSONA
+        
+        ?><h3>Datos personales: </h3>
+        <p><label>Nombre: </label> <?= $this->personaDO->getVNombre()  ?></p>        
+        <p><label>Apellidos: </label> <?= $this->personaDO->getVPrimerApellido() . ' ' . $this->personaDO->getVSegundoApellido()  ?></p>
+        <p><label>Fecha de nacimiento: </label> <?= $this->datehelper->getDiaMesAno($this->personaDO->getDNacimiento())  ?></p>        
+        <p><label><?= $this->personaDO->getTblTipoIdentificacion()->getVNombre() ?>: </label> <?= $this->personaDO->getVNumeroIdentificacion() ?></p><?
+        
+        if ($telefono = $this->personaDO->getVTelefono()){
+        
+            ?><p><label>Teléfono: </label> <?= $telefono ?></p><?
+            
+        }
+        
+        if ($movil = $this->personaDO->getVMovil()){
+
+            ?><p><label>Teléfono Movil: </label> <?= $movil ?></p><?        
+            
+        }
+            
+        ?><p><label>Dirección: </label> <?= $this->personaDO->getVDireccion()  ?></p>        
+        <p><label>Población: </label> <?= $this->personaDO->getVPoblacion()  ?></p>        
+        <p><label>Provincia: </label> <?= $this->personaDO->getTblProvincia()->getVNombreEs()  ?></p>        
+        <p><label>País: </label> <?= $this->personaDO->getTblPais()->getVNombreEs()  ?></p>
+        <p class="nuevaSeccion"><label>Estado civil: </label><?= $this->personaDO->getTblEstadoCivil()->getVNombre() ?></p>
+        <p><label>Estado laboral: </label> <?= $this->personaDO->getTblEstadoLaboral()->getVNombre()  ?></p>
+        <p><label>Nivel de estudios: </label> <?= $this->personaDO->getTblNivelEstudios()->getVNombre()  ?></p>
+        <p><label>Fecha de alta: </label> <?= $this->datehelper->getDiaMesAno($this->personaDO->getDAlta())  ?></p><?
+        
+    } elseif ($this->tipo = 'empresa'){
+        
+        // FICHA DE EMPRESA
+        
+        ?><h3>Datos de la empresa: </h3>
+        <p><label>Nombre: </label><?= $this->empresaDO->getVNombre() ?></p>
+        <p><label>CIF: </label><?= $this->empresaDO->getVCif() ?></p>
+        <p><label>Dirección: </label><?= $this->empresaDO->getVDireccion() ?></p>
+        <p><label>Código Postal: </label><?= $this->empresaDO->getVCp() ?></p>
+        <p><label>Población: </label><?= $this->empresaDO->getVPoblacion() ?></p>
+        <p><label>Provincia: </label> <?= $this->empresaDO->getTblProvincia()->getVNombreEs()  ?></p>        
+        <p><label>País: </label> <?= $this->empresaDO->getTblPais()->getVNombreEs()  ?></p><?
+        
+        if ($tel = $this->empresaDO->getVTelefono()){
+
+            ?><p><label>Teléfono: </label><?= $tel ?></p><?
+            
+        }
+        
+        if ($tel2 = $this->empresaDO->getVTelefono2()){
+
+            ?><p><label>Teléfono 2: </label><?= $tel2 ?></p><?
+            
+        }
+        
+        if ($fax = $this->empresaDO->getVFax()){
+
+            ?><p><label>Fax: </label><?= $fax ?></p><?
+            
+        }
+        
+        ?><p><label>Fecha de alta: </label> <?= $this->datehelper->getDiaMesAno($this->empresaDO->getDAlta()) ?></p><?
+        
+    }
+
+?></div>

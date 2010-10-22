@@ -1,0 +1,149 @@
+<?php
+	$this->addJavascriptInclude('/js/plan.js');
+	
+	if ( !is_null($this->popup) ){
+    	echo '<script type="text/javascript">ventana' . ucfirst($this->popup['estado']) . '("' . $this->popup['titulo'] . '", "' . $this->popup['mensaje'] . '", "' . $this->popup['url'] . '");</script>'; 
+	}
+?>
+    
+<?
+	
+	if ( !is_null($this->planDO) ){
+
+?>
+    
+    <form id="editarPlan" action="/plan/editar.html/<?= $this->planDO->getIdPlan() ?>" method="post">
+        <fieldset>
+        
+            <legend>Editar Plan</legend>
+            
+        	<input type="hidden" value="1" name="send" />
+        
+            <div class="campo controlado">
+                <label for="nombre">Nombre*</label>
+                <input type="text" name="nombre" id="nombre" class="campoTexto" value="<?= $this->planDO->getVNombre() ?>"/>
+                <p id="errorNombre" class="errorInput"><?=$this->errorNombre?></p>
+            </div>
+			
+			<div class="campo controlado">
+            	<label for="tipo">Tipo de Plan*</label>
+	            <select class="grande" name="tipo" id="tipo">
+	            	<option value=""></option>
+					<?
+					
+					//Tipo Plan
+					foreach ( $this->tiposPlanIDX as $clave => $nombre) {
+						
+						?><option value="<?= $clave ?>" <?= ( ($this->planDO->getFkTipoPlan() == $clave)?'selected="selected"':'' ) ?>><?= $nombre ?></option><?
+						
+					}
+					
+					?>
+				</select>
+				<p id="errorTipo" class="errorInput"><?= $this->errorTipo ?></p>
+			</div>
+			
+			<div class="campo controlado">
+            	<label for="convocatoria">Convocatoria*</label>
+	            <select class="grande" name="convocatoria" id="convocatoria">
+	            	<option value=""></option>
+					<?
+					
+					//Convocatorias
+					foreach ( $this->convocatoriasIDX as $clave => $nombre) {
+						
+						?><option value="<?= $clave ?>" <?= ( ($this->planDO->getFkConvocatoria() == $clave)?'selected="selected"':'' ) ?>><?= $nombre ?></option><?
+						
+					}
+					
+					?>
+				</select>
+				<p id="errorConvocatoria" class="errorInput"><?= $this->errorConvocatoria ?></p>
+			</div>
+			
+			<div class="campo controlado">
+            	<label for="estado">Estado del Plan*</label>
+	            <select class="grande" name="estado" id="estado">
+	            	<option value=""></option>
+					<?
+					
+					// Estado del Plan
+					foreach ( $this->estadosPlanIDX as $clave => $nombre) {
+						
+						?><option value="<?= $clave ?>" <?= ( ($this->planDO->getFkEstadoPlan() == $clave)?'selected="selected"':'' ) ?>><?= $nombre ?></option><?
+						
+					}
+					
+					?>
+				</select>
+				<p id="errorEstado" class="errorInput"><?= $this->errorEstado ?></p>
+			</div>
+			
+			<div class="campo controlado">
+            	<label for="propietario">Propietario*</label>
+	            <select class="grande" name="propietario" id="propietario">
+	            	<option value=""></option>
+					<?
+					
+					// Propietario
+					foreach ( $this->consultorasIDX as $clave => $nombre) {
+						
+						?><option value="<?= $clave ?>" <?= ( ($this->planDO->getFkEmpresaPropietaria() == $clave)?'selected="selected"':'' ) ?>><?= $nombre ?></option><?
+						
+					}
+					
+					?>
+				</select>
+				<p id="errorPropietario" class="errorInput"><?= $this->errorPropietario ?></p>
+			</div>
+			
+			<div class="campo controlado">
+            	<label for="consultora">Consultora*</label>
+	            <select class="grande" name="consultora" id="consultora">
+	            	<option value=""></option>
+					<?
+					
+					// Consultora
+					foreach ( $this->consultorasIDX as $clave => $nombre) {
+						
+						?><option value="<?= $clave ?>" <?= ( ($this->planDO->getFkEmpresaConsultora() == $clave)?'selected="selected"':'' ) ?>><?= $nombre ?></option><?
+						
+					}
+					
+					?>
+				</select>
+				<p id="errorConsultora" class="errorInput"><?= $this->errorConsultora ?></p>
+			</div>
+			
+			<div class="campo controlado">
+                <label for="presupuesto">Presupuesto*</label>
+                <input class="campoTexto dinero" type="text" name="presupuesto" id="presupuesto" value="<?= NingenNumeric::decimalFormatoEuropeo($this->planDO->getEPresupuestoAsignado(), 2) ?>" />
+                <p id="errorPresupuesto" class="errorInput"><?=$this->errorPresupuesto?></p>
+                <p class="tooltip" id="presupuestoTooltip">Utilice la coma(,) para separar decimales y el punto(.) para los miles</p>
+            </div>
+			
+            <div class="campo">
+                <label for="descripcion">Descripción</label>
+                <textarea rows="5" cols="40" name="descripcion" id="descripcion"><?= $this->planDO->getVDescripcion() ?></textarea>
+            </div>
+            
+            <input class="oculto" type="submit" value="Guardar" />
+            
+            <noscript>
+            	<div class="campo">
+            		<input type="submit" value="Guardar" />
+            	</div>
+            </noscript>
+            
+        </fieldset>
+    </form>
+    <p>* Campos obligatorios</p>  
+<?
+	
+	} else {
+	
+	?><h3>No se ha encontrado el plan</h3><?
+	
+	}
+
+?>

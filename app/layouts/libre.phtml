@@ -1,0 +1,33 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Extranet - Planes Pime</title>
+    
+    <link rel="stylesheet" type="text/css" href="/css/general.css" />
+    <?
+        
+        $this->echoDescriptionAndKeywords();
+    
+        $this->echoPageTitle();
+    
+        $this->echoOnHead();
+    
+        $this->echoJavascriptIncludes();
+        
+        $this->echoCssIncludes();
+            
+    ?>
+</head>
+<body id="libre">
+
+    <div id="layout"><?
+
+        $this->hereSlot('contenido_principal');
+
+    ?></div>
+        
+</body>
+        
+</html>
+    
+    

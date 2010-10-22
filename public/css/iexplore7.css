@@ -1,0 +1,8 @@
+#logoutModule strong{
+    margin-right: 25px;
+}
+#logoutModule .cerrarSesion{
+	position: absolute;
+	top: 0px;
+	right: 0px;
+}

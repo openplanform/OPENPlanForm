@@ -1,0 +1,135 @@
+<?php
+	$this->addJavascriptInclude('/js/usuario.js');
+	$this->addJavascriptInclude('/js/academia.js');
+	
+	if ( !is_null($this->popup) ){
+    	echo '<script type="text/javascript">ventana' . ucfirst($this->popup['estado']) . '("' . $this->popup['titulo'] . '", "' . $this->popup['mensaje'] . '", "' . $this->popup['url'] . '");</script>'; 
+	}
+?>
+    
+    <form id="altaAcademia" action="/academia/alta.html" method="post">
+        <fieldset>
+        
+            <legend>Alta de Academia</legend>
+        
+        	<input type="hidden" value="1" name="send" />
+        	
+	        <h3>Datos del Usuario</h3>
+        	
+        	<div class="campo controlado">
+	        	<label for="nombreUsuario">Nombre de usuario*</label>
+	            <input type="text" name="nombreUsuario" id="nombreUsuario" class="campoTexto mediano" onblur="comprobarUsuario('nombreUsuario')" />
+	            <p id="errorNombreUsuario" class="errorInput"><?= $this->errorNombreUsuario ?></p>
+	            <p class="tooltip" id="nombreUsuarioTooltip">El nombre de usuario debe tener 5 caracteres como mínimo y 16 como máximo. Debe estar compuesto de sólo letras y/o números. <em>Ej: usuario12</em></p>
+	        </div>
+	        
+	        <div class="campo controlado multi">
+	            <label for="password1">Contraseña*</label>
+	            <input type="password" name="password1" id="password1" class="campoTexto" />
+	            <p id="errorPassword1" class="errorInput"><?= $this->errorPassword ?></p>
+	        </div>
+	        
+	        <div class="campo controlado multi">
+	            <label for="repassword1">Repetir Contraseña*</label>
+	            <input type="password" name="repassword1" id="repassword1" class="campoTexto" />
+	            <p class="tooltip" id="password1Tooltip">La contraseña debe tener 6 caracteres como mínimo y 16 como máximo. Puede estar compuesta por cualquier caracter, pero al menos debe contener un número.<em> Ej: test1_casa</em></p>
+	            <p id="errorRepassword1" class="errorInput"><?= $this->errorPassword ?></p>
+	        </div>
+        
+        	<div class="campo clear">
+	             <label for="emailUsuario">Correo electrónico*</label>
+	             <input type="text" name="emailUsuario" id="emailUsuario" class="campoTexto" />
+	             <p id="errorEmailUsuario" class="errorInput"><?= $this->errorEmail ?></p>
+	        </div>
+	        
+        	<h3>Datos de la Academia</h3>
+        	
+            <div class="campo controlado multi">
+                <label for="nombre">Nombre*</label>
+                <input type="text" name="nombre" id="nombre" class="campoTexto" />
+                <p id="errorNombre" class="errorInput"><?= $this->errorNombre ?></p>
+            </div>
+			
+			<div class="campo controlado multi">
+                <label for="cif">CIF*</label>
+                <input type="text" name="cif" id="cif" class="campoTexto" />
+                <p id="errorCif" class="errorInput"><?= $this->errorCif ?></p>
+            </div>
+			
+			<div class="campo controlado clear">
+            	<label for="pais">País*</label>
+	            <select class="grande" name="pais" id="pais">
+	            	<option value=""></option>
+					<?
+					
+					// País
+					foreach ( $this->paisesCOL as $paisDO) {
+						//$paisDO = new TblPais($db);
+						?><option value="<?= $paisDO->getVIso() ?>" ><?= $paisDO->getVNombre() ?></option><?
+						
+					}
+					
+					?>
+				</select>
+				<p id="errorPais" class="errorInput"><?= $this->errorPais ?></p>
+			</div>
+			
+			<div class="campo controlado">
+            	<label for="provincia">Provincia*</label>
+	            <select class="grande" name="provincia" id="provincia">
+	            	<option value=""></option>
+					<?
+					
+					// Provincia
+					foreach ( $this->provinciasCOL as $provinciaDO) {
+						
+						?><option value="<?= $provinciaDO->getIdProvincia() ?>" ><?= $provinciaDO->getVNombre() ?></option><?
+						
+					}
+					
+					?>
+				</select>
+				<p id="errorProvincia" class="errorInput"><?= $this->errorProvincia ?></p>
+			</div>
+			
+			<div class="campo multi">
+            	<label for="poblacion">Poblacion</label>
+	            <input type="text" name="poblacion" id="poblacion" class="campoTexto" />
+			</div>
+			
+			<div class="campo multi">
+            	<label for="direccion">Dirección</label>
+	            <input type="text" name="direccion" id="direccion" class="campoTexto" />
+			</div>
+			
+			<div class="campo clear">
+            	<label for="cp">C.P.</label>
+	            <input type="text" name="cp" id="cp" class="campoTexto" />
+			</div>
+			
+			<div class="campo multi">
+            	<label for="telefono1">Teléfono 1</label>
+	            <input type="text" name="telefono1" id="telefono1" class="campoTexto" />
+			</div>
+			
+			<div class="campo multi">
+            	<label for="telefono1">Teléfono 2</label>
+	            <input type="text" name="telefono1" id="telefono1" class="campoTexto" />
+			</div>
+			
+			<div class="campo clear">
+            	<label for="fax">Fax</label>
+	            <input type="text" name="fax" id="fax" class="campoTexto" />
+			</div>
+            
+            <input class="oculto" type="submit" value="Guardar" />
+            
+            <noscript>
+            	<div class="campo">
+            		<input type="submit" value="Guardar" />
+            	</div>
+            </noscript>
+            
+        </fieldset>
+    </form>
+    <p>* Campos obligatorios</p>

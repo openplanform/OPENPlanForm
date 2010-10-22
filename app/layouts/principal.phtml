@@ -1,0 +1,66 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Extranet - Planes Pime</title>
+    
+    <link rel="stylesheet" type="text/css" href="/css/general.css" />
+    <link rel="stylesheet" type="text/css" href="/css/menu.css" />
+    <link rel="stylesheet" type="text/css" href="/css/logout.css" />
+    <link rel="stylesheet" type="text/css" href="/css/toolbar.css" />
+    <link rel="stylesheet" type="text/css" href="/css/popup.css" />
+    <link rel="stylesheet" type="text/css" href="/css/cupertino/jquery-ui.css" />
+    
+    <!--[if IE 7]>
+            <link rel="stylesheet" type="text/css" href="/css/iexplore7.css" />
+    <![endif]-->
+    
+    <script type="text/javascript" src="/js/jquery.js"></script>
+    <script type="text/javascript" src="/js/jquery-ui.js"></script>
+    <script type="text/javascript" src="/js/jquery.numeric.js"></script>
+    <script type="text/javascript" src="/js/funciones.js"></script>
+    <script type="text/javascript" src="/js/menu.js"></script>
+    <script type="text/javascript" src="/js/barraHerramientas.js"></script>
+    <script type="text/javascript" src="/js/popup.js"></script>
+    <?
+        
+        $this->echoDescriptionAndKeywords();
+    
+        $this->echoPageTitle();
+    
+        $this->echoJavascriptIncludes();
+    
+        $this->echoOnHead();
+        
+        $this->echoCssIncludes();
+            
+    ?>
+</head>
+<body id="principal">
+    <?
+    
+    $this->hereSlot('contenedor_popup');
+    
+    ?><div id="contenedorFijo">
+        <div id="barraNavegacion"><?
+            
+            $this->hereSlot('contenedor_menu');  
+            
+            $this->hereSlot('contenedor_logout');
+    
+        ?></div>
+        <div id="toolbars"><?
+        
+            $this->hereSlot('contenedor_toolbar');
+        
+        ?></div>
+    </div>
+    <div id="layout"><?
+
+        $this->hereSlot('contenido_principal');
+
+    ?></div><?
+
+    $this->echoDatabaseLog();
+
+?></body>
+</html>

@@ -1,0 +1,100 @@
+<?php
+	$this->addJavascriptInclude('/js/centro.js');
+	
+	if ( !is_null($this->popup) ){
+    	echo '<script type="text/javascript">ventana' . ucfirst($this->popup['estado']) . '("' . $this->popup['titulo'] . '", "' . $this->popup['mensaje'] . '", "' . $this->popup['url'] . '");</script>'; 
+	}
+?>
+    
+    <form id="altaCentro" action="/centro/alta.html" method="post">
+        <fieldset>
+        
+            <legend>Alta de Centro</legend>
+        
+        	<input type="hidden" value="1" name="send" />
+        
+            <div class="campo controlado">
+                <label for="nombre">Nombre*</label>
+                <input type="text" name="nombre" id="nombre" class="campoTexto" />
+                <p id="errorNombre" class="errorInput"><?=$this->errorNombre?></p>
+            </div>
+			
+			<div class="campo controlado">
+            	<label for="academia">Academia*</label>
+	            <select class="grande" name="academia" id="academia">
+	            	<option value=""></option>
+					<?
+					
+					// Academia
+					foreach ( $this->academiasIDX as $clave => $nombre) {
+						
+						?><option value="<?= $clave ?>" ><?= $nombre ?></option><?
+						
+					}
+					
+					?>
+				</select>
+				<p id="errorAcademia" class="errorInput"><?= $this->errorAcademia ?></p>
+			</div>
+			
+			<div class="campo controlado clear">
+            	<label for="pais">País*</label>
+	            <select class="grande" name="pais" id="pais">
+	            	<option value=""></option>
+					<?
+					
+					// País
+					foreach ( $this->paisesCOL as $paisDO) {
+						?><option value="<?= $paisDO->getVIso() ?>" ><?= $paisDO->getVNombre() ?></option><?
+						
+					}
+					
+					?>
+				</select>
+				<p id="errorPais" class="errorInput"><?= $this->errorPais ?></p>
+			</div>
+			
+			<div class="campo controlado">
+            	<label for="provincia">Provincia*</label>
+	            <select class="grande" name="provincia" id="provincia">
+	            	<option value=""></option>
+					<?
+					
+					// Provincia
+					foreach ( $this->provinciasCOL as $provinciaDO) {
+						
+						?><option value="<?= $provinciaDO->getIdProvincia() ?>" ><?= $provinciaDO->getVNombre() ?></option><?
+						
+					}
+					
+					?>
+				</select>
+				<p id="errorProvincia" class="errorInput"><?= $this->errorProvincia ?></p>
+			</div>
+			
+			<div class="campo">
+            	<label for="direccion">Dirección</label>
+	            <input type="text" name="direccion" id="direccion" class="campoTexto" />
+			</div>
+			
+			<div class="campo">
+            	<label for="telefono">Teléfono</label>
+	            <input type="text" name="telefono" id="telefono" class="campoTexto" />
+			</div>
+			
+            <div class="campo">
+                <label for="descripcion">Descripción</label>
+                <textarea rows="5" cols="40" name="descripcion" id="descripcion"></textarea>
+            </div>
+            
+            <input class="oculto" type="submit" value="Guardar" />
+            
+            <noscript>
+            	<div class="campo">
+            		<input type="submit" value="Guardar" />
+            	</div>
+            </noscript>
+            
+        </fieldset>
+    </form>
+    <p>* Campos obligatorios</p>

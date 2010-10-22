@@ -1,0 +1,68 @@
+<?php
+
+    $this->addJavascriptInclude('/js/usuario.js');
+    
+    if ( !is_null($this->popup) ){
+        echo '<script type="text/javascript">ventana' . ucfirst($this->popup['estado']) . '("' . $this->popup['titulo'] . '", "' . $this->popup['mensaje'] . '", "' . $this->popup['url'] . '");</script>'; 
+    }    
+
+?>
+<form id="altaUsuario" action="/usuario/alta.html" method="post">
+    <fieldset>
+
+        <legend>Alta de usuarios</legend>
+        <input type="hidden" value="1" name="send" />
+        
+        <div class="campo controlado">
+             <label for="nombreUsuario">Nombre de usuario*</label>
+             <input type="text" name="nombreUsuario" id="nombreUsuario" class="campoTexto mediano" onblur="comprobarUsuario(this.id)" />
+             <p id="errorNombreUsuario" class="errorInput"><?= $this->errorNombre ?></p>
+             <p class="tooltip" id="nombreUsuarioTooltip">El nombre de usuario debe tener 5 caracteres como mínimo y 16 como máximo. Debe estar compuesto de sólo letras y/o números. <em>Ej: usuario12</em></p>
+        </div>
+        
+        <div class="campo controlado">
+             <label for="password1">Contraseña*</label>
+             <input type="password" name="password1" id="password1" class="campoTexto" />
+             <p id="errorPassword1" class="errorInput"><?= $this->errorPassword ?></p>
+             <p class="tooltip" id="password1Tooltip">La contraseña debe tener 6 caracteres como mínimo y 16 como máximo. Puede estar compuesta por cualquier caracter, pero al menos debe contener un número.<em> Ej: test1_casa</em></p>
+        </div>
+        
+        <div class="campo controlado">
+             <label for="repassword1">Repetir Contraseña*</label>
+             <input type="password" name="repassword1" id="repassword1" class="campoTexto" />
+             <p id="errorRepassword1" class="errorInput"><?= $this->errorPassword ?></p>
+        </div>
+        
+        <div class="campo">
+             <label for="emailUsuario">Correo electrónico*</label>
+             <input type="text" name="emailUsuario" id="emailUsuario" class="campoTexto" />
+             <p id="errorEmailUsuario" class="errorInput"><?= $this->errorEmail ?></p>
+        </div>        
+        
+        <div class="campo controlado">
+            <label for="selectorRol">Roles que desempeñará*</label>
+            <select name="roles[]" multiple="multiple" id="selectorRol" class="campoTexto grande"><?
+            
+                foreach ($this->roles as $idRol => $rol){
+            
+                    ?><option value="<?= $idRol ?>"><?= $rol ?></option>
+                    <?
+                
+                }
+                
+            ?></select>
+            <p class="tooltip" id="selectorRolTooltip">Se pueden seleccionar varios roles manteniendo pulsada la tecla CTRL</p>
+            <p id="errorSelectorRol" class="errorInput"><?= $this->errorRol ?></p>
+        </div>
+        
+        <input class="oculto" type="submit" value="Guardar" />
+        
+        <noscript>
+            <div class="campo">
+                <input type="submit" value="Guardar" />
+            </div>
+        </noscript>            
+        
+        
+    </fieldset>
+</form>

@@ -1,0 +1,417 @@
+/* Estilos Generales */
+.separadorH{
+	clear: both;
+	float: none;
+	overflow: hidden;
+	height: 0px;
+}
+fieldset, p, h1, h2, h3, h4, h5, body, html, form, ul, li, legend{
+	margin: 0;
+	padding: 0;
+	border: none;
+}
+li{
+	list-style: none;
+}
+#layout{
+	margin: 115px 25px 25px 25px;
+}
+body{
+	font: normal 12px Verdana, Arial, Helvetica, sans-serif;
+	color: #000;
+}
+body#principal{
+	background-color: #E0E7EF;
+}
+body#libre{
+	background-color: #F2F2F2;
+}
+h2, h3, h4, h5{
+	color: #4A95EF;
+	margin: 0 0 10px 0;
+}
+h2{
+   font: bold 26px Arial,Helvetica,sans-serif;
+   margin-bottom: 15px;
+}
+h3{
+	color: #000;
+	margin-bottom: 15px;
+}
+a{
+	text-decoration: underline;
+	color: #4A95EF;
+}
+a:hover{
+	color: #000;
+}
+#contenedorFijo{
+    position: fixed;
+    width: 100%;
+    top: 0px;
+    left: 0px;
+    z-index: 5000;
+    -moz-box-shadow:0 1px 5px #BBBBBB;
+}
+
+/* Estilos generales */
+
+.error,
+.errorInput{
+	color: #F00;
+}
+.errorInput{
+	height:15px;
+	margin-top: 1px;
+	font-size: 10px;
+	line-height: 10px;
+}
+.oculto{
+	display: none;
+}
+.info{
+	font-size: 10px;
+}
+.volver{
+	font-size: 11px;
+	height: 14px;
+	margin: 0 0 8px 0 !important;
+	padding: 0 0 0 12px;
+	background: url(/img/iconos/flechaIzq.png) left center no-repeat;
+}
+
+/* Componentes Formulario */
+legend{
+	color: #4A95EF;
+	display: block;
+	font: bold 26px Arial,Helvetica,sans-serif;
+	margin-bottom: 20px;
+}
+label{
+	display: block;
+	font-family: Verdana, "BitStream vera Sans", Tahoma, Helvetica, Sans-serif;
+	font-size: 13px;
+	color: #6F6F6F;
+	font-weight: bold;
+}
+label.alter{
+	display: inline;
+}
+select,
+input.campoTexto, 
+textarea {
+    background: url("/img/layout/textfield.gif") repeat-x center top #FFFFFF;
+    border: 1px solid #A6A6A6;
+    font-family: Verdana, "BitStream vera Sans", Tahoma, Helvetica, Sans-serif;
+    font-size: 12px;
+    padding: 2px 1px;
+}
+select{
+	padding: 0px;
+}
+textarea,
+input.campoTexto{
+	width: 300px;
+}
+.campo{
+	margin-bottom: 18px;
+	position: relative;
+}
+.campo.controlado{
+    margin-bottom: 0;
+}
+.campo.clear{
+	clear: both;
+	float: none;
+	overflow: hidden;
+}
+.campo.multi{
+    float: left;
+    margin-right: 15px;
+}
+.checkbox,
+.radioOpt{
+	margin: 0 15px 0 0;
+	position: relative;
+	left: 0;
+	bottom: -3px;
+}
+select.mini,
+input.mini{
+	width: 40px;
+}
+select.pequeno,
+input.pequeno{
+	width: 100px;
+}
+select.mediano,
+input.mediano{
+    width: 150px;
+}
+select.fecha,
+input.fecha{
+    width:80px;
+}
+select.grande,
+input.grande{
+    width: 300px;
+}
+select.enorme,
+input.enorme{
+    width: 450px;
+}
+.tooltip{
+	font-size: 10px;
+	width: 220px;
+	padding: 5px;
+	background-color: #FFFFDF;
+	border: 1px solid #BFBFBF; 
+	position: absolute;
+	left: 165px;
+	top: 0px;
+	display: none;
+	z-index: 1000;
+	margin-left: 15px;
+}
+
+/* Log sql */
+#logSql{
+	font-family: courier;
+	padding: 25px;
+}
+#logSql p{
+	font-weight: bold;
+	border-bottom: 2px solid #5F5F5F;
+	padding-bottom: 3px;
+}
+#logSql ul{
+	
+}
+
+#logSql li{
+	padding-top: 3px;
+	padding-bottom: 3px;
+	border-bottom: 1px solid #5F5F5F;
+}
+#logSql li.correct{
+	color: #1A4F0A;
+}
+#logSql li.error{
+	color: #FF0000;
+}
+
+/* Barra Navegacion */
+#barraNavegacion{
+	border-bottom: 1px solid #808080;
+	/*background: url(/img/layout/fdoBarra.png) -9px -6px repeat-x;*/
+	padding-left: 25px;
+	padding-right: 25px;
+	position: relative;
+	background-color: #F2F2F2;
+}
+#barraNavegacion a{
+	font: bold 12px Verdana, Arial, Helvetica, sans-serif;
+	color: #6F6F6F;
+	text-decoration: none;
+	line-height: 25px;
+}
+#barraNavegacion a:hover{
+    color: #5399BF;
+}
+.barraTitulo{
+	height: 20px;
+	color: #fff;
+	text-align: left;
+	background-color: #4A95EF;
+	border-bottom: 1px solid #808080;
+	font: bold 12px/20px Verdana, Arial, Helvetica, sans-serif;
+	padding-left: 25px;
+}
+.barraTitulo.login{
+	background: #4A95EF url(/img/iconos/login.png) 2px 2px no-repeat;
+}
+
+/* Botones */
+.boton{
+	clear: both;
+	float: none;
+	overflow: hidden;
+	margin: 0 auto;
+}
+.boton a{
+	display: block;
+	height: 20px;
+	position: relative;
+	font: bold 12px Verdana, Arial, Helvetica, sans-serif;
+	color: #fff;
+	background: url(/img/boton/cen.png) top center repeat-x;
+	float: left;
+	text-decoration: none;
+	line-height: 20px;
+	margin-left: 12px;
+	cursor: pointer;
+}
+.boton .dec1{
+	display: block;
+	width: 12px;
+	height: 20px;
+	position: absolute;
+	left: -12px;
+	top: 0px;
+	background: url(/img/boton/izq.png) top left no-repeat;
+}
+.boton .dec2{
+    display: block;
+    width: 12px;
+    height: 20px;
+    position: absolute;
+    right: -12px;
+    top: 0px;	
+    background: url(/img/boton/der.png) top right no-repeat;
+}
+.boton.ko a{
+	background: url(/img/boton/koCen.png) top center repeat-x;
+}
+.boton.ko a .dec1{
+	background: url(/img/boton/koIzq.png) top left no-repeat;
+}
+.boton.ko a .dec2{
+	background: url(/img/boton/koDer.png) top right no-repeat;
+}
+
+/* Listados */
+table.listado{
+	background-color: #fff;
+	border: 1px solid #808080;
+	border-collapse: collapse;
+	margin-bottom: 40px;
+}
+table.listado thead th,
+table.listado tbody td{
+	padding: 5px 10px;
+}
+table.listado tbody td.accion{
+	text-align: center;
+}
+table.listado thead th{
+	text-align: left;
+}
+table.listado thead th a{
+    color: #FFF;
+    text-decoration: none;
+}
+table.listado thead{
+	background-color: #4A95EF;
+	font: bold 12px Verdana, Arial, Helvetica, sans-serif;
+	border-bottom: 1px solid #808080;
+	color: #fff;
+}
+a.ordenado.asc{
+	padding: 0 12px 0 0;
+	background: url(/img/asc.gif) right 8px no-repeat;
+}
+a.ordenado.desc{
+    padding: 0 12px 0 0;
+    background: url(/img/desc.gif) right 7px no-repeat;
+}
+a.btnDuplicar,
+a.btnEditar,
+a.btnEliminar{
+	display: block;
+	width: 16px;
+	height: 16px;
+	margin: 0 auto;
+	background: url(/img/iconos/eliminar16.png) top center no-repeat;
+}
+a.btnEliminar.usuario{
+    background: url(/img/iconos/borrarUsuario.png) top center no-repeat;	
+}
+a.btnDuplicar span,
+a.btnEditar span,
+a.btnEliminar span{
+	display: none;
+}
+a.btnEditar{
+	background: url(/img/iconos/editar16.png) top center no-repeat;
+}
+a.btnDuplicar{
+    background: url(/img/iconos/duplicar16.png) top center no-repeat;
+}
+table.listado tbody tr.alter{
+	background-color: #EFEFEF;
+}
+
+/* Ficha */
+.ficha label{
+	color: #4A95EF;
+	display: inline;
+	padding: 0 5px 0 0;
+}
+.ficha p{
+    margin: 0 0 5px 0;
+}
+.ficha .nuevaSeccion{
+	margin-top: 25px;
+}
+/* Paginador */
+#paginadorContainer{
+	
+}
+#paginadorContainer #paginador{
+    clear: both;
+    float: none;
+    overflow: hidden;
+}
+#paginadorContainer #paginador li{
+	float: left;
+	margin-right: 4px;
+}
+#paginadorContainer #paginador .siguiente,
+#paginadorContainer #paginador .anterior{
+	color: #000;
+	text-decoration: none;
+}
+#paginadorContainer #paginador strong,
+#paginadorContainer #paginador a{
+	line-height: 16px;
+}
+#paginadorContainer #paginador a span{
+	display: none;
+}
+#paginadorContainer #paginador .siguiente{
+	background: url(/img/iconos/siguiente16.png) center right no-repeat;
+	padding-right: 20px;
+}
+#paginadorContainer #paginador .anterior{
+	background: url(/img/iconos/anterior16.png) center left no-repeat;
+	padding-left: 20px;
+}
+div.ficha{
+	margin-bottom: 25px;
+}
+.btnSubmit{
+	background: url(/img/boton/btnOk.png) top center no-repeat;
+	display: block;
+	height: 20px;
+	width: 89px;
+	text-align: center;
+	color: #fff;
+	font: bold 12px Verdana, Arial, Helvetica, sans-serif;
+	line-height: 20px;
+	cursor: pointer;
+	border: none;
+	padding-bottom: 3px;
+}
+.btnDelete{
+	background: url(/img/boton/btnKo.png) top center no-repeat;
+	display: block;
+	height: 20px;
+	width: 89px;
+	text-align: center;
+	color: #fff;
+	font: bold 12px Verdana, Arial, Helvetica, sans-serif;
+	line-height: 20px;
+	cursor: pointer;
+	border: none;
+	padding-bottom: 3px;
+}

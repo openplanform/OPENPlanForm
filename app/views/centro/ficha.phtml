@@ -1,0 +1,34 @@
+<h2>Ficha de Centro</h2>
+
+<?
+
+	if ( !is_null($this->centroDO) ){
+		
+?>
+		<div class="ficha">
+			<p><label>Nombre:</label> <?= $this->centroDO->getVNombre() ?></p>
+			<p><label>Academia:</label> <?= $this->centroDO->getTblEmpresa()->getVNombre() ?></p>
+			<p><label>País:</label> <?= $this->centroDO->getTblPais()->getVNombre() ?></p>
+			<p><label>Provincia:</label> <?= $this->centroDO->getTblProvincia()->getVNombre() ?></p>
+			<?
+			
+			$telefono = $this->centroDO->getVTelefono();
+			if ( !empty($telefono) ){
+				?><p><label>Teléfono:</label> <?= $telefono ?></p><?
+			}
+			
+			$descripcion = $this->centroDO->getVDescripcion();
+			if ( !empty($descripcion) ){
+				?><p><label>Descripción:</label> <?= $descripcion ?></p><?
+			}
+			
+			?>
+		</div>
+<?
+		
+	} else {
+		
+		?><h3>No se ha encontrado el centro</h3><?
+		
+	}
+?>

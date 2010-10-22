@@ -1,0 +1,59 @@
+#menuAdmin{
+	background-color: #EFEFEF;
+	border: 1px solid #AFAFAF;
+	padding: 15px;
+	width: 400px;
+	float: left;
+	margin-right: 20px;
+}
+#formularioMenu{
+	width: 400px;
+	float: left;
+	padding: 15px;
+}
+#menuAdmin ul li{
+    background: url(/img/iconos/file16.png) center left no-repeat;
+    padding-left: 20px;	
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+#menuAdmin ul li.noItem{
+	background-image: none;
+}
+#menuAdmin ul ul{
+    margin-left: 25px;
+}
+#menuAdmin ul li.hasChildren,
+#menuAdmin ul li.root{
+    background: url(/img/iconos/folder16.png) center left no-repeat;
+    padding-left: 20px;
+}
+#menuAdmin ul li.seleccionado a{
+	color: #fff !important;
+	font-weight: bold;
+}
+#menuAdmin ul li.seleccionado{
+    background: url(/img/iconos/seleccionado16.png) center left no-repeat;
+    padding-left: 20px;	
+    background-color: #4A95EF;
+}
+#menuAdmin ul li a{
+    font: normal 11px Verdana, Arial, Helvetica, sans-serif;
+    color: #000;
+    text-decoration: none;
+}
+#menuAdmin ul li a:hover{
+	text-decoration: underline;
+}
+#menuAdmin ul li a.inactivo{
+	color: #7F7F7F;
+}
+.botonesForm{
+	clear: both;
+	float: none;
+	overflow: hidden;
+}
+.botonesForm input{
+	float: left;
+	margin-right: 15px;
+}

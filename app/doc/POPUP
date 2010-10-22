@@ -1,0 +1,18 @@
+//CONTROLLER
+$this->view->popup = array(
+    'estado' => 'ok',
+    'titulo' => 'Un título',
+    'mensaje'=> 'Hola Como tas?',
+    'url'=> '/convocatoria/alta.html',
+);
+
+//VIEW
+if (!is_null($this->popup)){
+    echo '<script type="text/javascript">ventana' . ucfirst($this->popup['estado']) . '("' . $this->popup['titulo'] . '", "' . $this->popup['mensaje'] . '", "' . $this->popup['url'] . '");</script>'; 
+}
+
+// FUNCIONES
+function ventanaOk(titulo, mensaje, url)
+function ventanaKo(titulo, mensaje, url)
+function ventanaConfirmacion(titulo, mensaje, url)
+

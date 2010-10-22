@@ -1,0 +1,31 @@
+<?php
+
+//$this = new NingenView;
+$this->addCssInclude('/css/login.css');
+$this->addJavascriptInclude('/js/login.js');
+
+
+?><div id="wrapper">
+    <div id="login">
+        <div class="barraTitulo login">Acceso Usuarios</div>
+        <div class="inner">
+            <form id="formularioLogin" action="/index/login.html" method="post">
+                <fieldset>
+                    <div class="campo">
+                        <label for="username">Nombre de usuario</label>
+                        <input type="text" name="username" id="username" class="campoTexto" />
+                    </div>
+                    <div class="campo">
+                        <label for="password">Contraseña</label>
+                        <input type="password" name="password" id="password" class="campoTexto" />
+                    </div>
+                    <div class="campo">
+                        <input type="submit" value="Entrar" class="btnSubmit" />
+                    </div>
+                    <p><a href="javascript:void(0);">olvidé mi contraseña</a></p>
+                    <p id="mensaje"><?= $this->mensaje ?></p>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>

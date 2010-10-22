@@ -1,0 +1,48 @@
+<h2>Ficha de Plan</h2>
+
+<?
+
+	if ( !is_null($this->planDO) ){
+		
+?>
+		<div class="ficha">
+			<p><label>Nombre:</label> <?= $this->planDO->getVNombre() ?></p>
+			<p><label>Tipo:</label> <?= $this->tiposPlanIDX[$this->planDO->getFkTipoPlan()] ?></p>
+			<p><label>Convocatoria:</label> <?= $this->convocatoriasIDX[$this->planDO->getFkConvocatoria()] ?></p>
+			<p><label>Estado:</label> <?= $this->estadosPlanIDX[$this->planDO->getFkEstadoPlan()] ?></p>
+			<p><label>Propietaria:</label> <?= $this->empresasIDX[$this->planDO->getFkEmpresaPropietaria()] ?></p>
+			<p><label>Consultora:</label> <?= $this->empresasIDX[$this->planDO->getFkEmpresaConsultora()] ?></p>
+			<p><label>Presupuesto:</label> <?= NingenNumeric::decimalFormatoEuropeo($this->planDO->getEPresupuestoAsignado(), 2) ?>€</p>
+			<?
+			
+			$descripcion = $this->planDO->getVDescripcion();
+			if ( !empty($descripcion) ){
+				?><p><label>Descripción:</label> <?= $descripcion ?></p><?
+			}
+			
+			?>
+		<?
+		
+		// Cursos
+		$arrCursosDO = $this->planDO->getTblCursos();
+		if ( !empty($arrCursosDO) ){
+
+			?><br/><h3>Cursos</h3><?
+			
+			foreach ( $arrCursosDO as $cursoDO ){
+				echo '<p><a href="/curso/ficha/' . $cursoDO->getIdCurso() . '">' . $cursoDO->getVNombre() . '</a></p>';
+			}
+			
+		}
+		
+		
+		?>
+		</div>
+<?
+		
+	} else {
+		
+		?><h3>No se ha encontrado el plan</h3><?
+		
+	}
+?>

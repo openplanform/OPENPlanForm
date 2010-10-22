@@ -1,0 +1,54 @@
+<h2>Listado de Centros</h2>
+
+<table class="listado">
+    <thead>
+		<tr>
+			<th><a href="/centro/index.html/?ob=nom&o=<?=$this->order?>" <?=( ($this->orderBy == 'nom')?'class="ordenado ' . $this->order . '"':'' )?> >Nombre</a></th>
+			<th><a href="/centro/index.html/?ob=aca&o=<?=$this->order?>" <?=( ($this->orderBy == 'aca')?'class="ordenado ' . $this->order . '"':'' )?> >Academia</a></th>
+			<th><a href="/centro/index.html/?ob=dir&o=<?=$this->order?>" <?=( ($this->orderBy == 'dir')?'class="ordenado ' . $this->order . '"':'' )?> >Dirección</a></th>
+			<th><a href="/centro/index.html/?ob=tel&o=<?=$this->order?>" <?=( ($this->orderBy == 'tel')?'class="ordenado ' . $this->order . '"':'' )?> >Teléfono</a></th>
+			<?
+			
+				if ( $this->editar ){
+					?><th>Eliminar</th>
+					<th>Editar</th>
+					<th>Duplicar</th><?	
+				}
+			
+			?>
+		</tr>
+	</thead>
+	<tbody>
+		<?php
+		
+			$contador = 0;
+			foreach ( $this->centrosCOL as $centroDO ){
+				
+			    //$centroDO = new TblEmpresa($db);
+				$clase = ( ($contador%2)==0 )?'':'class="alter"';
+				$contador++;
+				
+				?>
+				<tr	<?= $clase ?> >
+					<td><a href="/centro/ficha.html/<?= $centroDO->getIdCentro() ?>"><?= $centroDO->getVNombre() ?></a></td>
+					<td><a href="/academia/ficha.html/<?= $centroDO->getFkEmpresa() ?>"><?= $this->academiasIDX[$centroDO->getFkEmpresa()] ?></a></td>
+					<td><?= $centroDO->getVDireccion() ?></td>
+					<td><?= $centroDO->getVTelefono() ?></td>
+					<?
+					
+						if ( $this->editar ){
+							?><td class="accion"><a href="javascript:ventanaConfirmacion('Confirmar','¿Está seguro que desea eliminar la centro <strong><?= $centroDO->getVNombre() ?></strong>?','/centro/eliminar.html/<?= $centroDO->getIdCentro() ?>')" class="btnEliminar" title="Eliminar centro"><span>eliminar</span></a></td>
+							<td class="accion"><a href="/centro/editar.html/<?= $centroDO->getIdCentro() ?>" class="btnEditar" title="Editar centro"><span>editar</span></a></td>
+							<td class="accion"><a href="/centro/duplicar.html/<?= $centroDO->getIdCentro() ?>" class="btnDuplicar" title="Duplicar centro"><span>duplicar</span></a></td><?	
+						}
+					
+					?>
+				</tr>
+				<?
+				
+			}
+			
+		?>
+	</tbody>
+</table>
+<div id="paginadorContainer"><?= $this->paginador ?></div>

@@ -1,0 +1,115 @@
+<?
+
+
+$this->addCssInclude('/css/admin.css');
+$this->addJavascriptInclude('/js/admin.js');
+
+// Título de sección
+$tit = 'Agregar nuevo ítem';
+if ($this->editMode){
+    $tit = 'Editar ítem de menú';
+} 
+
+?><h2>Administrar menú y accesos</h2>
+
+<div id="menuAdmin">
+
+    <h3>Menú actual</h3>
+
+    <?= $this->htmltree ?>
+    
+</div>
+<div id="formularioMenu">
+
+    <h3><?= $tit ?></h3>
+    
+    <form action="<?= $_SERVER['REQUEST_URI'] ?>" method="post" id="formMenu">
+    
+        <fieldset>
+            
+            <input type="hidden" name="sent" value="<?= md5(date('is')) ?>" />
+            
+            <div class="campo">
+                <label for="padre">Item Padre</label>
+                <select name="padre" id="padre" class="campoTexto grande">
+                    <option value="0">Ninguno / Patriarca</option>
+                    <?= $this->htmlselect ?>
+                </select>
+            </div>
+            
+            <div class="campo controlado">
+                <label for="nombre">Etiqueta*</label>
+                <input type="text" name="nombre" class="campoTexto grande" id="nombre" value="<?= $this->nombre ?>" />
+                <p id="errorNombre" class="errorInput"><?= $this->errorNombre ?></p>
+            </div>
+                    
+            <div class="campo controlado">
+                <label for="orden">Orden*</label>
+                <input type="text" name="orden" class="campoTexto mini" id="orden" value="<?= $this->orden ?>" />
+                <p id="errorOrden" class="errorInput"><?= $this->errorOrden ?></p>
+            </div>
+                    
+            <div class="campo">
+                <label class="alter" for="activo">Mostrar en menú</label>
+                <input type="checkbox" name="activo" id="activo" class="checkbox" <?= $this->activo ? 'checked="checked"' : '' ?> />
+            </div>
+            
+            <div class="campo controlado">
+                <label for="controlador">Controlador*</label>
+                <input type="text" name="controlador" class="campoTexto grande" id="controlador" value="<?= $this->controlador ?>" />
+                <p id="errorControlador" class="errorInput"><?= $this->errorControlador ?></p>
+            </div>
+                    
+            <div class="campo">
+                <label for="accion">Acción</label>
+                <input type="text" name="accion" class="campoTexto grande" id="accion" value="<?= $this->accion ?>" />
+            </div>
+            
+            <div class="campo controlado">
+                <label for="selectorRol">Roles autorizados*</label>
+                <select name="roles[]" multiple="multiple" id="selectorRol" class="campoTexto grande"><?
+                
+                    foreach ($this->roles as $idRol => $rol){
+                
+                        $sel = '';
+                        if (in_array($idRol, $this->rolesAcceso)){
+                            $sel = 'selected="selected"';
+                        }
+                        
+                        ?><option value="<?= $idRol ?>" <?= $sel ?>><?= $rol ?></option>
+                        <?
+                    
+                    }
+                    
+                ?></select>
+                <p class="tooltip" id="selectorRolTooltip">Se pueden seleccionar varios roles manteniendo pulsada la tecla CTRL</p>
+                <p id="errorSelectorRol" class="errorInput"><?= $this->errorRol ?></p>
+            </div><?
+
+            if ($this->editMode){
+            
+                ?><div class="campo botonesForm">
+                    <input type="submit" class="btnSubmit" value="Modificar" name="modo" />
+                    <input type="button" class="btnDelete" value="Eliminar" name="modo" id="eliminaMenuItem" onclick="ventanaConfirmacion('Eliminar ítem de menú', '¿Está seguro que desea eliminar este ítem de menú?', '/administrador/menu.html?edel=<?= $this->claveitem ?>');" />
+                </div><?
+                
+            } else {
+                
+                ?><div class="campo">
+                    <input type="submit" class="btnSubmit" value="Añadir" name="modo" />
+                </div><?
+                
+            }
+                    
+        ?></fieldset>
+    
+    </form>
+    
+</div>
+<div class="separadorH"></div><?
+
+    if ( !is_null($this->popup) ){
+        echo '<script type="text/javascript">ventana' . ucfirst($this->popup['estado']) . '("' . $this->popup['titulo'] . '", "' . $this->popup['mensaje'] . '", "' . $this->popup['url'] . '");</script>'; 
+    }    
+
+?>

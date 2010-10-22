@@ -1,0 +1,82 @@
+#layerTrans{
+	width: 100%;
+	height: 100%;
+	background-color: #000;
+	position: fixed;
+	opacity: 0.7;
+	z-index: 10000;
+	display: none;
+	left: 0;
+	top: 0;
+}
+#layerPopup{
+	width: 350px;
+	/*height: 160px;*/
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	z-index: 20000;
+	background-color: #F2F2F2;
+	border: 1px solid #808080;
+	top: 50%;
+	left: 50%;
+	margin-left: -125px;
+	margin-top: -80px;
+    -moz-box-shadow: 3px 4px 6px 0 #333;
+    display: none;
+}
+#layoutContent{
+	padding: 20px 20px 20px 100px;
+}
+#layoutContent.ok{
+	background: url(/img/iconos/ok.png) 20px 10px no-repeat;
+}
+#layoutContent.ko{
+	background: url(/img/iconos/ko.png) 20px 10px no-repeat;
+}
+#layoutContent.confirmacion{
+    background: url(/img/iconos/ko.png) 20px 10px no-repeat;
+}
+#layoutTitle{
+	font: bold 16px Verdana, Arial, Helvetica, sans-serif;
+	color: #4A95EF;
+	margin-bottom: 10px;
+}
+#layerButtons{
+	text-align: center;
+    margin-bottom: 20px;	
+}
+#layerButtons.confirmacion{
+    overflow: hidden;
+    width: 200px;
+    margin: 0 auto 20px auto;
+}
+#layerButtons a{
+    display: block;
+    width: 100px;
+    height: 20px;
+    cursor: pointer;
+    margin: 0 auto;
+    font: bold 12px Verdana, Arial, Helvetica, sans-serif;
+    color: #fff;    
+    text-decoration: none;
+    line-height: 20px;
+}
+#layerButtons.ok a{
+	background: url(/img/boton/btnOk.png) top center no-repeat;
+}
+#layerButtons.ko a{
+	background: url(/img/boton/btnKo.png) top center no-repeat;
+}
+#layerButtons.confirmacion a{
+    background: url(/img/boton/btnOk.png) top center no-repeat;
+}
+#layerButtons.confirmacion a.cancelarButton{
+    background: url(/img/boton/btnKo.png) top center no-repeat;
+}
+#layerButtons.confirmacion a{
+	float: left;
+}
+#layoutMessage{
+	
+}

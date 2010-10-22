@@ -1,0 +1,60 @@
+<?php
+
+    $this->addJavascriptInclude('/js/admin.js');
+    
+    if ( !is_null($this->popup) ){
+        echo '<script type="text/javascript">ventana' . ucfirst($this->popup['estado']) . '("' . $this->popup['titulo'] . '", "' . $this->popup['mensaje'] . '", "' . $this->popup['url'] . '");</script>'; 
+    }    
+
+?><h2>Administrar roles de acceso</h2>
+
+<table class="listado">
+    <thead>
+        <tr>
+            <th><a href="/administrador/roles.html/?ob=id&o=<?=$this->order?>" <?=( ($this->orderBy == 'id')?'class="ordenado ' . $this->order . '"':'' )?> >Id</a></th>
+            <th><a href="/administrador/roles.html/?ob=id&o=<?=$this->order?>" <?=( ($this->orderBy == 'nom')?'class="ordenado ' . $this->order . '"':'' )?> >Nombre</a></th>
+            <th><a href="/administrador/roles.html/?ob=id&o=<?=$this->order?>" <?=( ($this->orderBy == 'desc')?'class="ordenado ' . $this->order . '"':'' )?> >Descripción</a></th>
+            <th>Num. Usuarios</th>
+            <th>Eliminar</th>
+        </tr>
+    </thead>
+    <tbody><?
+    
+        $alter = true;
+        foreach ($this->rolesCOL as $rolDO){
+    
+            $alter = !$alter;
+            
+            ?><tr <?= $alter ? 'class="alter"' : '' ?>>
+                <td><?= $rolDO->getIdRol() ?></td>
+                <td><?= $rolDO->getVNombre() ?></td>
+                <td><?= $rolDO->getVDescripcion() ?></td>
+                <td class="accion"><?= $this->cantidadUsuariosIDX[$rolDO->getIdRol()] ?></td>
+                <td class="accion"><a href="/administrador/roles.html?d=<?= $rolDO->getIdRol() ?>" onclick="ventanaConfirmacion('Eliminar rol', '¿Está seguro que desea eliminar el rol <strong><?= $rolDO->getVNombre() ?></strong>?', this.href); return false;" class="btnEliminar usuario" title="Eliminar Usuario"><span>eliminar</span></a></td>
+            </tr><?
+            
+        }
+            
+    ?></tbody>
+</table>
+
+<h3>Añadir nuevo rol</h3>
+
+<form action="<?= $_SERVER['REQUEST_URI'] ?>" id="agregarRol" method="post">
+    <fieldset>
+        <input type="hidden" name="sent" value="<?= md5(date('is')) ?>" />
+        <div class="campo controlado">
+            <label for="nombre">Nombre*</label>
+            <input type="text" name="nombre" id="nombre" class="campoTexto" />
+            <p id="errorNombre" class="errorInput"><?= $this->errorNombre ?></p>
+        </div>
+        <div class="campo controlado">
+            <label for="desc">Descripcion*</label>
+            <textarea name="desc" id="desc" class="campoTexto" rows="5" cols="20"></textarea>
+            <p id="errorDesc" class="errorInput"><?= $this->errorDesc ?></p>
+        </div>
+        <div class="campo">
+            <input type="submit" value="Añadir" class="btnSubmit" />
+        </div>
+    </fieldset>
+</form>

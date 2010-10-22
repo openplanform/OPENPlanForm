@@ -1,0 +1,22 @@
+#logoutModule{
+	position: absolute;
+	top: 0px;
+	right: 25px;
+    text-align: right;	
+}
+#logoutModule a{
+	color: #4A95EF;
+}
+#logoutModule strong{
+}
+#logoutModule .cerrarSesion{
+	background: url(/img/layout/logout.png) 1px 1px no-repeat;
+	display: block;
+	float: right;
+	height: 25px;
+	width: 23px;	
+	margin-left: 5px;
+}
+#logoutModule .cerrarSesion span{
+	display: none;
+}
