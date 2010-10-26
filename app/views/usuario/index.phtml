@@ -24,9 +24,19 @@
             $alter = !$alter;
             
             ?><tr <?= $alter ? 'class="alter"' : '' ?>>
-                <td><?= $clave ?></td>
-                <td><a href="/usuario/ficha/<?= $clave ?>"><?= $usuario['nombre'] ?></a></td>
-                <td><?= $usuario['roles'] ?></td><?
+                <td><?= $clave ?></td><?
+                
+                if ($usuario['datos']){
+                
+                    ?><td><a href="/usuario/ficha/<?= $clave ?>"><?= $usuario['nombre'] ?></a></td><?
+                    
+                } else {
+                    
+                    ?><td><?= $usuario['nombre'] ?></td><?
+                    
+                }
+                
+                ?><td><?= $usuario['roles'] ?></td><?
                 
                     if ( $this->editar ){
 

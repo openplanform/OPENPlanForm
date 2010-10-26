@@ -63,25 +63,41 @@ function comprobarCampos() {
 		return false;
 	}
 	
-	// Datos de academia
+	// Datos de profesor
 	
-	// Nombre
-	if ( !comprobarVacio('nombre', 'El nombre no puede estar vacío') ){
+	if ( !comprobarVacio('nombre', 'El nombre no puede estar vacío.') ){
 		return false;
 	}
 	
-	// CIF
-	if ( !comprobarVacio('cif', 'El cif no puede estar vacío') ){
+	if ( !comprobarVacio('apellido1', 'El apellido no puede estar vacío.') ){
+		return false;
+	}
+
+	if ( !comprobarVacio('nacimiento', 'La fecha de nacimiento no puede estar vacía.') ){
 		return false;
 	}
 	
-	// País
-	if ( !comprobarVacio('pais', 'El país no puede estar vacío') ){
+	if ( !comprobarVacio('tipoIdentificacion', 'Debe seleccionar un tipo.') ){
 		return false;
 	}
 	
-	// Población
-	if ( !comprobarVacio('provincia', 'La provincia no puede estar vacía') ){
+	if ( !comprobarVacio('dni', 'El número de identificación es obligatorio.') ){
+		return false;
+	}
+	
+	if ( !comprobarVacio('pais', 'Seleccionar un país.') ){
+		return false;
+	}
+	
+	if ( !comprobarVacio('estadoCivil', 'Seleccionar un estado') ){
+		return false;
+	}
+	
+	if ( !comprobarVacio('estadoLaboral', 'Seleccionar un estado') ){
+		return false;
+	}
+
+	if ( !comprobarVacio('nivelEstudios', 'Seleccionar un nivel') ){
 		return false;
 	}
 	
@@ -91,16 +107,20 @@ function comprobarCampos() {
 
 $j(document).ready(function(){
 	
-	$j('#altaAcademia').bind('submit', function() {
+	$j('#altaProfesor').bind('submit', function() {
 		
 		return comprobarCampos();
 		
 	});
 	
-	$j('#editarAcademia').bind('submit', function() {
+	$j('#editarProfesor').bind('submit', function() {
 		
 		return comprobarCampos();
 		
 	});
+	
+    $(function() {
+        $("#nacimiento" ).datepicker();
+    });	
 	
 });

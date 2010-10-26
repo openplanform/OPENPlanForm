@@ -149,8 +149,9 @@ class aulaController extends PplController{
     		
     		if ( $this->actualizarInsertar(true,$aulaDO->getIdAula() ) ){
     			
-    			// Todo ha ido bien
-    			$this->redirectTo('aula', 'index');
+    			// aula
+        		$aulaDO = TblAula::findByPrimaryKey($this->db, $paramsARR[0]);
+        		$this->view->aulaDO = $aulaDO;
 				
     		} else {
     			

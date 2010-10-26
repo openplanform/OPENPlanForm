@@ -1,0 +1,171 @@
+<div id="buscadorCursos" class="buscador">
+    
+    <h2>Buscar cursos de formación</h2>
+    
+    <form id="buscarCurso" action="<?= $_SERVER['REQUEST_URI'] ?>" method="post">
+    
+        <fieldset>
+        
+            <input type="hidden" name="sent" value="<?= md5(date('is')) ?>" />
+        
+            <div class="campo multi">
+                <label for="idCurso">Id</label>
+                <input type="text" class="campoTexto mini" id="idCurso" name="idCurso" value="<?= $this->id ?>" />
+            </div>
+
+            <div class="campo multi">
+                <label for="idPlan">Miembro del plan</label>
+                <select class="desplegable campoTexto grande" id="idPlan" name="idPlan">
+                    <option value=""></option><?
+                    
+                    foreach ($this->planesIDX as $clave=>$plan){
+                        
+                        $sel = $clave == $this->plan ? ' selected="selected" ' : '';
+                        echo '<option value="' . $clave . '"' . $sel . '>' . $plan . '</option>' . "\n";
+                        
+                    }
+                    
+                ?></select>
+            </div>
+
+            <div class="campo multi">
+                <label for="cat">Categoría</label>
+                <select class="desplegable campoTexto mediano" id="cat" name="cat">
+                    <option value=""></option><?
+                    
+                    echo $this->htmlSelectCategorias;
+                    
+                ?></select>
+            </div>
+
+            <div class="campo multi">
+                <label for="colectivoCurso">Colectivo</label>
+                <select class="desplegable campoTexto mediano" id="colectivoCurso" name="colectivoCurso">
+                    <option value=""></option><?
+                    
+                    foreach ($this->colectivosIDX as $clave=>$colectivo){
+                        
+                        $sel = $clave == $this->colectivo ? ' selected="selected" ' : '';
+                        echo '<option value="' . $clave . '" ' . $sel . '>' . $colectivo . '</option>' . "\n";
+                        
+                    }
+                    
+                ?></select>
+            </div>
+
+            <div class="separadorH"></div>
+            
+            <div class="campo multi">
+                <label for="sector">Sector</label>
+                <select class="desplegable campoTexto grande" id="sector" name="sector">
+                    <option value=""></option><?
+                    
+                    foreach ($this->sectoresIDX as $clave=>$tipo){
+                        
+                        $sel = $clave == $this->sector ? ' selected="selected" ' : '';
+                        echo '<option value="' . $clave . '" ' . $sel . '>' . $tipo . '</option>' . "\n";
+                        
+                    }
+                    
+                ?></select>
+            </div>
+            
+            <div class="campo multi">
+                <label for="mod">Modalidad</label>
+                <select class="desplegable campoTexto mediano" id="mod" name="mod">
+                    <option value=""></option><?
+                    
+                    foreach ($this->modalidadesIDX as $clave=>$tipo){
+                        
+                        $sel = $clave == $this->modalidad ? ' selected="selected" ' : '';
+                        echo '<option value="' . $clave . '" ' . $sel . '>' . $tipo . '</option>' . "\n";
+                        
+                    }
+                    
+                ?></select>
+            </div>
+        
+            <div class="campo multi">
+                <label for="keyword">Palabra clave</label>
+                <input type="text" class="campoTexto" id="keyword" name="keyword" value="<?= $this->kw ?>" />
+            </div>            
+            
+            <div class="campo multi">
+                <input type="submit" value="Buscar" class="btnSubmit" />
+            </div>
+            
+            <div class="separadorH"></div>
+            
+        
+        </fieldset>
+    
+    </form>
+    
+    <div class="resultadosBusqueda"><?
+    
+        if ($this->cursosCOL){
+    
+            ?><h3>Resultados de búsqueda:</h3>
+            
+            <table class="listado">
+                <thead>
+                    <tr>
+                        <th><a href="/curso/buscar.html/?ob=nom&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'nom')?'class="ordenado ' . $this->order . '"':'' )?> >Nombre</a></th>
+                        <th><a href="/curso/buscar.html/?ob=plan&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'plan')?'class="ordenado ' . $this->order . '"':'' )?> >Plan</a></th>
+                        <th><a href="/curso/buscar.html/?ob=sec&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'sec')?'class="ordenado ' . $this->order . '"':'' )?> >Sector</a></th>
+                        <th><a href="/curso/buscar.html/?ob=cat&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'cat')?'class="ordenado ' . $this->order . '"':'' )?> >Categoria</a></th>
+                        <th><a href="/curso/buscar.html/?ob=ini&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'ini')?'class="ordenado ' . $this->order . '"':'' )?> >Inicio</a></th>
+                        <th><a href="/curso/buscar.html/?ob=fin&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'fin')?'class="ordenado ' . $this->order . '"':'' )?> >Fin</a></th>
+                        <?
+                        
+                            if ( $this->editar ){
+                                ?><th>Eliminar</th>
+                                <th>Editar</th>
+                                <th>Duplicar</th><?     
+                            }
+                        
+                        ?>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    
+                        $contador = 0;
+                        foreach ( $this->cursosCOL as $cursoDO ){
+                            
+                            //$cursoDO = new TblCurso($db);
+                            $clase = ( ($contador%2)==0 )?'':'class="alter"';
+                            $contador++;
+                            
+                            ?>
+                            <tr <?= $clase ?> >
+                                <td><a href="/curso/ficha.html/<?= $cursoDO->getIdCurso() ?>"><?= $cursoDO->getVNombre() ?></a></td>
+                                <td><a href="/plan/ficha.html/<?= $cursoDO->getFkPlan() ?>"><?= $this->planesIDX[$cursoDO->getFkPlan()] ?></a></td>
+                                <td><?= $this->sectoresIDX[$cursoDO->getFkSector()] ?></td>
+                                <td><?= $this->categoriasIDX[$cursoDO->getFkCategoria()] ?></td>
+                                <td><?= $cursoDO->getDInicio() ?></td>
+                                <td><?= $cursoDO->getDFin() ?></td>
+                                <?
+                        
+                                    if ( $this->editar ){
+                                        ?><td class="accion"><a href="javascript:ventanaConfirmacion('Confirmar','¿Está seguro que desea eliminar el curso <strong><?= $cursoDO->getVNombre() ?></strong>?','/curso/eliminar.html/<?= $cursoDO->getIdCurso() ?>')" class="btnEliminar" title="Eliminar Curso"><span>eliminar</span></a></td>
+                                        <td class="accion"><a href="/curso/editar.html/<?= $cursoDO->getIdCurso() ?>" class="btnEditar" title="Editar Curso"><span>editar</span></a></td>
+                                        <td class="accion"><a href="/curso/duplicar.html/<?= $cursoDO->getIdCurso() ?>" class="btnDuplicar" title="Duplicar Curso"><span>duplicar</span></a></td><? 
+                                    }
+                                
+                                ?>
+                            </tr>
+                            <?
+                            
+                        }
+                        
+                    ?>
+                </tbody>
+            </table>
+            
+            <div id="paginadorContainer"><?= $this->paginador ?></div><?
+    
+    }
+    
+?></div>
+</div>

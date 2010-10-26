@@ -1,6 +1,7 @@
 <?php
 
 require_once 'helper/NingenCmsHtmlHelper.inc';
+require_once 'helper/NingenDate.inc';
 require_once 'NingenPaginator.inc';
 
 require_once NINGENCMS_CLASSESDIR . 'PplController.inc';
@@ -11,6 +12,8 @@ require_once NINGENCMS_MODELDIR . '/TblCategoria.inc';
 require_once NINGENCMS_MODELDIR . '/TblColectivo.inc';
 require_once NINGENCMS_MODELDIR . '/TblModalidad.inc';
 require_once NINGENCMS_MODELDIR . '/TblSector.inc';
+require_once NINGENCMS_MODELDIR . '/TblCategoria.inc';
+require_once NINGENCMS_MODELDIR . '/TblCategoriaExtendida.inc';
 require_once NINGENCMS_MODELDIR . '/TblCurso.inc';
 require_once NINGENCMS_MODELDIR . '/TblCentro.inc';
 
@@ -36,11 +39,12 @@ class cursoController extends PplController{
         
     	// Parámetros de ordenación para el paginador
     	$aliasCampos = array(
-    		'cat'		=> 'fkCategoria',
-    		'col'		=> 'fkColectivo',
-    		'nom' 		=> 'vNombre',
-    		'plan'		=> 'fkPlan',
-    		'sector'	=> 'fkSector'
+    		'cat'	=> 'fkCategoria',
+    		'fin'	=> 'dFin',
+    		'ini'	=> 'dInicio',
+    		'nom' 	=> 'vNombre',
+    		'plan'	=> 'fkPlan',
+    		'sec'	=> 'fkSector'
     	);
     	
         if ( !empty($_REQUEST) && array_key_exists('o', $_GET) & array_key_exists('ob', $_GET) ){
@@ -62,7 +66,7 @@ class cursoController extends PplController{
         $this->view->orderBy = $aliasOrderBy;
         
     	// Se instancia y configura el paginador
-        $paginador = new NingenPaginator($this->db, null, 'tblAula', $this->helper);
+        $paginador = new NingenPaginator($this->db, null, 'tblCurso', $this->helper);
         $paginador->setItemsPorPagina(10);
         $paginaActual = $this->helper->escapeInjection($this->helper->get('p'));
         $paginaActual = empty($paginaActual) ? 1 : $paginaActual;
@@ -71,19 +75,25 @@ class cursoController extends PplController{
         $paginador->setOrder($order);
         
          // Obtengo las aulas
-        $aulasCOL = $paginador->getItemCollection();
+        $cursosCOL = $paginador->getItemCollection();
         
         // Envío el paginador a la vista
         $this->view->paginador = $paginador->getPaginatorHtml();
     	
-    	// Envío las aulas a la vista
-        $this->view->aulasCOL = $aulasCOL;
+    	// Envío los cursos a la vista
+        $this->view->cursosCOL = $cursosCOL;
         
-        // Centros
-        $this->view->centrosIDX = $this->cacheBO->getCentros();
+         // Planes
+        $this->view->planesIDX = $this->cacheBO->getPlanes();
+        
+        // Sectores
+        $this->view->sectoresIDX = $this->cacheBO->getSectores();
+        
+        // Categorías
+        $this->view->categoriasIDX = $this->cacheBO->getCategorias();
         
         // Permiso para editar
-    	if ( $this->aclManager->hasPerms('academia', 'editar') ){
+    	if ( $this->aclManager->hasPerms('curso', 'editar') ){
     		$this->view->editar = true;
     	}
         
@@ -137,13 +147,122 @@ class cursoController extends PplController{
         
     }
     
-    /**
+	/**
+     * Acción de edición
+     * Edita un curso
+     */
+    public function editarAction(){
+        
+    	// Obtengo el centro que voy a editar
+    	$paramsARR = $this->getParams();
+        if ( !empty($paramsARR) ){
+        	
+        	// aula
+        	$cursoDO = TblCurso::findByPrimaryKey($this->db, $paramsARR[0]);
+        	$this->view->cursoDO = $cursoDO;
+        	
+        	// Planes
+	        $this->view->planesIDX = $this->cacheBO->getPlanes();
+	        
+	        // Categorías
+	        $arbolDS = array();
+	        $arbolDS = $this->_IteraCategorias($arbolDS, 0);
+	        $this->view->htmlSelectCategorias = $this->_getSelectHtml($arbolDS, 0, $cursoDO->getFkCategoria());
+	        
+	        // Colectivos
+	        $this->view->colectivosIDX = $this->cacheBO->getColectivos();
+	        
+	        // Sectores
+	        $this->view->sectoresIDX = $this->cacheBO->getSectores();
+	        
+	        // Modalidades
+	        $this->view->modalidadesIDX = $this->cacheBO->getModalidades();
+	        
+	        // Aulas
+	        $this->view->aulasIDX = $this->cacheBO->getAulas();
+	    	
+        }
+        
+    	// Actualizo el centro
+    	if ( isset($cursoDO) && $this->helper->get('send') ){
+    		
+    		if ( $this->actualizarInsertar(true,$cursoDO->getIdCurso() ) ){
+    			
+    			// Curso
+        		$cursoDO = TblCurso::findByPrimaryKey($this->db, $cursoDO->getIdCurso());
+        		$this->view->cursoDO = $cursoDO;
+				
+    		} else {
+    			
+    			$this->view->popup = array(
+				    'estado' => 'ko',
+				    'titulo' => 'Error',
+				    'mensaje'=> 'Ha ocurrido un error con la edición del curso. Inténtelo de nuevo en unos instantes por favor.<br/>Si el problema persiste póngase en contacto con el administrador. Muchas gracias.',
+				    'url'=> '',
+				);
+				
+    		}
+    	}
+        
+    }
+    
+	/**
      * Acción de ficha
      * Ficha de un curso
      */
     public function fichaAction(){
         
-        echo 'FICHA';
+    	$paramsARR = $this->getParams();
+        if ( !empty($paramsARR) ){
+        	
+        	$cursoDO = TblCurso::findByPrimaryKey($this->db, $paramsARR[0]);
+        	
+        	$this->view->cursoDO = $cursoDO;
+        	
+        	// Categoría del curso
+        	$this->view->categoriaDO = TblCategoriaExtendida::findByPrimaryKeyId($this->db, $cursoDO->getFkCategoria());
+        	
+        	// Helper
+        	$this->view->datehelper = new NingenDate();
+	    	
+        }
+        
+    }
+    
+	/**
+     * Acción de eliminar
+     * Elimina un aula
+     */
+    public function eliminarAction(){
+        
+        $paramsARR = $this->getParams();
+        if ( !empty($paramsARR) ){
+        	
+        	$cursoDO = TblCurso::findByPrimaryKey($this->db, $paramsARR[0]);
+        	$cursoDO->delete();
+        	
+        }
+        
+        $this->redirectTo('curso','index');
+        
+    }
+    
+	/**
+     * Acción de duplicar
+     * Duplica un curso
+     */
+    public function duplicarAction(){
+        
+        $paramsARR = $this->getParams();
+        if ( !empty($paramsARR) ){
+        	
+        	$cursoDO = TblCurso::findByPrimaryKey($this->db, $paramsARR[0]);
+        	$nombreCurso = 'Copia de ' . $cursoDO->getVNombre();
+        	$cursoDO->setVNombre($nombreCurso);
+        	$cursoDO->insert();
+        }
+        
+        $this->redirectTo('curso','editar', $this->db->getLastInsertId());
         
     }
     
@@ -346,6 +465,162 @@ class cursoController extends PplController{
 	    	
 	    return $correcto;
     	
+    }
+    
+    
+    /**
+     * Buscar cursos
+     */
+    public function buscarAction(){
+        
+        // Se obtiene los planes
+        $this->view->planesIDX = $this->cacheBO->getPlanes();
+        
+        // Categorías
+        $arbolDS = array();
+        $arbolDS = $this->_IteraCategorias($arbolDS, 0);
+        $this->view->htmlSelectCategorias = $this->_getSelectHtml($arbolDS, 0, 0);
+        $this->view->categoriasIDX = $this->cacheBO->getCategorias();
+        
+        // Colectivos
+        $this->view->colectivosIDX = $this->cacheBO->getColectivos();
+        
+        // Sectores
+        $this->view->sectoresIDX = $this->cacheBO->getSectores();
+        
+        // Modalidades
+        $this->view->modalidadesIDX = $this->cacheBO->getModalidades();
+        
+        
+        $sent = $this->helper->getAndEscape('sent');
+        if (!empty($sent)){
+
+            // Solo comprobaremos permisos de edición si hay resultados
+            if ( $this->aclManager->hasPerms('curso', 'editar') ){
+                $this->view->editar = true;
+            }
+            
+            // Parámetros de ordenación para el paginador
+            $aliasCampos = array(
+                'cat'   => 'fkCategoria',
+                'fin'   => 'dFin',
+                'ini'   => 'dInicio',
+                'nom'   => 'vNombre',
+                'plan'  => 'fkPlan',
+                'sec'   => 'fkSector'
+            );
+            
+
+            if ( !empty($_REQUEST) && array_key_exists('o', $_GET) & array_key_exists('ob', $_GET) ){
+                $order = $this->helper->escapeInjection($_GET['o']);
+                $orderBy = $aliasCampos[$_GET['ob']];
+                $aliasOrderBy = $_GET['ob'];
+            } else {
+                $order   = 'asc';
+                $orderBy = 'vNombre';
+                $aliasOrderBy = 'nom';
+            }            
+
+            // Envío el orden a la vista
+            if ( $order == 'asc' ){
+                $this->view->order = 'desc';
+            } else {
+                $this->view->order = 'asc';
+            }
+            $this->view->orderBy = $aliasOrderBy;            
+            
+            // Se prepara el query
+            $id = $this->helper->getAndEscape('idCurso');
+            $plan = $this->helper->getAndEscape('idPlan');
+            $cat = $this->helper->getAndEscape('cat');
+            $colectivo = $this->helper->getAndEscape('colectivoCurso');
+            $sector = $this->helper->getAndEscape('sector');
+            $modalidad = $this->helper->getAndEscape('mod');
+            $kw = $this->helper->getAndEscape('keyword');
+            
+            $where = array();
+            $queryString = '&amp;sent=1';
+            
+            // ID
+            if (!empty($id)){
+                $where[] = " idCurso = $id";
+                $this->view->id = $id;
+                $queryString .= "&amp;idCurso=$id";
+            }
+            
+            // PLAN
+            if (!empty($tipo)){
+                $where[] = " fkPlan = $plan";
+                $this->view->plan = $plan;
+                $queryString .= "&amp;idPlan=$plan";
+            }
+
+            // CATEGORÍA
+            if (!empty($cat)){
+                $where[] = " fkCategoria = $cat";
+                $this->view->cat = $cat;
+                $queryString .= "&amp;cat=$cat";
+            }
+
+            // COLECTIVO
+            if (!empty($colectivo)){
+                $where[] = " fkColectivo = $colectivo";
+                $this->view->colectivo = $colectivo;
+                $queryString .= "&amp;colectivoCurso=$colectivo";
+            }
+
+            // SECTOR
+            if (!empty($sector)){
+                $where[] = " fkSector = $sector";
+                $this->view->sector = $sector;
+                $queryString .= "&amp;sector=$sector";
+            }
+
+            // MODALIDAD
+            if (!empty($modalidad)){
+                $where[] = " fkModalidad = $modalidad";
+                $this->view->modalidad = $modalidad;
+                $queryString .= "&amp;mod=$modalidad";
+            }
+            
+            
+            // KEYWORD
+            if (!empty($kw)){
+                //$where[] = "vNombre LIKE '%$kw%' OR vDescripcion LIKE '%$kw%'";
+                $where[] = "vNombre LIKE '%$kw%'";
+                $this->view->kw = $kw;
+                $queryString .= "&amp;keyword=$kw";             
+            }
+            
+            // Se constuye el where
+            if (count($where)){
+                $where = ' WHERE ' . implode(' AND ', $where);
+            } else {
+                $where = '';
+            }
+            
+            // Se ejecuta la búsqueda
+            $paginador = new NingenPaginator($this->db, $where, 'tblCurso', $this->helper);
+            $paginador->setItemsPorPagina(10);
+            $paginaActual = $this->helper->escapeInjection($this->helper->get('p'));
+            $paginaActual = empty($paginaActual) ? 1 : $paginaActual;
+            $paginador->setPaginaActual($paginaActual);
+            $paginador->setOrderBy($orderBy);
+            $paginador->setOrder($order);
+        
+            // Obtengo las convocatorias
+            $cursosCOL = $paginador->getItemCollection();
+            $this->view->cursosCOL = $cursosCOL;        
+            
+            // Envío el paginador a la vista
+            $this->view->paginador = $paginador->getPaginatorHtml();
+            
+            // Se propagan las clausulas de búsqueda en el paginador
+            $this->view->querystring = $queryString;
+            
+            
+        }        
+        
     }
     
     

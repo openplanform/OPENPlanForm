@@ -6,6 +6,10 @@ function comprobarCampos() {
 		return false;
 	}
 	
+	if ( !comprobarVacio('ano', 'El año no puede estar vacío') ){
+		return false;
+	}
+	
 	if ( !comprobarVacio('tipoConvocatoria', 'El tipo no puede estar vacío') ){
 		return false;
 	}

@@ -6,17 +6,17 @@
  */
 
 /**
- * Objeto que representa la clave primaria de la tabla tblConvocatoria.
+ * Objeto que representa la clave primaria de la tabla trelPrecandidato.
  *
  * @package dataAccess
  */
-class TblConvocatoriaPK{
+class TrelPrecandidatoPK{
 
     /**
-     * Representa el atributo idConvocatoria.
+     * Representa el atributo idCandidato.
      *
      * @var integer
      */
-    public $idConvocatoria;
+    public $idCandidato;
 }
 ?>

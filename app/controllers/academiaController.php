@@ -176,7 +176,7 @@ class academiaController extends PplController{
     				
     			// Todo ha ido bien
     			$this->redirectTo('academia', 'index');
-				
+        	
     		} else {
     			
     			$this->view->popup = array(
@@ -202,10 +202,15 @@ class academiaController extends PplController{
         	
         	// Academia
         	$academiaDO = TblEmpresa::findByPrimaryKey($this->db, $paramsARR[0]);
-        	$this->view->academiaDO = $academiaDO;
         	
-        	// Usuario de la academia
-        	$this->view->usuarioDO = $academiaDO->getTblUsuario();
+        	if ( !empty($academiaDO) ){
+        		
+        		$this->view->academiaDO = $academiaDO;
+        	
+	        	// Usuario de la academia
+        		$this->view->usuarioDO = $academiaDO->getTblUsuario();
+        		
+        	}
         	
         }
         
@@ -267,6 +272,7 @@ class academiaController extends PplController{
 	    $oldUsername = $this->helper->getAndEscape('nombreUsuarioOculto');
         $password = $this->helper->escapeInjection($this->helper->get('password1'));
         $repassword = $this->helper->escapeInjection($this->helper->get('repassword1'));
+        $setPassword = true;
         $email = $this->helper->escapeInjection($this->helper->get('emailUsuario'));
 	    
         // Usuario
@@ -304,14 +310,17 @@ class academiaController extends PplController{
 		            $this->view->errorPassword = 'La contraseña no es correcta.';
 		            $correcto = false;
 		        }
-		        
+
+		    // No cambia el password
+	        } else {
+	        	$setPassword = false;
 	        }
         
         } else {
         	
         	// Contraseña
 	        if (empty($password) || empty($repassword)){
-	            $this->view->errorPassword = 'La contraseñas no puede estar vacía.';
+	            $this->view->errorPassword = 'La contraseña no puede estar vacía.';
 	            $correcto = false;
 	        }
 	            
@@ -416,7 +425,9 @@ class academiaController extends PplController{
 	    	
 	    	$usuarioDO->setVNombre($username);
 	    	$usuarioDO->setVEmail($email);
-	    	$usuarioDO->setVPassword($this->aclManager->codificaPassword($password));
+	    	if ( $setPassword ){
+	    		$usuarioDO->setVPassword($this->aclManager->codificaPassword($password));
+	    	}
 	    	
 	    	// Empieza la transacción
 		    $this->db->begin();
@@ -471,6 +482,8 @@ class academiaController extends PplController{
 		    	$academiaDO->setVTelefono2($telefono2);
 		    	$academiaDO->setVFax($fax);
 		    	$academiaDO->setDAlta(date('Y-m-d'));
+		    	$academiaDO->setLastModified(date('Y-m-d'));
+                $academiaDO->setModUser($this->usuario->getNombre());
 		    	
 		    	if ( $editar ){
 		    		$correcto = $academiaDO->update();
@@ -492,7 +505,141 @@ class academiaController extends PplController{
     	
     }
     
-    
+    /**
+     * Buscar
+     */
+    public function buscarAction(){
+        
+        // Paises 
+        $this->view->paisesIDX = $this->cacheBO->getPaises();
+        
+        // Provincias
+        $this->view->provinciasIDX = $this->cacheBO->getProvincias();
+        
+        $sent = $this->helper->getAndEscape('sent');
+        if (!empty($sent)){
+
+            // Solo comprobaremos permisos de edición si hay resultados
+            if ( $this->aclManager->hasPerms('consultora', 'editar') ){
+                $this->view->editar = true;
+            }
+            
+            // Parámetros de ordenación para el paginador
+            $aliasCampos = array(
+                'nom'   => 'vNombre',
+                'dir'   => 'vDireccion',
+                'pob'   => 'vPoblacion',
+                'tel'   => 'vTelefono'
+            );
+
+            if ( !empty($_REQUEST) && array_key_exists('o', $_GET) & array_key_exists('ob', $_GET) ){
+                $order = $this->helper->escapeInjection($_GET['o']);
+                $orderBy = $aliasCampos[$_GET['ob']];
+                $aliasOrderBy = $_GET['ob'];
+            } else {
+                $order   = 'asc';
+                $orderBy = 'vNombre';
+                $aliasOrderBy = 'nom';
+            }            
+
+            // Envío el orden a la vista
+            if ( $order == 'asc' ){
+                $this->view->order = 'desc';
+            } else {
+                $this->view->order = 'asc';
+            }
+            $this->view->orderBy = $aliasOrderBy;            
+            
+            // Se prepara el query
+            $id = $this->helper->getAndEscape('idAcademia');
+            $pais = $this->helper->getAndEscape('pais');
+            $provincia = $this->helper->getAndEscape('provincia');
+            $cif = $this->helper->getAndEscape('cif');
+            $cp = $this->helper->getAndEscape('cp');
+            $kw = $this->helper->getAndEscape('keyword');
+            
+            $where = array();
+            
+            // Solo consultoras
+            $claveRolAcademia = PplAclManager::ROL_ACADEMIA;
+            $where[] = "EXISTS (SELECT NULL FROM trelRolUsuario WHERE trelRolUsuario.fkUsuario = tblEmpresa.fkUsuario AND trelRolUsuario.fkRol = $claveRolAcademia )";
+            
+            $queryString = '&amp;sent=1';
+            
+            // ID
+            if (!empty($id)){
+                $where[] = " idConsultora = $id";
+                $this->view->id = $id;
+                $queryString .= "&amp;idConsultora=$id";
+            }
+            
+            // PAIS
+            if (!empty($pais)){
+                $where[] = " fkPais = '$pais'";
+                $this->view->pais = $pais;
+                $queryString .= "&amp;pais=$pais";
+            }
+
+            // PROVINCIA
+            if (!empty($provincia)){
+                $where[] = " fkProvincia = $provincia";
+                $this->view->provincia = $provincia;
+                $queryString .= "&amp;provincia=$provincia";
+            }
+
+            // CIF
+            if (!empty($cif)){
+                $where[] = " vCif = $cif";
+                $this->view->cif = $cif;
+                $queryString .= "&amp;cif=$cif";
+            }
+
+            // CP
+            if (!empty($cp)){
+                $where[] = " vCp = $cp";
+                $this->view->cp = $cp;
+                $queryString .= "&amp;cp=$cp";
+            }
+            
+            // KEYWORD
+            if (!empty($kw)){
+                //$where[] = "vNombre LIKE '%$kw%' OR vDescripcion LIKE '%$kw%'";
+                $where[] = "vNombre LIKE '%$kw%'";
+                $this->view->kw = $kw;
+                $queryString .= "&amp;keyword=$kw";             
+            }
+            
+            // Se constuye el where
+            if (count($where)){
+                $where = ' WHERE ' . implode(' AND ', $where);
+            } else {
+                $where = '';
+            }
+            
+            // Se ejecuta la búsqueda
+            $paginador = new NingenPaginator($this->db, $where, 'tblEmpresa', $this->helper);
+            $paginador->setItemsPorPagina(10);
+            $paginaActual = $this->helper->escapeInjection($this->helper->get('p'));
+            $paginaActual = empty($paginaActual) ? 1 : $paginaActual;
+            $paginador->setPaginaActual($paginaActual);
+            $paginador->setOrderBy($orderBy);
+            $paginador->setOrder($order);
+        
+            // Obtengo las convocatorias
+            $academiasCOL = $paginador->getItemCollection();
+            $this->view->academiasCOL = $academiasCOL;        
+            
+            // Envío el paginador a la vista
+            $this->view->paginador = $paginador->getPaginatorHtml();
+            
+            // Se propagan las clausulas de búsqueda en el paginador
+            $this->view->querystring = $queryString;
+            
+            
+        }        
+        
+    }
+                
 }
 
 ?>

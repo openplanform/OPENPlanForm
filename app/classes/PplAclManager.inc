@@ -493,6 +493,29 @@ class PplAclManager{
         
     }
     
+    /**
+     * Verifica que un usuario tenga asignada una persona o una empresa
+     * @param $claveUsuario
+     * @return boolean
+     */
+    public function datosCompletosUsuario($claveUsuario){
+        
+        $idRol = $this->getRolMasRelevanteUsuario($claveUsuario);
+        
+        if ($this->isRolEmpresa($idRol)){
+            
+            return $this->_isUsuarioEmpresa($claveUsuario);
+            
+        } elseif ($this->isRolPersona($idRol)) {
+            
+            return $this->_isUsuarioPersona($claveUsuario);
+            
+        }
+        
+        return false;
+        
+    }
+    
 }
 
 ?>

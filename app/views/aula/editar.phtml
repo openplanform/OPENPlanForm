@@ -11,7 +11,7 @@
 	if ( !is_null($this->aulaDO) ){
 
 ?>
-    <form id="editarAula" action="/aula/editar.html/<?= $this->aulaDO->getIdAula() ?>" method="post">
+    <form id="editarAula" action="<?= $_SERVER['REQUEST_URI'] ?>" method="post">
         <fieldset>
         
             <legend>Alta de Aula</legend>

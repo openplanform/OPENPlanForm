@@ -11,7 +11,7 @@
 	if ( !is_null($this->convocatoriaDO) ){
 
 ?>
-    <form id="editarConvocatoria" action="/convocatoria/editar.html/<?= $this->convocatoriaDO->getIdConvocatoria() ?>" method="post">
+    <form id="editarConvocatoria" action="<?= $_SERVER['REQUEST_URI'] ?>" method="post">
         <fieldset>
         
             <legend>Editar Convocatoria</legend>
@@ -22,6 +22,12 @@
                 <label for="nombre">Nombre*</label>
                 <input type="text" name="nombre" id="nombre" class="campoTexto" value="<?= $this->convocatoriaDO->getVNombre() ?>"/>
                 <p id="errorNombre" class="errorInput"><?= $this->errorNombre ?></p>
+            </div>
+            
+            <div class="campo controlado">
+                <label for="ano">Año*</label>
+                <input type="text" name="ano" id="ano" class="campoTexto mini numerico" value="<?= $this->convocatoriaDO->getIAno() ?>"/>
+                <p id="errorAno" class="errorInput"><?= $this->errorAno ?></p>
             </div>
             
             <div class="campo controlado">

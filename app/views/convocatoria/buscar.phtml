@@ -1,0 +1,114 @@
+<div id="buscadorConvocatorias" class="buscador">
+    
+    <h2>Buscar convocatoria</h2>
+    
+    <form id="buscarConvocatoria" action="<?= $_SERVER['REQUEST_URI'] ?>" method="post">
+    
+        <fieldset>
+        
+            <input type="hidden" name="sent" value="<?= md5(date('is')) ?>" />
+        
+            <div class="campo multi">
+                <label for="idConvocatoria">Id</label>
+                <input type="text" class="campoTexto mini" id="idConvocatoria" name="idConvocatoria" value="<?= $this->id ?>" />
+            </div>
+
+            <div class="campo multi">
+                <label for="anoConvocatoria">Año</label>
+                <input type="text" class="campoTexto mini" id="anoConvocatoria" name="anoConvocatoria" value="<?= $this->anyo ?>" />
+            </div>
+        
+            <div class="campo multi">
+                <label for="tipoConvocatoria">Tipo de convocatoria</label>
+                <select name="tipoConvocatoria" id="tipoConvocatoria" class="campoTexto mediano desplegable">
+                    <option value=""></option><?
+                    
+                    foreach ($this->tiposConvocatoriaIDX as $clave=>$tipoConvocatoria){
+                        
+                        $sel = $clave == $this->tipo ? ' selected="selected" ' : '';
+                        echo '<option value="' . $clave . '" '.$sel.'>' . $tipoConvocatoria . '</option>' . "\n";
+                        
+                    }
+                    
+                ?></select>
+            </div>
+            
+            <div class="campo multi">
+                <label for="keyword">Palabra clave</label>
+                <input type="text" class="campoTexto" id="keyword" name="keyword" value="<?= $this->kw ?>" />
+            </div>            
+            
+            <div class="campo multi">
+                <input type="submit" value="Buscar" class="btnSubmit" />
+            </div>
+            
+            <div class="separadorH"></div>
+            
+        
+        </fieldset>
+    
+    </form>
+    
+    <div class="resultadosBusqueda"><?
+    
+        if ($this->convocatoriasCOL){
+    
+            ?><h3>Resultados de búsqueda:</h3>
+            
+            <table class="listado">
+            <thead>
+                <tr>
+                    <th><a href="/convocatoria/buscar.html/?ob=nom&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'nom')?'class="ordenado ' . $this->order . '"':'' )?> >Nombre</a></th>
+                    <th><a href="/convocatoria/buscar.html/?ob=desc&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'desc')?'class="ordenado ' . $this->order . '"':'' )?>>Descripción</a></th>
+                    <th><a href="/convocatoria/buscar.html/?ob=pres&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'pres')?'class="ordenado ' . $this->order . '"':'' )?>>Presupuesto</a></th>
+                    <th><a href="/convocatoria/buscar.html/?ob=tipo&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'tipo')?'class="ordenado ' . $this->order . '"':'' )?>>Tipo de Convocatoria</a></th>
+                    <?
+                    
+                        if ( $this->editar ){
+                            ?><th>Eliminar</th>
+                            <th>Editar</th>
+                            <th>Duplicar</th><? 
+                        }
+                    
+                    ?>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                
+                    $contador = 0;
+                    foreach ( $this->convocatoriasCOL as $convocatoriaDO ){
+                        
+                        //$convocatoriaDO = new TblConvocatoria($db);
+                        $clase = ( ($contador%2)==0 )?'':'class="alter"';
+                        $contador++;
+                        
+                        ?>
+                        <tr <?= $clase ?> >
+                            <td><a href="/convocatoria/ficha.html/<?= $convocatoriaDO->getIdConvocatoria() ?>"><?= $convocatoriaDO->getVNombre() ?></a></td>
+                            <td><?= $convocatoriaDO->getVDescripcion()?></td>
+                            <td><?= NingenNumeric::decimalFormatoEuropeo($convocatoriaDO->getEPresupuesto(), 2) ?>€</td>
+                            <td><?= $this->tiposConvocatoriaIDX[$convocatoriaDO->getFkTipoConvocatoria()] ?></td>
+                            <?
+                            
+                                if ( $this->editar ){
+                                    ?><td class="accion"><a href="javascript:ventanaConfirmacion('Confirmar','¿Está seguro que desea eliminar la convocatoria <strong><?= $convocatoriaDO->getVNombre() ?></strong>?','/convocatoria/eliminar.html/<?= $convocatoriaDO->getIdConvocatoria() ?>')" class="btnEliminar" title="Eliminar Convocatoria"><span>eliminar</span></a></td>
+                                    <td class="accion"><a href="/convocatoria/editar.html/<?= $convocatoriaDO->getIdConvocatoria() ?>" class="btnEditar" title="Editar Convocatoria"><span>editar</span></a></td>
+                                    <td class="accion"><a href="/convocatoria/duplicar.html/<?= $convocatoriaDO->getIdConvocatoria() ?>" class="btnDuplicar" title="Duplicar Convocatoria"><span>duplicar</span></a></td><? 
+                                }
+                            
+                            ?>
+                        </tr>
+                        <?
+                        
+                    }
+                    
+                ?>
+            </tbody>
+            </table><?
+    
+    }
+    
+?></div>
+</div>
+<div id="paginadorContainer"><?= $this->paginador ?></div>

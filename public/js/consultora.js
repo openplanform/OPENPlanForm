@@ -3,7 +3,6 @@ var editar = false;
 
 function comprobarCampos() {
 	
-	// Datos de usuario
 	// Nombre de usuario
 	if ( !comprobarVacio('nombreUsuario', 'El nombre no puede estar vacío') ){
 		return false;
@@ -31,6 +30,12 @@ function comprobarCampos() {
 				return false;
 			}
 			
+		// Cambia de usuario pero no de contraseña
+		} else if ( $j('#nombreUsuario').val() != $j('#nombreUsuarioOculto').val() ){
+			$j('#errorPassword1').html('Las contraseñas no pueden estar vacías');
+			$j('#errorPassword1').focus();
+			$j('#errorPassword1').css("borderColor","#F00");
+			return false;
 		}
 		
 	} else {
@@ -91,13 +96,13 @@ function comprobarCampos() {
 
 $j(document).ready(function(){
 	
-	$j('#altaAcademia').bind('submit', function() {
+	$j('#altaConsultora').bind('submit', function() {
 		
 		return comprobarCampos();
 		
 	});
 	
-	$j('#editarAcademia').bind('submit', function() {
+	$j('#editarConsultora').bind('submit', function() {
 		
 		return comprobarCampos();
 		

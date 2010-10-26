@@ -1,0 +1,161 @@
+<div id="buscadorConvocatorias" class="buscador">
+    
+    <h2>Buscar planes de formación</h2>
+    
+    <form id="buscarPlan" action="<?= $_SERVER['REQUEST_URI'] ?>" method="post">
+    
+        <fieldset>
+        
+            <input type="hidden" name="sent" value="<?= md5(date('is')) ?>" />
+        
+            <div class="campo multi">
+                <label for="idPlan">Id</label>
+                <input type="text" class="campoTexto mini" id="idPlan" name="idPlan" value="<?= $this->id ?>" />
+            </div>
+
+            <div class="campo multi">
+                <label for="tipoPlan">Tipo de Plan</label>
+                <select class="desplegable campoTexto mediano" id="tipoPlan" name="tipoPlan">
+                    <option value=""></option><?
+                    
+                    foreach ($this->tiposPlanIDX as $clave=>$tipo){
+                        
+                        $sel = $clave == $this->tipo ? ' selected="selected" ' : '';
+                        echo '<option value="' . $clave . '"' . $sel . '>' . $tipo . '</option>' . "\n";
+                        
+                    }
+                    
+                ?></select>
+            </div>
+
+            <div class="campo multi">
+                <label for="convocatoriaPlan">Convocatoria</label>
+                <select class="desplegable campoTexto mediano" id="convocatoriaPlan" name="convocatoriaPlan">
+                    <option value=""></option><?
+                    
+                    foreach ($this->convocatoriasIDX as $clave=>$tipo){
+                        
+                        $sel = $clave == $this->convocatoria ? ' selected="selected" ' : '';
+                        echo '<option value="' . $clave . '" ' . $sel . '>' . $tipo . '</option>' . "\n";
+                        
+                    }
+                    
+                ?></select>
+            </div>
+
+            <div class="campo multi">
+                <label for="consultoraPlan">Consultora asignada</label>
+                <select class="desplegable campoTexto mediano" id="consultoraPlan" name="consultoraPlan">
+                    <option value=""></option><?
+                    
+                    foreach ($this->consultorasIDX as $clave=>$tipo){
+                        
+                        $sel = $clave == $this->consultora ? ' selected="selected" ' : '';
+                        echo '<option value="' . $clave . '" ' . $sel . '>' . $tipo . '</option>' . "\n";
+                        
+                    }
+                    
+                ?></select>
+            </div>
+
+            <div class="separadorH"></div>
+            
+            <div class="campo multi">
+                <label for="estadoPlan">Estado del plan</label>
+                <select class="desplegable campoTexto mediano" id="estadoPlan" name="estadoPlan">
+                    <option value=""></option><?
+                    
+                    foreach ($this->estadosPlanIDX as $clave=>$tipo){
+                        
+                        $sel = $clave == $this->estado ? ' selected="selected" ' : '';
+                        echo '<option value="' . $clave . '" ' . $sel . '>' . $tipo . '</option>' . "\n";
+                        
+                    }
+                    
+                ?></select>
+            </div>
+        
+            <div class="campo multi">
+                <label for="keyword">Palabra clave</label>
+                <input type="text" class="campoTexto" id="keyword" name="keyword" value="<?= $this->kw ?>" />
+            </div>            
+            
+            <div class="campo multi">
+                <input type="submit" value="Buscar" class="btnSubmit" />
+            </div>
+            
+            <div class="separadorH"></div>
+            
+        
+        </fieldset>
+    
+    </form>
+    
+    <div class="resultadosBusqueda"><?
+    
+        if ($this->planesCOL){
+    
+            ?><h3>Resultados de búsqueda:</h3>
+            
+            <table class="listado">
+                <thead>
+                    <tr>
+                        <th><a href="/plan/buscar.html/?ob=nom&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'nom')?'class="ordenado ' . $this->order . '"':'' )?> >Nombre</a></th>
+                        <th><a href="/plan/buscar.html/?ob=con&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'con')?'class="ordenado ' . $this->order . '"':'' )?> >Convocatoria</a></th>
+                        <th><a href="/plan/buscar.html/?ob=tipo&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'tipo')?'class="ordenado ' . $this->order . '"':'' )?> >Tipo</a></th>
+                        <th><a href="/plan/buscar.html/?ob=est&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'est')?'class="ordenado ' . $this->order . '"':'' )?> >Estado</a></th>
+                        <th><a href="/plan/buscar.html/?ob=prop&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'prop')?'class="ordenado ' . $this->order . '"':'' )?> >Propietaria</a></th>
+                        <th><a href="/plan/buscar.html/?ob=pres&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'pres')?'class="ordenado ' . $this->order . '"':'' )?> >Presupuesto</a></th>
+                        <?
+                        
+                            if ( $this->editar ){
+                                ?><th>Eliminar</th>
+                                <th>Editar</th>
+                                <th>Duplicar</th><?     
+                            }
+                        
+                        ?>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    
+                        $contador = 0;
+                        foreach ( $this->planesCOL as $planDO ){
+                            
+                            //$planDO = new TblPlan($db);
+                            $clase = ( ($contador%2)==0 )?'':'class="alter"';
+                            $contador++;
+                            
+                            ?>
+                            <tr <?= $clase ?> >
+                                <td><a href="/plan/ficha.html/<?= $planDO->getIdPlan() ?>"><?= $planDO->getVNombre() ?></a></td>
+                                <td><a href="/convocatoria/ficha.html/<?= $planDO->getFkConvocatoria() ?>"><?= $this->convocatoriasIDX[$planDO->getFkConvocatoria()] ?></a></td>
+                                <td><?= $this->tiposPlanIDX[$planDO->getFkTipoPlan()] ?></td>
+                                <td><?= $this->estadosPlanIDX[$planDO->getFkEstadoPlan()] ?></td>
+                                <td><?= $this->consultorasIDX[$planDO->getFkEmpresaPropietaria()] ?></td>
+                                <td><?= NingenNumeric::decimalFormatoEuropeo($planDO->getEPresupuestoAsignado(), 2) ?>€</td>
+                                <?
+                        
+                                    if ( $this->editar ){
+                                        ?><td class="accion"><a href="javascript:ventanaConfirmacion('Confirmar','¿Está seguro que desea eliminar el plan <strong><?= $planDO->getVNombre() ?></strong>?','/plan/eliminar.html/<?= $planDO->getIdPlan() ?>')" class="btnEliminar" title="Eliminar Plan"><span>eliminar</span></a></td>
+                                        <td class="accion"><a href="/plan/editar.html/<?= $planDO->getIdPlan() ?>" class="btnEditar" title="Editar Plan"><span>editar</span></a></td>
+                                        <td class="accion"><a href="/plan/duplicar.html/<?= $planDO->getIdPlan() ?>" class="btnDuplicar" title="Duplicar Plan"><span>duplicar</span></a></td><? 
+                                    }
+                                
+                                ?>
+                            </tr>
+                            <?
+                            
+                        }
+                        
+                    ?>
+                </tbody>
+            </table>
+            
+            <div id="paginadorContainer"><?= $this->paginador ?></div><?
+    
+    }
+    
+?></div>
+</div>

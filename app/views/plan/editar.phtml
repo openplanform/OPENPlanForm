@@ -12,7 +12,7 @@
 
 ?>
     
-    <form id="editarPlan" action="/plan/editar.html/<?= $this->planDO->getIdPlan() ?>" method="post">
+    <form id="editarPlan" action="<?= $_SERVER['REQUEST_URI'] ?>" method="post">
         <fieldset>
         
             <legend>Editar Plan</legend>

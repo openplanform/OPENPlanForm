@@ -1,0 +1,67 @@
+<h2>Ficha de Profesor</h2>
+
+<?
+
+	if ( !is_null($this->profesorDO) ){
+		
+?>
+		<div class="ficha">
+			<h3>Datos del usuario</h3>
+			<p><label>Nombre:</label> <?= $this->usuarioDO->getVNombre() ?></p>
+			<p><label>Email:</label> <?= $this->usuarioDO->getVEmail() ?></p>
+		</div>
+		
+		<div class="ficha">
+			<h3>Datos del profesor</h3>
+			<p><label>Nombre:</label> <?= $this->profesorDO->getVNombre() . $this->profesorDO->getVPrimerApellido() . $this->profesorDO->getVSegundoApellido() ?></p>
+			<p><label>Fecha de nacimiento: </label> <?= $this->datehelper->getDiaMesAno($this->profesorDO->getDNacimiento())  ?></p>
+			<p><label><?= $this->profesorDO->getTblTipoIdentificacion()->getVNombre() ?>:</label> <?= $this->profesorDO->getVNumeroIdentificacion() ?></p>
+			
+			<?
+			
+			$telefono = $this->profesorDO->getVTelefono();
+			if ( !empty($telefono) ){
+				?><p><label>Teléfono:</label> <?= $telefono ?></p><?
+			}
+			
+			$movil = $this->profesorDO->getVMovil();
+			if ( !empty($movil) ){
+				?><p><label>Móvil:</label> <?= $movil ?></p><?
+			}
+			
+			
+			$direccion = $this->profesorDO->getVDireccion();
+			if ( !empty($direccion) ){
+				?><p><label>Dirección:</label> <?= $direccion ?></p><?
+			}
+			
+			$poblacion = $this->profesorDO->getVPoblacion();
+			if ( !empty($poblacion) ){
+				?><p><label>Población:</label> <?= $poblacion ?></p><?
+			}
+			
+			$cp = $this->profesorDO->getVCp();
+			if ( !empty($cp) ){
+				?><p><label>CP:</label> <?= $cp ?></p><?
+			}
+			
+			$provincia = $this->profesorDO->getTblProvincia()->getVNombre();
+			if ( !empty($provincia) ){
+				?><p><label>Provincia:</label> <?= $provincia ?></p><?
+			}
+			
+			?>
+			<p><label>País:</label> <?= $this->profesorDO->getTblPais()->getVNombre() ?></p>
+			<p><label>Estado civil:</label> <?= $this->profesorDO->getTblEstadoCivil()->getVNombre() ?></p>
+			<p><label>Estado laboral:</label> <?= $this->profesorDO->getTblEstadoLaboral()->getVNombre() ?></p>
+			<p><label>Nivel de estudios:</label> <?= $this->profesorDO->getTblNivelEstudios()->getVNombre() ?></p>
+			
+		</div>
+<?
+		
+	} else {
+		
+		?><h3>No se ha encontrado el profesor</h3><?
+		
+	}
+?>

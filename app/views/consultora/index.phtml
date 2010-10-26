@@ -1,0 +1,54 @@
+<h2>Listado de Gestoras</h2>
+
+<table class="listado">
+    <thead>
+        <tr>
+            <th><a href="/consultora/index.html/?ob=nom&o=<?=$this->order?>" <?=( ($this->orderBy == 'nom')?'class="ordenado ' . $this->order . '"':'' )?> >Nombre</a></th>
+            <th><a href="/consultora/index.html/?ob=dir&o=<?=$this->order?>" <?=( ($this->orderBy == 'dir')?'class="ordenado ' . $this->order . '"':'' )?> >Dirección</a></th>
+            <th><a href="/consultora/index.html/?ob=pob&o=<?=$this->order?>" <?=( ($this->orderBy == 'pob')?'class="ordenado ' . $this->order . '"':'' )?> >Población</a></th>
+            <th><a href="/consultora/index.html/?ob=tel&o=<?=$this->order?>" <?=( ($this->orderBy == 'tel')?'class="ordenado ' . $this->order . '"':'' )?> >Teléfono</a></th>
+            <?
+            
+                if ( $this->editar ){
+                    ?><th>Eliminar</th>
+                    <th>Editar</th>
+                    <th>Duplicar</th><? 
+                }
+            
+            ?>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        
+            $contador = 0;
+            foreach ( $this->consultorasCOL as $consultoraDO ){
+                
+                //$consultoraDO = new TblEmpresa($db);
+                $clase = ( ($contador%2)==0 )?'':'class="alter"';
+                $contador++;
+                
+                ?>
+                <tr <?= $clase ?> >
+                    <td><a href="/consultora/ficha.html/<?= $consultoraDO->getIdEmpresa() ?>"><?= $consultoraDO->getVNombre() ?></a></td>
+                    <td><?= $consultoraDO->getVDireccion() ?></td>
+                    <td><?= $consultoraDO->getVPoblacion() ?></td>
+                    <td><?= $consultoraDO->getVTelefono() ?></td>
+                    <?
+                    
+                        if ( $this->editar ){
+                            ?><td class="accion"><a href="javascript:ventanaConfirmacion('Confirmar','¿Está seguro que desea eliminar la gestora <strong><?= $consultoraDO->getVNombre() ?></strong>?','/consultora/eliminar.html/<?= $consultoraDO->getIdEmpresa() ?>')" class="btnEliminar" title="Eliminar Consultora"><span>eliminar</span></a></td>
+                            <td class="accion"><a href="/consultora/editar.html/<?= $consultoraDO->getIdEmpresa() ?>" class="btnEditar" title="Editar Gestora"><span>editar</span></a></td>
+                            <td class="accion"><a href="/consultora/duplicar.html/<?= $consultoraDO->getIdEmpresa() ?>" class="btnDuplicar" title="Duplicar Gestora"><span>duplicar</span></a></td><?  
+                        }
+                    
+                    ?>
+                </tr>
+                <?
+                
+            }
+            
+        ?>
+    </tbody>
+</table>
+<div id="paginadorContainer"><?= $this->paginador ?></div>

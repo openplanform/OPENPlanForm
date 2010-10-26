@@ -1,0 +1,138 @@
+<div id="buscadorConsultoras" class="buscador">
+    
+    <h2>Buscar consultora/gestora</h2>
+    
+    <form id="buscarConsultora" action="<?= $_SERVER['REQUEST_URI'] ?>" method="post">
+    
+        <fieldset>
+        
+            <input type="hidden" name="sent" value="<?= md5(date('is')) ?>" />
+        
+            <div class="campo multi">
+                <label for="idConsultora">Id</label>
+                <input type="text" class="campoTexto mini" id="idConsultora" name="idConsultora" value="<?= $this->id ?>" />
+            </div>
+
+            <div class="campo multi">
+                <label for="pais">País</label>
+                <select class="desplegable campoTexto mediano" id="pais" name="pais">
+                    <option value=""></option><?
+                    
+                    foreach ($this->paisesIDX as $clave=>$paisDO){
+                        
+                        $sel = $clave == $this->pais ? ' selected="selected" ' : '';
+                        echo '<option value="' . $clave . '"' . $sel . '>' . $paisDO->getVNombre() . '</option>' . "\n";
+                        
+                    }
+                    
+                ?></select>
+            </div>
+
+            <div class="campo multi">
+                <label for="provincia">Provincia</label>
+                <select class="desplegable campoTexto mediano" id="provincia" name="provincia">
+                    <option value=""></option><?
+                    
+                    foreach ($this->provinciasIDX as $clave=>$provinciaDO){
+                        
+                        $sel = $clave == $this->provincia ? ' selected="selected" ' : '';
+                        echo '<option value="' . $clave . '"' . $sel . '>' . $provinciaDO->getVNombre() . '</option>' . "\n";
+                        
+                    }
+                    
+                ?></select>
+            </div>
+
+            <div class="campo multi">
+                <label for="cif">Cif</label>
+                <input type="text" class="campoTexto mediano" id="cif" name="cif" value="<?= $this->cif ?>" />
+            </div>
+            
+            <div class="separadorH"></div>
+        
+            <div class="campo multi">
+                <label for="cp">Código Postal</label>
+                <input type="text" class="campoTexto mediano" id="cp" name="cp" value="<?= $this->cp ?>" />
+            </div>
+            
+                        
+            <div class="campo multi">
+                <label for="keyword">Palabra clave</label>
+                <input type="text" class="campoTexto" id="keyword" name="keyword" value="<?= $this->kw ?>" />
+            </div>            
+            
+            <div class="campo multi">
+                <input type="submit" value="Buscar" class="btnSubmit" />
+            </div>
+            
+            <div class="separadorH"></div>
+            
+        
+        </fieldset>
+    
+    </form>
+    
+    <div class="resultadosBusqueda"><?
+    
+        if ($this->consultorasCOL){
+    
+            ?><h3>Resultados de búsqueda:</h3>
+            
+            <table class="listado">
+            <thead>
+                <tr>
+                    <th><a href="/consultora/buscar.html/?ob=nom&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'nom')?'class="ordenado ' . $this->order . '"':'' )?> >Nombre</a></th>
+                    <th><a href="/consultora/buscar.html/?ob=dir&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'dir')?'class="ordenado ' . $this->order . '"':'' )?> >Dirección</a></th>
+                    <th><a href="/consultora/buscar.html/?ob=pob&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'pob')?'class="ordenado ' . $this->order . '"':'' )?> >Población</a></th>
+                    <th><a href="/consultora/buscar.html/?ob=tel&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'tel')?'class="ordenado ' . $this->order . '"':'' )?> >Teléfono</a></th>
+                    <?
+                    
+                        if ( $this->editar ){
+                            ?><th>Eliminar</th>
+                            <th>Editar</th>
+                            <th>Duplicar</th><? 
+                        }
+                    
+                    ?>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                
+                    $contador = 0;
+                    foreach ( $this->consultorasCOL as $consultoraDO ){
+                        
+                        //$consultoraDO = new TblEmpresa($db);
+                        $clase = ( ($contador%2)==0 )?'':'class="alter"';
+                        $contador++;
+                        
+                        ?>
+                        <tr <?= $clase ?> >
+                            <td><a href="/consultora/ficha.html/<?= $consultoraDO->getIdEmpresa() ?>"><?= $consultoraDO->getVNombre() ?></a></td>
+                            <td><?= $consultoraDO->getVDireccion() ?></td>
+                            <td><?= $consultoraDO->getVPoblacion() ?></td>
+                            <td><?= $consultoraDO->getVTelefono() ?></td>
+                            <?
+                            
+                                if ( $this->editar ){
+                                    ?><td class="accion"><a href="javascript:ventanaConfirmacion('Confirmar','¿Está seguro que desea eliminar la gestora <strong><?= $consultoraDO->getVNombre() ?></strong>?','/consultora/eliminar.html/<?= $consultoraDO->getIdEmpresa() ?>')" class="btnEliminar" title="Eliminar Consultora"><span>eliminar</span></a></td>
+                                    <td class="accion"><a href="/consultora/editar.html/<?= $consultoraDO->getIdEmpresa() ?>" class="btnEditar" title="Editar Gestora"><span>editar</span></a></td>
+                                    <td class="accion"><a href="/consultora/duplicar.html/<?= $consultoraDO->getIdEmpresa() ?>" class="btnDuplicar" title="Duplicar Gestora"><span>duplicar</span></a></td><?  
+                                }
+                            
+                            ?>
+                        </tr>
+                        <?
+                        
+                    }
+                    
+                ?>
+            </tbody>
+        </table>
+            
+        <div id="paginadorContainer"><?= $this->paginador ?></div><?
+    
+    }
+    
+?></div>
+</div>

@@ -1,0 +1,260 @@
+<?php
+	$this->addJavascriptInclude('/js/profesor.js');
+	
+	// Se actualiza el tipo de dato que se comprobará con javascript.
+	// Es necesario para controlar la contraseña del usuario
+    $javascript = '<script type="text/javascript">editar = true;</script>';
+    $this->echoOnHead($javascript);
+	
+	if ( !is_null($this->popup) ){
+    	echo '<script type="text/javascript">ventana' . ucfirst($this->popup['estado']) . '("' . $this->popup['titulo'] . '", "' . $this->popup['mensaje'] . '", "' . $this->popup['url'] . '");</script>'; 
+	}
+?>
+
+<?
+
+	if ( !is_null($this->profesorDO) ){
+
+?>
+
+    <form id="editarProfesor" action="<?= $_SERVER['REQUEST_URI'] ?>" method="post">
+        <fieldset>
+        
+            <legend>Edición de Profesor</legend>
+        
+        	<input type="hidden" value="1" name="send" />
+        	
+        	<h3>Datos del Usuario</h3>
+        	
+        	<div class="campo controlado">
+	        	<label for="nombreUsuario">Nombre de usuario*</label>
+	            <input type="text" name="nombreUsuario" id="nombreUsuario" class="campoTexto mediano" onblur="comprobarUsuario('nombreUsuario')" value="<?= (!$this->duplicar) ? $this->usuarioDO->getVNombre() : '' ?>"/>
+	            <input type="hidden" id="nombreUsuarioOculto" name="nombreUsuarioOculto" value="<?= (!$this->duplicar) ? $this->usuarioDO->getVNombre() : '' ?>" />
+	            <p id="errorNombreUsuario" class="errorInput"><?= $this->errorNombreUsuario ?></p>
+	            <p class="tooltip" id="nombreUsuarioTooltip">El nombre de usuario debe tener 5 caracteres como mínimo y 16 como máximo. Debe estar compuesto de sólo letras y/o números. <em>Ej: usuario12</em></p>
+	        </div>
+	        
+	        <div class="campo controlado multi">
+	            <label for="password1">Contraseña*</label>
+	            <input type="password" name="password1" id="password1" class="campoTexto" />
+	            <p id="errorPassword1" class="errorInput"><?= $this->errorPassword ?></p>
+	        </div>
+	        
+	        <div class="campo controlado multi">
+	            <label for="repassword1">Repetir Contraseña*</label>
+	            <input type="password" name="repassword1" id="repassword1" class="campoTexto" />
+	            <p class="tooltip" id="password1Tooltip">La contraseña debe tener 6 caracteres como mínimo y 16 como máximo. Puede estar compuesta por cualquier caracter, pero al menos debe contener un número.<em> Ej: test1_casa</em></p>
+	            <p id="errorRepassword1" class="errorInput"><?= $this->errorPassword ?></p>
+	        </div>
+        
+        	<div class="campo clear">
+	             <label for="emailUsuario">Correo electrónico*</label>
+	             <input type="text" name="emailUsuario" id="emailUsuario" class="campoTexto" value="<?= (!$this->duplicar) ? $this->usuarioDO->getVEmail() : '' ?>"/>
+	             <p id="errorEmailUsuario" class="errorInput"><?= $this->errorEmail ?></p>
+	        </div>
+	        
+        	<h3>Datos del Profesor</h3>
+        	
+            <div class="campo controlado">
+                <label for="nombre">Nombre*</label>
+                <input type="text" name="nombre" id="nombre" class="campoTexto" value="<?= $this->profesorDO->getVNombre() ?>"/>
+                <p id="errorNombre" class="errorInput"><?= $this->errorNombre ?></p>
+            </div>
+    
+            <div class="campo multi controlado">
+                <label for="apellido1">Primer Apellido*</label>
+                <input type="text" name="apellido1" id="apellido1" class="campoTexto" value="<?= $this->profesorDO->getVPrimerApellido() ?>"/>
+                <p id="errorApellido1" class="errorInput"><?= $this->errorApellido ?></p>
+            </div>
+    
+            <div class="campo multi controlado">
+                <label for="apellido2">Segundo Apellido</label>
+                <input type="text" name="apellido2" id="apellido2" class="campoTexto" value="<?= $this->profesorDO->getVSegundoApellido() ?>"/>
+                <p id="errorApellido2" class="errorInput"><?= $this->errorApellido2 ?></p>
+            </div>
+            
+            <div class="separadorH"></div>
+            
+            <div class="campo multi controlado">
+                <label for="nacimiento">Fecha de nacimiento*</label>
+                <input type="text" name="nacimiento" id="nacimiento" class="campoTexto mediano" onkeypress="return false;"  value="<?= $this->datehelper->getDiaMesAno($this->profesorDO->getDNacimiento()) ?>"/>
+                <p id="errorNacimiento" class="errorInput"><?= $this->errorNacimiento ?></p>
+            </div>
+            
+            <div class="campo multi">
+                <label for="tipoIdentificacion">Tipo de identificación</label><?
+                
+                ?><select name="tipoIdentificacion" id="tipoIdentificacion" class="campoTexto mediano">
+                    <option value=""></option><?
+                    
+                    foreach ($this->tipoIdentificacionCOL as $tipoIdentificacionDO){
+    
+                        $claveTipo = $tipoIdentificacionDO->getIdTipoIdentificacion();
+                        echo '<option value="' . $claveTipo . '" ' . ( ($this->profesorDO->getFkTipoIdentificacion() == $claveTipo)?'selected="selected"':'' ) . ' >' . $tipoIdentificacionDO->getVNombre() . '</option>' . "\n";
+                        
+                    }
+                    
+                ?></select>
+                <p id="errorTipoIdentificacion" class="errorInput"><?= $this->errorTipoIdentificacion ?></p>
+            </div>
+            
+            <div class="campo multi controlado">
+                <label for="dni">Número identificación*</label>
+                <input type="text" name="dni" id="dni" class="campoTexto mediano" value="<?= $this->profesorDO->getVNumeroIdentificacion() ?>"/>
+                <p id="errorDni" class="errorInput"><?= $this->errorDni ?></p>
+            </div>
+            
+            <div class="separadorH"></div>
+            
+            <div class="campo multi">
+                <label for="tel">Teléfono</label>
+                <input type="text" name="tel" id="tel" class="campoTexto mediano" value="<?= $this->profesorDO->getVTelefono() ?>" />
+            </div>
+    
+            <div class="campo multi">
+                <label for="movil">Teléfono movil</label>
+                <input type="text" name="movil" id="movil" class="campoTexto mediano" value="<?= $this->profesorDO->getVMovil() ?>" />
+            </div>
+            
+            <div class="separadorH"></div>
+    
+            <div class="campo multi">
+                <label for="direccion">Dirección</label>
+                <input type="text" name="direccion" id="direccion" class="campoTexto" value="<?= $this->profesorDO->getVDireccion() ?>" />
+            </div>
+    
+            <div class="campo multi">
+                <label for="poblacion">Población</label>
+                <input type="text" name="poblacion" id="poblacion" class="campoTexto" value="<?= $this->profesorDO->getVPoblacion() ?>" />
+            </div>
+    
+            <div class="separadorH"></div>
+    
+            <div class="campo multi">
+                <label for="cp">Código Postal</label>
+                <input type="text" name="cp" id="cp" class="campoTexto mediano" value="<?= $this->profesorDO->getVCp() ?>" />
+            </div>
+    
+            <div class="campo multi">
+                <label for="provincia">Provincia</label><?
+                
+                ?><select name="provinciasUsuario" id="provincia" class="campoTexto mediano">
+                    <option value=""></option><?
+                    
+                    foreach ($this->provinciasCOL as $provinciaDO){
+    
+                        $claveProvincia = $provinciaDO->getIdProvincia();
+                        echo '<option value="' . $claveProvincia . '" ' . ( ($this->profesorDO->getFkProvincia() == $claveProvincia)?'selected="selected"':'' ) . '>' . $provinciaDO->getVNombreEs() . '</option>' . "\n";
+                        
+                    }
+                    
+                ?></select>
+            </div>
+            
+            <div class="campo multi controlado">
+                
+                <label for="pais">País*</label>
+                    <select name="pais" id="pais" class="campoTexto mediano">
+                        <option value=""></option><?
+                        
+                        foreach ($this->paisesCOL as $paisDO){
+    
+                            $clavePais = $paisDO->getVIso();
+                            echo '<option value="' . $clavePais . '" ' . ( ($this->profesorDO->getFkPais() == $clavePais)?'selected="selected"':'' ) . '>' . $paisDO->getVNombreEs() . '</option>' . "\n"; 
+                            
+                        }
+                        
+                    ?></select>
+                    <p id="errorPais" class="errorInput"><?= $this->errorPais ?></p>
+            </div>
+            
+            <div class="separadorH"></div>
+            
+            <div class="campo multi">
+                
+                <label for="estadoCivil">Estado Civil*</label>
+                    <select name="estadoCivil" id="estadoCivil" class="campoTexto mediano">
+                        <option value=""></option><?
+                        
+                        foreach ($this->estadosCivilesCOL as $estadoCivilDO){
+                            
+                            $claveEstadoCivil = $estadoCivilDO->getIdEstadoCivil();
+                            echo '<option value="' . $claveEstadoCivil . '" ' . ( ($this->profesorDO->getFkEstadoCivil() == $claveEstadoCivil)?'selected="selected"':'' ) . '>' . $estadoCivilDO->getVNombre() . '</option>' . "\n";
+                            
+                        }
+                        
+                    ?></select>
+                    <p id="errorEstadoCivil" class="errorInput"><?= $this->errorEstadoCivil ?></p>
+            </div>
+            
+                    
+            <div class="campo multi">
+                
+                <label for="estadoLaboral">Estado Laboral*</label>
+                    <select name="estadoLaboral" id="estadoLaboral" class="campoTexto mediano">
+                        <option value=""></option><?
+                        
+                        foreach ($this->estadosLaboralesCOL as $estadoLaboralDO){
+                            
+                            $claveEstadoLaboral = $estadoLaboralDO->getIdEstadoLaboral();
+                            echo '<option value="' . $claveEstadoLaboral . '" ' . ( ($this->profesorDO->getFkEstadoLaboral() == $claveEstadoLaboral)?'selected="selected"':'' ) . '>' . $estadoLaboralDO->getVNombre() . '</option>' . "\n";
+                            
+                        }
+                        
+                    ?></select>
+                    <p id="errorEstadoLaboral" class="errorInput"><?= $this->errorEstadoLaboral ?></p>
+            </div>
+            
+                            
+            <div class="campo multi">
+                
+                <label for="nivelEstudios">Nivel de estudios*</label>
+                    <select name="nivelEstudios" id="nivelEstudios" class="campoTexto mediano">
+                        <option value=""></option><?
+                        
+                        foreach ($this->nivelEstudiosCOL as $nivelEstudiosDO){
+                            
+                            $claveNivelEstudios = $nivelEstudiosDO->getIdNivelEstudios();
+                            echo '<option value="' . $claveNivelEstudios . '" ' . ( ($this->profesorDO->getFkNivelEstudios() == $claveNivelEstudios)?'selected="selected"':'' ) . '>' . $nivelEstudiosDO->getVNombre() . '</option>' . "\n";
+                            
+                        }
+                        
+                    ?></select>
+                    <p id="errorNivelEstudios" class="errorInput"><?= $this->errorNivelEstudios ?></p>
+            </div>
+			
+			<div class="separadorH"></div>
+			
+			<h3>Categorías</h3>
+			
+			<div class="campo">
+	            <label for="selectorRol">Categorías del profesor</label>
+	            <select name="categorias[]" multiple="multiple" id="selectorCategoria" class="campoTexto grande"><?
+	            
+	                echo $this->htmlSelectCategorias;
+	                
+	            ?></select>
+	            <p class="tooltip" id="selectorRolTooltip">Se pueden seleccionar varias categorías manteniendo pulsada la tecla CTRL</p>
+	            <p id="errorSelectorCategoria" class="errorInput"><?= $this->errorCategoria ?></p>
+        	</div>
+			
+            <input class="oculto" type="submit" value="Guardar" />
+            
+            <noscript>
+            	<div class="campo">
+            		<input type="submit" value="Guardar" />
+            	</div>
+            </noscript>
+            
+        </fieldset>
+    </form>
+    <p>* Campos obligatorios</p>
+<?
+	
+	} else {
+	
+	?><h3>No se ha encontrado el profesor</h3><?
+	
+	}
+
+?>

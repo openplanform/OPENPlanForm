@@ -109,6 +109,10 @@ textarea {
 select{
 	padding: 0px;
 }
+select.desplegable{
+	padding: 0px;
+	height: 20px;
+}
 textarea,
 input.campoTexto{
 	width: 300px;
@@ -414,4 +418,10 @@ div.ficha{
 	cursor: pointer;
 	border: none;
 	padding-bottom: 3px;
+}
+.buscador .campo .btnSubmit{
+	margin-top: 16px;
+}
+.resultadosBusqueda{
+	margin-top: 30px;
 }

@@ -197,8 +197,9 @@ class planController extends PplController{
     		
     		if ( $this->actualizarInsertar(true,$planDO->getIdPlan() ) ){
     			
-    			// Todo ha ido bien
-    			$this->redirectTo('plan', 'index');
+    			// Plan
+	        	$planDO = TblPlan::findByPrimaryKey($this->db, $paramsARR[0]);
+	        	$this->view->planDO = $planDO;
 				
     		} else {
     			
@@ -360,6 +361,144 @@ class planController extends PplController{
     }
     
     
+    /**
+     * Busqueda de planes
+     */
+    public function buscarAction(){
+        
+        // Tipos de plan
+        $this->view->tiposPlanIDX = $this->cacheBO->getTiposPlan();
+        
+        // Convocatorias
+        $this->view->convocatoriasIDX = $this->cacheBO->getConvocatorias();
+        
+        // Consultoras
+        $this->view->consultorasIDX = $this->cacheBO->getConsultoras();
+        
+        // Estados de plan
+        $this->view->estadosPlanIDX = $this->cacheBO->getEstadosPlan();
+        
+        
+        $sent = $this->helper->getAndEscape('sent');
+        if (!empty($sent)){
+
+            // Solo comprobaremos permisos de edición si hay resultados
+            if ( $this->aclManager->hasPerms('plan', 'editar') ){
+                $this->view->editar = true;
+            }
+            
+            // Parámetros de ordenación para el paginador
+            $aliasCampos = array(
+                'nom'   => 'vNombre',
+                'con'   => 'fkConvocatoria',
+                'est'   => 'fkEstadoPlan',
+                'tipo'  => 'fkTipoPlan',
+                'prop'  => 'fkEmpresaPropietaria',
+                'pres'  => 'ePresupuestoAsignado'
+            );
+            
+
+            if ( !empty($_REQUEST) && array_key_exists('o', $_GET) & array_key_exists('ob', $_GET) ){
+                $order = $this->helper->escapeInjection($_GET['o']);
+                $orderBy = $aliasCampos[$_GET['ob']];
+                $aliasOrderBy = $_GET['ob'];
+            } else {
+                $order   = 'asc';
+                $orderBy = 'vNombre';
+                $aliasOrderBy = 'nom';
+            }            
+
+            // Envío el orden a la vista
+            if ( $order == 'asc' ){
+                $this->view->order = 'desc';
+            } else {
+                $this->view->order = 'asc';
+            }
+            $this->view->orderBy = $aliasOrderBy;            
+            
+            // Se prepara el query
+            $id = $this->helper->getAndEscape('idPlan');
+            $tipo = $this->helper->getAndEscape('tipoPlan');
+            $convocatoria = $this->helper->getAndEscape('convocatoriaPlan');
+            $consultora = $this->helper->getAndEscape('consultoraPlan');
+            $estado = $this->helper->getAndEscape('estadoPlan');
+            $kw = $this->helper->getAndEscape('keyword');
+            
+            $where = array();
+            $queryString = '&amp;sent=1';
+            
+            // ID
+            if (!empty($id)){
+                $where[] = " idConvocatoria = $id";
+                $this->view->id = $id;
+                $queryString .= "&amp;idConvocatoria=$id";
+            }
+            
+            // TIPO
+            if (!empty($tipo)){
+                $where[] = " fkTipoPlan = $tipo";
+                $this->view->tipo = $tipo;
+                $queryString .= "&amp;tipoPlan=$tipo";
+            }
+
+            // CONVOCATORIA
+            if (!empty($convocatoria)){
+                $where[] = " fkConvocatoria = $convocatoria";
+                $this->view->convocatoria = $convocatoria;
+                $queryString .= "&amp;convocatoriaPlan=$convocatoria";
+            }
+
+            // CONSULTORA
+            if (!empty($consultora)){
+                $where[] = " fkConvocatoria = $consultora";
+                $this->view->consultora = $consultora;
+                $queryString .= "&amp;consultoraPlan=$consultora";
+            }
+
+            // ESTADO
+            if (!empty($estado)){
+                $where[] = " fkConvocatoria = $estado";
+                $this->view->estado = $estado;
+                $queryString .= "&amp;estadoPlan=$estado";
+            }
+            
+            // KEYWORD
+            if (!empty($kw)){
+                $where[] = "vNombre LIKE '%$kw%' OR vDescripcion LIKE '%$kw%'";
+                $this->view->kw = $kw;
+                $queryString .= "&amp;keyword=$kw";             
+            }
+            
+            // Se constuye el where
+            if (count($where)){
+                $where = ' WHERE ' . implode(' AND ', $where);
+            } else {
+                $where = '';
+            }
+            
+            // Se ejecuta la búsqueda
+            $paginador = new NingenPaginator($this->db, $where, 'tblPlan', $this->helper);
+            $paginador->setItemsPorPagina(10);
+            $paginaActual = $this->helper->escapeInjection($this->helper->get('p'));
+            $paginaActual = empty($paginaActual) ? 1 : $paginaActual;
+            $paginador->setPaginaActual($paginaActual);
+            $paginador->setOrderBy($orderBy);
+            $paginador->setOrder($order);
+        
+            // Obtengo los Planes
+            $planesCOL = $paginador->getItemCollection();
+            $this->view->planesCOL = $planesCOL;
+            
+            // Envío el paginador a la vista
+            $this->view->paginador = $paginador->getPaginatorHtml();
+            
+            // Se propagan las clausulas de búsqueda en el paginador
+            $this->view->querystring = $queryString;
+            
+            
+        }        
+        
+    }
     
 }
 

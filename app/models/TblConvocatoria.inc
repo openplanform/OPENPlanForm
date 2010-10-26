@@ -1,7 +1,7 @@
 <?php
 /**
  * Este archivo ha sido generado con Ningen DoGen v.0.6
- * el 21 de October de 2010 a las 10:48:39
+ * el 25 de October de 2010 a las 12:44:09
  * @package dataAccess
  */
 
@@ -39,16 +39,22 @@ class TblConvocatoria extends NingenGenericDO{
     public $vNombre;
 
     /**
-     * Atributo que representa el campo "vDescripcion"
+     * Atributo que representa el campo "iAno"
      * @var string
      */
-    public $vDescripcion;
+    public $iAno;
 
     /**
      * Atributo que representa el campo "ePresupuesto"
      * @var string
      */
     public $ePresupuesto;
+
+    /**
+     * Atributo que representa el campo "vDescripcion"
+     * @var string
+     */
+    public $vDescripcion;
 
     /**
      * Atributo que representa el campo "mod_user"
@@ -87,8 +93,9 @@ class TblConvocatoria extends NingenGenericDO{
         $this->idConvocatoria = $data['idConvocatoria'];
         $this->fkTipoConvocatoria = $data['fkTipoConvocatoria'];
         $this->vNombre = $data['vNombre'];
-        $this->vDescripcion = $data['vDescripcion'];
+        $this->iAno = $data['iAno'];
         $this->ePresupuesto = $data['ePresupuesto'];
+        $this->vDescripcion = $data['vDescripcion'];
         $this->modUser = $data['mod_user'];
         $this->lastModified = $data['last_modified'];
 
@@ -116,11 +123,14 @@ class TblConvocatoria extends NingenGenericDO{
         if( $tmp = $searchItem->vNombre ){
             $where[] = "vNombre='$tmp'";
         }
-        if( $tmp = $searchItem->vDescripcion ){
-            $where[] = "vDescripcion='$tmp'";
+        if( $tmp = $searchItem->iAno ){
+            $where[] = "iAno='$tmp'";
         }
         if( $tmp = $searchItem->ePresupuesto ){
             $where[] = "ePresupuesto='$tmp'";
+        }
+        if( $tmp = $searchItem->vDescripcion ){
+            $where[] = "vDescripcion='$tmp'";
         }
         if( $tmp = $searchItem->modUser ){
             $where[] = "mod_user='$tmp'";
@@ -209,8 +219,9 @@ class TblConvocatoria extends NingenGenericDO{
         $sets = array();
         $sets[] = 'fkTipoConvocatoria=' . ( ( ( $value = $this->fkTipoConvocatoria ) === null || !isset($this->fkTipoConvocatoria) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'vNombre=' . ( ( ( $value = $this->vNombre ) === null || !isset($this->vNombre) ) ? 'null' :  "'".addslashes($value)."'" );
-        $sets[] = 'vDescripcion=' . ( ( ( $value = $this->vDescripcion ) === null || !isset($this->vDescripcion) ) ? 'null' :  "'".addslashes($value)."'" );
+        $sets[] = 'iAno=' . ( ( ( $value = $this->iAno ) === null || !isset($this->iAno) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'ePresupuesto=' . ( ( ( $value = $this->ePresupuesto ) === null || !isset($this->ePresupuesto) ) ? 'null' :  "'".addslashes($value)."'" );
+        $sets[] = 'vDescripcion=' . ( ( ( $value = $this->vDescripcion ) === null || !isset($this->vDescripcion) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'mod_user=' . ( ( ( $value = $this->modUser ) === null || !isset($this->modUser) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'last_modified=' . ( ( ( $value = $this->lastModified ) === null || !isset($this->lastModified) ) ? 'null' :  "'".addslashes($value)."'" );
         $setStr = implode(',', $sets);
@@ -224,16 +235,18 @@ class TblConvocatoria extends NingenGenericDO{
         $attributes = array();
         $attributes[] = 'fkTipoConvocatoria';
         $attributes[] = 'vNombre';
-        $attributes[] = 'vDescripcion';
+        $attributes[] = 'iAno';
         $attributes[] = 'ePresupuesto';
+        $attributes[] = 'vDescripcion';
         $attributes[] = 'mod_user';
         $attributes[] = 'last_modified';
         $attributes = implode(',', $attributes);
         $values = array();
         $values[] = (( $value = $this->fkTipoConvocatoria ) === null || !isset($this->fkTipoConvocatoria) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->vNombre ) === null || !isset($this->vNombre) ) ? 'null' : "'".addslashes($value)."'";
-        $values[] = (( $value = $this->vDescripcion ) === null || !isset($this->vDescripcion) ) ? 'null' : "'".addslashes($value)."'";
+        $values[] = (( $value = $this->iAno ) === null || !isset($this->iAno) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->ePresupuesto ) === null || !isset($this->ePresupuesto) ) ? 'null' : "'".addslashes($value)."'";
+        $values[] = (( $value = $this->vDescripcion ) === null || !isset($this->vDescripcion) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->modUser ) === null || !isset($this->modUser) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->lastModified ) === null || !isset($this->lastModified) ) ? 'null' : "'".addslashes($value)."'";
         $values = implode(',', $values);
@@ -305,22 +318,22 @@ class TblConvocatoria extends NingenGenericDO{
     }
 
     /**
-      * Obtiene el valor del atributo 'vDescripcion'.
+      * Obtiene el valor del atributo 'iAno'.
       *
       * @return string
       */
-    public function getVDescripcion(){
-        return $this->vDescripcion;
+    public function getIAno(){
+        return $this->iAno;
     }
 
     /**
-      * Establece el valor del atributo 'vDescripcion'.
+      * Establece el valor del atributo 'iAno'.
       *
       * @param string Valor.
       */
-    public function setVDescripcion( $value ){
+    public function setIAno( $value ){
 
-        $this->vDescripcion = $value;
+        $this->iAno = $value;
 
     }
 
@@ -341,6 +354,26 @@ class TblConvocatoria extends NingenGenericDO{
     public function setEPresupuesto( $value ){
 
         $this->ePresupuesto = $value;
+
+    }
+
+    /**
+      * Obtiene el valor del atributo 'vDescripcion'.
+      *
+      * @return string
+      */
+    public function getVDescripcion(){
+        return $this->vDescripcion;
+    }
+
+    /**
+      * Establece el valor del atributo 'vDescripcion'.
+      *
+      * @param string Valor.
+      */
+    public function setVDescripcion( $value ){
+
+        $this->vDescripcion = $value;
 
     }
 

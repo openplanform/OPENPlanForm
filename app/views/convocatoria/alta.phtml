@@ -16,7 +16,13 @@
             <div class="campo controlado">
                 <label for="nombre">Nombre*</label>
                 <input type="text" name="nombre" id="nombre" class="campoTexto" />
-                <p id="errorNombre" class="errorInput"><?=$this->errorNombre?></p>
+                <p id="errorNombre" class="errorInput"><?= $this->errorNombre ?></p>
+            </div>
+            
+            <div class="campo controlado">
+                <label for="ano">Año*</label>
+                <input type="text" name="ano" id="ano" class="campoTexto mini numerico" />
+                <p id="errorAno" class="errorInput"><?= $this->errorAno ?></p>
             </div>
             
             <div class="campo controlado">

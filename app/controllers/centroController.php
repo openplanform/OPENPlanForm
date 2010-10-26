@@ -150,8 +150,9 @@ class centroController extends PplController{
     		
     		if ( $this->actualizarInsertar(true,$centroDO->getIdCentro() ) ){
     			
-    			// Todo ha ido bien
-    			$this->redirectTo('centro', 'index');
+    			// centro
+        		$centroDO = TblCentro::findByPrimaryKey($this->db, $paramsARR[0]);
+        		$this->view->centroDO = $centroDO;
 				
     		} else {
     			

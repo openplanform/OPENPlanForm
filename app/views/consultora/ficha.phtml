@@ -1,0 +1,61 @@
+<h2>Ficha de gestora</h2>
+
+<?
+
+    if ( !is_null($this->consultoraDO) ){
+        
+?>
+        <div class="ficha">
+            <h3>Datos del usuario</h3>
+            <p><label>Nombre:</label> <?= $this->usuarioDO->getVNombre() ?></p>
+            <p><label>Email:</label> <?= $this->usuarioDO->getVEmail() ?></p>
+        </div>
+        
+        <div class="ficha">
+            <h3>Datos de la gestora</h3>
+            <p><label>Nombre:</label> <?= $this->consultoraDO->getVNombre() ?></p>
+            <p><label>CIF:</label> <?= $this->consultoraDO->getVCif() ?></p>
+            <p><label>País:</label> <?= $this->consultoraDO->getTblPais()->getVNombre() ?></p>
+            <p><label>Provincia:</label> <?= $this->consultoraDO->getTblProvincia()->getVNombre() ?></p>
+            <?
+            
+            $poblacion = $this->consultoraDO->getVPoblacion();
+            if ( !empty($poblacion) ){
+                ?><p><label>Población:</label> <?= $poblacion ?></p><?
+            }
+            
+            $direccion = $this->consultoraDO->getVDireccion();
+            if ( !empty($direccion) ){
+                ?><p><label>Dirección:</label> <?= $direccion ?></p><?
+            }
+            
+            $cp = $this->consultoraDO->getVCp();
+            if ( !empty($cp) ){
+                ?><p><label>CP:</label> <?= $cp ?></p><?
+            }
+            
+            $telefono1 = $this->consultoraDO->getVTelefono();
+            if ( !empty($telefono1) ){
+                ?><p><label>Teléfono 1:</label> <?= $telefono1 ?></p><?
+            }
+            
+            $telefono2 = $this->consultoraDO->getVTelefono2();
+            if ( !empty($telefono2) ){
+                ?><p><label>Teléfono 2:</label> <?= $telefono2 ?></p><?
+            }
+            
+            $fax = $this->consultoraDO->getVFax();
+            if ( !empty($fax) ){
+                ?><p><label>Fax:</label> <?= $fax ?></p><?
+            }
+            
+            ?>
+        </div>
+<?
+        
+    } else {
+        
+        ?><h3>No se ha encontrado la gestora</h3><?
+        
+    }
+?>

@@ -5,17 +5,23 @@
     	echo '<script type="text/javascript">ventana' . ucfirst($this->popup['estado']) . '("' . $this->popup['titulo'] . '", "' . $this->popup['mensaje'] . '", "' . $this->popup['url'] . '");</script>'; 
 	}
 ?>
-    
-    <form id="altaCurso" action="/curso/alta.html" method="post">
+
+<?
+	
+	if ( !is_null($this->cursoDO) ){
+
+?>
+
+    <form id="editarCurso" action="<?= $_SERVER['REQUEST_URI'] ?>" method="post">
         <fieldset>
         
-            <legend>Alta de Curso</legend>
+            <legend>Edición de Curso</legend>
         
         	<input type="hidden" value="1" name="send" />
         
             <div class="campo controlado">
                 <label for="nombre">Nombre*</label>
-                <input type="text" name="nombre" id="nombre" class="campoTexto" />
+                <input type="text" name="nombre" id="nombre" class="campoTexto" value="<?= $this->cursoDO->getVNombre() ?>"/>
                 <p id="errorNombre" class="errorInput"><?=$this->errorNombre?></p>
             </div>
 			
@@ -28,7 +34,7 @@
 					// Plan
 					foreach ( $this->planesIDX as $clave => $nombre) {
 						
-						?><option value="<?= $clave ?>" ><?= $nombre ?></option><?
+						?><option value="<?= $clave ?>" <?= ( ($this->cursoDO->getFkPlan() == $clave)?'selected="selected"':'' ) ?>><?= $nombre ?></option><?
 						
 					}
 					
@@ -60,7 +66,7 @@
 					// Sector
 					foreach ( $this->sectoresIDX as $clave => $nombre) {
 						
-						?><option value="<?= $clave ?>" ><?= $nombre ?></option><?
+						?><option value="<?= $clave ?>" <?= ( ($this->cursoDO->getFkSector() == $clave)?'selected="selected"':'' ) ?>><?= $nombre ?></option><?
 						
 					}
 					
@@ -78,7 +84,7 @@
 					// Colectivo
 					foreach ( $this->colectivosIDX as $clave => $nombre) {
 						
-						?><option value="<?= $clave ?>" ><?= $nombre ?></option><?
+						?><option value="<?= $clave ?>" <?= ( ($this->cursoDO->getFkColectivo() == $clave)?'selected="selected"':'' ) ?>><?= $nombre ?></option><?
 						
 					}
 					
@@ -96,7 +102,7 @@
 					// Modalidad
 					foreach ( $this->modalidadesIDX as $clave => $nombre) {
 						
-						?><option value="<?= $clave ?>" ><?= $nombre ?></option><?
+						?><option value="<?= $clave ?>" <?= ( ($this->cursoDO->getFkModalidad() == $clave)?'selected="selected"':'' ) ?>><?= $nombre ?></option><?
 						
 					}
 					
@@ -106,7 +112,7 @@
 			</div>
 			
 			<div class="campo controlado">
-            	<label for="aula">Aula*</label>
+            	<label for="curso">Aula*</label>
 	            <select class="grande" name="aula" id="aula">
 	            	<option value=""></option>
 					<?
@@ -114,7 +120,7 @@
 					// Aula
 					foreach ( $this->aulasIDX as $clave => $nombre) {
 						
-						?><option value="<?= $clave ?>" ><?= $nombre ?></option><?
+						?><option value="<?= $clave ?>" <?= ( ($this->cursoDO->getFkAula() == $clave)?'selected="selected"':'' ) ?>><?= $nombre ?></option><?
 						
 					}
 					
@@ -125,36 +131,36 @@
 			
 			 <div class="campo multi">
                 <label for="horasP">Horas presenciales</label>
-                <input type="text" name="horasP" id="horasP" class="campoTexto mini numerico" />
+                <input type="text" name="horasP" id="horasP" class="campoTexto mini numerico" value="<?= $this->cursoDO->getIHorasPresenciales() ?>"/>
             </div>
 			
 			<div class="campo multi">
                 <label for="horasD">Horas a distancia</label>
-                <input type="text" name="horasD" id="horasD" class="campoTexto mini numerico" />
+                <input type="text" name="horasD" id="horasD" class="campoTexto mini numerico" value="<?= $this->cursoDO->getIHorasDistancia() ?>"/>
             </div>
 			
 			<div class="separadorH"></div>
 			
 			<div class="campo multi">
                 <label for="horasT">Horas de tutoría</label>
-                <input type="text" name="horasT" id="horasT" class="campoTexto mini numerico" />
+                <input type="text" name="horasT" id="horasT" class="campoTexto mini numerico" value="<?= $this->cursoDO->getIHorasTutoria() ?>"/>
             </div>
 			
 			<div class="campo multi">
                 <label for="alumnos">Número de alumnos</label>
-                <input type="text" name="alumnos" id="alumnos" class="campoTexto mini numerico" />
+                <input type="text" name="alumnos" id="alumnos" class="campoTexto mini numerico" value="<?= $this->cursoDO->getINumeroAlumnos() ?>"/>
             </div>
             
             <div class="separadorH"></div>
             
             <div class="campo multi">
                 <label for="inicio">Fecha de inicio</label>
-                <input type="text" name="inicio" id="inicio" class="campoTexto pequeno" onkeypress="return false;" />
+                <input type="text" name="inicio" id="inicio" class="campoTexto pequeno" onkeypress="return false;" value="<?= $this->cursoDO->getDInicio() ?>"/>
             </div>
             
             <div class="campo multi">
                 <label for="fin">Fecha de fin</label>
-                <input type="text" name="fin" id="fin" class="campoTexto pequeno" onkeypress="return false;" />
+                <input type="text" name="fin" id="fin" class="campoTexto pequeno" onkeypress="return false;" value="<?= $this->cursoDO->getDFin() ?>"/>
             </div>
             
             <div class="separadorH"></div>
@@ -170,3 +176,12 @@
         </fieldset>
     </form>
     <p>* Campos obligatorios</p>
+<?
+	
+	} else {
+	
+	?><h3>No se ha encontrado el curso</h3><?
+	
+	}
+
+?>

@@ -1,0 +1,56 @@
+<h2>Ficha de Curso</h2>
+
+<?
+
+	if ( !is_null($this->cursoDO) ){
+		
+?>
+		<div class="ficha">
+			<p><label>Nombre:</label> <?= $this->cursoDO->getVNombre() ?></p>
+			<p><label>Plan:</label> <?= $this->cursoDO->getTblPlan()->getVNombre() ?></p>
+			<p><label>Categoría:</label> <?= $this->categoriaDO->getVNombre() ?></p>
+			<p><label>Sector:</label> <?= $this->cursoDO->getTblSector()->getVNombre() ?></p>
+			<p><label>Colectivo:</label> <?= $this->cursoDO->getTblColectivo()->getVNombre() ?></p>
+			<p><label>Modalidad:</label> <?= $this->cursoDO->getTblModalidad()->getVNombre() ?></p>
+			<p><label>Aula:</label> <?= $this->cursoDO->getTblAula()->getVNombre() ?></p>
+			<?
+			$horasP = $this->cursoDO->getIHorasPresenciales();
+			if ( !empty($horasP) ){
+				?><p><label>Horas presenciales:</label> <?= $horasP ?></p><?
+			}
+			
+			$horasD = $this->cursoDO->getIHorasDistancia();
+			if ( !empty($horasD) ){
+				?><p><label>Horas a distancia:</label> <?= $horasD ?></p><?
+			}
+			
+			$horasT = $this->cursoDO->getIHorasTutoria();
+			if ( !empty($horasT) ){
+				?><p><label>Horas tutoría:</label> <?= $horasT ?></p><?
+			}
+			
+			$fechaIni = $this->datehelper->getDiaMesAno($this->cursoDO->getDInicio());
+			if ( $fechaIni != '01/01/1970' ){
+				?><p><label>Fecha de inicio:</label><?= $fechaIni ?></p><?
+			}
+			
+			$fechaFin = $this->datehelper->getDiaMesAno($this->cursoDO->getDFin());
+			if ( $fechaFin != '01/01/1970' ){
+				?><p><label>Fecha de finalización:</label><?= $this->datehelper->getDiaMesAno($this->cursoDO->getDFin()) ?></p><?
+			}
+			
+			$alumnos = $this->cursoDO->getINumeroAlumnos();
+			if ( !empty($alumnos) ){
+				?><p><label>Número de alumnos:</label> <?= $alumnos ?></p><?
+			}
+			
+			?>
+		</div>
+<?
+		
+	} else {
+		
+		?><h3>No se ha encontrado el curso</h3><?
+		
+	}
+?>

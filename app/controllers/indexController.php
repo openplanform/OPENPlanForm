@@ -39,9 +39,17 @@ class indexController extends PplController{
 	    // Se verifica si el usuario se encuentra ya logueado
         $this->usuario = NingenCmsSession::getValue('usuario');
         
-        // De ser así lo redireccionamos a la página principal, ficha de usuario
+        // De ser así lo redireccionamos a la página principal
         if ($this->usuario instanceof PplUsuarioSesion){
-            $this->redirectTo('usuario', 'ficha');
+            
+            // Si el usuario no tiene una empresa o persona asignada, obligamos a que complete sus datos.
+            $claveUsuario = $this->usuario->getId();
+            if ($this->aclManager->datosCompletosUsuario($claveUsuario)){
+                $this->redirectTo('usuario', 'ficha');
+            } else {
+                $this->redirectTo('usuario', 'nuevo');
+            }
+            
             return;
         }
 	    
@@ -72,7 +80,16 @@ class indexController extends PplController{
     	        
     	    } else {
     	        
-    	        $this->redirectTo('usuario', 'ficha');
+                // Si el usuario no tiene una empresa o persona asignada, obligamos a que complete sus datos.
+                $this->usuario = NingenCmsSession::getValue('usuario');
+                $claveUsuario = $this->usuario->getId();
+                if ($this->aclManager->datosCompletosUsuario($claveUsuario)){
+                    $this->redirectTo('usuario', 'ficha');
+                } else {
+                    $this->redirectTo('usuario', 'nuevo');
+                }
+                
+                return;
     	        
     	    }
     	    
@@ -94,15 +111,6 @@ class indexController extends PplController{
 	    
 	    // Redirigimos al login nuevamente
 	    $this->redirectTo('index', 'login');
-	    
-	}
-
-	/**
-	 * Pruebas de maquetación para la extranet de planes pime
-	 */
-	public function maquetacionAction(){
-	    
-	    
 	    
 	}
 	

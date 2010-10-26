@@ -1,11 +1,14 @@
 <?php
 
 require_once 'NingenController.inc';
+require_once 'helper/NingenDatabase.inc';
 
-require_once NINGENCMS_MODELDIR . '/TblTipoConvocatoria.inc';
-require_once NINGENCMS_MODELDIR . '/TblTipoPlan.inc';
-require_once NINGENCMS_MODELDIR . '/TblEstadoPlan.inc';
-require_once NINGENCMS_MODELDIR . '/TblEmpresa.inc';
+require_once NINGENCMS_MODELDIR . 'TblTipoConvocatoria.inc';
+require_once NINGENCMS_MODELDIR . 'TblTipoPlan.inc';
+require_once NINGENCMS_MODELDIR . 'TblEstadoPlan.inc';
+require_once NINGENCMS_MODELDIR . 'TblEmpresa.inc';
+require_once NINGENCMS_MODELDIR . 'TblPais.inc';
+require_once NINGENCMS_MODELDIR . 'TblProvincia.inc';
 
 class PplCacheBO {
 	
@@ -170,6 +173,18 @@ class PplCacheBO {
      * @var boolean
      */
     private $sectores_fetched = false;
+    
+    /**
+     * categorias indexadas por su clave
+     * @var array
+     */
+    private $categoriasIDX;
+    
+    /**
+     * Flag que indica que las categorias han sido cargadas
+     * @var boolean
+     */
+    private $categorias_fetched = false;
     
     /**
      * aulas indexadas por su clave
@@ -421,7 +436,7 @@ class PplCacheBO {
 			return $this->consultorasIDX;
 		}
         
-		$consultorasCOL = TblEmpresa::findAll($this->db, 'vNombre');
+		//$consultorasCOL = TblEmpresa::findAll($this->db, 'vNombre');
 		$sql = 'SELECT * FROM tblEmpresa e WHERE EXISTS ( SELECT NULL FROM trelRolUsuario ru WHERE e.fkUsuario = ru.fkUsuario AND ru.fkRol = ' . PplAclManager::ROL_CONSULTORA . ')';
 		$this->db->executeQuery($sql);
         
@@ -549,6 +564,33 @@ class PplCacheBO {
 	}
 	
 	/**
+	 * Obtiene las categorías
+	 * @return array
+	 */
+	public function getCategorias() {
+		
+		if ( $this->categorias_fetched ){
+			return $this->categoriaIDX;
+		}
+		
+		$categoriaCOL = TblCategoria::findAll($this->db, 'vNombre');
+		$categoriaIDX = array();
+		
+		// Se indexarán los categoria por su clave
+		foreach ($categoriaCOL as $categoriaDO){
+		    
+		    $categoriaIDX[$categoriaDO->getIdcategoria()] = $categoriaDO->getVNombre();
+		    
+		}
+		
+		$this->categoriaIDX = $categoriaIDX;
+		$this->categoria_fetched = true;
+		
+		return $this->categoriaIDX;
+		
+	}
+	
+	/**
 	 * Obtiene las aulas
 	 * @return array
 	 */
@@ -573,6 +615,31 @@ class PplCacheBO {
 		
 		return $this->aulaIDX;
 		
+	}
+	
+	/**
+	 * Devuelve todos los paises indexados por su iso
+	 * @return array
+	 */
+	public function getPaises(){
+	    
+	    $paisesCOL = TblPais::findAll($this->db, 'vNombre_es');
+	    $paisesIDX = NingenDatabase::indexFor('vIso', $paisesCOL);
+	    
+	    return $paisesIDX;
+	    
+	}
+	
+	/**
+	 * Devuelve un array con todas las provincias indexadas por su clave
+	 */
+	public function getProvincias(){
+	    
+	    $provinciasCOL = TblProvincia::findAll($this->db, 'vNombre_es');
+	    $provinciasIDX = NingenDatabase::indexFor('idProvincia', $provinciasCOL);
+	    
+	    return $provinciasIDX;
+	    
 	}
 	
 }

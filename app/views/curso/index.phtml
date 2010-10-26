@@ -1,14 +1,20 @@
-<h2>Listado de Planes</h2>
+<h2>Listado de Cursos</h2>
+
+<?php 
+
+	if ( count($this->cursosCOL) > 0 ){
+
+?>
 
 <table class="listado">
     <thead>
 		<tr>
-			<th><a href="/plan/index.html/?ob=nom&o=<?=$this->order?>" <?=( ($this->orderBy == 'nom')?'class="ordenado ' . $this->order . '"':'' )?> >Nombre</a></th>
-			<th><a href="/plan/index.html/?ob=con&o=<?=$this->order?>" <?=( ($this->orderBy == 'con')?'class="ordenado ' . $this->order . '"':'' )?> >Convocatoria</a></th>
-			<th><a href="/plan/index.html/?ob=tipo&o=<?=$this->order?>" <?=( ($this->orderBy == 'tipo')?'class="ordenado ' . $this->order . '"':'' )?> >Tipo</a></th>
-			<th><a href="/plan/index.html/?ob=est&o=<?=$this->order?>" <?=( ($this->orderBy == 'est')?'class="ordenado ' . $this->order . '"':'' )?> >Estado</a></th>
-			<th><a href="/plan/index.html/?ob=prop&o=<?=$this->order?>" <?=( ($this->orderBy == 'prop')?'class="ordenado ' . $this->order . '"':'' )?> >Propietaria</a></th>
-			<th><a href="/plan/index.html/?ob=pres&o=<?=$this->order?>" <?=( ($this->orderBy == 'pres')?'class="ordenado ' . $this->order . '"':'' )?> >Presupuesto</a></th>
+			<th><a href="/curso/index.html/?ob=nom&o=<?=$this->order?>" <?=( ($this->orderBy == 'nom')?'class="ordenado ' . $this->order . '"':'' )?> >Nombre</a></th>
+			<th><a href="/curso/index.html/?ob=plan&o=<?=$this->order?>" <?=( ($this->orderBy == 'plan')?'class="ordenado ' . $this->order . '"':'' )?> >Plan</a></th>
+			<th><a href="/curso/index.html/?ob=sec&o=<?=$this->order?>" <?=( ($this->orderBy == 'sec')?'class="ordenado ' . $this->order . '"':'' )?> >Sector</a></th>
+			<th><a href="/curso/index.html/?ob=cat&o=<?=$this->order?>" <?=( ($this->orderBy == 'cat')?'class="ordenado ' . $this->order . '"':'' )?> >Categoria</a></th>
+			<th><a href="/curso/index.html/?ob=ini&o=<?=$this->order?>" <?=( ($this->orderBy == 'ini')?'class="ordenado ' . $this->order . '"':'' )?> >Inicio</a></th>
+			<th><a href="/curso/index.html/?ob=fin&o=<?=$this->order?>" <?=( ($this->orderBy == 'fin')?'class="ordenado ' . $this->order . '"':'' )?> >Fin</a></th>
 			<?
 			
 				if ( $this->editar ){
@@ -24,26 +30,26 @@
 		<?php
 		
 			$contador = 0;
-			foreach ( $this->arrPlanesDO as $planDO ){
+			foreach ( $this->cursosCOL as $cursoDO ){
 				
-			    //$planDO = new TblPlan($db);
+			    //$cursoDO = new TblCurso($db);
 				$clase = ( ($contador%2)==0 )?'':'class="alter"';
 				$contador++;
 				
 				?>
 				<tr	<?= $clase ?> >
-					<td><a href="/plan/ficha.html/<?= $planDO->getIdPlan() ?>"><?= $planDO->getVNombre() ?></a></td>
-					<td><a href="/convocatoria/ficha.html/<?= $planDO->getFkConvocatoria() ?>"><?= $this->convocatoriasIDX[$planDO->getFkConvocatoria()] ?></a></td>
-					<td><?= $this->tiposPlanIDX[$planDO->getFkTipoPlan()] ?></td>
-					<td><?= $this->estadosPlanIDX[$planDO->getFkEstadoPlan()] ?></td>
-					<td><?= $this->consultorasIDX[$planDO->getFkEmpresaPropietaria()] ?></td>
-					<td><?= NingenNumeric::decimalFormatoEuropeo($planDO->getEPresupuestoAsignado(), 2) ?>€</td>
+					<td><a href="/curso/ficha.html/<?= $cursoDO->getIdCurso() ?>"><?= $cursoDO->getVNombre() ?></a></td>
+					<td><a href="/plan/ficha.html/<?= $cursoDO->getFkPlan() ?>"><?= $this->planesIDX[$cursoDO->getFkPlan()] ?></a></td>
+					<td><?= $this->sectoresIDX[$cursoDO->getFkSector()] ?></td>
+					<td><?= $this->categoriasIDX[$cursoDO->getFkCategoria()] ?></td>
+					<td><?= $cursoDO->getDInicio() ?></td>
+					<td><?= $cursoDO->getDFin() ?></td>
 					<?
 			
 						if ( $this->editar ){
-							?><td class="accion"><a href="javascript:ventanaConfirmacion('Confirmar','¿Está seguro que desea eliminar el plan <strong><?= $planDO->getVNombre() ?></strong>?','/plan/eliminar.html/<?= $planDO->getIdPlan() ?>')" class="btnEliminar" title="Eliminar Plan"><span>eliminar</span></a></td>
-							<td class="accion"><a href="/plan/editar.html/<?= $planDO->getIdPlan() ?>" class="btnEditar" title="Editar Plan"><span>editar</span></a></td>
-							<td class="accion"><a href="/plan/duplicar.html/<?= $planDO->getIdPlan() ?>" class="btnDuplicar" title="Duplicar Plan"><span>duplicar</span></a></td><?	
+							?><td class="accion"><a href="javascript:ventanaConfirmacion('Confirmar','¿Está seguro que desea eliminar el curso <strong><?= $cursoDO->getVNombre() ?></strong>?','/curso/eliminar.html/<?= $cursoDO->getIdCurso() ?>')" class="btnEliminar" title="Eliminar Curso"><span>eliminar</span></a></td>
+							<td class="accion"><a href="/curso/editar.html/<?= $cursoDO->getIdCurso() ?>" class="btnEditar" title="Editar Curso"><span>editar</span></a></td>
+							<td class="accion"><a href="/curso/duplicar.html/<?= $cursoDO->getIdCurso() ?>" class="btnDuplicar" title="Duplicar Curso"><span>duplicar</span></a></td><?	
 						}
 					
 					?>
@@ -56,3 +62,17 @@
 	</tbody>
 </table>
 <div id="paginadorContainer"><?= $this->paginador ?></div>
+
+<?php 
+
+	} else {
+
+?>
+
+<h3>No hay ningún curso</h3>
+
+<?php 
+
+	}
+
+?>
