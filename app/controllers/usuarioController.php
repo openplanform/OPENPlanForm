@@ -1,22 +1,26 @@
 <?php
 
+require_once 'NingenPaginator.inc';
+require_once 'NingenMailer.inc';
+require_once 'NingenMailerTemplate.inc';
+require_once 'helper/NingenDate.inc';
+require_once 'helper/NingenString.inc';
+
 require_once NINGENCMS_CLASSESDIR . 'PplController.inc';
 require_once NINGENCMS_MODULEDIR . 'menuPrincipalModule.php';
 require_once NINGENCMS_MODULEDIR . 'logoutModule.php';
 require_once NINGENCMS_MODULEDIR . 'barraHerramientasModule.php';
+require_once NINGENCMS_MODULEDIR . 'avisoModule.php';
+
 require_once NINGENCMS_MODELDIR . 'TblUsuario.inc';
 require_once NINGENCMS_MODELDIR . 'TblPersona.inc';
 require_once NINGENCMS_MODELDIR . 'TblProvincia.inc';
 require_once NINGENCMS_MODELDIR . 'TblPais.inc';
 require_once NINGENCMS_MODELDIR . 'TrelRolUsuario.inc';
+require_once NINGENCMS_MODELDIR . 'TblTipoIdentificacion.inc';
 require_once NINGENCMS_MODELDIR . 'TblEstadoCivil.inc';
 require_once NINGENCMS_MODELDIR . 'TblEstadoLaboral.inc';
 require_once NINGENCMS_MODELDIR . 'TblNivelEstudios.inc';
-
-require_once 'NingenPaginator.inc';
-require_once 'helper/NingenDate.inc';
-require_once 'helper/NingenString.inc';
-
 
 class usuarioController extends PplController{
     
@@ -60,10 +64,12 @@ class usuarioController extends PplController{
         } else {
             $this->view->order = 'asc';
         }
+        $this->view->orderBy = $aliasOrderBy;   
+
+        // Guardaremos la clave del usuario actual, solo para verificar si se intenta eliminar a si mismo
+        $this->view->idUsuarioActual = $this->usuario->getId();
         
-        $this->view->orderBy = $aliasOrderBy;        
-        
-       // Se instancia y configura el paginador
+        // Se instancia y configura el paginador
         $paginador = new NingenPaginator($this->db, null, 'tblUsuario', $this->helper);
         $paginador->setItemsPorPagina(10);
         $paginador->setOrderBy($orderBy);
@@ -136,10 +142,11 @@ class usuarioController extends PplController{
         if (count($_POST) > 0){
             
             // Modo inserción de datos
-            $username = $this->helper->escapeInjection($this->helper->get('nombreUsuario'));
-            $password = $this->helper->escapeInjection($this->helper->get('password1'));
-            $repassword = $this->helper->escapeInjection($this->helper->get('repassword1'));
-            $email = $this->helper->escapeInjection($this->helper->get('emailUsuario'));
+            $username = strtolower($this->helper->getAndEscape('nombreUsuario'));
+            $password = strtolower($this->helper->getAndEscape('password1'));
+            $repassword = strtolower($this->helper->getAndEscape('repassword1'));
+            $email = $this->helper->getAndEscape('emailUsuario');
+            $avisar = $this->helper->getAndEscape('avisar');
             
             // Comprobaciones pertinentes
             if (empty($username)){
@@ -152,7 +159,7 @@ class usuarioController extends PplController{
                 return;                
             }
             
-            $sql = "SELECT COUNT(*) AS total FROM tblUsuario WHERE vNombre = '$username'";
+            $sql = "SELECT COUNT(*) AS total FROM tblUsuario WHERE LOWER(vNombre) = '$username'";
             $this->db->executeQuery($sql);
             $row = $this->db->fetchRow();
             if (is_array($row) && array_key_exists('total', $row) && $row['total'] != 0){
@@ -242,6 +249,46 @@ class usuarioController extends PplController{
             
             // En este punto ya se puede realizar el commit
             $this->db->commit();
+            
+            //
+            // MAIL DE AVISO (avisar es un checkbox en el formulario de alta)
+            //
+            if ($avisar == 'on'){
+            
+                // Se obtiene la configuración del mailer
+                $appConfig = $GLOBALS['NINGEN_CMS']['app_config'];
+                if (!$appConfig instanceof NingenApplicationConfig){
+                    throw new NingenException('No se ha obtenido la configuración del mailer. Error crítico.', 500);
+                }
+    
+                // Template del mail
+                $mt = new NingenMailerTemplate();
+                $mt->setTemplate(NINGENCMS_LAYOUTDIR . 'nuevoUsuario.txt');
+                $mt->addField('ENLACE', 'http://' . $appConfig->getAppHostname());
+                $mt->addField('USUARIO', $username);
+                $mt->addField('CONTRASENA', $password);
+               
+                // Mailer
+                $mailerConfig = $appConfig->getMailerConfiguration();
+                $mailer = new NingenMailer($mailerConfig);
+                $mailer->setSubject("Formación PIME - Datos de acceso");
+                $mailer->setFrom('<noreply@planespime.es>', 'PlanesPIME');
+                $mailer->setBody($mt->getContent());
+                $mailer->addTo($email);
+                
+    
+                // Se envía el correo
+                if(!$mailer->send()){
+                    $this->view->popup = array(
+                        'estado' => 'ko',
+                        'titulo' => 'Error',
+                        'mensaje'=> 'El usuario ha sido creado correctamente, pero ha ocurrido un error al enviar el mail de aviso.',
+                        'url'=> '',
+                    );
+                    return;
+                }
+            
+            }
                 
             $this->redirectTo('usuario', 'index');
             
@@ -265,7 +312,7 @@ class usuarioController extends PplController{
     
     /**
      * Obtiene todos los datos necesarios para mostrar en la ficha de usuario
-     * como así también en la página de edición. Retorna la clave de usuario.     * 
+     * como así también en la página de edición. Retorna la clave de usuario. 
      * @return integer
      */
     private function _getDatosUsuarioFicha(){
@@ -344,19 +391,30 @@ class usuarioController extends PplController{
        
        // Se elimina el usuario
        if ($this->db->executeQuery($sql)){
-           
-           $this->redirectTo('usuario', 'index');
-           
+            
+           // El usuario se ha eliminado a sí mismo, lo expulsamos del sistema
+           if ($this->usuario->getId() == $claveUsuario){
+                
+                $this->redirectTo('index', 'logout');
+                
+           } else {
+                
+                $this->redirectTo('usuario', 'index');
+
+           }
+            
        } else {
-           
+            
            $this->view->popup = array(
                'estado' => 'ko',
                'titulo' => 'Error',
                'mensaje'=> 'Ha ocurrido un error al eliminar el usuario. Inténtelo de nuevo en unos instantes por favor.<br/>Si el problema persiste póngase en contacto con el administrador. Muchas gracias.',
                'url'=> '/usuario/index.html',
            );
-           
+            
        }
+        
+
        
         
     }
@@ -399,7 +457,7 @@ class usuarioController extends PplController{
             }             
         
             $id = $this->helper->getAndEscape('idUsuario');
-            $username = $this->helper->getAndEscape('username');
+            $username = strtolower($this->helper->getAndEscape('username'));
             $email = $this->helper->getAndEscape('email');
             $roles = $this->helper->getAndEscape('roles');
             
@@ -416,7 +474,7 @@ class usuarioController extends PplController{
             
             // NOMBRE DE USUARIO
             if (!empty($username)){
-                $where[] = "vNombre LIKE '%$username%'";
+                $where[] = "LOWER(vNombre) LIKE '%$username%'";
                 $this->view->username = $username;
                 $queryString .= '&amp;username=' . $username;
             }
@@ -540,9 +598,9 @@ class usuarioController extends PplController{
 
             // CAMPOS COMUNES PARA AMBAS ENTIDADES
 
-            $nombreUsuario = $this->helper->getAndEscape('nombreUsuario');
-            $password = $this->helper->getAndEscape('password1');
-            $repassword = $this->helper->getAndEscape('repassword1');
+            $nombreUsuario = strtolower($this->helper->getAndEscape('nombreUsuario'));
+            $password = strtolower($this->helper->getAndEscape('password1'));
+            $repassword = strtolower($this->helper->getAndEscape('repassword1'));
             $email = $this->helper->getAndEscape('emailUsuario');
             $rolesARR = array();
             if ( array_key_exists('roles', $_POST) ){
@@ -565,9 +623,9 @@ class usuarioController extends PplController{
             // Se verificará la existencia del nombre de usuario, solo en el caso que el nombre haya cambiado
             $oldUsername = NingenCmsSession::getValue('oldUsername');
             
-            if ($oldUsername != $nombreUsuario){
+            if ($oldUsername != strtolower($nombreUsuario)){
 
-                $sql = "SELECT COUNT(*) AS total FROM tblUsuario WHERE vNombre = '$nombreUsuario'";
+                $sql = "SELECT COUNT(*) AS total FROM tblUsuario WHERE LOWER(vNombre) = '$nombreUsuario'";
                 $this->db->executeQuery($sql);
                 $row = $this->db->fetchRow();
                 
@@ -695,7 +753,7 @@ class usuarioController extends PplController{
                 $nombre = $this->helper->getAndEscape('nombrePersona');
                 $apellido = $this->helper->getAndEscape('apellido1Persona'); 
                 $apellido2 = $this->helper->getAndEscape('apellido2Persona'); 
-                $nacimiento = $this->helper->getAndEscape('nacimientoPersona'); 
+                $nacimiento = $this->helper->getAndEscape('nacimientoPersona');
                 $dni = $this->helper->getAndEscape('dniPersona'); 
                 $movil = $this->helper->getAndEscape('movilPersona'); 
                 $direccion = $this->helper->getAndEscape('direccionPersona'); 
@@ -765,7 +823,7 @@ class usuarioController extends PplController{
                 $personaDO->setVNombre($nombre);
                 $personaDO->setVPrimerApellido($apellido);
                 $personaDO->setVSegundoApellido($apellido2);
-                $personaDO->setDNacimiento(date('Y-m-d', strtotime($nacimiento)));
+                $personaDO->setDNacimiento(NingenDate::europeoAmericano($nacimiento));
                 $personaDO->setVNumeroIdentificacion($dni);
                 $personaDO->setVTelefono($telefono);
                 $personaDO->setVMovil($movil);
@@ -872,6 +930,59 @@ class usuarioController extends PplController{
         
     }
 
+	/**
+     * Obtiene todos los datos necesarios para mostrar un formulario vacío de empresa o de usuario.
+     * Retorna la clave de usuario. 
+     * @return integer
+     */
+    private function _getDatosNuevoUsuarioFicha(){
+        
+        // Se obtiene la clave desde el request
+        $claveUsuario = $this->getParam(0);
+
+        // Datos de acceso
+        if (!is_null($claveUsuario)){
+            
+            $usuarioBO = $this->aclManager->createSessionObject($claveUsuario);
+            
+        } else {
+
+            // Si no se pasa clave de usuario redirigimos a la ficha
+            $usuarioBO = NingenCmsSession::getValue('usuario');
+            $claveUsuario = $usuarioBO->getId();
+            
+        }
+        
+        // Se guardará el antiguo nombre de usuario en la sesión, ya que en el apartado de edición es necesario saberlo
+        NingenCmsSession::setValue('oldUsername', $usuarioBO->getNombre());
+        
+        $this->view->usuarioBO = $usuarioBO;
+        
+        $rolPrincipalUsuario = $this->aclManager->getRolMasRelevanteUsuario($claveUsuario);
+        
+        
+        // Verificaremos el típo de entidad (de acuerdo a su rol más relevante)
+        if ($this->aclManager->isRolEmpresa($rolPrincipalUsuario)){
+            
+            $this->view->tipo = 'empresa';
+            
+        } elseif($this->aclManager->isRolPersona($rolPrincipalUsuario)){
+            
+            $this->view->tipo = 'persona';
+            
+        } else {
+            
+            throw new NingenException('No se puede determinar el tipo de entidad del usuario a mostrar. Por favor contacte con el administrador.', 500);
+            
+        }
+        
+        // Labels para los roles
+        $this->view->rolesIDX = $this->aclManager->getRoles();
+        
+        return $claveUsuario;
+        
+    }
+    
     /**
      * Nuevo usuario
      * @throws NingenException
@@ -880,11 +991,18 @@ class usuarioController extends PplController{
         
         $this->setAlternateLayout('libre');
         
+        // Mensaje de aviso para completar la ficha
+        $avisoModule = new avisoModule('aviso');
+        $this->addModule($avisoModule);
+        
         // Se obtienen los datos actuales y se le pasan a la vista
-        //$claveUsuario = $this->_getDatosUsuarioFicha();
+        $claveUsuario = $this->_getDatosNuevoUsuarioFicha();
         
         if ($this->view->tipo == 'persona'){
             
+        	// Tipo identificación
+        	$this->view->tipoIdentificacionCOL = TblTipoIdentificacion::findAll($this->db, 'vNombre');
+        
             // Estado civil
             $this->view->estadosCivilesCOL = TblEstadoCivil::findAll($this->db);
             
@@ -919,12 +1037,6 @@ class usuarioController extends PplController{
             $password = $this->helper->getAndEscape('password1');
             $repassword = $this->helper->getAndEscape('repassword1');
             $email = $this->helper->getAndEscape('emailUsuario');
-            $rolesARR = array();
-            if ( array_key_exists('roles', $_POST) ){
-                foreach ($_POST['roles'] as $rol) {
-                    $rolesARR[] = $this->helper->escapeInjection($rol);
-                }
-            }
             
             // Nombre de usuario
             if (empty($nombreUsuario)){
@@ -980,12 +1092,6 @@ class usuarioController extends PplController{
                 return;
             }
             
-            // Roles
-            if (count($rolesARR) == 0){
-                $this->view->errorRol = 'Debe seleccionar como mínimo un rol.';
-                return;
-            }
-            
             // Se insertan los datos
             $this->db->begin();
             
@@ -1010,58 +1116,13 @@ class usuarioController extends PplController{
                 $this->view->popup = array(
                     'estado' => 'ko',
                     'titulo' => 'Error',
-                    'mensaje'=> 'Ha ocurrido un error al actualizar el usuario. Inténtelo de nuevo en unos instantes por favor.<br/>Si el problema persiste póngase en contacto con el administrador. Muchas gracias.',
+                    'mensaje'=> 'Ha ocurrido un error al actualizar sus datos de acceso. Inténtelo de nuevo en unos instantes por favor.',
                     'url'=> '',
                 );
             
                 return;
-                
+
             }
-            
-            //
-            // ROLES DE USUARIO
-            //
-            
-            $sql = 'DELETE FROM trelRolUsuario WHERE fkUsuario = ' . $claveUsuario;
-            
-            if (!$this->db->executeQuery($sql)){
-                
-                $this->db->rollback();
-
-                $this->view->popup = array(
-                    'estado' => 'ko',
-                    'titulo' => 'Error',
-                    'mensaje'=> 'Ha ocurrido un error al restablecer sus roles. Inténtelo de nuevo en unos instantes por favor.<br/>Si el problema persiste póngase en contacto con el administrador. Muchas gracias.',
-                    'url'=> '',
-                );
-                
-                return;                    
-                
-            }
-            
-            foreach ($rolesARR as $rol){
-                
-                // Se asignan los roles al nuevo usuario
-                $usuarioRolDO = new TrelRolUsuario($this->db);
-                $usuarioRolDO->setFkUsuario($claveUsuario);
-                $usuarioRolDO->setFkRol($rol);
-                
-                if (!$usuarioRolDO->insert()){
-
-                    $this->db->rollback();
-
-                    $this->view->popup = array(
-                        'estado' => 'ko',
-                        'titulo' => 'Error',
-                        'mensaje'=> 'Ha ocurrido un error con la asignación de roles. Inténtelo de nuevo en unos instantes por favor.<br/>Si el problema persiste póngase en contacto con el administrador. Muchas gracias.',
-                        'url'=> '',
-                    );
-                    
-                    return;
-                    
-                }
-                
-            }                
             
             if (md5('persona') == $tipo){
                 
@@ -1069,14 +1130,15 @@ class usuarioController extends PplController{
 
                 $nombre = $this->helper->getAndEscape('nombrePersona');
                 $apellido = $this->helper->getAndEscape('apellido1Persona'); 
-                $apellido2 = $this->helper->getAndEscape('apellido2Persona'); 
-                $nacimiento = $this->helper->getAndEscape('nacimientoPersona'); 
-                $dni = $this->helper->getAndEscape('dniPersona'); 
+                $apellido2 = $this->helper->getAndEscape('apellido2Persona');
+                $nacimiento = $this->helper->getAndEscape('nacimientoPersona');
+                $dni = $this->helper->getAndEscape('dniPersona');
+                $tipoIdentificacion = $this->helper->getAndEscape('tipoIdentificacion');
                 $movil = $this->helper->getAndEscape('movilPersona'); 
                 $direccion = $this->helper->getAndEscape('direccionPersona'); 
                 $poblacion = $this->helper->getAndEscape('poblacionPersona'); 
                 $cp = $this->helper->getAndEscape('cpPersona'); 
-                $provincia = $this->helper->getAndEscape('provinciasUsuario'); 
+                $provincia = $this->helper->getAndEscape('provincia'); 
                 $pais = $this->helper->getAndEscape('paisPersona'); 
                 $estadoCivil = $this->helper->getAndEscape('estadoCivil'); 
                 $estadoLaboral = $this->helper->getAndEscape('estadoLaboral'); 
@@ -1132,37 +1194,45 @@ class usuarioController extends PplController{
                     return;
                 }
                 
+	            // Tipo identificación
+                if (empty($tipoIdentificacion)){
+                    $tipoIdentificacion = 1; // DNI
+                }
+                
                 //
                 // DATOS DE PERSONA
                 //
                 
-                $personaDO = array_shift(TblPersona::findByTblUsuario($this->db, $claveUsuario));
+                $personaDO = new TblPersona($this->db);
+                $personaDO->setFkUsuario($claveUsuario);
                 $personaDO->setVNombre($nombre);
                 $personaDO->setVPrimerApellido($apellido);
                 $personaDO->setVSegundoApellido($apellido2);
-                $personaDO->setDNacimiento(date('Y-m-d', strtotime($nacimiento)));
+                $personaDO->setDNacimiento(NingenDate::europeoAmericano($nacimiento));
                 $personaDO->setVNumeroIdentificacion($dni);
                 $personaDO->setVTelefono($telefono);
                 $personaDO->setVMovil($movil);
                 $personaDO->setVDireccion($direccion);
                 $personaDO->setVPoblacion($poblacion);
                 $personaDO->setVCp($cp);
+                $personaDO->setFkTipoIdentificacion($tipoIdentificacion);
                 $personaDO->setFkProvincia($provincia);
                 $personaDO->setFkPais($pais);
                 $personaDO->setFkEstadoCivil($estadoCivil);
                 $personaDO->setFkEstadoLaboral($estadoLaboral);
                 $personaDO->setFkNivelEstudios($nivelEstudios);
+                $personaDO->setDAlta(date('Y-m-d'));
                 $personaDO->setLastModified(date('Y-m-d'));
                 $personaDO->setModUser($this->view->usuarioBO->getNombre());
                 
-                if (!$personaDO->update()){
+                if (!$personaDO->insert()){
                     
                     $this->db->rollback();
                     
                     $this->view->popup = array(
                         'estado' => 'ko',
                         'titulo' => 'Error',
-                        'mensaje'=> 'Ha ocurrido un error al actualizar sus datos personales. Inténtelo de nuevo en unos instantes por favor.<br/>Si el problema persiste póngase en contacto con el administrador. Muchas gracias.',
+                        'mensaje'=> 'Ha ocurrido un error al insertar sus datos personales. Inténtelo de nuevo en unos instantes por favor.',
                         'url'=> '',
                     );
                     
@@ -1176,7 +1246,6 @@ class usuarioController extends PplController{
             } elseif (md5('empresa') == $tipo){
                 
                 // EMPRESA
-                $this->view->empresaDO = array_shift(TblPersona::findByTblUsuario($this->db, $claveUsuario));
                 
                 // Se obtienen los datos
                 $nombreEmpresa = $this->helper->getAndEscape('nombre');
@@ -1208,7 +1277,9 @@ class usuarioController extends PplController{
                 }
                 
                 // Se prepara el insert
-                $empresaDO = array_shift(TblEmpresa::findByTblUsuario($this->db, $claveUsuario));
+                
+                $empresaDO = new TblEmpresa($this->db);
+                $empresaDO->setFkUsuario($claveUsuario);
                 $empresaDO->setVNombre($nombreEmpresa);
                 $empresaDO->setVCif($cif);
                 $empresaDO->setFkPais($pais);
@@ -1219,16 +1290,17 @@ class usuarioController extends PplController{
                 $empresaDO->setVTelefono($telefono);
                 $empresaDO->setVTelefono2($telefono2);
                 $empresaDO->setVFax($fax);
+                $empresaDO->setDAlta(date('Y-m-d'));
                 
                 // Se insteran los datos
-                if (!$empresaDO->update()){
+                if (!$empresaDO->insert()){
                     
                     $this->db->rollback();
                     
                     $this->view->popup = array(
                         'estado' => 'ko',
                         'titulo' => 'Error',
-                        'mensaje'=> 'Ha ocurrido un error al actualizar los datos de empresa. Inténtelo de nuevo en unos instantes por favor.<br/>Si el problema persiste póngase en contacto con el administrador. Muchas gracias.',
+                        'mensaje'=> 'Ha ocurrido un error al insertar los datos de empresa. Inténtelo de nuevo en unos instantes por favor.<br/>Si el problema persiste póngase en contacto con el administrador. Muchas gracias.',
                         'url'=> '',
                     );
                     
@@ -1241,9 +1313,12 @@ class usuarioController extends PplController{
             }
             
             // Se vuelven a obtener los datos del usuario
-            $claveUsuario = $this->_getDatosUsuarioFicha();
+            //$claveUsuario = $this->_getDatosUsuarioFicha();
+            $this->redirectTo('usuario', 'ficha');
             
         }
+        
+        
                 
         
     }

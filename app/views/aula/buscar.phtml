@@ -1,0 +1,143 @@
+<div id="buscadorAcademia" class="buscador">
+    
+    <h2>Buscar aula</h2>
+    
+    <form id="buscarAcademia" action="<?= $_SERVER['REQUEST_URI'] ?>" method="post">
+    
+        <fieldset>
+        
+            <input type="hidden" name="sent" value="<?= md5(date('is')) ?>" />
+        
+            <div class="campo multi">
+                <label for="idCentro">Id</label>
+                <input type="text" class="campoTexto mini" id="idCentro" name="idCentro" value="<?= $this->id ?>" />
+            </div>
+
+            <div class="campo multi">
+                <label for="pais">País</label>
+                <select class="desplegable campoTexto mediano" id="pais" name="pais">
+                    <option value=""></option><?
+                    
+                    foreach ($this->paisesIDX as $clave=>$paisDO){
+                        
+                        $sel = $clave == $this->pais ? ' selected="selected" ' : '';
+                        echo '<option value="' . $clave . '"' . $sel . '>' . $paisDO->getVNombre() . '</option>' . "\n";
+                        
+                    }
+                    
+                ?></select>
+            </div>
+
+            <div class="campo multi">
+                <label for="provincia">Provincia</label>
+                <select class="desplegable campoTexto mediano" id="provincia" name="provincia">
+                    <option value=""></option><?
+                    
+                    foreach ($this->provinciasIDX as $clave=>$provinciaDO){
+                        
+                        $sel = $clave == $this->provincia ? ' selected="selected" ' : '';
+                        echo '<option value="' . $clave . '"' . $sel . '>' . $provinciaDO->getVNombre() . '</option>' . "\n";
+                        
+                    }
+                    
+                ?></select>
+            </div>
+            
+            <div class="separadorH"></div>
+        
+            <div class="campo multi">
+                <label for="capacidad">Cap.</label>
+                <input type="text" class="campoTexto mini" id="capacidad" name="capacidad" value="<?= $this->capacidad ?>" />
+            </div>
+            
+                        
+            <div class="campo multi">
+                <label for="keyword">Palabra clave</label>
+                <input type="text" class="campoTexto" id="keyword" name="keyword" value="<?= $this->kw ?>" />
+            </div>            
+            
+            <div class="campo multi">
+                <input type="submit" value="Buscar" class="btnSubmit" />
+            </div>
+            
+            <div class="separadorH"></div>
+            
+        
+        </fieldset>
+    
+    </form>
+    
+    <div class="resultadosBusqueda"><?php 
+
+    if ( count($this->aulasCOL) > 0 ){
+
+?>
+
+
+<table class="listado">
+    <thead>
+        <tr>
+            <th><a href="/aula/index.html/?ob=nom&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'nom')?'class="ordenado ' . $this->order . '"':'' )?> >Nombre</a></th>
+            <th><a href="/aula/index.html/?ob=cen&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'cen')?'class="ordenado ' . $this->order . '"':'' )?> >Centro</a></th>
+            <th><a href="/aula/index.html/?ob=cap&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'cap')?'class="ordenado ' . $this->order . '"':'' )?> >Capacidad</a></th>
+            <th><a href="/aula/index.html/?ob=dir&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'dir')?'class="ordenado ' . $this->order . '"':'' )?> >Dirección</a></th>
+            <?
+            
+                if ( $this->editar ){
+                    ?><th>Eliminar</th>
+                    <th>Editar</th>
+                    <th>Duplicar</th><? 
+                }
+            
+            ?>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        
+            $contador = 0;
+            foreach ( $this->aulasCOL as $aulaDO ){
+                
+                $clase = ( ($contador%2)==0 )?'':'class="alter"';
+                $contador++;
+                
+                ?>
+                <tr <?= $clase ?> >
+                    <td><a href="/aula/ficha.html/<?= $aulaDO->getIdAula() ?>"><?= $aulaDO->getVNombre() ?></a></td>
+                    <td><a href="/centro/ficha.html/<?= $aulaDO->getFkCentro() ?>"><?= $this->centrosIDX[$aulaDO->getFkCentro()] ?></a></td>
+                    <td><?= $aulaDO->getICapacidad() ?></td>
+                    <td><?= $aulaDO->getVDireccion() ?></td>
+                    <?
+                    
+                        if ( $this->editar ){
+                            ?><td class="accion"><a href="javascript:ventanaConfirmacion('Confirmar','¿Está seguro que desea eliminar el aula <strong><?= $aulaDO->getVNombre() ?></strong>?','/aula/eliminar.html/<?= $aulaDO->getIdAula() ?>')" class="btnEliminar" title="Eliminar aula"><span>eliminar</span></a></td>
+                            <td class="accion"><a href="/aula/editar.html/<?= $aulaDO->getIdAula() ?>" class="btnEditar" title="Editar aula"><span>editar</span></a></td>
+                            <td class="accion"><a href="/aula/duplicar.html/<?= $aulaDO->getIdAula() ?>" class="btnDuplicar" title="Duplicar aula"><span>duplicar</span></a></td><? 
+                        }
+                    
+                    ?>
+                </tr>
+                <?
+                
+            }
+            
+        ?>
+    </tbody>
+</table>
+<div id="paginadorContainer"><?= $this->paginador ?></div>
+
+<?php 
+
+    } else {
+    
+?>
+
+<h3>No hay ningún aula</h3>
+
+<?php 
+
+    }
+
+?>
+    </div>
+</div>

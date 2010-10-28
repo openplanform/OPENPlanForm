@@ -1,5 +1,12 @@
 <h2>Listado de profesores</h2>
 
+<?php 
+
+	if ( count($this->profesoresCOL) > 0 ){
+
+?>
+
+
 <table class="listado">
     <thead>
         <tr>
@@ -66,3 +73,17 @@
     </tbody>
 </table>
 <div id="paginadorContainer"><?= $this->paginador ?></div>
+
+<?php 
+
+	} else {
+
+?>
+
+<h3>No hay ningún profesor</h3>
+
+<?php 
+
+	}
+
+?>

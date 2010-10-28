@@ -59,6 +59,7 @@
             <thead>
                 <tr>
                     <th><a href="/convocatoria/buscar.html/?ob=nom&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'nom')?'class="ordenado ' . $this->order . '"':'' )?> >Nombre</a></th>
+                    <th><a href="/convocatoria/buscar.html/?ob=anyo&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'anyo')?'class="ordenado ' . $this->order . '"':'' )?> >Año</a></th>
                     <th><a href="/convocatoria/buscar.html/?ob=desc&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'desc')?'class="ordenado ' . $this->order . '"':'' )?>>Descripción</a></th>
                     <th><a href="/convocatoria/buscar.html/?ob=pres&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'pres')?'class="ordenado ' . $this->order . '"':'' )?>>Presupuesto</a></th>
                     <th><a href="/convocatoria/buscar.html/?ob=tipo&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'tipo')?'class="ordenado ' . $this->order . '"':'' )?>>Tipo de Convocatoria</a></th>
@@ -86,13 +87,14 @@
                         ?>
                         <tr <?= $clase ?> >
                             <td><a href="/convocatoria/ficha.html/<?= $convocatoriaDO->getIdConvocatoria() ?>"><?= $convocatoriaDO->getVNombre() ?></a></td>
-                            <td><?= $convocatoriaDO->getVDescripcion()?></td>
+                            <td><?= $convocatoriaDO->getIAno()?></td>
+                            <td><?= NingenString::limitaTexto($convocatoriaDO->getVDescripcion(), 40) ?></td>
                             <td><?= NingenNumeric::decimalFormatoEuropeo($convocatoriaDO->getEPresupuesto(), 2) ?>€</td>
                             <td><?= $this->tiposConvocatoriaIDX[$convocatoriaDO->getFkTipoConvocatoria()] ?></td>
                             <?
                             
                                 if ( $this->editar ){
-                                    ?><td class="accion"><a href="javascript:ventanaConfirmacion('Confirmar','¿Está seguro que desea eliminar la convocatoria <strong><?= $convocatoriaDO->getVNombre() ?></strong>?','/convocatoria/eliminar.html/<?= $convocatoriaDO->getIdConvocatoria() ?>')" class="btnEliminar" title="Eliminar Convocatoria"><span>eliminar</span></a></td>
+                                    ?><td class="accion"><a href="javascript:ventanaConfirmacion('IMPORTANTE','¿Está seguro que desea eliminar la convocatoria <strong><?= $convocatoriaDO->getVNombre() ?></strong>?. TODOS los PLANES, CURSOS y contenidos relacionados con esta convocatoria serán también eliminados.<br /><br /> ¿Desea continuar?','/convocatoria/eliminar.html/<?= $convocatoriaDO->getIdConvocatoria() ?>')" class="btnEliminar" title="Eliminar Convocatoria"><span>eliminar</span></a></td>
                                     <td class="accion"><a href="/convocatoria/editar.html/<?= $convocatoriaDO->getIdConvocatoria() ?>" class="btnEditar" title="Editar Convocatoria"><span>editar</span></a></td>
                                     <td class="accion"><a href="/convocatoria/duplicar.html/<?= $convocatoriaDO->getIdConvocatoria() ?>" class="btnDuplicar" title="Duplicar Convocatoria"><span>duplicar</span></a></td><? 
                                 }

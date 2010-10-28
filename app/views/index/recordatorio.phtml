@@ -1,0 +1,29 @@
+<?php
+
+//$this = new NingenView;
+$this->addCssInclude('/css/login.css');
+
+?><div id="wrapper">
+    <div id="login" class="recordatorio">
+        <div class="barraTitulo login">Olvidé mi contraseña</div>
+        <div class="inner">
+            <form id="recordatorioLogin" action="<?= $_SERVER['REQUEST_URI'] ?>" method="post">
+                <fieldset>
+                    <div class="campo">
+                        <label for="username">Nombre de usuario</label>
+                        <input type="text" name="username" id="username" class="campoTexto" />
+                    </div>
+                    <div class="campo">
+                        <label for="email">Email</label>
+                        <input type="text" name="email" id="email" class="campoTexto" />
+                    </div>
+                    <div class="campo">
+                        <input type="submit" value="Enviar" class="btnSubmit" />
+                    </div>
+                    <p>Introduzca su usuario y su correo y le enviaremos una nueva contraseña</p>
+                    <p class="mensaje"><?= $this->mensaje ?></p>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>

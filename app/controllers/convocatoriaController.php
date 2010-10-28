@@ -1,5 +1,6 @@
 <?php
 require_once 'helper/NingenNumeric.inc';
+require_once 'helper/NingenString.inc';
 require_once 'NingenPaginator.inc';
 
 require_once NINGENCMS_CLASSESDIR . 'PplController.inc';
@@ -34,6 +35,7 @@ class convocatoriaController extends PplController{
         
     	// Parámetros de ordenación para el paginador
     	$aliasCampos = array(
+    	    'anyo'  => 'iAno',
     		'nom' 	=> 'vNombre',
     		'pres'	=> 'ePresupuesto',
     		'tipo'	=> 'fkTipoConvocatoria'
@@ -73,7 +75,7 @@ class convocatoriaController extends PplController{
         $this->view->paginador = $paginador->getPaginatorHtml();
     	
     	// Convocatorias
-        $this->view->arrConvocatoriasDO = $convocatoriasCOL;
+        $this->view->convocatoriasCOL = $convocatoriasCOL;
         
         // Tipos de Convocatoria
     	$this->view->tiposConvocatoriaIDX = $this->cacheBO->getTiposConvocatoria();
@@ -303,8 +305,8 @@ class convocatoriaController extends PplController{
 	    	$convocatoriaDO->setVDescripcion($descripcion);
 	    	$convocatoriaDO->setFkTipoConvocatoria($tipo);
 	    	$convocatoriaDO->setEPresupuesto(NingenNumeric::formatoEuropeoDecimal($presupuesto, 2));
-	    	$profesorDO->setLastModified(date('Y-m-d'));
-            $profesorDO->setModUser($this->usuario->getNombre());
+	    	$convocatoriaDO->setLastModified(date('Y-m-d'));
+            $convocatoriaDO->setModUser($this->usuario->getNombre());
 	    	
 	    	// Empieza la transacción
 	    	$this->db->begin();

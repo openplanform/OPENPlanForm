@@ -31,6 +31,16 @@
 	border-right: 1px solid #707070;
 	border-bottom: 1px solid #707070;
 }
+#toolbarPrincipal ul li.inactivo{
+	-ms-filter: “progid:DXImageTransform.Microsoft.Alpha(Opacity=0)”;
+	filter: alpha(opacity=20);
+	-khtml-opacity: 0.2;
+	-moz-opacity: 0.2;
+	opacity: 0.2;
+}
+#toolbarPrincipal ul li.inactivo a:hover{
+	border: 1px solid #F2F2F2;
+}
 #toolbarPrincipal ul li.limpiar a{
     background: url(/img/iconos/limpiar.png) 50% 4px no-repeat;
 }
@@ -54,4 +64,13 @@
 }
 #toolbarPrincipal ul li.duplicar a{
     background: url(/img/iconos/duplicar32.png) 50% 4px no-repeat;    
+}
+#toolbarPrincipal ul li.menu a{
+    background: url(/img/iconos/menu32.png) 50% 4px no-repeat;    
+}
+#toolbarPrincipal ul li.config a{
+    background: url(/img/iconos/config32.png) 50% 4px no-repeat;    
+}
+#toolbarPrincipal ul li.roles a{
+    background: url(/img/iconos/roles32.png) 50% 4px no-repeat;    
 }

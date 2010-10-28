@@ -1,14 +1,18 @@
 <h2>Listado de usuarios</h2>
 
-<table class="listado">
+<?php 
+
+	if ( count($this->result) > 0 ){
+
+?><table class="listado">
     <thead>
         <tr>
-            <th><a href="/usuario/index.html/?ob=id&o=<?=$this->order?>" <?=( ($this->orderBy == 'id')?'class="ordenado ' . $this->order . '"':'' )?> >Id</a></th>
-            <th><a href="/usuario/index.html/?ob=nom&o=<?=$this->order?>" <?=( ($this->orderBy == 'nom')?'class="ordenado ' . $this->order . '"':'' )?> >Nombre</a></th>
+            <th><a href="/usuario/index.html/?ob=id&amp;o=<?=$this->order?>" <?=( ($this->orderBy == 'id')?'class="ordenado ' . $this->order . '"':'' )?> >Id</a></th>
+            <th><a href="/usuario/index.html/?ob=nom&amp;o=<?=$this->order?>" <?=( ($this->orderBy == 'nom')?'class="ordenado ' . $this->order . '"':'' )?> >Nombre</a></th>
             <th>Roles</th><?
             
                 if ( $this->editar ){
-                    ?><th><a href="/usuario/index.html/?ob=mail&o=<?=$this->order?>" <?=( ($this->orderBy == 'mail')?'class="ordenado ' . $this->order . '"':'' )?> >Email</a></th>
+                    ?><th><a href="/usuario/index.html/?ob=mail&amp;o=<?=$this->order?>" <?=( ($this->orderBy == 'mail')?'class="ordenado ' . $this->order . '"':'' )?> >Email</a></th>
                     <th>Eliminar</th>
                     <th>Editar</th><? 
                 }
@@ -20,12 +24,19 @@
         $alter = true;
     
         foreach ($this->result as $clave => $usuario){
+            
+            // Avisaremos si el usuario intenta eliminarse a si mismo, ya que al hacerlo será expulsado del sistema
+            $mensajeBorrar = "'Eliminar usuario', '¿Está seguro que desea eliminar el usuario <strong>" . $usuario['nombre'] . "</strong>?', this.href";
+            if ($this->idUsuarioActual == $clave){
+                $mensajeBorrar = "'IMPORTANTE', '¿Está seguro que desea eliminar <strong> SU PROPIA CUENTA </strong> de usuario?', this.href";
+            }
     
             $alter = !$alter;
             
             ?><tr <?= $alter ? 'class="alter"' : '' ?>>
                 <td><?= $clave ?></td><?
-                
+
+                // Solo se podrá ver la ficha de un usuario que tenga los datos completos
                 if ($usuario['datos']){
                 
                     ?><td><a href="/usuario/ficha/<?= $clave ?>"><?= $usuario['nombre'] ?></a></td><?
@@ -41,8 +52,17 @@
                     if ( $this->editar ){
 
                         ?><td><?= $usuario['email'] ?></td>
-                        <td class="accion"><a href="/usuario/eliminar/<?= $clave ?>" onclick="ventanaConfirmacion('Eliminar usuario', '¿Está seguro que desea eliminar el usuario <strong><?= $usuario['nombre'] ?></strong>?', this.href); return false;" class="btnEliminar usuario" title="Eliminar Usuario"><span>eliminar</span></a></td>
-                        <td class="accion"><a href="/usuario/editar.html/<?= $clave ?>" class="btnEditar" title="Editar Usuario"><span>editar</span></a></td><?
+                        <td class="accion"><a href="/usuario/eliminar/<?= $clave ?>" onclick="ventanaConfirmacion(<?= $mensajeBorrar ?>); return false;" class="btnEliminar usuario" title="Eliminar Usuario"><span>eliminar</span></a></td>
+                        <td class="accion"><?
+
+                        // Solo se podrá editar un usuario que tenga los datos completos
+                        if ($usuario['datos']){
+                        
+                            ?><a href="/usuario/editar.html/<?= $clave ?>" class="btnEditar" title="Editar Usuario"><span>editar</span></a><?
+                            
+                        }
+                        
+                        ?></td><?
                            
                     }
                         
@@ -54,3 +74,17 @@
     </tbody>
 </table>
 <div id="paginadorContainer"><?= $this->paginador ?></div>
+
+<?php 
+
+	} else {
+
+?>
+
+<h3>No hay ningún usuario</h3>
+
+<?php 
+
+	}
+
+?>

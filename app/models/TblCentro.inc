@@ -1,7 +1,7 @@
 <?php
 /**
  * Este archivo ha sido generado con Ningen DoGen v.0.6
- * el 21 de October de 2010 a las 10:48:39
+ * el 27 de October de 2010 a las 11:12:12
  * @package dataAccess
  */
 
@@ -49,6 +49,12 @@ class TblCentro extends NingenGenericDO{
      * @var string
      */
     public $vNombre;
+
+    /**
+     * Atributo que representa el campo "vPoblacion"
+     * @var string
+     */
+    public $vPoblacion;
 
     /**
      * Atributo que representa el campo "vTelefono"
@@ -107,6 +113,7 @@ class TblCentro extends NingenGenericDO{
         $this->fkPais = $data['fkPais'];
         $this->fkEmpresa = $data['fkEmpresa'];
         $this->vNombre = $data['vNombre'];
+        $this->vPoblacion = $data['vPoblacion'];
         $this->vTelefono = $data['vTelefono'];
         $this->vDireccion = $data['vDireccion'];
         $this->vDescripcion = $data['vDescripcion'];
@@ -142,6 +149,9 @@ class TblCentro extends NingenGenericDO{
         }
         if( $tmp = $searchItem->vNombre ){
             $where[] = "vNombre='$tmp'";
+        }
+        if( $tmp = $searchItem->vPoblacion ){
+            $where[] = "vPoblacion='$tmp'";
         }
         if( $tmp = $searchItem->vTelefono ){
             $where[] = "vTelefono='$tmp'";
@@ -217,15 +227,15 @@ class TblCentro extends NingenGenericDO{
     }
 
     /**
-     * Obtiene todas las filas de la tabla tblCentro que coinciden con el criterio fkProvincia='$fkProvincia'.
+     * Obtiene todas las filas de la tabla tblCentro que coinciden con el criterio fkEmpresa='$fkEmpresa'.
      *
      * @param Connection $db Conexión con la base de datos.
-     * @param integer fkProvincia string Valor del campo fkProvincia.
+     * @param integer fkEmpresa string Valor del campo fkEmpresa.
      * @param string $orderBy Cadena con los campos de ordenación separados por comas.
      * @return array
      */
-     public static function findByTblProvincia( $db, $fkProvincia, $orderBy='' ){
-         $sql = "SELECT * FROM tblCentro WHERE fkProvincia='$fkProvincia'";
+     public static function findByTblEmpresa( $db, $fkEmpresa, $orderBy='' ){
+         $sql = "SELECT * FROM tblCentro WHERE fkEmpresa='$fkEmpresa'";
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
@@ -249,15 +259,15 @@ class TblCentro extends NingenGenericDO{
      }
 
     /**
-     * Obtiene todas las filas de la tabla tblCentro que coinciden con el criterio fkEmpresa='$fkEmpresa'.
+     * Obtiene todas las filas de la tabla tblCentro que coinciden con el criterio fkProvincia='$fkProvincia'.
      *
      * @param Connection $db Conexión con la base de datos.
-     * @param integer fkEmpresa string Valor del campo fkEmpresa.
+     * @param integer fkProvincia string Valor del campo fkProvincia.
      * @param string $orderBy Cadena con los campos de ordenación separados por comas.
      * @return array
      */
-     public static function findByTblEmpresa( $db, $fkEmpresa, $orderBy='' ){
-         $sql = "SELECT * FROM tblCentro WHERE fkEmpresa='$fkEmpresa'";
+     public static function findByTblProvincia( $db, $fkProvincia, $orderBy='' ){
+         $sql = "SELECT * FROM tblCentro WHERE fkProvincia='$fkProvincia'";
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
@@ -273,6 +283,7 @@ class TblCentro extends NingenGenericDO{
         $sets[] = 'fkPais=' . ( ( ( $value = $this->fkPais ) === null || !isset($this->fkPais) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'fkEmpresa=' . ( ( ( $value = $this->fkEmpresa ) === null || !isset($this->fkEmpresa) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'vNombre=' . ( ( ( $value = $this->vNombre ) === null || !isset($this->vNombre) ) ? 'null' :  "'".addslashes($value)."'" );
+        $sets[] = 'vPoblacion=' . ( ( ( $value = $this->vPoblacion ) === null || !isset($this->vPoblacion) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'vTelefono=' . ( ( ( $value = $this->vTelefono ) === null || !isset($this->vTelefono) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'vDireccion=' . ( ( ( $value = $this->vDireccion ) === null || !isset($this->vDireccion) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'vDescripcion=' . ( ( ( $value = $this->vDescripcion ) === null || !isset($this->vDescripcion) ) ? 'null' :  "'".addslashes($value)."'" );
@@ -291,6 +302,7 @@ class TblCentro extends NingenGenericDO{
         $attributes[] = 'fkPais';
         $attributes[] = 'fkEmpresa';
         $attributes[] = 'vNombre';
+        $attributes[] = 'vPoblacion';
         $attributes[] = 'vTelefono';
         $attributes[] = 'vDireccion';
         $attributes[] = 'vDescripcion';
@@ -302,6 +314,7 @@ class TblCentro extends NingenGenericDO{
         $values[] = (( $value = $this->fkPais ) === null || !isset($this->fkPais) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->fkEmpresa ) === null || !isset($this->fkEmpresa) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->vNombre ) === null || !isset($this->vNombre) ) ? 'null' : "'".addslashes($value)."'";
+        $values[] = (( $value = $this->vPoblacion ) === null || !isset($this->vPoblacion) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->vTelefono ) === null || !isset($this->vTelefono) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->vDireccion ) === null || !isset($this->vDireccion) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->vDescripcion ) === null || !isset($this->vDescripcion) ) ? 'null' : "'".addslashes($value)."'";
@@ -412,6 +425,26 @@ class TblCentro extends NingenGenericDO{
     public function setVNombre( $value ){
 
         $this->vNombre = $value;
+
+    }
+
+    /**
+      * Obtiene el valor del atributo 'vPoblacion'.
+      *
+      * @return string
+      */
+    public function getVPoblacion(){
+        return $this->vPoblacion;
+    }
+
+    /**
+      * Establece el valor del atributo 'vPoblacion'.
+      *
+      * @param string Valor.
+      */
+    public function setVPoblacion( $value ){
+
+        $this->vPoblacion = $value;
 
     }
 
@@ -531,23 +564,23 @@ class TblCentro extends NingenGenericDO{
     // Relaciones
 
     /**
-     * Obtiene el objeto 'TblProvincia' relacionado.
+     * Obtiene el objeto 'TblEmpresa' relacionado.
      *
-     * @return TblProvincia
+     * @return TblEmpresa
      */
-    public function getTblProvincia(){
-        require_once('TblProvincia.inc');
-        return TblProvincia::findByPrimaryKey( $this->_db, $this->fkProvincia );
+    public function getTblEmpresa(){
+        require_once('TblEmpresa.inc');
+        return TblEmpresa::findByPrimaryKey( $this->_db, $this->fkEmpresa );
     }
 
     /**
-     * Asigna el objeto 'TblProvincia' relacionado.
+     * Asigna el objeto 'TblEmpresa' relacionado.
      *
-     * @param TblProvincia $dataObject
+     * @param TblEmpresa $dataObject
      */
-    public function setTblProvincia( $dataObject ){
-        require_once('TblProvincia.inc');
-        $this->setFkProvincia( $dataObject->getIdProvincia() );
+    public function setTblEmpresa( $dataObject ){
+        require_once('TblEmpresa.inc');
+        $this->setFkEmpresa( $dataObject->getIdEmpresa() );
     }
 
     /**
@@ -571,23 +604,23 @@ class TblCentro extends NingenGenericDO{
     }
 
     /**
-     * Obtiene el objeto 'TblEmpresa' relacionado.
+     * Obtiene el objeto 'TblProvincia' relacionado.
      *
-     * @return TblEmpresa
+     * @return TblProvincia
      */
-    public function getTblEmpresa(){
-        require_once('TblEmpresa.inc');
-        return TblEmpresa::findByPrimaryKey( $this->_db, $this->fkEmpresa );
+    public function getTblProvincia(){
+        require_once('TblProvincia.inc');
+        return TblProvincia::findByPrimaryKey( $this->_db, $this->fkProvincia );
     }
 
     /**
-     * Asigna el objeto 'TblEmpresa' relacionado.
+     * Asigna el objeto 'TblProvincia' relacionado.
      *
-     * @param TblEmpresa $dataObject
+     * @param TblProvincia $dataObject
      */
-    public function setTblEmpresa( $dataObject ){
-        require_once('TblEmpresa.inc');
-        $this->setFkEmpresa( $dataObject->getIdEmpresa() );
+    public function setTblProvincia( $dataObject ){
+        require_once('TblProvincia.inc');
+        $this->setFkProvincia( $dataObject->getIdProvincia() );
     }
 }
 ?>

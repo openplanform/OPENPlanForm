@@ -74,7 +74,7 @@ class planController extends PplController{
         $this->view->paginador = $paginador->getPaginatorHtml();
     	
     	// Planes
-        $this->view->arrPlanesDO = $planesCOL;
+        $this->view->planesCOL = $planesCOL;
         
         // Tipos de Plan
     	$this->view->tiposPlanIDX = $this->cacheBO->getTiposPlan();

@@ -1,5 +1,12 @@
 <h2>Listado de Aulas</h2>
 
+<?php 
+
+	if ( count($this->aulasCOL) > 0 ){
+
+?>
+
+
 <table class="listado">
     <thead>
 		<tr>
@@ -51,3 +58,17 @@
 	</tbody>
 </table>
 <div id="paginadorContainer"><?= $this->paginador ?></div>
+
+<?php 
+
+	} else {
+	
+?>
+
+<h3>No hay ningún aula</h3>
+
+<?php 
+
+	}
+
+?>

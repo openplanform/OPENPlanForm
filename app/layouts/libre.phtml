@@ -4,28 +4,41 @@
     <title>Extranet - Planes Pime</title>
     
     <link rel="stylesheet" type="text/css" href="/css/general.css" />
+    <link rel="stylesheet" type="text/css" href="/css/logout.css" />
+    <link rel="stylesheet" type="text/css" href="/css/popup.css" />
+    <link rel="stylesheet" type="text/css" href="/css/cupertino/jquery-ui.css" />
+    
+    <script type="text/javascript" src="/js/jquery.js"></script>
+    <script type="text/javascript" src="/js/jquery-ui.js"></script>
+    <script type="text/javascript" src="/js/jquery.numeric.js"></script>
+    <script type="text/javascript" src="/js/funciones.js"></script>
+    <script type="text/javascript" src="/js/popup.js"></script>
     <?
         
         $this->echoDescriptionAndKeywords();
     
         $this->echoPageTitle();
     
-        $this->echoOnHead();
-    
         $this->echoJavascriptIncludes();
+    
+        $this->echoOnHead();
         
         $this->echoCssIncludes();
             
     ?>
 </head>
-<body id="principal">
+<body id="principal"><?php 
 
-    <div id="layout"><?
+	 $this->hereSlot('contenedor_popup');
 
+	?>
+    <div id="layout" class="alternativo">
+    <?
+    	$this->hereSlot('contenedor_logout');
+		$this->hereSlot('aviso');
         $this->hereSlot('contenido_principal');
 
     ?></div>
-        
 </body>
         
 </html>

@@ -16,6 +16,9 @@ li{
 #layout{
 	margin: 115px 25px 25px 25px;
 }
+#layout.alternativo{
+	margin: 0px 25px 25px 25px;
+}
 body{
 	font: normal 12px Verdana, Arial, Helvetica, sans-serif;
 	color: #000;
@@ -79,7 +82,25 @@ a:hover{
 	padding: 0 0 0 12px;
 	background: url(/img/iconos/flechaIzq.png) left center no-repeat;
 }
-
+/* aviso */
+.aviso{
+	background: url(/img/iconos/ko22.png) 25px 1px no-repeat #FFFFE1;
+	margin: 0 -25px 20px -25px;
+	padding: 5px 0 2px 55px;
+	border-bottom: 1px solid #777;
+	-moz-box-shadow:0 1px 5px #BBBBBB;
+	overflow: hidden;
+	height: 18px;
+}
+.aviso h2{
+    margin: 0;
+    font-size: 13px;
+    font-weight: normal;
+    color: #000;
+}
+.aviso h2 img{
+	vertical-align: bottom;
+}
 /* Componentes Formulario */
 legend{
 	color: #4A95EF;
@@ -424,4 +445,7 @@ div.ficha{
 }
 .resultadosBusqueda{
 	margin-top: 30px;
+}
+.campo.check{
+    margin-top: 17px;	
 }

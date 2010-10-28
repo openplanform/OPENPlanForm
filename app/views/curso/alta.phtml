@@ -13,13 +13,13 @@
         
         	<input type="hidden" value="1" name="send" />
         
-            <div class="campo controlado">
+            <div class="campo controlado multi">
                 <label for="nombre">Nombre*</label>
                 <input type="text" name="nombre" id="nombre" class="campoTexto" />
                 <p id="errorNombre" class="errorInput"><?=$this->errorNombre?></p>
             </div>
 			
-			<div class="campo controlado">
+			<div class="campo controlado multi">
             	<label for="plan">Plan*</label>
 	            <select class="grande" name="plan" id="plan">
 	            	<option value=""></option>
@@ -37,9 +37,9 @@
 				<p id="errorPlan" class="errorInput"><?= $this->errorPlan ?></p>
 			</div>
 			
-			<div class="campo controlado">
+			<div class="campo controlado multi">
             	<label for="categoria">Categoría*</label>
-	            <select class="grande" name="categoria" id="categoria">
+	            <select class="grande" name="categoria" id="categoria" onchange="">
 	            	<option value=""></option>
 					<?
 					
@@ -51,7 +51,9 @@
 				<p id="errorCategoria" class="errorInput"><?= $this->errorCategoria ?></p>
 			</div>
 			
-			<div class="campo controlado">
+			<div class="separadorH"></div>
+			
+			<div class="campo controlado multi">
             	<label for="sector">Sector*</label>
 	            <select class="grande" name="sector" id="sector">
 	            	<option value=""></option>
@@ -69,7 +71,7 @@
 				<p id="errorSector" class="errorInput"><?= $this->errorSector ?></p>
 			</div>
 			
-			<div class="campo controlado">
+			<div class="campo controlado multi">
             	<label for="colectivo">Colectivo*</label>
 	            <select class="grande" name="colectivo" id="colectivo">
 	            	<option value=""></option>
@@ -87,7 +89,7 @@
 				<p id="errorColectivo" class="errorInput"><?= $this->errorColectivo ?></p>
 			</div>
 			
-			<div class="campo controlado clear">
+			<div class="campo controlado multi">
             	<label for="modalidad">Modalidad*</label>
 	            <select class="grande" name="modalidad" id="modalidad">
 	            	<option value=""></option>
@@ -105,7 +107,9 @@
 				<p id="errorModalidad" class="errorInput"><?= $this->errorModalidad ?></p>
 			</div>
 			
-			<div class="campo controlado">
+			<div class="separadorH"></div>
+			
+			<div class="campo controlado multi">
             	<label for="aula">Aula*</label>
 	            <select class="grande" name="aula" id="aula">
 	            	<option value=""></option>
@@ -133,8 +137,6 @@
                 <input type="text" name="horasD" id="horasD" class="campoTexto mini numerico" />
             </div>
 			
-			<div class="separadorH"></div>
-			
 			<div class="campo multi">
                 <label for="horasT">Horas de tutoría</label>
                 <input type="text" name="horasT" id="horasT" class="campoTexto mini numerico" />
@@ -159,6 +161,14 @@
             
             <div class="separadorH"></div>
             
+            <div class="campo">
+	            <label for="profesoresSeleccionados">Profesores del curso</label>
+	            <select name="profesores[]" multiple="multiple" id="profesoresSeleccionados" class="campoTexto grande"><?
+	                
+	            ?></select>
+	            <p class="tooltip" id="profesoresSeleccionadosTooltip">Se pueden seleccionar varios profesores manteniendo pulsada la tecla CTRL</p>
+        	</div>
+            
             <input class="oculto" type="submit" value="Guardar" />
             
             <noscript>
@@ -170,3 +180,40 @@
         </fieldset>
     </form>
     <p>* Campos obligatorios</p>
+    
+    <?
+    	if ( count($this->profesoresIDX) > 0 ){
+    ?>
+    <div class="listadoProfesores">
+    	<table>
+    		<thead>
+    			<tr>
+	    			<th>Nombre</th>
+	    			<th>Categorías</th>
+	    			<th></th>
+	    		</tr>
+    		</thead>
+    		<tbody>
+				<?
+				
+				// Profesores
+				foreach ( $this->profesoresIDX as $clave => $nombre) {
+					
+					?>
+					<tr>
+						<td><?= $nombre ?></td>
+						<td></td>
+						<td><a href="javascript:addProfCurso('<?= $clave ?>', <? $nombre ?>)" >Añadir</a></td>
+					</tr>
+					<?
+					
+					
+				}
+				
+				?>
+			</tbody>
+		</table>
+    </div>
+    <?
+    	}
+    ?>

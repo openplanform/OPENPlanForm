@@ -14,12 +14,16 @@
 	background-color: #E0E7EF; 
 	-moz-box-shadow: 3px 4px 6px 0 #BBBBBB;
 }
+#login.recordatorio{
+	height: 275px;
+	width: 300px;
+}
 #login p{
 	margin: 0 0 10px 0;
-	color: red;
 }
 #login .mensaje{
     margin: 0;
+    color: #F00;
 }
 #login .inner{
 	width: 200px;
@@ -27,9 +31,16 @@
 	margin-top: 25px;
 	text-align: left;
 }
+#login.recordatorio .inner{
+	width: 250px;
+}
 #login .campo{
 	text-align: left;
 }
 #login .campo .campoTexto{
 	width: 195px;
+}
+
+#login.recordatorio .campo .campoTexto{
+    width: 245px;
 }

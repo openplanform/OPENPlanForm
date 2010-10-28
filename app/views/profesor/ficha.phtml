@@ -14,7 +14,7 @@
 		<div class="ficha">
 			<h3>Datos del profesor</h3>
 			<p><label>Nombre:</label> <?= $this->profesorDO->getVNombre() . $this->profesorDO->getVPrimerApellido() . $this->profesorDO->getVSegundoApellido() ?></p>
-			<p><label>Fecha de nacimiento: </label> <?= $this->datehelper->getDiaMesAno($this->profesorDO->getDNacimiento())  ?></p>
+			<p><label>Fecha de nacimiento: </label> <?= NingenDate::getDiaMesAno($this->profesorDO->getDNacimiento())  ?></p>
 			<p><label><?= $this->profesorDO->getTblTipoIdentificacion()->getVNombre() ?>:</label> <?= $this->profesorDO->getVNumeroIdentificacion() ?></p>
 			
 			<?

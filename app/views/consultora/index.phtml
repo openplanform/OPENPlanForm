@@ -1,5 +1,12 @@
 <h2>Listado de Gestoras</h2>
 
+<?php 
+
+	if ( count($this->consultorasCOL) > 0 ){
+
+?>
+
+
 <table class="listado">
     <thead>
         <tr>
@@ -52,3 +59,16 @@
     </tbody>
 </table>
 <div id="paginadorContainer"><?= $this->paginador ?></div>
+<?php 
+
+	} else {
+
+?>
+
+<h3>No hay ningúna gestora</h3>
+
+<?php 
+
+	}
+
+?>

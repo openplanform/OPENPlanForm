@@ -1,7 +1,13 @@
 <?php
 
 require_once 'NingenCmsSession.inc';
+require_once 'NingenMailer.inc';
+require_once 'NingenMailerTemplate.inc';
+require_once 'helper/NingenString.inc';
 require_once NINGENCMS_CLASSESDIR . 'PplController.inc';
+
+require_once NINGENCMS_MODELDIR . '/TblUsuario.inc';
+require_once NINGENCMS_MODELDIR . '/TblUsuarioSearch.inc';
 
 
 class indexController extends PplController{
@@ -47,7 +53,7 @@ class indexController extends PplController{
             if ($this->aclManager->datosCompletosUsuario($claveUsuario)){
                 $this->redirectTo('usuario', 'ficha');
             } else {
-                $this->redirectTo('usuario', 'nuevo');
+                $this->redirectTo('usuario', 'nuevo', $this->usuario->getId());
             }
             
             return;
@@ -86,14 +92,14 @@ class indexController extends PplController{
                 if ($this->aclManager->datosCompletosUsuario($claveUsuario)){
                     $this->redirectTo('usuario', 'ficha');
                 } else {
-                    $this->redirectTo('usuario', 'nuevo');
+                    $this->redirectTo('usuario', 'nuevo', $this->usuario->getId());
                 }
                 
                 return;
     	        
     	    }
     	    
-	    }    	    
+	    }
     	    
 	}
 	
@@ -114,7 +120,75 @@ class indexController extends PplController{
 	    
 	}
 	
-	
+	/**
+	 * El usuario olvidó su contraseña y se le envía una nueva
+	 */
+	public function recordatorioAction(){
+		
+	    $this->setAlternateLayout('libre');
+	    
+	    if (count($_POST) != 0){
+	    	
+	        // Se verifican y escapan los datos
+    	    $usuario = $this->helper->escapeInjection($this->helper->get('username'));
+    	    $email = $this->helper->escapeInjection($this->helper->get('email'));
+    	    
+            if (empty($usuario)){
+    	        $this->view->mensaje = 'El nombre de usuario no puede estar vacío.';
+    	        return;
+    	    }
+    	    
+    	    if (empty($email)){
+    	        $this->view->mensaje = 'El email no puede estar vacío.';
+    	        return;
+    	    }
+    	    
+    	    // Se comprueba si existe el usuario
+    	    $usuarioSearch = new TblUsuarioSearch();
+    	    $usuarioSearch->vNombre = $usuario;
+    	    $usuarioSearch->vEmail = $email;
+    	    $usuarioDO = array_shift(TblUsuario::find($this->db, $usuarioSearch));
+    	    
+	        if ( !empty($usuarioDO) ){
+		        
+	        	$password = NingenString::generaPassword(10,false);
+	        	
+		        // Se obtiene la configuración del mailer
+	            $appConfig = $GLOBALS['NINGEN_CMS']['app_config'];
+	            if (!$appConfig instanceof NingenApplicationConfig){
+	                throw new NingenException('No se ha obtenido la configuración del mailer. Error crítico.', 500);
+	            }
+	            
+	            // Template del mail
+	            $mt = new NingenMailerTemplate();
+	            $mt->setTemplate(NINGENCMS_LAYOUTDIR . 'recordatorioContrasena.txt');
+	            $mt->addField('USUARIO', $usuario);
+	            $mt->addField('CONTRASENA', $password);
+	            
+	            // Mailer
+	            $mailerConfig = $appConfig->getMailerConfiguration();
+	            $mailer = new NingenMailer($mailerConfig);
+	            $mailer->addTo($email, $usuario);
+	            $mailer->setSubject("Formación PIME - Cambio de contraseña");
+	            $mailer->setFrom('<noreply@planespime.es>', 'PlanesPIME');
+	            $mailer->setBody($mt->getContent());
+	            
+	            // Se envía el correo
+	            if(!$mailer->send()){
+	                $this->view->error = 'Error al enviar el mensaje, por favor intente nuevamente en un momento.';
+	                return;
+	            } else {
+	            	$usuarioDO->setVPassword($this->aclManager->codificaPassword($password));
+	            	$usuarioDO->update();
+	            }
+	        	
+	        }
+	        
+	        $this->view->mensaje = 'Si sus datos son correctos, se le ha enviado un correo';
+	        
+	    }
+		
+	}
 	
 }
 

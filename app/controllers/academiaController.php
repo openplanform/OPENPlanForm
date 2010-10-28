@@ -77,7 +77,7 @@ class academiaController extends PplController{
         $this->view->paginador = $paginador->getPaginatorHtml();
     	
     	// Academias
-        $this->view->arrAcademiasDO = $academiasCOL;
+        $this->view->academiasCOL = $academiasCOL;
         
     	if ( $this->aclManager->hasPerms('academia', 'editar') ){
     		$this->view->editar = true;
@@ -218,20 +218,60 @@ class academiaController extends PplController{
     
 	/**
      * Acción de eliminar
-     * Elimina una academia
+     * Elimina el usuario de la academia, y en la bbdd
+     * se elimina la academia en cascada
      */
     public function eliminarAction(){
         
+        /**
+         * @TODO Comprobar permisos
+         */
+        
         $paramsARR = $this->getParams();
         if ( !empty($paramsARR) ){
+            
+        	if ($academiaDO = TblEmpresa::findByPrimaryKey($this->db, $paramsARR[0])){
+
+        	   $claveUsuario = $academiaDO->getFkUsuario();
+        	   if ($usuarioDO = TblUsuario::findByPrimaryKey($this->db, $claveUsuario))
+        	   
+                    if (!$usuarioDO->delete()){
+                        
+                        /**
+                         * @TODO Mostrar error (No se pudo borrar el usuario) 
+                         */
+                        $this->redirectTo('academia','index');
+                        return;
+                        
+                    }
+                    
+                    /**
+                     * @TODO BORRADO OK (REDIRIGIR A DONDE SEA NECESARIO) 
+                     */
+                    $this->redirectTo('academia','index');
+                    return;
+        	   
+        	   } else {
+        	       
+        	        /**
+                     * @TODO Mostrar error (El usuario no existe) 
+                     */
+                    $this->redirectTo('academia','index');
+                    return;
+        	       
+        	       
+        	   }
+        	    
+        	    
+        	} else {
+        	    
+        	    /**
+        	     * @TODO Mostrar error (La academia no existe) 
+        	     */
+        	    $this->redirectTo('academia','index');
+        	    
+        	}
         	
-        	$academiaDO = TblEmpresa::findByPrimaryKey($this->db, $paramsARR[0]);
-        	$academiaDO->delete();
-        	
-        }
-        
-        $this->redirectTo('academia','index');
-        
     }
     
 	/**
@@ -353,10 +393,26 @@ class academiaController extends PplController{
         
 	    // Cif
     	$cif = $this->helper->escapeInjection($this->helper->get('cif'));
+    	$oldCif = $this->helper->escapeInjection($this->helper->get('oldCif'));
 	    if ( is_null($cif) || empty($cif) ){
+	    	
 	    	$correcto = false;
 	    	$this->view->errorCif = 'El cif no puede estar vacío';
-	    }
+	    	
+	    } else {
+        	
+        	// Comprobamos que el número no exista ya en la bbdd
+        	if ( !$editar || ($editar && $cif != $oldCif) ){
+		        $sql = "SELECT COUNT(*) AS total FROM tblEmpresa WHERE vCif = '" . $cif . "'";
+		        $this->db->executeQuery($sql);
+		        $row = $this->db->fetchRow();
+		        if (is_array($row) && array_key_exists('total', $row) && $row['total'] != 0){
+		            $this->view->errorCif = 'El CIF ya está registrado';
+		            $correcto = false;     
+		        }
+        	}
+        	
+        }
 	    
 	    // País
     	$pais = $this->helper->escapeInjection($this->helper->get('pais'));

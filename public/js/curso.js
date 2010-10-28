@@ -1,5 +1,31 @@
 var $j = jQuery;
 
+function addProfCurso(idProfesor, editar){
+	
+	idProfesor = typeof(idProfesor) != 'undefined' ? idProfesor : false;
+	editar = typeof(editar) != 'undefined' ? editar : false;
+	
+	// Actualizamos la tabla
+	if ( editar ){
+		$j.ajax({
+	        type: 'POST',
+	        url: '/ajax/addProfCurso.html',
+	        data: 'id=' + idProfesor,
+	        //Mostramos un mensaje con la respuesta
+	        success: function(data) {
+				arrRespuesta = $j.parseJSON(data);
+	        	if ( arrRespuesta.resultado == 'ko' ) {
+	        		$j(idError).html(arrRespuesta.mensaje);
+	            } else {
+	            }
+	        }
+		});
+	}
+	
+	$('#profesoresSeleccionados').append($("<option></option>").attr("value",idProfesor).text('yo'));
+	
+}
+
 function comprobarCampos() {
 	
 	// Nombre

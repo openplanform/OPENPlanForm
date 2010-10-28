@@ -17,6 +17,12 @@ class logoutModule extends NingenModule{
     protected $acl;
     
     /**
+     * Indica si la ficha de usuario está completa o no
+     * @var boolean
+     */
+    protected $fichaUsuario = true;
+    
+    /**
      * Establece el gestor de listas de acceso
      * @param PplAclManager $acls
      */
@@ -32,6 +38,14 @@ class logoutModule extends NingenModule{
         $this->usuario = $usuario;
     }
 
+    /**
+     * Establece si creamos un enlace a la ficha del usuario
+     * @param boolean $ficha
+     */
+    public function setFichaUsuario($ficha){
+    	$this->fichaUsuario = $ficha;
+    }
+    
     /**
      * Request
      * @see extranet.planespime.es/ningencms/lib/NingenModule::requestModule()
@@ -55,9 +69,15 @@ class logoutModule extends NingenModule{
         $idRol = $this->acl->getRolMasRelevanteUsuario($this->usuario->getId());
         $rolesIDX = $this->acl->getRoles();
         
-        ?><div id="logoutModule">
-            <a href="/usuario/ficha/<?= $this->usuario->getId() ?>"><?= $this->usuario->getNombre() ?></a> 
-            <strong>(<?= $rolesIDX[$idRol] ?>)</strong> 
+        ?><div id="logoutModule"><?php 
+        
+        if ( $this->fichaUsuario ){
+        	?><a href="/usuario/ficha/<?= $this->usuario->getId() ?>"><?= $this->usuario->getNombre() ?></a><?
+        } else {
+        	echo $this->usuario->getNombre();
+        }
+        
+       ?> <strong>(<?= $rolesIDX[$idRol] ?>)</strong> 
             <a href="/index/logout.html" class="cerrarSesion" title="cerrar sesión">
                 <span>cerrar sesión</span>
             </a>

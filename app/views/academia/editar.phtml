@@ -63,7 +63,8 @@
 			
 			<div class="campo controlado multi">
                 <label for="cif">CIF*</label>
-                <input type="text" name="cif" id="cif" class="campoTexto" value="<?= $this->academiaDO->getVCif() ?>" />
+                <input type="text" name="cif" id="cif" class="campoTexto" onblur="comprobarDni('cif', true, true)" value="<?= $this->academiaDO->getVCif() ?>" />
+                <input type="hidden" name="cifOculto" id="cifOculto" value="<?= $this->academiaDO->getVCif() ?>"/>
                 <p id="errorCif" class="errorInput"><?= $this->errorCif ?></p>
             </div>
 			

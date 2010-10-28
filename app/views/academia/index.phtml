@@ -1,5 +1,12 @@
 <h2>Listado de Academias</h2>
 
+<?php 
+
+	if ( count($this->academiasCOL) > 0 ){
+
+?>
+
+
 <table class="listado">
     <thead>
 		<tr>
@@ -22,7 +29,7 @@
 		<?php
 		
 			$contador = 0;
-			foreach ( $this->arrAcademiasDO as $academiaDO ){
+			foreach ( $this->academiasCOL as $academiaDO ){
 				
 			    //$academiaDO = new TblEmpresa($db);
 				$clase = ( ($contador%2)==0 )?'':'class="alter"';
@@ -52,3 +59,17 @@
 	</tbody>
 </table>
 <div id="paginadorContainer"><?= $this->paginador ?></div>
+
+<?php 
+
+	} else {
+
+?>
+
+<h3>No hay ninguna academia</h3>
+
+<?php 
+
+	}
+
+?>

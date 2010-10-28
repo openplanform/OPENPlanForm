@@ -15,7 +15,7 @@
     <form id="editarCentro" action="<?= $_SERVER['REQUEST_URI'] ?>" method="post">
         <fieldset>
         
-            <legend>Alta de Centro</legend>
+            <legend>Editar Centro</legend>
         
         	<input type="hidden" value="1" name="send" />
         
@@ -81,6 +81,11 @@
 			<div class="campo">
             	<label for="direccion">Dirección</label>
 	            <input type="text" name="direccion" id="direccion" class="campoTexto" value="<?= $this->centroDO->getVDireccion() ?>"/>
+			</div>
+
+			<div class="campo">
+            	<label for="poblacion">Población</label>
+	            <input type="text" name="poblacion" id="poblacion" class="campoTexto" value="<?= $this->centroDO->getVPoblacion() ?>"/>
 			</div>
 			
 			<div class="campo">

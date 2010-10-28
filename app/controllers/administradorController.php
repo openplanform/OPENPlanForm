@@ -14,7 +14,16 @@ class administradorController extends PplController{
      * @var array
      */
     protected $accesosCOL;
-    
+       
+    /**
+     * Init
+     * @see extranet.planespime.es/app/classes/PplController::initController()
+     */
+    public function initController(){
+        
+        parent::initController();
+        
+    }
     
     public function indexAction(){
         
@@ -198,6 +207,11 @@ class administradorController extends PplController{
                        $accesoDO->setIOrden($orden);
                        $accesoDO->setVRoles($roles);
                        
+                       // Evitamos la comprobación de FK para la clave 0
+                       if ('0' == $padre){
+                           $this->db->executeQuery('SET FOREIGN_KEY_CHECKS = 0');
+                       }
+                       
                        if (!$accesoDO->insert()){
                            
                             $this->view->popup = array(
@@ -205,7 +219,22 @@ class administradorController extends PplController{
                                 'titulo' => 'Error',
                                 'mensaje'=> 'Ha ocurrido un error al insertar el acceso. Inténtelo de nuevo en unos instantes por favor.<br/>Si el problema persiste póngase en contacto con el administrador. Muchas gracias.',
                                 'url'=> '/administrador/menu.html',
-                            );  
+                            );
+
+                            // Evitamos la comprobación de FK para la clave 0
+                            if ('0' == $padre){
+                                $this->db->executeQuery('SET FOREIGN_KEY_CHECKS = 1');
+                            }
+                           
+                       } else {
+                           
+                            // Evitamos la comprobación de FK para la clave 0
+                            if ('0' == $padre){
+                                $this->db->executeQuery('SET FOREIGN_KEY_CHECKS = 1');
+                            }
+                           
+                           // Hay que redirigir para recargar el menu
+                           $this->redirectTo('administrador', 'menu');                           
                            
                        }
                        
@@ -222,7 +251,12 @@ class administradorController extends PplController{
                                 'url'=> '/administrador/menu.html?e=' . $clave,
                             );
                            
-                       }                       
+                       } else {
+                           
+                           // Hay que redirigir para recargar el menu
+                           $this->redirectTo('administrador', 'menu');
+                           
+                       }         
                        
                        $accesoDO->setFkPadre($padre);
                        $accesoDO->setVNombre($nombre);
@@ -240,6 +274,11 @@ class administradorController extends PplController{
                                 'mensaje'=> 'Ha ocurrido un error al actualizar el acceso. Inténtelo de nuevo en unos instantes por favor.<br/>Si el problema persiste póngase en contacto con el administrador. Muchas gracias.',
                                 'url'=> '/administrador/menu.html?e=' . $clave,
                             );  
+                           
+                       } else {
+                           
+                           // Hay que redirigir para recargar el menu
+                           $this->redirectTo('administrador', 'menu');
                            
                        }
                        
@@ -281,6 +320,11 @@ class administradorController extends PplController{
                         'mensaje'=> 'Ha ocurrido un error al eliminar el acceso. Inténtelo de nuevo en unos instantes por favor. Si el problema persiste póngase en contacto con el administrador. Muchas gracias.',
                         'url'=> '/administrador/menu.html?e=' . $edel,
                     );  
+                   
+               } else {
+                   
+                   // Hay que redirigir para recargar el menu
+                   $this->redirectTo('administrador', 'menu');
                    
                }
               
@@ -438,7 +482,16 @@ class administradorController extends PplController{
         $this->aclManager->getAclData($this->usuario, true);
         $this->redirectTo('administrador', 'menu');
         
-    }    
+    }   
+
+    /**
+     * Administrar configuración
+     */
+    public function configuracionAction(){
+        
+        
+        
+    }
     
 }
 

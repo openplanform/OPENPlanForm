@@ -124,9 +124,10 @@ class PplAclManager{
      */
     public function login( $username, $password){
         
-        $password = $this->codificaPassword($password);
+        $password = $this->codificaPassword(strtolower($password));
+        $username = strtolower($username);
 
-        $sql = "SELECT * FROM tblUsuario WHERE vNombre='$username' AND vPassword='$password'";
+        $sql = "SELECT * FROM tblUsuario WHERE LOWER(vNombre) = '$username' AND vPassword = '$password'";
         $this->db->executeQuery($sql);
         
         

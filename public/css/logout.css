@@ -3,6 +3,7 @@
 	top: 0px;
 	right: 25px;
     text-align: right;	
+    line-height: 25px;
 }
 #logoutModule a{
 	color: #4A95EF;

@@ -22,6 +22,11 @@ require_once 'NingenPaginator.inc';
 
 class profesorController extends PplController{
     
+    /**
+     * Colección de categorias
+     * @var array
+     */
+    protected $categoriasCOL = null;
     
     /**
      * Init
@@ -198,9 +203,6 @@ class profesorController extends PplController{
 	        $this->view->htmlSelectCategorias = $this->_getSelectHtml($arbolDS, 0, $idsCategorias);
         }
         
-        // Helper
-        $this->view->datehelper = new NingenDate();
-        
         // Paises
         $this->view->paisesCOL = TblPais::findAll($this->db, 'vIso');
 	        
@@ -267,15 +269,14 @@ class profesorController extends PplController{
         		
         	}
         	
-        	$this->view->datehelper = new NingenDate();
-        	
         }
         
     }
     
 	/**
      * Acción de eliminar
-     * Elimina un profesor
+     * Elimina el usuario del profesor, y en la bbdd
+     * se elimina el profesor en cascada
      */
     public function eliminarAction(){
         
@@ -357,9 +358,11 @@ class profesorController extends PplController{
      */
     private function _IteraCategorias($arrayDS, $clavePadre){
         
-    	$categoriasCOL = TblCategoria::findAll($this->db, 'idCategoria ASC');
+    	if (is_null($this->categoriasCOL)){
+    	   $this->categoriasCOL = TblCategoria::findAll($this->db, 'idCategoria ASC');
+        }
     	
-        foreach ($categoriasCOL as $categoriaDO){
+        foreach ($this->categoriasCOL as $categoriaDO){
             
             if ($categoriaDO->getFkPadre() == $clavePadre){
                 $arrayDS[$categoriaDO->getIdCategoria()]['nombre'] = $categoriaDO->getVNombre();
@@ -496,7 +499,8 @@ class profesorController extends PplController{
         $apellido2 = $this->helper->getAndEscape('apellido2'); 
         $nacimiento = $this->helper->getAndEscape('nacimiento');
         $tipoIdentificacion = $this->helper->getAndEscape('tipoIdentificacion'); 
-        $dni = $this->helper->getAndEscape('dni'); 
+        $dni = $this->helper->getAndEscape('dni');
+        $oldDni = $this->helper->getAndEscape('dniOculto');
         $direccion = $this->helper->getAndEscape('direccion');
         $poblacion = $this->helper->getAndEscape('poblacion'); 
         $cp = $this->helper->getAndEscape('cp'); 
@@ -542,6 +546,19 @@ class profesorController extends PplController{
         if (empty($dni)){
             $this->view->errorDni = 'Debe introducir un número de identificación';
         	$correcto = false;
+        } else {
+        	
+        	// Comprobamos que el número no exista ya en la bbdd
+        	if ( !$editar || ($editar && $dni != $oldDni) ){
+		        $sql = "SELECT COUNT(*) AS total FROM tblPersona WHERE vNumeroIdentificacion = '" . $dni . "'";
+		        $this->db->executeQuery($sql);
+		        $row = $this->db->fetchRow();
+		        if (is_array($row) && array_key_exists('total', $row) && $row['total'] != 0){
+		            $this->view->errorDni = 'El número ya está registrado';
+		            $correcto = false;     
+		        }
+        	}
+        	
         }
                 
         // País
@@ -634,7 +651,7 @@ class profesorController extends PplController{
 		    	$profesorDO->setVNombre($nombre);
 		    	$profesorDO->setVPrimerApellido($apellido);
 		    	$profesorDO->setVSegundoApellido($apellido2);
-		    	$profesorDO->setDNacimiento(date('Y-m-d', strtotime($nacimiento)));
+		    	$profesorDO->setDNacimiento(NingenDate::europeoAmericano($nacimiento));
 		    	$profesorDO->setFkTipoIdentificacion($tipoIdentificacion);
 		    	$profesorDO->setVNumeroIdentificacion($dni);
 		    	$profesorDO->setFkPais($pais);
@@ -693,6 +710,136 @@ class profesorController extends PplController{
 	    	
 	    return $correcto;
     	
+    }
+    
+    /**
+     * Buscar Profesores
+     */
+    public function buscarAction(){
+        
+        // Paises
+        $this->view->paisesIDX = $this->cacheBO->getPaises();
+        
+        // Provincias
+        $this->view->provinciasIDX = $this->cacheBO->getProvincias();
+        
+         // Categorías
+        $arbolDS = array();
+        $arbolDS = $this->_IteraCategorias($arbolDS, 0);
+        $this->view->htmlSelectCategorias = $this->_getSelectHtml($arbolDS, 0);
+        
+        // Búsqueda de profesores
+        $sent = $this->helper->getAndEscape('sent');
+        
+        if (!empty($sent)){
+            
+            // Parámetros de ordenación para el paginador
+            $aliasCampos = array(
+                'nom'   => 'vNombre',
+                'pob'   => 'vPoblacion',
+                'id'    => 'idPersona',
+                'mov'   => 'vMovil'
+            );
+            
+            if ( !empty($_REQUEST) && array_key_exists('o', $_GET) & array_key_exists('ob', $_GET) ){
+                $order = $this->helper->escapeInjection($_GET['o']);
+                $orderBy = $aliasCampos[$_GET['ob']];
+                $aliasOrderBy = $_GET['ob'];
+            } else {
+                $order   = 'asc';
+                $orderBy = 'vNombre';
+                $aliasOrderBy = 'nom';
+            }
+            
+            // Envío el orden a la vista
+            if ( $order == 'asc' ){
+                $this->view->order = 'desc';
+            } else {
+                $this->view->order = 'asc';
+            }
+            
+            $this->view->orderBy = $aliasOrderBy; 
+            
+            $where = array();
+            $queryString = '&amp;sent=1';
+            
+            $id = $this->helper->getAndEscape('idPersona');
+            $kw = $this->helper->getAndEscape('kw');
+            $pais = $this->helper->getAndEscape('pais');
+            $provincia = $this->helper->getAndEscape('provincia');
+            $categorias = $this->helper->getAndEscape('categorias');
+            
+            // ID
+            if (!empty($id)){
+                $where[] = "idPersona = $id";
+                $this->view->id = id;
+                $queryString .= '&amp;idPersona=' . $id;
+            }
+            
+            // KW
+            if (!empty($kw)){
+                $where[] = "vNombre LIKE '%$kw%' OR vPrimerApellido LIKE '%$kw%' OR vSegundoApellido LIKE '%$kw%' OR vNumeroIdentificacion LIKE '%$kw%'";
+                $this->view->kw = $kw;
+                $queryString .= '&amp;kw=' . $kw;
+            }
+            
+            // PAIS
+            if (!empty($pais)){
+                $where[] = "fkPais = $pais";
+                $this->view->pais = $pais;
+                $queryString .= '&amp;pais=' . $pais;
+            }
+            
+            // PROVINCIA
+            if (!empty($provincia)){
+                $where[] = "fkProvincia= $provincia";
+                $this->view->provincia = $provincia;
+                $queryString .= '&amp;provincia=' . $provincia;
+            }
+            
+            // CATEGORÍAS
+            if (is_array($categorias)){
+                $catsStr = implode(',', $categorias);
+                //$where[] = " EXISTS (SELECT null FROM trelPersonaCategoria WHERE tblPersona.idPersona = trelPersonaCategoria.fkPersona AND trelPersonaCategoria.fkCategoria IN($catsStr))";
+                $where[] = " EXISTS (SELECT null FROM trelPersonaCategoria WHERE p.idPersona = trelPersonaCategoria.fkPersona AND trelPersonaCategoria.fkCategoria IN($catsStr))";
+                $this->view->categorias = $categorias;
+                $queryString .= '&amp;categorias=' . $catsStr;
+            }
+            
+            // Se instancia y configura el paginador
+            $rolProfesor = PplAclManager::ROL_PROFESOR;
+            $where[] = ' EXISTS (SELECT null FROM trelRolUsuario ru WHERE ru.fkUsuario = p.fkUsuario AND ru.fkRol = ' . $rolProfesor . ') ';
+            $whereStr = 'p WHERE ' . implode(' AND ', $where);
+            
+            // Se efectúa la búsqueda
+            $paginador = new NingenPaginator($this->db, $whereStr , 'tblPersona', $this->helper);
+            $paginador->setItemsPorPagina(10);
+            $paginador->setOrderBy($orderBy);
+            $paginador->setOrder($order);
+            $paginaActual = $this->helper->escapeInjection($this->helper->get('p'));
+            $paginaActual = empty($paginaActual) ? 1 : $paginaActual;
+            $paginador->setPaginaActual($paginaActual);
+            
+            // Obtengo los profesores
+            $profesoresCOL = $paginador->getItemCollection();
+            $this->view->profesoresCOL = $profesoresCOL;
+            
+            // Envío el paginador a la vista
+            $this->view->paginador = $paginador->getPaginatorHtml();
+            
+            // Se propagan las clausulas de búsqueda en el paginador
+            $this->view->querystring = $queryString;      
+
+            // Categorías para profesores
+            $categoriasProfesoresCOL = TrelPersonaCategoria::findAll($this->db, 'fkPersona');
+            $this->view->categoriasProfesoresIDX = NingenDatabase::groupBy('fkPersona', $categoriasProfesoresCOL);
+            
+            // Categorias
+            $categoriasCOL = TblCategoria::findAll($this->db, 'idCategoria');
+            $this->view->categoriasIDX = NingenDatabase::indexFor('idCategoria', $categoriasCOL);
+        
+        }
+        
     }
     
 }

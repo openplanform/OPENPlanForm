@@ -88,7 +88,7 @@
             
             <div class="campo multi controlado">
                 <label for="dni">Número identificación*</label>
-                <input type="text" name="dni" id="dni" class="campoTexto mediano" />
+                <input type="text" name="dni" id="dni" onblur="comprobarDni('dni')" class="campoTexto mediano" />
                 <p id="errorDni" class="errorInput"><?= $this->errorDni ?></p>
             </div>
             

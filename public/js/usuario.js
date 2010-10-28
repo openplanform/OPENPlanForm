@@ -1,6 +1,7 @@
 var $j = jQuery;
-var tipo = 'persona';
 var editar = false;
+var tipo = 'persona';
+var roles = true;
 
 /**
  * Comprueba los campos de datos de acceso
@@ -68,14 +69,16 @@ function comprobarCampos() {
 	}
 	
 	// Roles
-	if ( $j('#selectorRol').val() == null ){
-		$j('#errorSelectorRol').html('Debe seleccionar como mínimo un rol.');
-		$j('#selectorRol').focus();
-		$j('#selectorRol').css("borderColor","#F00");
-		return false;
-	} else {
-		$j('#selectorRol').css("borderColor","#A6A6A6");
-		$j('#errorSelectorRol').html('');
+	if ( roles ){
+		if ( $j('#selectorRol').val() == null ){
+			$j('#errorSelectorRol').html('Debe seleccionar como mínimo un rol.');
+			$j('#selectorRol').focus();
+			$j('#selectorRol').css("borderColor","#F00");
+			return false;
+		} else {
+			$j('#selectorRol').css("borderColor","#A6A6A6");
+			$j('#errorSelectorRol').html('');
+		}
 	}
 	
 	return true;

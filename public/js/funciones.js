@@ -214,3 +214,50 @@ function comprobarUsuario(idCampo, editar) {
 		$j(idError).html('');
 	}
 }
+
+/**
+ * Comprueba si el dni/cif ya existe
+ * Editar indica si estamos en la ficha de edición,
+ * y realiza la comprobación sólo si el usuario
+ * ha cambiado el dni
+ * @param string idCampo
+ */
+function comprobarDni(idCampo, empresa, editar) {
+	
+	editar = typeof(editar) != 'undefined' ? editar : false;
+	empresa = typeof(empresa) != 'undefined' ? empresa : false;
+	var dni = $j('#' + idCampo).val();
+	var idError = '#error' + ucfirst(idCampo);
+	var comprobar = false;
+	
+	if ( editar ) {
+		var dniOculto = $j('#' + idCampo + "Oculto").val();
+		if ( dniOculto != dni ){
+			comprobar = true;
+		}
+	} else if ( dni != '' ){
+		comprobar = true;
+	}
+	
+	if (comprobar) {
+	
+		$j.ajax({
+	        type: 'POST',
+	        url: '/ajax/comprobarDni.html',
+	        data: 'dni=' + dni + '&empresa=' + empresa,
+	        //Mostramos un mensaje con la respuesta
+	        success: function(data) {
+				arrRespuesta = $j.parseJSON(data);
+	        	if ( arrRespuesta.resultado == 'ko' ) {
+	        		$j(idError).html(arrRespuesta.mensaje);
+	    			$j('#' + idCampo).focus();
+	    			$j('#' + idCampo).css("borderColor","#F00");
+	            } else {
+	            	$j('#' + idCampo).css("borderColor","#A6A6A6");
+	    			$j(idError).html('');
+	            }
+	        }
+		});
+	
+	}
+}

@@ -20,6 +20,11 @@ require_once NINGENCMS_MODELDIR . '/TblCentro.inc';
 
 class cursoController extends PplController{
     
+    /**
+     * Colección de categorias
+     * @var array
+     */
+    protected $categoriasCOL = null;
     
     /**
      * Init
@@ -125,6 +130,9 @@ class cursoController extends PplController{
         // Aulas
         $this->view->aulasIDX = $this->cacheBO->getAulas();
         
+        // Profesores
+        $this->view->profesoresIDX = $this->cacheBO->getProfesores();
+        
    		// Doy de alta el curso
     	if ( $this->helper->get('send') ){
     		
@@ -156,10 +164,37 @@ class cursoController extends PplController{
     	// Obtengo el centro que voy a editar
     	$paramsARR = $this->getParams();
         if ( !empty($paramsARR) ){
-        	
-        	// aula
-        	$cursoDO = TblCurso::findByPrimaryKey($this->db, $paramsARR[0]);
+            
+            
+            // Curso
+            if (!$cursoDO = TblCurso::findByPrimaryKey($this->db, $paramsARR[0])){
+                $this->redirectTo('curso', 'index');
+                return;
+            }
+            
         	$this->view->cursoDO = $cursoDO;
+            
+            // Actualizo el centro
+            if ( $this->helper->get('send') ){
+                
+                if ( $this->actualizarInsertar(true,$cursoDO->getIdCurso() ) ){
+                    
+                    // Curso
+                    $cursoDO = TblCurso::findByPrimaryKey($this->db, $cursoDO->getIdCurso());
+                    $this->view->cursoDO = $cursoDO;
+                    
+                } else {
+                    
+                    $this->view->popup = array(
+                        'estado' => 'ko',
+                        'titulo' => 'Error',
+                        'mensaje'=> 'Ha ocurrido un error con la edición del curso. Inténtelo de nuevo en unos instantes por favor.<br/>Si el problema persiste póngase en contacto con el administrador. Muchas gracias.',
+                        'url'=> '',
+                    );
+                    
+                }
+            }            
+        	
         	
         	// Planes
 	        $this->view->planesIDX = $this->cacheBO->getPlanes();
@@ -182,28 +217,7 @@ class cursoController extends PplController{
 	        $this->view->aulasIDX = $this->cacheBO->getAulas();
 	    	
         }
-        
-    	// Actualizo el centro
-    	if ( isset($cursoDO) && $this->helper->get('send') ){
-    		
-    		if ( $this->actualizarInsertar(true,$cursoDO->getIdCurso() ) ){
-    			
-    			// Curso
-        		$cursoDO = TblCurso::findByPrimaryKey($this->db, $cursoDO->getIdCurso());
-        		$this->view->cursoDO = $cursoDO;
-				
-    		} else {
-    			
-    			$this->view->popup = array(
-				    'estado' => 'ko',
-				    'titulo' => 'Error',
-				    'mensaje'=> 'Ha ocurrido un error con la edición del curso. Inténtelo de nuevo en unos instantes por favor.<br/>Si el problema persiste póngase en contacto con el administrador. Muchas gracias.',
-				    'url'=> '',
-				);
-				
-    		}
-    	}
-        
+
     }
     
 	/**
@@ -222,9 +236,6 @@ class cursoController extends PplController{
         	// Categoría del curso
         	$this->view->categoriaDO = TblCategoriaExtendida::findByPrimaryKeyId($this->db, $cursoDO->getFkCategoria());
         	
-        	// Helper
-        	$this->view->datehelper = new NingenDate();
-	    	
         }
         
     }
@@ -274,9 +285,11 @@ class cursoController extends PplController{
      */
     private function _IteraCategorias($arrayDS, $clavePadre){
         
-    	$categoriasCOL = TblCategoria::findAll($this->db, 'idCategoria ASC');
+        if (is_null($this->categoriasCOL)){
+    	   $this->categoriasCOL = TblCategoria::findAll($this->db, 'idCategoria ASC');
+        }
     	
-        foreach ($categoriasCOL as $categoriaDO){
+        foreach ($this->categoriasCOL as $categoriaDO){
             
             if ($categoriaDO->getFkPadre() == $clavePadre){
                 $arrayDS[$categoriaDO->getIdCategoria()]['nombre'] = $categoriaDO->getVNombre();
@@ -441,8 +454,8 @@ class cursoController extends PplController{
 		    	$cursoDO->setIHorasPresenciales($horasP);
 		    	$cursoDO->setIHorasDistancia($horasD);
 		    	$cursoDO->setIHorasTutoria($horasT);
-		    	$cursoDO->setDInicio(date('Y-m-d', strtotime($inicio)));
-		    	$cursoDO->setDFin(date('Y-m-d', strtotime($fin)));
+		    	$cursoDO->setDInicio(NingenDate::europeoAmericano($inicio));
+		    	$cursoDO->setDFin(NingenDate::europeoAmericano($fin));
 		    	$cursoDO->setINumeroAlumnos($alumnos);
 		    	$cursoDO->setLastModified(date('Y-m-d'));
                 $cursoDO->setModUser($this->usuario->getNombre());

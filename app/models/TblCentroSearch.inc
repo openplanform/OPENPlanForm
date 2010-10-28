@@ -1,7 +1,7 @@
 <?php
 /**
  * Este archivo ha sido generado con Ningen Dogen v.0.6
- * el 21 de October de 2010 a las 10:48:39
+ * el 27 de October de 2010 a las 11:12:12
  * @package dataAccess
  */
 
@@ -46,6 +46,13 @@ class TblCentroSearch{
      * @var string
      */
     public $vNombre;
+
+    /**
+     * Representa el atributo vPoblacion.
+     *
+     * @var string
+     */
+    public $vPoblacion;
 
     /**
      * Representa el atributo vTelefono.

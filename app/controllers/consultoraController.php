@@ -225,6 +225,63 @@ class consultoraController extends PplController{
         
     }
     
+	/**
+     * Acción de eliminar
+     * Elimina el usuario de la consultora, y en la bbdd
+     * se elimina la consultora en cascada
+     */
+    public function eliminarAction(){
+        
+        /**
+         * @TODO Comprobar permisos
+         */
+        
+        $paramsARR = $this->getParams();
+        if ( !empty($paramsARR) ){
+            
+        	if ($consultoraDO = TblEmpresa::findByPrimaryKey($this->db, $paramsARR[0])){
+
+        	   $claveConsultora = $consultoraDO->getFkUsuario();
+        	   if ($usuarioDO = TblUsuario::findByPrimaryKey($this->db, $claveConsultora))
+        	   
+                    if (!$usuarioDO->delete()){
+                        
+                        /**
+                         * @TODO Mostrar error (No se pudo borrar el usuario) 
+                         */
+                        $this->redirectTo('consultora','index');
+                        return;
+                        
+                    }
+                    
+                    /**
+                     * @TODO BORRADO OK (REDIRIGIR A DONDE SEA NECESARIO) 
+                     */
+                    $this->redirectTo('consultora','index');
+                    return;
+        	   
+        	   } else {
+        	       
+        	        /**
+                     * @TODO Mostrar error (El usuario no existe) 
+                     */
+                    $this->redirectTo('consultora','index');
+                    return;
+        	       
+        	       
+        	   }
+        	    
+        	    
+        	} else {
+        	    
+        	    /**
+        	     * @TODO Mostrar error (La consultora no existe) 
+        	     */
+        	    $this->redirectTo('consultora','index');
+        	    
+        	}
+        	
+    }
     
     /**
      * Obtiene los datos de academia y realiza el alta o la actualización
@@ -329,11 +386,27 @@ class consultoraController extends PplController{
             $this->view->errorNombre = 'El nombre no puede estar vacío';
         }
         
-        // Cif
-        $cif = $this->helper->escapeInjection($this->helper->get('cif'));
-        if ( is_null($cif) || empty($cif) ){
-            $correcto = false;
-            $this->view->errorCif = 'El cif no puede estar vacío';
+    	// Cif
+    	$cif = $this->helper->escapeInjection($this->helper->get('cif'));
+    	$oldCif = $this->helper->escapeInjection($this->helper->get('oldCif'));
+	    if ( is_null($cif) || empty($cif) ){
+	    	
+	    	$correcto = false;
+	    	$this->view->errorCif = 'El cif no puede estar vacío';
+	    	
+	    } else {
+        	
+        	// Comprobamos que el número no exista ya en la bbdd
+        	if ( !$editar || ($editar && $cif != $oldCif) ){
+		        $sql = "SELECT COUNT(*) AS total FROM tblEmpresa WHERE vCif = '" . $cif . "'";
+		        $this->db->executeQuery($sql);
+		        $row = $this->db->fetchRow();
+		        if (is_array($row) && array_key_exists('total', $row) && $row['total'] != 0){
+		            $this->view->errorCif = 'El CIF ya está registrado';
+		            $correcto = false;     
+		        }
+        	}
+        	
         }
         
         // País

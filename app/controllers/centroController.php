@@ -273,6 +273,12 @@ class centroController extends PplController{
 	    if ( is_null($telefono) || empty($telefono) ){
 	    	$telefono = '';
 	    }
+
+	    // Población
+    	$poblacion = $this->helper->escapeInjection($this->helper->get('poblacion'));
+	    if ( is_null($poblacion) || empty($poblacion) ){
+	    	$poblacion = '';
+	    }
 	    
     	// Descripción
     	$descripcion = $this->helper->escapeInjection($this->helper->get('descripcion'));
@@ -304,6 +310,7 @@ class centroController extends PplController{
 		    	$centroDO->setVDireccion($direccion);
 		    	$centroDO->setVDescripcion($descripcion);
 		    	$centroDO->setVTelefono($telefono);
+		    	$centroDO->setVPoblacion($poblacion);
 		    	$centroDO->setLastModified(date('Y-m-d'));
                 $centroDO->setModUser($this->usuario->getNombre());
 		    	
@@ -327,6 +334,134 @@ class centroController extends PplController{
     	
     }
     
-}
+    /**
+     * Buscar centros
+     */
+    public function buscarAction(){
+        
+        // Paises 
+        $this->view->paisesIDX = $this->cacheBO->getPaises();
+        
+        // Provincias
+        $this->view->provinciasIDX = $this->cacheBO->getProvincias();
+        
+        $sent = $this->helper->getAndEscape('sent');
+        if (!empty($sent)){
 
+            // Solo comprobaremos permisos de edición si hay resultados
+            if ( $this->aclManager->hasPerms('centro', 'editar') ){
+                $this->view->editar = true;
+            }
+            
+            // Parámetros de ordenación para el paginador
+            $aliasCampos = array(
+                'nom'   => 'vNombre',
+                'dir'   => 'vDireccion',
+                'pob'   => 'vPoblacion',
+                'tel'   => 'vTelefono'
+            );
+
+            if ( !empty($_REQUEST) && array_key_exists('o', $_GET) & array_key_exists('ob', $_GET) ){
+                $order = $this->helper->escapeInjection($_GET['o']);
+                $orderBy = $aliasCampos[$_GET['ob']];
+                $aliasOrderBy = $_GET['ob'];
+            } else {
+                $order   = 'asc';
+                $orderBy = 'vNombre';
+                $aliasOrderBy = 'nom';
+            }            
+
+            // Envío el orden a la vista
+            if ( $order == 'asc' ){
+                $this->view->order = 'desc';
+            } else {
+                $this->view->order = 'asc';
+            }
+            $this->view->orderBy = $aliasOrderBy;            
+            
+            // Se prepara el query
+            $id = $this->helper->getAndEscape('idCentro');
+            $pais = $this->helper->getAndEscape('pais');
+            $provincia = $this->helper->getAndEscape('provincia');
+            $cif = $this->helper->getAndEscape('cif');
+            $cp = $this->helper->getAndEscape('cp');
+            $kw = $this->helper->getAndEscape('keyword');
+            
+            $where = array();
+            $queryString = '&amp;sent=1';
+            
+            // ID
+            if (!empty($id)){
+                $where[] = " idConsultora = $id";
+                $this->view->id = $id;
+                $queryString .= "&amp;idConsultora=$id";
+            }
+            
+            // PAIS
+            if (!empty($pais)){
+                $where[] = " fkPais = '$pais'";
+                $this->view->pais = $pais;
+                $queryString .= "&amp;pais=$pais";
+            }
+
+            // PROVINCIA
+            if (!empty($provincia)){
+                $where[] = " fkProvincia = $provincia";
+                $this->view->provincia = $provincia;
+                $queryString .= "&amp;provincia=$provincia";
+            }
+
+            // CIF
+            if (!empty($cif)){
+                $where[] = " vCif = $cif";
+                $this->view->cif = $cif;
+                $queryString .= "&amp;cif=$cif";
+            }
+
+            // CP
+            if (!empty($cp)){
+                $where[] = " vCp = $cp";
+                $this->view->cp = $cp;
+                $queryString .= "&amp;cp=$cp";
+            }
+            
+            // KEYWORD
+            if (!empty($kw)){
+                //$where[] = "vNombre LIKE '%$kw%' OR vDescripcion LIKE '%$kw%'";
+                $where[] = "vNombre LIKE '%$kw%'";
+                $this->view->kw = $kw;
+                $queryString .= "&amp;keyword=$kw";             
+            }
+            
+            // Se constuye el where
+            if (count($where)){
+                $where = ' WHERE ' . implode(' AND ', $where);
+            } else {
+                $where = '';
+            }
+            
+            // Se ejecuta la búsqueda
+            $paginador = new NingenPaginator($this->db, $where, 'tblCentro', $this->helper);
+            $paginador->setItemsPorPagina(10);
+            $paginaActual = $this->helper->escapeInjection($this->helper->get('p'));
+            $paginaActual = empty($paginaActual) ? 1 : $paginaActual;
+            $paginador->setPaginaActual($paginaActual);
+            $paginador->setOrderBy($orderBy);
+            $paginador->setOrder($order);
+        
+            // Obtengo los centros
+            $centrosCOL = $paginador->getItemCollection();
+            $this->view->centrosCOL = $centrosCOL;        
+            
+            // Envío el paginador a la vista
+            $this->view->paginador = $paginador->getPaginatorHtml();
+            
+            // Se propagan las clausulas de búsqueda en el paginador
+            $this->view->querystring = $queryString;        
+        
+        }
+    
+    }
+
+}
 ?>

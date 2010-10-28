@@ -1,0 +1,18 @@
+Estimado usuario:
+
+    Este correo es para informarle que ha sido dado de alta en nuestro sistema. 
+    Desde este momento puede iniciar sesión siguiendo este enlace:
+    
+    %%ENLACE%%
+    
+    NOTA: Recomendamos que guarde este correo en un lugar seguro, ya que a continuación
+    recordaremos sus datos de acceso:
+    
+    Usuario: %%USUARIO%%
+    Contraseña: %%CONTRASENA%%
+        
+--
+Fin del mensaje.
+Un cordial saludo.
+    
+    

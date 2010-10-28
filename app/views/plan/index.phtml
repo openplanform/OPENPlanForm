@@ -1,5 +1,11 @@
 <h2>Listado de Planes</h2>
 
+<?php 
+
+	if ( count($this->planesCOL) > 0 ){
+
+?>
+
 <table class="listado">
     <thead>
 		<tr>
@@ -24,7 +30,7 @@
 		<?php
 		
 			$contador = 0;
-			foreach ( $this->arrPlanesDO as $planDO ){
+			foreach ( $this->planesCOL as $planDO ){
 				
 			    //$planDO = new TblPlan($db);
 				$clase = ( ($contador%2)==0 )?'':'class="alter"';
@@ -56,3 +62,16 @@
 	</tbody>
 </table>
 <div id="paginadorContainer"><?= $this->paginador ?></div>
+<?php 
+
+	} else {
+
+?>
+
+<h3>No hay ningún plan</h3>
+
+<?php 
+
+	}
+
+?>

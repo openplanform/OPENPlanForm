@@ -77,7 +77,7 @@
             
             <div class="campo multi controlado">
                 <label for="nacimiento">Fecha de nacimiento*</label>
-                <input type="text" name="nacimiento" id="nacimiento" class="campoTexto mediano" onkeypress="return false;"  value="<?= $this->datehelper->getDiaMesAno($this->profesorDO->getDNacimiento()) ?>"/>
+                <input type="text" name="nacimiento" id="nacimiento" class="campoTexto mediano" onkeypress="return false;"  value="<?= NingenDate::getDiaMesAno($this->profesorDO->getDNacimiento()) ?>"/>
                 <p id="errorNacimiento" class="errorInput"><?= $this->errorNacimiento ?></p>
             </div>
             
@@ -100,7 +100,8 @@
             
             <div class="campo multi controlado">
                 <label for="dni">Número identificación*</label>
-                <input type="text" name="dni" id="dni" class="campoTexto mediano" value="<?= $this->profesorDO->getVNumeroIdentificacion() ?>"/>
+                <input type="text" name="dni" id="dni" class="campoTexto mediano" onblur="comprobarDni('dni')" value="<?= $this->profesorDO->getVNumeroIdentificacion() ?>"/>
+                <input type="hidden" name="dniOculto" id="dniOculto" value="<?= $this->profesorDO->getVNumeroIdentificacion() ?>"/>
                 <p id="errorDni" class="errorInput"><?= $this->errorDni ?></p>
             </div>
             

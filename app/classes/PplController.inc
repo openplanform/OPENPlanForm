@@ -88,6 +88,7 @@ class PplController extends NingenController{
             
             $logoutModule->setAcl($this->aclManager);
             $logoutModule->setUsuario($this->usuario);
+            $logoutModule->setFichaUsuario($this->aclManager->datosCompletosUsuario($usuarioBO->getId()));
             $this->addModule($logoutModule);
         
         // ------------ MÓDULO - BARRA DE HERRAMIENTAS ----
@@ -95,6 +96,7 @@ class PplController extends NingenController{
             
             $barraHerramientasModule->setAction($this->actionName);
             $barraHerramientasModule->setController($this->controllerName);
+            $barraHerramientasModule->setParam($this->getParam(0));
             $this->addModule($barraHerramientasModule);
         
         

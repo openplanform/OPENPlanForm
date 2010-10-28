@@ -42,8 +42,8 @@
 					<td><a href="/plan/ficha.html/<?= $cursoDO->getFkPlan() ?>"><?= $this->planesIDX[$cursoDO->getFkPlan()] ?></a></td>
 					<td><?= $this->sectoresIDX[$cursoDO->getFkSector()] ?></td>
 					<td><?= $this->categoriasIDX[$cursoDO->getFkCategoria()] ?></td>
-					<td><?= $cursoDO->getDInicio() ?></td>
-					<td><?= $cursoDO->getDFin() ?></td>
+					<td><?= NingenDate::getDiaMesAno($cursoDO->getDInicio()) ?></td>
+					<td><?= NingenDate::getDiaMesAno($cursoDO->getDFin()) ?></td>
 					<?
 			
 						if ( $this->editar ){
@@ -63,7 +63,7 @@
 </table>
 <div id="paginadorContainer"><?= $this->paginador ?></div>
 
-<?php 
+<?php
 
 	} else {
 

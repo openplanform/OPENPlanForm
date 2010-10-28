@@ -155,12 +155,12 @@
             
             <div class="campo multi">
                 <label for="inicio">Fecha de inicio</label>
-                <input type="text" name="inicio" id="inicio" class="campoTexto pequeno" onkeypress="return false;" value="<?= $this->cursoDO->getDInicio() ?>"/>
+                <input type="text" name="inicio" id="inicio" class="campoTexto pequeno" onkeypress="return false;" value="<?= NingenDate::getDMA($this->cursoDO->getDInicio()) ?>"/>
             </div>
             
             <div class="campo multi">
                 <label for="fin">Fecha de fin</label>
-                <input type="text" name="fin" id="fin" class="campoTexto pequeno" onkeypress="return false;" value="<?= $this->cursoDO->getDFin() ?>"/>
+                <input type="text" name="fin" id="fin" class="campoTexto pequeno" onkeypress="return false;" value="<?= NingenDate::getDMA($this->cursoDO->getDFin()) ?>"/>
             </div>
             
             <div class="separadorH"></div>

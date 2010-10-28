@@ -199,6 +199,18 @@ class PplCacheBO {
     private $aulas_fetched = false;
     
     /**
+     * profesores indexados por su clave
+     * @var array
+     */
+    private $profesoresIDX;
+    
+    /**
+     * Flag que indica que los profesores han sido cargados
+     * @var boolean
+     */
+    private $profesores_fetched = false;
+    
+    /**
      * Constructora, propaga la referencia a la base de datos 
      * @param NingenConnection $db
      */
@@ -437,7 +449,7 @@ class PplCacheBO {
 		}
         
 		//$consultorasCOL = TblEmpresa::findAll($this->db, 'vNombre');
-		$sql = 'SELECT * FROM tblEmpresa e WHERE EXISTS ( SELECT NULL FROM trelRolUsuario ru WHERE e.fkUsuario = ru.fkUsuario AND ru.fkRol = ' . PplAclManager::ROL_CONSULTORA . ')';
+		$sql = 'SELECT * FROM tblEmpresa e WHERE EXISTS ( SELECT NULL FROM trelRolUsuario ru WHERE e.fkUsuario = ru.fkUsuario AND ru.fkRol IN (' . PplAclManager::ROL_CONSULTORA . ', ' . PplAclManager::ROL_PROPIETARIO . ') )';
 		$this->db->executeQuery($sql);
         
         
@@ -640,6 +652,35 @@ class PplCacheBO {
 	    
 	    return $provinciasIDX;
 	    
+	}
+	
+	/**
+	 * Obtiene los profesores
+	 * @return array
+	 */
+	public function getProfesores() {
+		
+		if ( $this->profesores_fetched ){
+			return $this->profesoresIDX;
+		}
+        
+		$profesoresCOL = TblPersona::findAll($this->db, 'vNombre');
+		$sql = 'SELECT * FROM tblPersona e WHERE EXISTS ( SELECT NULL FROM trelRolUsuario ru WHERE e.fkUsuario = ru.fkUsuario AND ru.fkRol = ' . PplAclManager::ROL_PROFESOR . ')';
+		$this->db->executeQuery($sql);
+        
+        
+		$profesoresIDX = array();
+		
+		// Se indexarán los empresas por su clave
+        while ( $row = $this->db->fetchRow() ){
+        	$profesoresIDX[$row['idPersona']] = $row['vNombre'] . ' ' . $row['vPrimerApellido'] . ' ' . $row['vSegundoApellido'];
+        }
+		
+		$this->profesoresIDX = $profesoresIDX;
+		$this->profesores_fetched = true;
+		
+		return $this->profesoresIDX;
+		
 	}
 	
 }
