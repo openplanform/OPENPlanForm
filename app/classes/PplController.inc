@@ -4,8 +4,10 @@ require_once 'NingenController.inc';
 
 require_once NINGENCMS_CLASSESDIR . 'PplAclManager.inc';
 require_once NINGENCMS_CLASSESDIR . 'PplCacheBO.inc';
+
 require_once NINGENCMS_MODULEDIR . 'menuPrincipalModule.php';
 require_once NINGENCMS_MODULEDIR . 'logoutModule.php';
+require_once NINGENCMS_MODULEDIR . 'breadcrumbsModule.php';
 require_once NINGENCMS_MODULEDIR . 'popupModule.php';
 require_once NINGENCMS_MODULEDIR . 'barraHerramientasModule.php';
 
@@ -61,7 +63,7 @@ class PplController extends NingenController{
          * El usuario deberá tener una cuenta para poder ejecutar 
          * cualquier acción del controlador
          */
-        if ($this->controllerName != 'index'){
+        if ($this->controllerName != 'index' || ($this->controllerName == 'index' && $this->actionName == 'panel' )){
             $usuarioBO = NingenCmsSession::getValue('usuario');
             if (!$usuarioBO instanceof PplUsuarioSesion){
                 $this->redirectTo('index', 'login');
@@ -106,10 +108,19 @@ class PplController extends NingenController{
             $this->addModule($popupModule);
             
             
+        // ------------ MÓDULO - BREADCRUMBS -------------------
+        $pathModule = new breadcrumbsModule('contenedor_path');
+        
+            $pathModule->setControllerAction($this->controllerName, $this->actionName);
+            $pathModule->setDb($this->db);
+            $this->addModule($pathModule);
+            
+            
         // Casos especiales en los que no es necesario un layout
     	if ( $this->actionName == "eliminar" || $this->actionName == "duplicar" ){
     		$this->bypassLayout();
     	}
+    	
     }
     
 }

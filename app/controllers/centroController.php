@@ -392,9 +392,9 @@ class centroController extends PplController{
             
             // ID
             if (!empty($id)){
-                $where[] = " idConsultora = $id";
+                $where[] = " idCentro = $id";
                 $this->view->id = $id;
-                $queryString .= "&amp;idConsultora=$id";
+                $queryString .= "&amp;idCentro=$id";
             }
             
             // PAIS

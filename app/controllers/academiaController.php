@@ -624,9 +624,9 @@ class academiaController extends PplController{
             
             // ID
             if (!empty($id)){
-                $where[] = " idConsultora = $id";
+                $where[] = " idEmpresa = $id";
                 $this->view->id = $id;
-                $queryString .= "&amp;idConsultora=$id";
+                $queryString .= "&amp;idEmpresa=$id";
             }
             
             // PAIS

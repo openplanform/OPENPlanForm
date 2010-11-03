@@ -1,19 +1,17 @@
-<h2>Ficha de Convocatoria</h2>
-
 <?
 
 	if ( !is_null($this->convocatoriaDO) ){
 		
 ?>
 		<div class="ficha">
-			<p><label>Nombre:</label> <?= $this->convocatoriaDO->getVNombre() ?></p>
-			<p><label>Tipo:</label> <?= $this->tiposConvocatoriaIDX[$this->convocatoriaDO->getFkTipoConvocatoria()] ?></p>
-			<p><label>Presupuesto:</label> <?= NingenNumeric::decimalFormatoEuropeo($this->convocatoriaDO->getEPresupuesto(), 2) ?>€</p>
+			<p><strong>Nombre:</strong><span> <?= $this->convocatoriaDO->getVNombre() ?></span></p>
+			<p><strong>Tipo:</strong><span> <?= $this->tiposConvocatoriaIDX[$this->convocatoriaDO->getFkTipoConvocatoria()] ?></span></p>
+			<p><strong>Presupuesto:</strong><span> <?= NingenNumeric::decimalFormatoEuropeo($this->convocatoriaDO->getEPresupuesto(), 2) ?>€</span></p>
 			<?
 			
 			$descripcion = $this->convocatoriaDO->getVDescripcion();
 			if ( !empty($descripcion) ){
-				?><p><label>Descripción:</label> <?= $descripcion ?></p><?
+				?><p class="extended"><strong>Descripción:</strong><span> <?= $descripcion ?></span></p><?
 			}
 			
 			?>
@@ -22,7 +20,7 @@
 		// Requisitos
 		if ( !is_null($this->arrRequisitosConvocatoriaDO) ){
 			
-			?><p><label>Requisitos: </label><?
+			?><p><strong>Requisitos: </strong><span><?
 			
 			$contador = 0;
 			foreach ( $this->arrRequisitosConvocatoriaDO as $requisitoConvocatoriaDO ){
@@ -30,26 +28,28 @@
 				echo $this->requisitosIDX[$requisitoConvocatoriaDO->getFkRequisito()];
 				$contador++;
 			}
-			?></p><?
+			?></span></p><?
 			
 		}
-		
-		// Planes
-		$arrPlanesDO = $this->convocatoriaDO->getTblPlans();
-		if ( !empty($arrPlanesDO) ){
-
-			?><br/><h3>Planes</h3><?
-			
-			foreach ( $arrPlanesDO as $planDO ){
-				echo '<p><a href="/plan/ficha/' . $planDO->getIdPlan() . '">' . $planDO->getVNombre() . '</a></p>';
-			}
-			
-		}
-		
 		
 		?>
-		</div>
-<?
+		</div><?
+
+        // Planes
+        $arrPlanesDO = $this->convocatoriaDO->getTblPlans();
+        if ( !empty($arrPlanesDO) ){
+
+            ?><h3>Planes presentados para esta convocatoria: </h3><?
+            
+            echo '<ul class="listaItemsFicha">';
+            
+            foreach ( $arrPlanesDO as $planDO ){
+                echo '<li><a href="/plan/ficha/' . $planDO->getIdPlan() . '" class="' . strtolower($this->estadosPlanIDX[$planDO->getFkEstadoPlan()]) . '">' . $planDO->getVNombre() . '</a></span></li>';
+            }
+            
+            echo '</ul>';
+            
+        }		
 		
 	} else {
 		

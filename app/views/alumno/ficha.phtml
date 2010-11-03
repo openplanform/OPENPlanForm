@@ -1,0 +1,89 @@
+<?
+
+	if ( !is_null($this->alumnoDO) ){
+		
+?>
+		<div class="ficha">
+			<h3>Datos del usuario</h3>
+			<p><strong>Nombre:</strong><span> <?= $this->usuarioDO->getVNombre() ?></span></p>
+			<p><strong>Email:</strong><span> <?= $this->usuarioDO->getVEmail() ?></span></p>
+		</div>
+		
+		<div class="ficha">
+			<h3>Datos del alumno</h3>
+			<p><strong>Nombre:</strong><span> <?= $this->alumnoDO->getVNombre() . ' ' .$this->alumnoDO->getVPrimerApellido() . ' ' . $this->alumnoDO->getVSegundoApellido() ?></span></p>
+			<p><strong>Fecha de nacimiento: </strong><span> <?= NingenDate::getDiaMesAno($this->alumnoDO->getDNacimiento())  ?></span></p>
+			<p><strong><?= $this->alumnoDO->getTblTipoIdentificacion()->getVNombre() ?>:</strong><span> <?= $this->alumnoDO->getVNumeroIdentificacion() ?></span></p>
+			
+			<?
+			
+			$telefono = $this->alumnoDO->getVTelefono();
+			if ( !empty($telefono) ){
+				?><p><strong>Teléfono:</strong><span> <?= $telefono ?></span></p><?
+			}
+			
+			$movil = $this->alumnoDO->getVMovil();
+			if ( !empty($movil) ){
+				?><p><strong>Móvil:</strong><span> <?= $movil ?></span></p><?
+			}
+			
+			
+			$direccion = $this->alumnoDO->getVDireccion();
+			if ( !empty($direccion) ){
+				?><p><strong>Dirección:</strong><span> <?= $direccion ?></span></p><?
+			}
+			
+			$poblacion = $this->alumnoDO->getVPoblacion();
+			if ( !empty($poblacion) ){
+				?><p><strong>Población:</strong><span> <?= $poblacion ?></span></p><?
+			}
+			
+			$cp = $this->alumnoDO->getVCp();
+			if ( !empty($cp) ){
+				?><p><strong>CP:</strong><span> <?= $cp ?></span></p><?
+			}
+			
+			$provincia = $this->alumnoDO->getTblProvincia()->getVNombre();
+			if ( !empty($provincia) ){
+				?><p><strong>Provincia:</strong><span> <?= $provincia ?></span></p><?
+			}
+			
+			?>
+			<p><strong>País:</strong><span> <?= $this->alumnoDO->getTblPais()->getVNombre() ?></span></p>
+			<p><strong>Estado civil:</strong><span> <?= $this->alumnoDO->getTblEstadoCivil()->getVNombre() ?></span></p>
+			<p><strong>Estado laboral:</strong><span> <?= $this->alumnoDO->getTblEstadoLaboral()->getVNombre() ?></span></p>
+			<p><strong>Nivel de estudios:</strong><span> <?= $this->alumnoDO->getTblNivelEstudios()->getVNombre() ?></span></p>
+			
+		</div>
+		
+		<?
+		// Cursos preinscritos
+		if ( count($this->cursosPreinscritosCOL) > 0){
+			
+			?><div class="ficha">
+			<h3>Preinscripciones del alumno</h3><?
+				
+				foreach ( $this->cursosPreinscritosCOL as $cursoPreinscritoDO ){
+				
+					foreach ( $this->cursosCOL as $cursoDO ){
+		            				
+            			if ( $cursoDO->getIdCurso() == $cursoPreinscritoDO->getFkPlanCursoCentro() ){
+            				echo '<p><a href="/curso/ficha.html/' . $cursoDO->getIdCurso() . '">' . $cursoDO->getVNombre() . '</a></p>';
+            			}
+            				
+            		}
+				
+				}
+				
+			?></div><?
+			
+		}
+		?>
+<?
+		
+	} else {
+		
+		?><h3>No se ha encontrado el alumno</h3><?
+		
+	}
+?>

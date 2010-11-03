@@ -4,16 +4,18 @@ require_once 'helper/NingenString.inc';
 require_once 'helper/NingenDate.inc';
 require_once NINGENCMS_CLASSESDIR . 'PplController.inc';
 
-require_once NINGENCMS_MODELDIR . 'TblPersona.inc';
-require_once NINGENCMS_MODELDIR . 'TrelRolUsuario.inc';
-require_once NINGENCMS_MODELDIR . 'TrelPersonaCategoria.inc';
 require_once NINGENCMS_MODELDIR . 'TblCategoria.inc';
-require_once NINGENCMS_MODELDIR . 'TblPais.inc';
-require_once NINGENCMS_MODELDIR . 'TblProvincia.inc';
-require_once NINGENCMS_MODELDIR . 'TblTipoIdentificacion.inc';
+require_once NINGENCMS_MODELDIR . 'TblCurso.inc';
 require_once NINGENCMS_MODELDIR . 'TblEstadoCivil.inc';
 require_once NINGENCMS_MODELDIR . 'TblEstadoLaboral.inc';
 require_once NINGENCMS_MODELDIR . 'TblNivelEstudios.inc';
+require_once NINGENCMS_MODELDIR . 'TblPais.inc';
+require_once NINGENCMS_MODELDIR . 'TblPersona.inc';
+require_once NINGENCMS_MODELDIR . 'TblProvincia.inc';
+require_once NINGENCMS_MODELDIR . 'TblTipoIdentificacion.inc';
+require_once NINGENCMS_MODELDIR . 'TrelPersonaCategoria.inc';
+require_once NINGENCMS_MODELDIR . 'TrelProfesor.inc';
+require_once NINGENCMS_MODELDIR . 'TrelRolUsuario.inc';
 
 require_once 'helper/NingenCmsHtmlHelper.inc';
 require_once 'helper/NingenDatabase.inc';
@@ -266,6 +268,19 @@ class profesorController extends PplController{
         	
         		// Usuario del profesor
         		$this->view->usuarioDO = $profesorDO->getTblUsuario();
+        		
+        		// Categorías
+        		$this->view->categoriasIDX = $this->cacheBO->getCategorias();
+        		
+        		// Categorías del profesor
+        		$categoriasProfesoresIDX = $this->cacheBO->getProfesoresCategorias();
+        		$this->view->categoriasProfesorARR = $categoriasProfesoresIDX[$profesorDO->getIdPersona()];
+        		
+        		// Cursos que imparte
+        		$this->view->cursosImpartidosCOL = TrelProfesor::findByTblPersona($this->db, $profesorDO->getIdPersona());
+        		
+        		// Cursos
+        		$this->view->cursosCOL = TblCurso::findAll($this->db);
         		
         	}
         	
@@ -772,7 +787,7 @@ class profesorController extends PplController{
             // ID
             if (!empty($id)){
                 $where[] = "idPersona = $id";
-                $this->view->id = id;
+                $this->view->id = $id;
                 $queryString .= '&amp;idPersona=' . $id;
             }
             
@@ -785,7 +800,7 @@ class profesorController extends PplController{
             
             // PAIS
             if (!empty($pais)){
-                $where[] = "fkPais = $pais";
+                $where[] = "fkPais = '$pais'";
                 $this->view->pais = $pais;
                 $queryString .= '&amp;pais=' . $pais;
             }

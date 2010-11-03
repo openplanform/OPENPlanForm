@@ -1,7 +1,7 @@
 <?php
 /**
  * Este archivo ha sido generado con Ningen DoGen v.0.6
- * el 21 de October de 2010 a las 10:48:39
+ * el 02 de November de 2010 a las 12:43:47
  * @package dataAccess
  */
 
@@ -19,12 +19,6 @@ require_once( 'TrelProfesorPK.inc' );
  * @package dataAccess
  */
 class TrelProfesor extends NingenGenericDO{
-
-    /**
-     * Atributo que representa el campo "idProfesor"
-     * @var integer
-     */
-    public $idProfesor;
 
     /**
      * Atributo que representa el campo "fkPersona"
@@ -60,7 +54,6 @@ class TrelProfesor extends NingenGenericDO{
     private function _setData( $data ){
 
         $this->_data = $data;
-        $this->idProfesor = $data['idProfesor'];
         $this->fkPersona = $data['fkPersona'];
         $this->fkPlanCursoAula = $data['fkPlanCursoAula'];
 
@@ -79,9 +72,6 @@ class TrelProfesor extends NingenGenericDO{
 
         $sql = 'SELECT * FROM trelProfesor';
         $where = array();
-        if( $tmp = $searchItem->idProfesor ){
-            $where[] = "idProfesor='$tmp'";
-        }
         if( $tmp = $searchItem->fkPersona ){
             $where[] = "fkPersona='$tmp'";
         }
@@ -117,12 +107,13 @@ class TrelProfesor extends NingenGenericDO{
      * Obtiene el elemento de la tabla trelProfesor que coincide con la clave primaria especificada.
      *
      * @param Connection $db Conexión con la base de datos.
-     * @param integer $idProfesor valor del campo 'idProfesor'.
+     * @param integer $fkPersona valor del campo 'fkPersona'.
+     * @param integer $fkPlanCursoAula valor del campo 'fkPlanCursoAula'.
      * @return TrelProfesor
      */
-    public static function findByPrimaryKey( $db, $idProfesor ){
+    public static function findByPrimaryKey( $db, $fkPersona, $fkPlanCursoAula ){
 
-       $db->executeQuery("SELECT * FROM trelProfesor WHERE idProfesor = '$idProfesor'");
+       $db->executeQuery("SELECT * FROM trelProfesor WHERE fkPersona = '$fkPersona' AND fkPlanCursoAula = '$fkPlanCursoAula'");
        $data = $db->fetchRow();
        return NingenGenericDO::createDO( $db, $data, 'TrelProfesor');
 
@@ -138,7 +129,8 @@ class TrelProfesor extends NingenGenericDO{
     public static function findByPKObject( $db, $pk ){
 
         $where = array();
-        $where[]="idProfesor='".$pk->idProfesor."'";
+        $where[]="fkPersona='".$pk->fkPersona."'";
+        $where[]="fkPlanCursoAula='".$pk->fkPlanCursoAula."'";
         $where = implode(' AND ',$where);
         $db->executeQuery("SELECT * FROM trelProfesor WHERE $where");
         $data = $db->fetchRow();
@@ -183,11 +175,10 @@ class TrelProfesor extends NingenGenericDO{
      */
     public function update(){
         $sets = array();
-        $sets[] = 'idProfesor=' . ( ( ( $value = $this->idProfesor ) === null || !isset($this->idProfesor) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'fkPersona=' . ( ( ( $value = $this->fkPersona ) === null || !isset($this->fkPersona) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'fkPlanCursoAula=' . ( ( ( $value = $this->fkPlanCursoAula ) === null || !isset($this->fkPlanCursoAula) ) ? 'null' :  "'".addslashes($value)."'" );
         $setStr = implode(',', $sets);
-        return $this->_db->executeQuery("UPDATE trelProfesor SET $setStr WHERE idProfesor='".addslashes($this->_data['idProfesor'])."'");
+        return $this->_db->executeQuery("UPDATE trelProfesor SET $setStr WHERE fkPersona='".addslashes($this->_data['fkPersona'])."' AND fkPlanCursoAula='".addslashes($this->_data['fkPlanCursoAula'])."'");
     }
 
     /**
@@ -195,17 +186,15 @@ class TrelProfesor extends NingenGenericDO{
       */
     public function insert(){
         $attributes = array();
-        $attributes[] = 'idProfesor';
         $attributes[] = 'fkPersona';
         $attributes[] = 'fkPlanCursoAula';
         $attributes = implode(',', $attributes);
         $values = array();
-        $values[] = (( $value = $this->idProfesor ) === null || !isset($this->idProfesor) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->fkPersona ) === null || !isset($this->fkPersona) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->fkPlanCursoAula ) === null || !isset($this->fkPlanCursoAula) ) ? 'null' : "'".addslashes($value)."'";
         $values = implode(',', $values);
         if( $this->_db->executeQuery("INSERT INTO trelProfesor($attributes) VALUES($values)") ){
-            $eleDO = $this->findByPrimaryKey( $this->_db, $this->idProfesor );
+            $eleDO = $this->findByPrimaryKey( $this->_db, $this->fkPersona, $this->fkPlanCursoAula );
             $this->_setData($eleDO->_data);
             return true;
         }
@@ -217,29 +206,10 @@ class TrelProfesor extends NingenGenericDO{
      */
     public function delete(){
         $where = array();
-        $where[] = "idProfesor="."'".addslashes($this->idProfesor)."'";
+        $where[] = "fkPersona="."'".addslashes($this->fkPersona)."'";
+        $where[] = "fkPlanCursoAula="."'".addslashes($this->fkPlanCursoAula)."'";
         $where = implode(" AND ", $where);
         return $this->_db->executeQuery("DELETE FROM trelProfesor WHERE $where");
-    }
-
-    /**
-      * Obtiene el valor del atributo 'idProfesor'.
-      *
-      * @return integer
-      */
-    public function getIdProfesor(){
-        return $this->idProfesor;
-    }
-
-    /**
-      * Establece el valor del atributo 'idProfesor'.
-      *
-      * @param integer Valor.
-      */
-    public function setIdProfesor( $value ){
-
-        $this->idProfesor = $value;
-
     }
 
     /**
@@ -279,19 +249,6 @@ class TrelProfesor extends NingenGenericDO{
     public function setFkPlanCursoAula( $value ){
 
         $this->fkPlanCursoAula = $value;
-
-    }
-
-    /**
-     * Obtiene todos los elementos relacionados de la tabla 'tblDisponibilidadProfesor'
-     *
-     * @param Connection $db Conexión con la base de datos.
-     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
-     */
-    public function getTblDisponibilidadProfesors( $orderBy='' ){
-
-        include_once('TblDisponibilidadProfesor.inc');
-        return TblDisponibilidadProfesor::findByTrelProfesor( $this->_db, $this->idProfesor, $orderBy );
 
     }
 

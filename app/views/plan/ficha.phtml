@@ -1,23 +1,21 @@
-<h2>Ficha de Plan</h2>
-
 <?
 
 	if ( !is_null($this->planDO) ){
 		
 ?>
 		<div class="ficha">
-			<p><label>Nombre:</label> <?= $this->planDO->getVNombre() ?></p>
-			<p><label>Tipo:</label> <?= $this->tiposPlanIDX[$this->planDO->getFkTipoPlan()] ?></p>
-			<p><label>Convocatoria:</label> <?= $this->convocatoriasIDX[$this->planDO->getFkConvocatoria()] ?></p>
-			<p><label>Estado:</label> <?= $this->estadosPlanIDX[$this->planDO->getFkEstadoPlan()] ?></p>
-			<p><label>Propietaria:</label> <?= $this->empresasIDX[$this->planDO->getFkEmpresaPropietaria()] ?></p>
-			<p><label>Consultora:</label> <?= $this->empresasIDX[$this->planDO->getFkEmpresaConsultora()] ?></p>
-			<p><label>Presupuesto:</label> <?= NingenNumeric::decimalFormatoEuropeo($this->planDO->getEPresupuestoAsignado(), 2) ?>€</p>
+			<p><strong>Nombre:</strong><span> <?= $this->planDO->getVNombre() ?></span></p>
+			<p><strong>Tipo:</strong><span> <?= $this->tiposPlanIDX[$this->planDO->getFkTipoPlan()] ?></span></p>
+			<p><strong>Convocatoria:</strong><span> <?= $this->convocatoriasIDX[$this->planDO->getFkConvocatoria()] ?></span></p>
+			<p><strong>Estado:</strong><span> <?= $this->estadosPlanIDX[$this->planDO->getFkEstadoPlan()] ?></span></p>
+			<p><strong>Propietaria:</strong><span> <?= $this->empresasIDX[$this->planDO->getFkEmpresaPropietaria()] ?></span></p>
+			<p><strong>Consultora:</strong><span> <?= $this->empresasIDX[$this->planDO->getFkEmpresaConsultora()] ?></span></p>
+			<p><strong>Presupuesto:</strong><span> <?= NingenNumeric::decimalFormatoEuropeo($this->planDO->getEPresupuestoAsignado(), 2) ?>€</span></p>
 			<?
 			
 			$descripcion = $this->planDO->getVDescripcion();
 			if ( !empty($descripcion) ){
-				?><p><label>Descripción:</label> <?= $descripcion ?></p><?
+				?><p class="extended"><strong>Descripción:</strong><span> <?= $descripcion ?></span></p><?
 			}
 			
 			?>
@@ -30,7 +28,7 @@
 			?><br/><h3>Cursos</h3><?
 			
 			foreach ( $arrCursosDO as $cursoDO ){
-				echo '<p><a href="/curso/ficha/' . $cursoDO->getIdCurso() . '">' . $cursoDO->getVNombre() . '</a></p>';
+				echo '<p><a href="/curso/ficha/' . $cursoDO->getIdCurso() . '">' . $cursoDO->getVNombre() . '</a></span></p>';
 			}
 			
 		}

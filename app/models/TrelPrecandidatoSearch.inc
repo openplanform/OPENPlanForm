@@ -1,7 +1,7 @@
 <?php
 /**
  * Este archivo ha sido generado con Ningen Dogen v.0.6
- * el 25 de October de 2010 a las 12:44:09
+ * el 02 de November de 2010 a las 15:44:10
  * @package dataAccess
  */
 
@@ -11,13 +11,6 @@
  * @package dataAccess
  */
 class TrelPrecandidatoSearch{
-
-    /**
-     * Representa el atributo idCandidato.
-     *
-     * @var integer
-     */
-    public $idCandidato;
 
     /**
      * Representa el atributo fkPersona.

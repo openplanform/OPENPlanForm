@@ -66,6 +66,9 @@ class barraHerramientasModule extends NingenModule{
             
             	<?php
             	
+            	// El botón del panel de inicio siempre se mostrará
+            	$this->echoBotonPanel();
+            	
             	// Botones especiales para la sección de administración
             	if ($this->controller == 'administrador'){
             	    
@@ -102,6 +105,18 @@ class barraHerramientasModule extends NingenModule{
         	        // Resto de secciones del sitio
                 	switch ($this->action) {
                 		
+                		// PANEL
+                		case 'panel':
+    	            		$this->echoBotonBuscar(false);
+    	            		$this->echoBotonAnadir(false);
+    	            		$this->echoBotonListado(false);
+    		            	$this->echoBotonEditar(false);
+    		            	$this->echoBotonGuardar(false);
+    		            	$this->echoBotonDuplicar(false);
+    		            	$this->echoBotonLimpiar(false);
+    	            		$this->echoBotonEliminar(false);
+                			break;
+                			
                 		// INDEX
                 		case 'index':
     	            		$this->echoBotonBuscar();
@@ -436,7 +451,19 @@ class barraHerramientasModule extends NingenModule{
             
         }
             
-    }	
+    }
+
+    
+    /**
+     * Imprime el botón del Panel
+     */
+    public function echoBotonPanel(){
+        
+        echo '<li class="panel">
+                <a href="/index/panel.html" title="Panel de inicio">Panel</a>
+             </li>';
+            
+    }    
 	
 	
 }

@@ -337,7 +337,9 @@ class planController extends PplController{
 	    	$planDO->setFkEmpresaConsultora($consultora);
 	    	$planDO->setEPresupuestoAsignado(NingenNumeric::formatoEuropeoDecimal($presupuesto, 2));
 	    	$planDO->setVDescripcion($descripcion);
-	    	
+	    	$planDO->setLastModified(date('Y-m-d'));
+            $planDO->setModUser($this->usuario->getNombre());
+            
 	    	// Empieza la transacción
 	    	$this->db->begin();
 	    	

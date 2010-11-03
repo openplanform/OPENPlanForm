@@ -1,7 +1,7 @@
 <?php
 /**
  * Este archivo ha sido generado con Ningen Dogen v.0.6
- * el 21 de October de 2010 a las 10:48:39
+ * el 02 de November de 2010 a las 12:43:46
  * @package dataAccess
  */
 
@@ -13,10 +13,10 @@
 class TblDisponibilidadProfesorPK{
 
     /**
-     * Representa el atributo idDisponibilidadProfesor.
+     * Representa el atributo idDisponibilidad.
      *
      * @var integer
      */
-    public $idDisponibilidadProfesor;
+    public $idDisponibilidad;
 }
 ?>

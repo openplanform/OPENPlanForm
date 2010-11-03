@@ -182,7 +182,7 @@ function comprobarUsuario(idCampo, editar) {
 	
 	if ( editar ) {
 		var usuarioOculto = $j('#' + idCampo + "Oculto").val();
-		if ( usuarioOculto != usuario ){
+		if ( usuarioOculto.toLowerCase() != usuario.toLowerCase() ){
 			comprobar = true;
 		}
 	} else if ( usuario != '' ){
@@ -194,7 +194,7 @@ function comprobarUsuario(idCampo, editar) {
 		$j.ajax({
 	        type: 'POST',
 	        url: '/ajax/comprobarUsuario.html',
-	        data: 'usuario=' + usuario,
+	        data: 'usuario=' + usuario.toLowerCase(),
 	        //Mostramos un mensaje con la respuesta
 	        success: function(data) {
 				arrRespuesta = $j.parseJSON(data);

@@ -1,7 +1,7 @@
 <?php
 /**
  * Este archivo ha sido generado con Ningen DoGen v.0.6
- * el 21 de October de 2010 a las 10:48:39
+ * el 02 de November de 2010 a las 12:43:47
  * @package dataAccess
  */
 
@@ -1022,6 +1022,19 @@ class TblPersona extends NingenGenericDO{
     }
 
     /**
+     * Obtiene todos los elementos relacionados de la tabla 'tblDisponibilidadProfesor'
+     *
+     * @param Connection $db Conexión con la base de datos.
+     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
+     */
+    public function getTblDisponibilidadProfesors( $orderBy='' ){
+
+        include_once('TblDisponibilidadProfesor.inc');
+        return TblDisponibilidadProfesor::findByTblPersona( $this->_db, $this->idPersona, $orderBy );
+
+    }
+
+    /**
      * Obtiene todos los elementos relacionados de la tabla 'trelCandidato'
      *
      * @param Connection $db Conexión con la base de datos.
@@ -1061,6 +1074,19 @@ class TblPersona extends NingenGenericDO{
     }
 
     /**
+     * Obtiene todos los elementos relacionados de la tabla 'trelPersonaCategoria'
+     *
+     * @param Connection $db Conexión con la base de datos.
+     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
+     */
+    public function getTrelPersonaCategorias( $orderBy='' ){
+
+        include_once('TrelPersonaCategoria.inc');
+        return TrelPersonaCategoria::findByTblPersona( $this->_db, $this->idPersona, $orderBy );
+
+    }
+
+    /**
      * Obtiene todos los elementos relacionados de la tabla 'trelPersonaCurso'
      *
      * @param Connection $db Conexión con la base de datos.
@@ -1070,6 +1096,19 @@ class TblPersona extends NingenGenericDO{
 
         include_once('TrelPersonaCurso.inc');
         return TrelPersonaCurso::findByTblPersona( $this->_db, $this->idPersona, $orderBy );
+
+    }
+
+    /**
+     * Obtiene todos los elementos relacionados de la tabla 'trelPrecandidato'
+     *
+     * @param Connection $db Conexión con la base de datos.
+     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
+     */
+    public function getTrelPrecandidatos( $orderBy='' ){
+
+        include_once('TrelPrecandidato.inc');
+        return TrelPrecandidato::findByTblPersona( $this->_db, $this->idPersona, $orderBy );
 
     }
 

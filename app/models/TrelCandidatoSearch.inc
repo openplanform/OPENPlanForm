@@ -1,7 +1,7 @@
 <?php
 /**
  * Este archivo ha sido generado con Ningen Dogen v.0.6
- * el 21 de October de 2010 a las 10:48:39
+ * el 02 de November de 2010 a las 15:44:10
  * @package dataAccess
  */
 
@@ -13,13 +13,6 @@
 class TrelCandidatoSearch{
 
     /**
-     * Representa el atributo idCandidato.
-     *
-     * @var integer
-     */
-    public $idCandidato;
-
-    /**
      * Representa el atributo fkPersona.
      *
      * @var integer
@@ -27,17 +20,10 @@ class TrelCandidatoSearch{
     public $fkPersona;
 
     /**
-     * Representa el atributo fkPlanCursoCentro.
+     * Representa el atributo fkCurso.
      *
      * @var integer
      */
-    public $fkPlanCursoCentro;
-
-    /**
-     * Representa el atributo dAlta.
-     *
-     * @var string
-     */
-    public $dAlta;
+    public $fkCurso;
 }
 ?>

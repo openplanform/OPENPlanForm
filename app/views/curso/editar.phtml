@@ -15,17 +15,15 @@
     <form id="editarCurso" action="<?= $_SERVER['REQUEST_URI'] ?>" method="post">
         <fieldset>
         
-            <legend>Edición de Curso</legend>
-        
         	<input type="hidden" value="1" name="send" />
         
-            <div class="campo controlado">
+            <div class="campo controlado multi">
                 <label for="nombre">Nombre*</label>
                 <input type="text" name="nombre" id="nombre" class="campoTexto" value="<?= $this->cursoDO->getVNombre() ?>"/>
                 <p id="errorNombre" class="errorInput"><?=$this->errorNombre?></p>
             </div>
 			
-			<div class="campo controlado">
+			<div class="campo controlado multi">
             	<label for="plan">Plan*</label>
 	            <select class="grande" name="plan" id="plan">
 	            	<option value=""></option>
@@ -43,7 +41,7 @@
 				<p id="errorPlan" class="errorInput"><?= $this->errorPlan ?></p>
 			</div>
 			
-			<div class="campo controlado">
+			<div class="campo controlado multi">
             	<label for="categoria">Categoría*</label>
 	            <select class="grande" name="categoria" id="categoria">
 	            	<option value=""></option>
@@ -57,7 +55,9 @@
 				<p id="errorCategoria" class="errorInput"><?= $this->errorCategoria ?></p>
 			</div>
 			
-			<div class="campo controlado">
+			<div class="separadorH"></div>
+			
+			<div class="campo controlado multi">
             	<label for="sector">Sector*</label>
 	            <select class="grande" name="sector" id="sector">
 	            	<option value=""></option>
@@ -75,7 +75,7 @@
 				<p id="errorSector" class="errorInput"><?= $this->errorSector ?></p>
 			</div>
 			
-			<div class="campo controlado">
+			<div class="campo controlado multi">
             	<label for="colectivo">Colectivo*</label>
 	            <select class="grande" name="colectivo" id="colectivo">
 	            	<option value=""></option>
@@ -93,7 +93,7 @@
 				<p id="errorColectivo" class="errorInput"><?= $this->errorColectivo ?></p>
 			</div>
 			
-			<div class="campo controlado clear">
+			<div class="campo controlado multi">
             	<label for="modalidad">Modalidad*</label>
 	            <select class="grande" name="modalidad" id="modalidad">
 	            	<option value=""></option>
@@ -111,8 +111,10 @@
 				<p id="errorModalidad" class="errorInput"><?= $this->errorModalidad ?></p>
 			</div>
 			
-			<div class="campo controlado">
-            	<label for="curso">Aula*</label>
+			<div class="separadorH"></div>
+			
+			<div class="campo controlado multi">
+            	<label for="aula">Aula*</label>
 	            <select class="grande" name="aula" id="aula">
 	            	<option value=""></option>
 					<?
@@ -129,41 +131,66 @@
 				<p id="errorAula" class="errorInput"><?= $this->errorAula ?></p>
 			</div>
 			
-			 <div class="campo multi">
+			<div class="separadorH"></div>
+			
+			<div class="campo multi">
                 <label for="horasP">Horas presenciales</label>
-                <input type="text" name="horasP" id="horasP" class="campoTexto mini numerico" value="<?= $this->cursoDO->getIHorasPresenciales() ?>"/>
+                <input type="text" name="horasP" id="horasP" class="campoTexto mediano numerico" value="<?= $this->cursoDO->getIHorasPresenciales() ?>"/>
             </div>
 			
 			<div class="campo multi">
                 <label for="horasD">Horas a distancia</label>
-                <input type="text" name="horasD" id="horasD" class="campoTexto mini numerico" value="<?= $this->cursoDO->getIHorasDistancia() ?>"/>
+                <input type="text" name="horasD" id="horasD" class="campoTexto mediano numerico" value="<?= $this->cursoDO->getIHorasDistancia() ?>"/>
             </div>
-			
-			<div class="separadorH"></div>
 			
 			<div class="campo multi">
                 <label for="horasT">Horas de tutoría</label>
-                <input type="text" name="horasT" id="horasT" class="campoTexto mini numerico" value="<?= $this->cursoDO->getIHorasTutoria() ?>"/>
+                <input type="text" name="horasT" id="horasT" class="campoTexto mediano numerico" value="<?= $this->cursoDO->getIHorasTutoria() ?>"/>
             </div>
 			
 			<div class="campo multi">
                 <label for="alumnos">Número de alumnos</label>
-                <input type="text" name="alumnos" id="alumnos" class="campoTexto mini numerico" value="<?= $this->cursoDO->getINumeroAlumnos() ?>"/>
+                <input type="text" name="alumnos" id="alumnos" class="campoTexto mediano numerico" value="<?= $this->cursoDO->getINumeroAlumnos() ?>"/>
             </div>
             
             <div class="separadorH"></div>
             
             <div class="campo multi">
                 <label for="inicio">Fecha de inicio</label>
-                <input type="text" name="inicio" id="inicio" class="campoTexto pequeno" onkeypress="return false;" value="<?= NingenDate::getDMA($this->cursoDO->getDInicio()) ?>"/>
+                <?php 
+                	$fechaIni = NingenDate::getDiaMesAno($this->cursoDO->getDInicio());
+					( $fechaIni == '01/01/1970' ) ? $fechaIni = '' : '';
+                ?>
+                <input type="text" name="inicio" id="inicio" class="campoTexto pequeno" onkeypress="return false;" value="<?= $fechaIni ?>"/>
             </div>
             
             <div class="campo multi">
                 <label for="fin">Fecha de fin</label>
-                <input type="text" name="fin" id="fin" class="campoTexto pequeno" onkeypress="return false;" value="<?= NingenDate::getDMA($this->cursoDO->getDFin()) ?>"/>
+                <?php 
+					$fechaFin = NingenDate::getDiaMesAno($this->cursoDO->getDFin());
+					( $fechaFin == '01/01/1970' ) ? $fechaFin = '' : '';
+                ?>
+                <input type="text" name="fin" id="fin" class="campoTexto pequeno" onkeypress="return false;" value="<?= $fechaFin ?>"/>
             </div>
             
             <div class="separadorH"></div>
+            
+            <div class="campo multi">
+	            <label for="profesoresSeleccionados">Profesores del curso</label>
+	            
+	            <div class="contenedorMultiselect">
+		            <a title="Quitar profesor" class="btnEliminar" href="javascript:ventanaConfirmacion('Confirmar','¿Está seguro que desea quitar el/los profesor/es del curso?', 'javascript:quitarProfCurso();hidePopups()')"><span>eliminar</span></a>
+		            <select name="profesores[]" multiple="multiple" id="profesoresSeleccionados" class="campoTexto grande multiple"><?
+		                
+		            	foreach ( $this->profesoresCursoARR as $profesorCursoDO ){
+		            		
+		            		?><option value="<?= $profesorCursoDO->getFkPersona() ?>"><?= $this->profesoresIDX[$profesorCursoDO->getFkPersona()] ?></option><?
+		            		
+		            	}
+		            
+		            ?></select>
+	            </div>
+        	</div>
             
             <input class="oculto" type="submit" value="Guardar" />
             
@@ -175,6 +202,62 @@
             
         </fieldset>
     </form>
+    
+    <?
+    	if ( count($this->profesoresIDX) > 0 ){
+    ?>
+    <h3>Listado de profesores</h3>
+    <div class="campo multi">
+    	<div class="scroll">
+	    	<table class="listado">
+	    		<thead>
+	    			<tr>
+		    			<th>Nombre</th>
+		    			<th>Categorías</th>
+		    			<th></th>
+		    		</tr>
+	    		</thead>
+	    		<tbody>
+					<?
+					
+					// Profesores
+					foreach ( $this->profesoresIDX as $clave => $nombre) {
+						
+						// Categorías de los profesores
+						$categoriasProfesor = '';
+						$idsCategoriasARR = $this->categoriasProfesoresIDX[$clave];
+						if ( !empty($idsCategoriasARR) ) {
+							
+							foreach ( $idsCategoriasARR as $idCategoria ) {
+	
+								$categoriasProfesor .= (( empty($categoriasProfesor) )?'':', ') . $this->categoriasIDX[$idCategoria];
+								
+							}
+							
+						}
+						
+						?>
+						<tr>
+							<td><a href="/profesor/ficha.html/<?= $clave ?>"><?= $nombre ?></a></td>
+							<td><?= $categoriasProfesor ?></td>
+							<td><a href="javascript:addProfCurso('<?= $clave ?>', '<?= $nombre ?>')" class="btnAnadir" title="Asignar al curso"><span>añadir</span></a></td>
+						</tr>
+						<?
+						
+						
+					}
+					
+					?>
+				</tbody>
+			</table>
+		</div>
+    </div>
+    <?
+    	}
+    ?>
+    
+     <div class="separadorH"></div>
+    
     <p>* Campos obligatorios</p>
 <?
 	

@@ -144,6 +144,9 @@ class convocatoriaController extends PplController{
     		
     		// Requisitos
     		$this->view->requisitosIDX = $this->cacheBO->getRequisitos();
+    		
+    		// Estados de plan
+    		$this->view->estadosPlanIDX = $this->cacheBO->getEstadosPlan();
         	
         }
         

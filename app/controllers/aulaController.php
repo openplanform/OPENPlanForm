@@ -389,9 +389,9 @@ class aulaController extends PplController{
             
             // ID
             if (!empty($id)){
-                $where[] = " idConsultora = $id";
+                $where[] = " idAula = $id";
                 $this->view->id = $id;
-                $queryString .= "&amp;idConsultora=$id";
+                $queryString .= "&amp;idAula=$id";
             }
             
             // PAIS

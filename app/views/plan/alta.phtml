@@ -9,19 +9,17 @@
     <form id="altaPlan" action="/plan/alta.html" method="post">
         <fieldset>
         
-            <legend>Alta de Plan</legend>
-            
         	<input type="hidden" value="1" name="send" />
         
-            <div class="campo controlado">
+            <div class="campo controlado multi">
                 <label for="nombre">Nombre*</label>
                 <input type="text" name="nombre" id="nombre" class="campoTexto" />
                 <p id="errorNombre" class="errorInput"><?= $this->errorNombre ?></p>
             </div>
 			
-			<div class="campo controlado">
+			<div class="campo controlado multi">
             	<label for="tipo">Tipo de Plan*</label>
-	            <select class="grande" name="tipo" id="tipo">
+	            <select class="grande desplegable" name="tipo" id="tipo">
 	            	<option value=""></option>
 					<?
 					
@@ -37,9 +35,9 @@
 				<p id="errorTipo" class="errorInput"><?= $this->errorTipo ?></p>
 			</div>
 			
-			<div class="campo controlado">
+			<div class="campo controlado multi">
             	<label for="convocatoria">Convocatoria*</label>
-	            <select class="grande" name="convocatoria" id="convocatoria">
+	            <select class="grande desplegable" name="convocatoria" id="convocatoria">
 	            	<option value=""></option>
 					<?
 					
@@ -55,9 +53,11 @@
 				<p id="errorConvocatoria" class="errorInput"><?= $this->errorConvocatoria ?></p>
 			</div>
 			
-			<div class="campo controlado">
+			<div class="separadorH"></div>
+			
+			<div class="campo controlado multi">
             	<label for="estado">Estado del Plan*</label>
-	            <select class="grande" name="estado" id="estado">
+	            <select class="grande desplegable" name="estado" id="estado">
 	            	<option value=""></option>
 					<?
 					
@@ -73,9 +73,9 @@
 				<p id="errorEstado" class="errorInput"><?= $this->errorEstado ?></p>
 			</div>
 			
-			<div class="campo controlado">
+			<div class="campo controlado multi">
             	<label for="propietario">Propietario*</label>
-	            <select class="grande" name="propietario" id="propietario">
+	            <select class="grande desplegable" name="propietario" id="propietario">
 	            	<option value=""></option>
 					<?
 					
@@ -91,9 +91,9 @@
 				<p id="errorPropietario" class="errorInput"><?= $this->errorPropietario ?></p>
 			</div>
 			
-			<div class="campo controlado">
+			<div class="campo controlado multi">
             	<label for="consultora">Consultora*</label>
-	            <select class="grande" name="consultora" id="consultora">
+	            <select class="grande desplegable" name="consultora" id="consultora">
 	            	<option value=""></option>
 					<?
 					
@@ -108,6 +108,8 @@
 				</select>
 				<p id="errorConsultora" class="errorInput"><?= $this->errorConsultora ?></p>
 			</div>
+			
+			<div class="separadorH"></div>
 			
 			<div class="campo controlado">
                 <label for="presupuesto">Presupuesto*</label>

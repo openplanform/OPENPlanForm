@@ -10,8 +10,6 @@
     <form id="altaConsultora" action="/consultora/alta.html" method="post">
         <fieldset>
         
-            <legend>Alta de Consultora</legend>
-        
             <input type="hidden" value="1" name="send" />
             
             <h3>Datos del Usuario</h3>
@@ -56,9 +54,11 @@
                 <p id="errorCif" class="errorInput"><?= $this->errorCif ?></p>
             </div>
             
-            <div class="campo controlado clear">
+            <div class="separadorH"></div>
+            
+            <div class="campo controlado multi">
                 <label for="pais">País*</label>
-                <select class="grande" name="pais" id="pais">
+                <select class="grande desplegable campoTexto" name="pais" id="pais">
                     <option value=""></option>
                     <?
                     
@@ -74,9 +74,9 @@
                 <p id="errorPais" class="errorInput"><?= $this->errorPais ?></p>
             </div>
             
-            <div class="campo controlado">
+            <div class="campo controlado multi">
                 <label for="provincia">Provincia*</label>
-                <select class="grande" name="provincia" id="provincia">
+                <select class="grande desplegable campoTexto" name="provincia" id="provincia">
                     <option value=""></option>
                     <?
                     
@@ -91,6 +91,8 @@
                 </select>
                 <p id="errorProvincia" class="errorInput"><?= $this->errorProvincia ?></p>
             </div>
+            
+            <div class="separadorH"></div>
             
             <div class="campo multi">
                 <label for="poblacion">Poblacion</label>

@@ -9,8 +9,6 @@
     <form id="altaProfesor" action="/profesor/alta.html" method="post">
         <fieldset>
         
-            <legend>Alta de Profesor</legend>
-        
         	<input type="hidden" value="1" name="send" />
         	
         	<h3>Datos del Usuario</h3>
@@ -72,7 +70,7 @@
             <div class="campo multi">
                 <label for="tipoIdentificacion">Tipo de identificación</label><?
                 
-                ?><select name="tipoIdentificacion" id="tipoIdentificacion" class="campoTexto mediano">
+                ?><select name="tipoIdentificacion" id="tipoIdentificacion" class="campoTexto desplegable mediano">
                     <option value=""></option><?
                     
                     foreach ($this->tipoIdentificacionCOL as $tipoIdentificacionDO){
@@ -126,7 +124,7 @@
             <div class="campo multi">
                 <label for="provincia">Provincia</label><?
                 
-                ?><select name="provinciasUsuario" id="provincia" class="campoTexto mediano">
+                ?><select name="provinciasUsuario" id="provincia" class="campoTexto desplegable">
                     <option value=""></option><?
                     
                     foreach ($this->provinciasCOL as $provinciaDO){
@@ -142,7 +140,7 @@
             <div class="campo multi controlado">
                 
                 <label for="pais">País*</label>
-                    <select name="pais" id="pais" class="campoTexto mediano">
+                    <select name="pais" id="pais" class="campoTexto desplegable mediano">
                         <option value=""></option><?
                         
                         foreach ($this->paisesCOL as $paisDO){
@@ -161,7 +159,7 @@
             <div class="campo multi">
                 
                 <label for="estadoCivil">Estado Civil*</label>
-                    <select name="estadoCivil" id="estadoCivil" class="campoTexto mediano">
+                    <select name="estadoCivil" id="estadoCivil" class="campoTexto desplegable mediano">
                         <option value=""></option><?
                         
                         foreach ($this->estadosCivilesCOL as $estadoCivilDO){
@@ -179,7 +177,7 @@
             <div class="campo multi">
                 
                 <label for="estadoLaboral">Estado Laboral*</label>
-                    <select name="estadoLaboral" id="estadoLaboral" class="campoTexto mediano">
+                    <select name="estadoLaboral" id="estadoLaboral" class="campoTexto desplegable mediano">
                         <option value=""></option><?
                         
                         foreach ($this->estadosLaboralesCOL as $estadoLaboralDO){
@@ -197,7 +195,7 @@
             <div class="campo multi">
                 
                 <label for="nivelEstudios">Nivel de estudios*</label>
-                    <select name="nivelEstudios" id="nivelEstudios" class="campoTexto mediano">
+                    <select name="nivelEstudios" id="nivelEstudios" class="campoTexto desplegable mediano">
                         <option value=""></option><?
                         
                         foreach ($this->nivelEstudiosCOL as $nivelEstudiosDO){

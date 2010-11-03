@@ -1,29 +1,41 @@
 var $j = jQuery;
 
-function addProfCurso(idProfesor, editar){
+/**
+ * Quita los profesores seleccionados del curso
+ */
+function quitarProfCurso(){
+	$j('#profesoresSeleccionados option:selected').remove();
+}
+
+/**
+ * Añade un profesor al curso
+ * @param integer idProfesor
+ * @param string nombre
+ */
+function addProfCurso(idProfesor, nombre){
 	
 	idProfesor = typeof(idProfesor) != 'undefined' ? idProfesor : false;
-	editar = typeof(editar) != 'undefined' ? editar : false;
+	var anadir = true;
 	
-	// Actualizamos la tabla
-	if ( editar ){
-		$j.ajax({
-	        type: 'POST',
-	        url: '/ajax/addProfCurso.html',
-	        data: 'id=' + idProfesor,
-	        //Mostramos un mensaje con la respuesta
-	        success: function(data) {
-				arrRespuesta = $j.parseJSON(data);
-	        	if ( arrRespuesta.resultado == 'ko' ) {
-	        		$j(idError).html(arrRespuesta.mensaje);
-	            } else {
-	            }
-	        }
-		});
+	$j('#profesoresSeleccionados option').each( function(){
+		if ( $j(this).val() == idProfesor ) {
+			anadir = false;
+		} 
+	});
+	
+	if ( anadir ){
+		$j('#profesoresSeleccionados').append($('<option selected="selected" onclick="this.select"></option>').attr("value",idProfesor).text(nombre));
 	}
 	
-	$('#profesoresSeleccionados').append($("<option></option>").attr("value",idProfesor).text('yo'));
-	
+}
+
+/**
+ * Función que selecciona todos los profesores para pasarlos por el form
+ */
+function selectAll(){
+	$j('#profesoresSeleccionados option').each( function(){
+		$j(this).attr("selected","selected");
+	});
 }
 
 function comprobarCampos() {
@@ -71,12 +83,16 @@ $j(document).ready(function(){
 	
 	$j('#altaCurso').bind('submit', function() {
 		
+	    // Seleccionamos todos los profesores del curso para no perderlos al guardar
+	    selectAll();
 		return comprobarCampos();
 		
 	});
 	
 	$j('#editarCurso').bind('submit', function() {
-		
+
+		// Seleccionamos todos los profesores del curso para no perderlos al guardar
+		selectAll();
 		return comprobarCampos();
 		
 	});

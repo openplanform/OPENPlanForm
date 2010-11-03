@@ -3,12 +3,13 @@
 require_once 'NingenController.inc';
 require_once 'helper/NingenDatabase.inc';
 
+require_once NINGENCMS_MODELDIR . 'TblEmpresa.inc';
+require_once NINGENCMS_MODELDIR . 'TblEstadoPlan.inc';
+require_once NINGENCMS_MODELDIR . 'TblPais.inc';
+require_once NINGENCMS_MODELDIR . 'TblPersona.inc';
+require_once NINGENCMS_MODELDIR . 'TblProvincia.inc';
 require_once NINGENCMS_MODELDIR . 'TblTipoConvocatoria.inc';
 require_once NINGENCMS_MODELDIR . 'TblTipoPlan.inc';
-require_once NINGENCMS_MODELDIR . 'TblEstadoPlan.inc';
-require_once NINGENCMS_MODELDIR . 'TblEmpresa.inc';
-require_once NINGENCMS_MODELDIR . 'TblPais.inc';
-require_once NINGENCMS_MODELDIR . 'TblProvincia.inc';
 
 class PplCacheBO {
 	
@@ -209,6 +210,18 @@ class PplCacheBO {
      * @var boolean
      */
     private $profesores_fetched = false;
+    
+    /**
+     * personas indexadas por su clave
+     * @var array
+     */
+    private $personasIDX;
+    
+    /**
+     * Flag que indica que las personas han sido cargadas
+     * @var boolean
+     */
+    private $personas_fetched = false;
     
     /**
      * Constructora, propaga la referencia a la base de datos 
@@ -664,8 +677,7 @@ class PplCacheBO {
 			return $this->profesoresIDX;
 		}
         
-		$profesoresCOL = TblPersona::findAll($this->db, 'vNombre');
-		$sql = 'SELECT * FROM tblPersona e WHERE EXISTS ( SELECT NULL FROM trelRolUsuario ru WHERE e.fkUsuario = ru.fkUsuario AND ru.fkRol = ' . PplAclManager::ROL_PROFESOR . ')';
+		$sql = 'SELECT * FROM tblPersona e WHERE EXISTS ( SELECT NULL FROM trelRolUsuario ru WHERE e.fkUsuario = ru.fkUsuario AND ru.fkRol = ' . PplAclManager::ROL_PROFESOR . ') ORDER BY vNombre';
 		$this->db->executeQuery($sql);
         
         
@@ -681,6 +693,56 @@ class PplCacheBO {
 		
 		return $this->profesoresIDX;
 		
+	}
+	
+	/**
+	 * Devuelve todas las categorías de todos los profesores.
+	 * Array indexado por la clave de profesor
+	 * @return array
+	 */
+	public function getProfesoresCategorias(){
+	    
+	    $rolProfesor = PplAclManager::ROL_PROFESOR;
+	    
+        $sql = "SELECT p.idPersona,
+                       pc.fkCategoria
+                FROM   tblPersona p
+                       INNER JOIN trelPersonaCategoria pc
+                         ON p.idPersona = pc.fkPersona
+                WHERE  EXISTS(SELECT NULL
+                              FROM   trelRolUsuario ru
+                              WHERE  p.fkUsuario = ru.fkUsuario
+                                     AND ru.fkRol = $rolProfesor)
+                ORDER  BY p.idPersona;";
+	   
+        $this->db->executeQuery($sql);
+        
+        $resultARR = array();
+        while ($row = $this->db->fetchRow()){
+            $resultARR[$row['idPersona']][] = $row['fkCategoria'];
+        }
+        
+        return $resultARR;
+	   
+	}
+	
+	/**
+	 * Devuelve un array con todas las personas indexadas por su clave
+	 */
+	public function getPersonas(){
+	    
+	    if ( $this->personas_fetched ){
+			return $this->personasIDX;
+		}
+		
+		$personasCOL = TblPersona::findAll($this->db, 'vNombre');
+	    $personasIDX = NingenDatabase::indexFor('idPersona', $personasCOL);
+		
+		$this->personasIDX = $personasIDX;
+		$this->personas_fetched = true;
+		
+		return $this->personasIDX;
+	    
 	}
 	
 }

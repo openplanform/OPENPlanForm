@@ -20,8 +20,6 @@
     <form id="editarProfesor" action="<?= $_SERVER['REQUEST_URI'] ?>" method="post">
         <fieldset>
         
-            <legend>Edición de Profesor</legend>
-        
         	<input type="hidden" value="1" name="send" />
         	
         	<h3>Datos del Usuario</h3>
@@ -100,7 +98,7 @@
             
             <div class="campo multi controlado">
                 <label for="dni">Número identificación*</label>
-                <input type="text" name="dni" id="dni" class="campoTexto mediano" onblur="comprobarDni('dni')" value="<?= $this->profesorDO->getVNumeroIdentificacion() ?>"/>
+                <input type="text" name="dni" id="dni" class="campoTexto mediano" onblur="comprobarDni('dni', false, true)" value="<?= $this->profesorDO->getVNumeroIdentificacion() ?>"/>
                 <input type="hidden" name="dniOculto" id="dniOculto" value="<?= $this->profesorDO->getVNumeroIdentificacion() ?>"/>
                 <p id="errorDni" class="errorInput"><?= $this->errorDni ?></p>
             </div>

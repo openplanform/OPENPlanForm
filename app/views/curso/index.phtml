@@ -1,5 +1,3 @@
-<h2>Listado de Cursos</h2>
-
 <?php 
 
 	if ( count($this->cursosCOL) > 0 ){
@@ -42,8 +40,16 @@
 					<td><a href="/plan/ficha.html/<?= $cursoDO->getFkPlan() ?>"><?= $this->planesIDX[$cursoDO->getFkPlan()] ?></a></td>
 					<td><?= $this->sectoresIDX[$cursoDO->getFkSector()] ?></td>
 					<td><?= $this->categoriasIDX[$cursoDO->getFkCategoria()] ?></td>
-					<td><?= NingenDate::getDiaMesAno($cursoDO->getDInicio()) ?></td>
-					<td><?= NingenDate::getDiaMesAno($cursoDO->getDFin()) ?></td>
+					<?php
+					 
+					$fechaIni = NingenDate::getDiaMesAno($cursoDO->getDInicio());
+					( $fechaIni == '01/01/1970' ) ? $fechaIni = '-' : '';
+					$fechaFin = NingenDate::getDiaMesAno($cursoDO->getDFin());
+					( $fechaFin == '01/01/1970' ) ? $fechaFin = '-' : '';
+					
+					?>
+					<td><?= $fechaIni ?></td>
+					<td><?= $fechaFin ?></td>
 					<?
 			
 						if ( $this->editar ){

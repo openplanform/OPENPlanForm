@@ -15,6 +15,8 @@ require_once NINGENCMS_MODELDIR . '/TblSector.inc';
 require_once NINGENCMS_MODELDIR . '/TblCategoria.inc';
 require_once NINGENCMS_MODELDIR . '/TblCategoriaExtendida.inc';
 require_once NINGENCMS_MODELDIR . '/TblCurso.inc';
+require_once NINGENCMS_MODELDIR . '/TrelPrecandidato.inc';
+require_once NINGENCMS_MODELDIR . '/TrelProfesor.inc';
 require_once NINGENCMS_MODELDIR . '/TblCentro.inc';
 
 
@@ -113,7 +115,7 @@ class cursoController extends PplController{
         // Planes
         $this->view->planesIDX = $this->cacheBO->getPlanes();
         
-        // Categorías
+        // Select Categorías
         $arbolDS = array();
         $arbolDS = $this->_IteraCategorias($arbolDS, 0);
         $this->view->htmlSelectCategorias = $this->_getSelectHtml($arbolDS, 0, 0);
@@ -132,6 +134,12 @@ class cursoController extends PplController{
         
         // Profesores
         $this->view->profesoresIDX = $this->cacheBO->getProfesores();
+        
+        // Categorías
+        $this->view->categoriasIDX = $this->cacheBO->getCategorias();
+        
+        // Categorías de profesores
+        $this->view->categoriasProfesoresIDX = $this->cacheBO->getProfesoresCategorias();
         
    		// Doy de alta el curso
     	if ( $this->helper->get('send') ){
@@ -199,7 +207,7 @@ class cursoController extends PplController{
         	// Planes
 	        $this->view->planesIDX = $this->cacheBO->getPlanes();
 	        
-	        // Categorías
+	        // Select Categorías
 	        $arbolDS = array();
 	        $arbolDS = $this->_IteraCategorias($arbolDS, 0);
 	        $this->view->htmlSelectCategorias = $this->_getSelectHtml($arbolDS, 0, $cursoDO->getFkCategoria());
@@ -216,6 +224,18 @@ class cursoController extends PplController{
 	        // Aulas
 	        $this->view->aulasIDX = $this->cacheBO->getAulas();
 	    	
+	        // Profesores curso
+	        $this->view->profesoresCursoARR = TrelProfesor::findByTblCurso($this->db, $cursoDO->getIdCurso());
+	        
+	        // Profesores
+	        $this->view->profesoresIDX = $this->cacheBO->getProfesores();
+	        
+	        // Categorías
+	        $this->view->categoriasIDX = $this->cacheBO->getCategorias();
+	        
+	        // Categorías de profesores
+	        $this->view->categoriasProfesoresIDX = $this->cacheBO->getProfesoresCategorias();
+        
         }
 
     }
@@ -231,10 +251,26 @@ class cursoController extends PplController{
         	
         	$cursoDO = TblCurso::findByPrimaryKey($this->db, $paramsARR[0]);
         	
-        	$this->view->cursoDO = $cursoDO;
-        	
-        	// Categoría del curso
-        	$this->view->categoriaDO = TblCategoriaExtendida::findByPrimaryKeyId($this->db, $cursoDO->getFkCategoria());
+        	if ( !empty($cursoDO) ){
+	        	
+        		$this->view->cursoDO = $cursoDO;
+	        	
+	        	// Categoría del curso
+	        	$this->view->categoriaDO = TblCategoriaExtendida::findByPrimaryKeyId($this->db, $cursoDO->getFkCategoria());
+	        	
+	        	// Profesores curso
+		        $this->view->profesoresCursoARR = TrelProfesor::findByTblCurso($this->db, $cursoDO->getIdCurso());
+		        
+		        // Profesores
+		        $this->view->profesoresIDX = $this->cacheBO->getProfesores();
+		        
+  		        // Personas
+		        $this->view->personasIDX = $this->cacheBO->getPersonas();
+		        
+		        // Preinscritos
+		        $this->view->precandidatosCursoARR = TrelPrecandidato::findByTblCurso($this->db, $cursoDO->getIdCurso());
+		        
+        	}
         	
         }
         
@@ -427,6 +463,14 @@ class cursoController extends PplController{
 	    	$fin = "";
 	    }
 	    
+	    // Profesores
+    	$profesoresARR = array();
+        if ( array_key_exists('profesores', $_POST) ){
+        	foreach ($_POST['profesores'] as $profesor) {
+            	$profesoresARR[] = $this->helper->escapeInjection($profesor);
+            }
+        }
+        
 		/**
 		 * Insertamos o actualizamos un centro
 		 */
@@ -467,6 +511,28 @@ class cursoController extends PplController{
 		    	}
 		    	
 	    	}
+	    	
+	    	// Profesores del curso. Si estoy editando, borro todos los profesores para insertar los nuevos
+	    	if ( $correcto ){
+	    		
+	    		if ( $editar ){
+	    			$sql = 'DELETE FROM trelProfesor WHERE fkPlanCursoAula = ' . $idCurso;
+	    			$this->db->executeQuery($sql);
+	    		} else {
+	    			$idCurso = $this->db->getLastInsertId();
+	    		}
+	    		
+	    		foreach ( $profesoresARR as $idProfesor ){
+	    			$sql = 'INSERT INTO trelProfesor VALUES (' . $idProfesor . ',' . $idCurso . ')';
+	    			if ( !$this->db->executeQuery($sql) ){
+	    				$correcto = false;
+	    			}
+	    			
+	    		}
+	    		
+	    		
+	    	}
+	    	
     		if ( $correcto ){
     			// Todo ha ido bien
     			$this->db->commit();
@@ -562,7 +628,7 @@ class cursoController extends PplController{
             }
             
             // PLAN
-            if (!empty($tipo)){
+            if (!empty($plan)){
                 $where[] = " fkPlan = $plan";
                 $this->view->plan = $plan;
                 $queryString .= "&amp;idPlan=$plan";

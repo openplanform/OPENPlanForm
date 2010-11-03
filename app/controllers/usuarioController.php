@@ -66,7 +66,7 @@ class usuarioController extends PplController{
         }
         $this->view->orderBy = $aliasOrderBy;   
 
-        // Guardaremos la clave del usuario actual, solo para verificar si se intenta eliminar a si mismo
+        // Guardaremos la clave del usuario actual, sólo para verificar si se intenta eliminar a si mismo
         $this->view->idUsuarioActual = $this->usuario->getId();
         
         // Se instancia y configura el paginador
@@ -623,7 +623,7 @@ class usuarioController extends PplController{
             // Se verificará la existencia del nombre de usuario, solo en el caso que el nombre haya cambiado
             $oldUsername = NingenCmsSession::getValue('oldUsername');
             
-            if ($oldUsername != strtolower($nombreUsuario)){
+            if (strtolower($oldUsername) != strtolower($nombreUsuario)){
 
                 $sql = "SELECT COUNT(*) AS total FROM tblUsuario WHERE LOWER(vNombre) = '$nombreUsuario'";
                 $this->db->executeQuery($sql);

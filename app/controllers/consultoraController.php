@@ -618,9 +618,9 @@ class consultoraController extends PplController{
             
             // ID
             if (!empty($id)){
-                $where[] = " idConsultora = $id";
+                $where[] = " idEmpresa = $id";
                 $this->view->id = $id;
-                $queryString .= "&amp;idConsultora=$id";
+                $queryString .= "&amp;idEmpresa=$id";
             }
             
             // PAIS
@@ -639,7 +639,7 @@ class consultoraController extends PplController{
 
             // CIF
             if (!empty($cif)){
-                $where[] = " vCif = $cif";
+                $where[] = " vCif = '$cif'";
                 $this->view->cif = $cif;
                 $queryString .= "&amp;cif=$cif";
             }

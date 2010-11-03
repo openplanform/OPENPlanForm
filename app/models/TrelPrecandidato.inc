@@ -1,7 +1,7 @@
 <?php
 /**
  * Este archivo ha sido generado con Ningen DoGen v.0.6
- * el 25 de October de 2010 a las 12:44:09
+ * el 02 de November de 2010 a las 15:44:10
  * @package dataAccess
  */
 
@@ -19,12 +19,6 @@ require_once( 'TrelPrecandidatoPK.inc' );
  * @package dataAccess
  */
 class TrelPrecandidato extends NingenGenericDO{
-
-    /**
-     * Atributo que representa el campo "idCandidato"
-     * @var integer
-     */
-    public $idCandidato;
 
     /**
      * Atributo que representa el campo "fkPersona"
@@ -66,7 +60,6 @@ class TrelPrecandidato extends NingenGenericDO{
     private function _setData( $data ){
 
         $this->_data = $data;
-        $this->idCandidato = $data['idCandidato'];
         $this->fkPersona = $data['fkPersona'];
         $this->fkPlanCursoCentro = $data['fkPlanCursoCentro'];
         $this->dAlta = $data['dAlta'];
@@ -86,9 +79,6 @@ class TrelPrecandidato extends NingenGenericDO{
 
         $sql = 'SELECT * FROM trelPrecandidato';
         $where = array();
-        if( $tmp = $searchItem->idCandidato ){
-            $where[] = "idCandidato='$tmp'";
-        }
         if( $tmp = $searchItem->fkPersona ){
             $where[] = "fkPersona='$tmp'";
         }
@@ -127,12 +117,13 @@ class TrelPrecandidato extends NingenGenericDO{
      * Obtiene el elemento de la tabla trelPrecandidato que coincide con la clave primaria especificada.
      *
      * @param Connection $db Conexión con la base de datos.
-     * @param integer $idCandidato valor del campo 'idCandidato'.
+     * @param integer $fkPersona valor del campo 'fkPersona'.
+     * @param integer $fkPlanCursoCentro valor del campo 'fkPlanCursoCentro'.
      * @return TrelPrecandidato
      */
-    public static function findByPrimaryKey( $db, $idCandidato ){
+    public static function findByPrimaryKey( $db, $fkPersona, $fkPlanCursoCentro ){
 
-       $db->executeQuery("SELECT * FROM trelPrecandidato WHERE idCandidato = '$idCandidato'");
+       $db->executeQuery("SELECT * FROM trelPrecandidato WHERE fkPersona = '$fkPersona' AND fkPlanCursoCentro = '$fkPlanCursoCentro'");
        $data = $db->fetchRow();
        return NingenGenericDO::createDO( $db, $data, 'TrelPrecandidato');
 
@@ -148,7 +139,8 @@ class TrelPrecandidato extends NingenGenericDO{
     public static function findByPKObject( $db, $pk ){
 
         $where = array();
-        $where[]="idCandidato='".$pk->idCandidato."'";
+        $where[]="fkPersona='".$pk->fkPersona."'";
+        $where[]="fkPlanCursoCentro='".$pk->fkPlanCursoCentro."'";
         $where = implode(' AND ',$where);
         $db->executeQuery("SELECT * FROM trelPrecandidato WHERE $where");
         $data = $db->fetchRow();
@@ -197,7 +189,7 @@ class TrelPrecandidato extends NingenGenericDO{
         $sets[] = 'fkPlanCursoCentro=' . ( ( ( $value = $this->fkPlanCursoCentro ) === null || !isset($this->fkPlanCursoCentro) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'dAlta=' . ( ( ( $value = $this->dAlta ) === null || !isset($this->dAlta) ) ? 'null' :  "'".addslashes($value)."'" );
         $setStr = implode(',', $sets);
-        return $this->_db->executeQuery("UPDATE trelPrecandidato SET $setStr WHERE idCandidato='".addslashes($this->_data['idCandidato'])."'");
+        return $this->_db->executeQuery("UPDATE trelPrecandidato SET $setStr WHERE fkPersona='".addslashes($this->_data['fkPersona'])."' AND fkPlanCursoCentro='".addslashes($this->_data['fkPlanCursoCentro'])."'");
     }
 
     /**
@@ -215,7 +207,7 @@ class TrelPrecandidato extends NingenGenericDO{
         $values[] = (( $value = $this->dAlta ) === null || !isset($this->dAlta) ) ? 'null' : "'".addslashes($value)."'";
         $values = implode(',', $values);
         if( $this->_db->executeQuery("INSERT INTO trelPrecandidato($attributes) VALUES($values)") ){
-            $eleDO = $this->findByPrimaryKey( $this->_db, $this->_db->getLastInsertId() );
+            $eleDO = $this->findByPrimaryKey( $this->_db, $this->fkPersona, $this->fkPlanCursoCentro );
             $this->_setData($eleDO->_data);
             return true;
         }
@@ -227,18 +219,10 @@ class TrelPrecandidato extends NingenGenericDO{
      */
     public function delete(){
         $where = array();
-        $where[] = "idCandidato="."'".addslashes($this->idCandidato)."'";
+        $where[] = "fkPersona="."'".addslashes($this->fkPersona)."'";
+        $where[] = "fkPlanCursoCentro="."'".addslashes($this->fkPlanCursoCentro)."'";
         $where = implode(" AND ", $where);
         return $this->_db->executeQuery("DELETE FROM trelPrecandidato WHERE $where");
-    }
-
-    /**
-      * Obtiene el valor del atributo 'idCandidato'.
-      *
-      * @return integer
-      */
-    public function getIdCandidato(){
-        return $this->idCandidato;
     }
 
     /**

@@ -24,6 +24,7 @@
     text-align: center;
     padding-top: 39px;
     border: 1px solid #F2F2F2;
+    outline: none;
 }
 #toolbarPrincipal ul li a:hover{
 	border-top: 1px solid #C7C7C7;
@@ -58,6 +59,9 @@
 }
 #toolbarPrincipal ul li.buscar a{
     background: url(/img/iconos/buscar32.png) 50% 4px no-repeat;    
+}
+#toolbarPrincipal ul li.panel a{
+    background: url(/img/iconos/panel32.png) 50% 4px no-repeat;    
 }
 #toolbarPrincipal ul li.listado a{
     background: url(/img/iconos/listado32.png) 50% 4px no-repeat;    

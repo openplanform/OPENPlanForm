@@ -1,14 +1,13 @@
 <?php
 
 
-?><h2>Ficha de Usuario</h2>
-<h3>Datos de acceso:</h3>
+?><h3>Datos de acceso:</h3>
 
 <div class="ficha">
     
-    <p><label>Identificador:</label> <?= $this->usuarioBO->getId() ?></p>
-    <p><label>Nombre de usuario:</label> <?= $this->usuarioBO->getNombre() ?></p>
-    <p><label>Roles asignados:</label> <? 
+    <p><strong>Identificador:</strong><span> <?= $this->usuarioBO->getId() ?></span></p>
+    <p><strong>Nombre de usuario:</strong><span> <?= $this->usuarioBO->getNombre() ?></span></p>
+    <p><strong>Roles asignados:</strong><span> <? 
     
         $rolesUsuario = $this->usuarioBO->getRoles();
         $rolesUsuarioLabels = array();
@@ -17,8 +16,8 @@
         }
         echo implode(', ', $rolesUsuarioLabels);
         
-    ?></p>
-    <p><label>Correo electrónico:</label> <?= $this->usuarioBO->getEmail() ?></p>
+    ?></span></p>
+    <p><strong>Correo electrónico:</strong><span> <?= $this->usuarioBO->getEmail() ?></span></p>
 
 </div>
 
@@ -29,64 +28,64 @@
         // FICHA DE PERSONA
         
         ?><h3>Datos personales: </h3>
-        <p><label>Nombre: </label> <?= $this->personaDO->getVNombre()  ?></p>        
-        <p><label>Apellidos: </label> <?= $this->personaDO->getVPrimerApellido() . ' ' . $this->personaDO->getVSegundoApellido()  ?></p>
-        <p><label>Fecha de nacimiento: </label> <?= NingenDate::getDiaMesAno($this->personaDO->getDNacimiento())  ?></p>        
-        <p><label><?= $this->personaDO->getTblTipoIdentificacion()->getVNombre() ?>: </label> <?= $this->personaDO->getVNumeroIdentificacion() ?></p><?
+        <p><strong>Nombre: </strong><span> <?= $this->personaDO->getVNombre()  ?></span></p>        
+        <p><strong>Apellidos: </strong><span> <?= $this->personaDO->getVPrimerApellido() . ' ' . $this->personaDO->getVSegundoApellido()  ?></span></p>
+        <p><strong>Fecha de nacimiento: </strong><span> <?= NingenDate::getDiaMesAno($this->personaDO->getDNacimiento())  ?></span></p>        
+        <p><strong><?= $this->personaDO->getTblTipoIdentificacion()->getVNombre() ?>: </strong><span> <?= $this->personaDO->getVNumeroIdentificacion() ?></span></p><?
         
         if ($telefono = $this->personaDO->getVTelefono()){
         
-            ?><p><label>Teléfono: </label> <?= $telefono ?></p><?
+            ?><p><strong>Teléfono: </strong><span> <?= $telefono ?></span></p><?
             
         }
         
         if ($movil = $this->personaDO->getVMovil()){
 
-            ?><p><label>Teléfono Movil: </label> <?= $movil ?></p><?        
+            ?><p><strong>Teléfono Movil: </strong><span> <?= $movil ?></span></p><?        
             
         }
             
-        ?><p><label>Dirección: </label> <?= $this->personaDO->getVDireccion()  ?></p>        
-        <p><label>Población: </label> <?= $this->personaDO->getVPoblacion()  ?></p>        
-        <p><label>Provincia: </label> <?= $this->personaDO->getTblProvincia()->getVNombreEs()  ?></p>        
-        <p><label>País: </label> <?= $this->personaDO->getTblPais()->getVNombreEs()  ?></p>
-        <p class="nuevaSeccion"><label>Estado civil: </label><?= $this->personaDO->getTblEstadoCivil()->getVNombre() ?></p>
-        <p><label>Estado laboral: </label> <?= $this->personaDO->getTblEstadoLaboral()->getVNombre()  ?></p>
-        <p><label>Nivel de estudios: </label> <?= $this->personaDO->getTblNivelEstudios()->getVNombre()  ?></p>
-        <p><label>Fecha de alta: </label> <?= NingenDate::getDiaMesAno($this->personaDO->getDAlta())  ?></p><?
+        ?><p><strong>Dirección: </strong><span> <?= $this->personaDO->getVDireccion()  ?></span></p>        
+        <p><strong>Población: </strong><span> <?= $this->personaDO->getVPoblacion()  ?></span></p>        
+        <p><strong>Provincia: </strong><span> <?= $this->personaDO->getTblProvincia()->getVNombreEs()  ?></span></p>        
+        <p><strong>País: </strong><span> <?= $this->personaDO->getTblPais()->getVNombreEs()  ?></span></p>
+        <p class="nuevaSeccion"><strong>Estado civil: </strong><span><?= $this->personaDO->getTblEstadoCivil()->getVNombre() ?></span></p>
+        <p><strong>Estado laboral: </strong><span> <?= $this->personaDO->getTblEstadoLaboral()->getVNombre()  ?></span></p>
+        <p><strong>Nivel de estudios: </strong><span> <?= $this->personaDO->getTblNivelEstudios()->getVNombre()  ?></span></p>
+        <p><strong>Fecha de alta: </strong><span> <?= NingenDate::getDiaMesAno($this->personaDO->getDAlta())  ?></span></p><?
         
     } elseif ($this->tipo = 'empresa'){
         
         // FICHA DE EMPRESA
         
         ?><h3>Datos de la empresa: </h3>
-        <p><label>Nombre: </label><?= $this->empresaDO->getVNombre() ?></p>
-        <p><label>CIF: </label><?= $this->empresaDO->getVCif() ?></p>
-        <p><label>Dirección: </label><?= $this->empresaDO->getVDireccion() ?></p>
-        <p><label>Código Postal: </label><?= $this->empresaDO->getVCp() ?></p>
-        <p><label>Población: </label><?= $this->empresaDO->getVPoblacion() ?></p>
-        <p><label>Provincia: </label> <?= $this->empresaDO->getTblProvincia()->getVNombreEs()  ?></p>        
-        <p><label>País: </label> <?= $this->empresaDO->getTblPais()->getVNombreEs()  ?></p><?
+        <p><strong>Nombre: </strong><span><?= $this->empresaDO->getVNombre() ?></span></p>
+        <p><strong>CIF: </strong><span><?= $this->empresaDO->getVCif() ?></span></p>
+        <p><strong>Dirección: </strong><span><?= $this->empresaDO->getVDireccion() ?></span></p>
+        <p><strong>Código Postal: </strong><span><?= $this->empresaDO->getVCp() ?></span></p>
+        <p><strong>Población: </strong><span><?= $this->empresaDO->getVPoblacion() ?></span></p>
+        <p><strong>Provincia: </strong><span> <?= $this->empresaDO->getTblProvincia()->getVNombreEs()  ?></span></p>        
+        <p><strong>País: </strong><span> <?= $this->empresaDO->getTblPais()->getVNombreEs()  ?></span></p><?
         
         if ($tel = $this->empresaDO->getVTelefono()){
 
-            ?><p><label>Teléfono: </label><?= $tel ?></p><?
+            ?><p><strong>Teléfono: </strong><span><?= $tel ?></span></p><?
             
         }
         
         if ($tel2 = $this->empresaDO->getVTelefono2()){
 
-            ?><p><label>Teléfono 2: </label><?= $tel2 ?></p><?
+            ?><p><strong>Teléfono 2: </strong><span><?= $tel2 ?></span></p><?
             
         }
         
         if ($fax = $this->empresaDO->getVFax()){
 
-            ?><p><label>Fax: </label><?= $fax ?></p><?
+            ?><p><strong>Fax: </strong><span><?= $fax ?></span></p><?
             
         }
         
-        ?><p><label>Fecha de alta: </label> <?= NingenDate::getDiaMesAno($this->empresaDO->getDAlta()) ?></p><?
+        ?><p><strong>Fecha de alta: </strong><span> <?= NingenDate::getDiaMesAno($this->empresaDO->getDAlta()) ?></span></p><?
         
     }
 

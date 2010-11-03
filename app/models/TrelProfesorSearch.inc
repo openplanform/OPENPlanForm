@@ -1,7 +1,7 @@
 <?php
 /**
  * Este archivo ha sido generado con Ningen Dogen v.0.6
- * el 21 de October de 2010 a las 10:48:39
+ * el 02 de November de 2010 a las 12:43:47
  * @package dataAccess
  */
 
@@ -11,13 +11,6 @@
  * @package dataAccess
  */
 class TrelProfesorSearch{
-
-    /**
-     * Representa el atributo idProfesor.
-     *
-     * @var integer
-     */
-    public $idProfesor;
 
     /**
      * Representa el atributo fkPersona.

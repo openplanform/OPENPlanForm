@@ -1,31 +1,29 @@
-<h2>Ficha de Aula</h2>
-
 <?
 
 	if ( !is_null($this->aulaDO) ){
 		
 ?>
 		<div class="ficha">
-			<p><label>Nombre:</label> <?= $this->aulaDO->getVNombre() ?></p>
-			<p><label>Centro:</label> <?= $this->aulaDO->getTblCentro()->getVNombre() ?></p>
-			<p><label>Capacidad:</label> <?= $this->aulaDO->getICapacidad() ?></p>
-			<p><label>País:</label> <?= $this->aulaDO->getTblPais()->getVNombre() ?></p>
-			<p><label>Provincia:</label> <?= $this->aulaDO->getTblProvincia()->getVNombre() ?></p>
+			<p><strong>Nombre:</strong><span> <?= $this->aulaDO->getVNombre() ?></span></p>
+			<p><strong>Centro:</strong><span> <?= $this->aulaDO->getTblCentro()->getVNombre() ?></span></p>
+			<p><strong>Capacidad:</strong><span> <?= $this->aulaDO->getICapacidad() ?></span></p>
+			<p><strong>País:</strong><span> <?= $this->aulaDO->getTblPais()->getVNombre() ?></span></p>
+			<p><strong>Provincia:</strong><span> <?= $this->aulaDO->getTblProvincia()->getVNombre() ?></span></p>
 			<?
 			
 			$poblacion = $this->aulaDO->getVPoblacion();
 			if ( !empty($poblacion) ){
-				?><p><label>Población:</label> <?= $poblacion ?></p><?
+				?><p><strong>Población:</strong><span> <?= $poblacion ?></span></p><?
 			}
 			
 			$direccion = $this->aulaDO->getVDireccion();
 			if ( !empty($direccion) ){
-				?><p><label>Dirección:</label> <?= $direccion ?></p><?
+				?><p><strong>Dirección:</strong><span> <?= $direccion ?></span></p><?
 			}
 			
 			$descripcion = $this->aulaDO->getVDescripcion();
 			if ( !empty($descripcion) ){
-				?><p><label>Descripción:</label> <?= $descripcion ?></p><?
+				?><p class="extended"><strong>Descripción:</strong><span> <?= $descripcion ?></span></p><?
 			}
 			
 			?>

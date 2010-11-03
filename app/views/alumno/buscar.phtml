@@ -1,0 +1,132 @@
+<form id="buscarUsuario" action="<?= $_SERVER['REQUEST_URI'] ?>" method="post">
+    
+        <fieldset>
+        
+            <input type="hidden" name="sent" value="<?= md5(date('is')) ?>" />
+        
+            <div class="campo multi">
+                <label for="idPersona">Id</label>
+                <input type="text" class="campoTexto mini" id="idPersona" name="idPersona" value="<?= $this->id ?>" />
+            </div>
+        
+            <div class="campo multi">
+                <label for="kw">Nombre, Apellidos, DNI</label>
+                <input type="text" class="campoTexto" id="kw" name="kw" value="<?= $this->kw ?>" />
+            </div>
+            
+            <div class="separadorH"></div>
+        
+            <div class="campo multi">
+                <label for="pais">País</label>
+                <select class="desplegable campoTexto mediano" id="pais" name="pais">
+                    <option value=""></option><?
+                    
+                    foreach ($this->paisesIDX as $clave=>$paisDO){
+                        
+                        $sel = $clave == $this->pais ? ' selected="selected" ' : '';
+                        echo '<option value="' . $clave . '"' . $sel . '>' . $paisDO->getVNombre() . '</option>' . "\n";
+                        
+                    }
+                    
+                ?></select>
+            </div>
+
+            <div class="campo multi">
+                <label for="provincia">Provincia</label>
+                <select class="desplegable campoTexto mediano" id="provincia" name="provincia">
+                    <option value=""></option><?
+                    
+                    foreach ($this->provinciasIDX as $clave=>$provinciaDO){
+                        
+                        $sel = $clave == $this->provincia ? ' selected="selected" ' : '';
+                        echo '<option value="' . $clave . '"' . $sel . '>' . $provinciaDO->getVNombre() . '</option>' . "\n";
+                        
+                    }
+                    
+                ?></select>
+            </div>   
+            
+            <div class="campo multi">
+                <label for="poblacion">Población</label>
+                <input type="text" class="campoTexto" id="poblacion" name="poblacion" value="<?= $this->poblacion ?>" />
+            </div>                     
+            
+            <div class="separadorH"></div>
+            
+            <div class="campo">
+                <label for="selectorRol">Categorías del alumno</label>
+                <select name="categorias[]" multiple="multiple" id="selectorCategoria" class="campoTexto grande"><?
+                
+                    echo $this->htmlSelectCategorias;
+                    
+                ?></select>
+            </div>
+            
+            <div class="campo">
+                <input type="submit" class="btnSubmit" value="Buscar" />
+            </div>
+            
+        </fieldset>
+        
+</form>
+
+<?
+
+if ($this->alumnosCOL){
+    
+    ?><h3>Listado de resultados</h3>
+    
+    <table class="listado">
+        <thead>
+            <tr>
+                <th><a href="/alumno/buscar.html/?ob=id&o=<?=$this->order?>" <?=( ($this->orderBy == 'id')?'class="ordenado ' . $this->order . '"':'' )?> >Id</a></th>
+                <th><a href="/alumno/buscar.html/?ob=nom&o=<?=$this->order?>" <?=( ($this->orderBy == 'nom')?'class="ordenado ' . $this->order . '"':'' )?> >Nombre</a></th>
+                <th><a href="/alumno/buscar.html/?ob=pob&o=<?=$this->order?>" <?=( ($this->orderBy == 'pob')?'class="ordenado ' . $this->order . '"':'' )?> >Población</a></th>
+                <th><a href="/alumno/buscar.html/?ob=mov&o=<?=$this->order?>" <?=( ($this->orderBy == 'mov')?'class="ordenado ' . $this->order . '"':'' )?> >Móvil</a></th>
+                <?
+                
+                    if ( $this->editar ){
+                        
+                        ?><th>Eliminar</th>
+                        <th>Editar</th>
+                        <th>Duplicar</th><?
+                         
+                    }
+                
+            ?></tr>
+        </thead>
+        <tbody><?
+        
+            $alter = true;
+        
+            foreach ($this->alumnosCOL as $alumnoDO){
+        
+                $alter = !$alter;
+                $clave = $alumnoDO->getIdPersona();
+                $primerApellido = $alumnoDO->getVPrimerApellido();
+            	$segundoApellido = $alumnoDO->getVSegundoApellido();
+                
+                ?><tr <?= $alter ? 'class="alter"' : '' ?>>
+                    <td><?= $clave ?></td>
+                    <td><a href="/alumno/ficha/<?= $clave ?>"><?= $alumnoDO->getVNombre() . (  !empty($primerApellido) ? ' '.$primerApellido:'' ) . (  !empty($segundoApellido) ? ' '.$segundoApellido:'' ) ?></a></td>
+                    <td><?= $alumnoDO->getVPoblacion() ?></td>
+                    <td><?= $alumnoDO->getVMovil() ?></td><?
+                    
+                    if ( $this->editar ){
+                        ?><td class="accion"><a href="/alumno/eliminar/<?= $clave ?>" onclick="ventanaConfirmacion('Eliminar alumno', '¿Está seguro que desea eliminar el alumno <strong><?= $alumnoDO->getVNombre() ?></strong>?', this.href); return false;" class="btnEliminar usuario" title="Eliminar Alumno"><span>eliminar</span></a></td>
+                        <td class="accion"><a href="/alumno/editar.html/<?= $clave ?>" class="btnEditar" title="Editar Alumno"><span>editar</span></a></td>
+                        <td class="accion"><a href="/alumno/duplicar.html/<?= $clave ?>" class="btnDuplicar" title="Duplicar Alumno"><span>duplicar</span></a></td><?
+                    }
+                            
+                ?></tr><?
+            
+            }
+            
+            ?>
+        </tbody>
+    </table>
+    <div id="paginadorContainer"><?= $this->paginador ?></div><?
+    
+    }
+    
+?>    

@@ -1,50 +1,70 @@
-<h2>Ficha de Curso</h2>
-
 <?
 
 	if ( !is_null($this->cursoDO) ){
 		
 ?>
 		<div class="ficha">
-			<p><label>Nombre:</label> <?= $this->cursoDO->getVNombre() ?></p>
-			<p><label>Plan:</label> <?= $this->cursoDO->getTblPlan()->getVNombre() ?></p>
-			<p><label>Categoría:</label> <?= $this->categoriaDO->getVNombre() ?></p>
-			<p><label>Sector:</label> <?= $this->cursoDO->getTblSector()->getVNombre() ?></p>
-			<p><label>Colectivo:</label> <?= $this->cursoDO->getTblColectivo()->getVNombre() ?></p>
-			<p><label>Modalidad:</label> <?= $this->cursoDO->getTblModalidad()->getVNombre() ?></p>
-			<p><label>Aula:</label> <?= $this->cursoDO->getTblAula()->getVNombre() ?></p>
+			<p><strong>Nombre:</strong><span> <?= $this->cursoDO->getVNombre() ?></span></p>
+			<p><strong>Plan:</strong><span> <?= $this->cursoDO->getTblPlan()->getVNombre() ?></span></p>
+			<p><strong>Categoría:</strong><span> <?= $this->categoriaDO->getVNombre() ?></span></p>
+			<p><strong>Sector:</strong><span> <?= $this->cursoDO->getTblSector()->getVNombre() ?></span></p>
+			<p><strong>Colectivo:</strong><span> <?= $this->cursoDO->getTblColectivo()->getVNombre() ?></span></p>
+			<p><strong>Modalidad:</strong><span> <?= $this->cursoDO->getTblModalidad()->getVNombre() ?></span></p>
+			<p><strong>Aula:</strong><span> <?= $this->cursoDO->getTblAula()->getVNombre() ?></span></p>
 			<?
 			$horasP = $this->cursoDO->getIHorasPresenciales();
 			if ( !empty($horasP) ){
-				?><p><label>Horas presenciales:</label> <?= $horasP ?></p><?
+				?><p><strong>Horas presenciales:</strong><span> <?= $horasP ?></span></p><?
 			}
 			
 			$horasD = $this->cursoDO->getIHorasDistancia();
 			if ( !empty($horasD) ){
-				?><p><label>Horas a distancia:</label> <?= $horasD ?></p><?
+				?><p><strong>Horas a distancia:</strong><span> <?= $horasD ?></span></p><?
 			}
 			
 			$horasT = $this->cursoDO->getIHorasTutoria();
 			if ( !empty($horasT) ){
-				?><p><label>Horas tutoría:</label> <?= $horasT ?></p><?
+				?><p><strong>Horas tutoría:</strong><span> <?= $horasT ?></span></p><?
 			}
 			
 			$fechaIni = NingenDate::getDiaMesAno($this->cursoDO->getDInicio());
 			if ( $fechaIni != '01/01/1970' ){
-				?><p><label>Fecha de inicio:</label><?= $fechaIni ?></p><?
+				?><p><strong>Fecha de inicio:</strong><span><?= $fechaIni ?></span></p><?
 			}
 			
 			$fechaFin = NingenDate::getDiaMesAno($this->cursoDO->getDFin());
 			if ( $fechaFin != '01/01/1970' ){
-				?><p><label>Fecha de finalización:</label><?= $fechaFin ?></p><?
+				?><p><strong>Fecha de finalización:</strong><span><?= $fechaFin ?></span></p><?
 			}
 			
 			$alumnos = $this->cursoDO->getINumeroAlumnos();
 			if ( !empty($alumnos) ){
-				?><p><label>Número de alumnos:</label> <?= $alumnos ?></p><?
+				?><p><strong>Número de alumnos:</strong><span> <?= $alumnos ?></span></p><?
 			}
 			
-			?>
+			// Profesores
+			if ( count($this->profesoresCursoARR) > 0 ){
+	
+				?><br/><h3>Profesores</h3><?
+				
+				foreach ( $this->profesoresCursoARR as $profesorCursoDO ){
+					echo '<p><a href="/profesor/ficha.html/' . $profesorCursoDO->getFkPersona() . '">' . $this->profesoresIDX[$profesorCursoDO->getFkPersona()] . '</a></span></p>';
+				}
+				
+			}
+			
+			// Preinscritos
+			if ( count($this->precandidatosCursoARR) > 0 ){
+	
+				?><br/><h3>Precandidatos</h3><?
+				
+				foreach ( $this->precandidatosCursoARR as $precandidatoCursoDO ){
+					echo '<p><a href="/alumno/ficha.html/' . $precandidatoCursoDO->getFkPersona() . '">' . $this->personasIDX[$precandidatoCursoDO->getFkPersona()]->getVNombre() . ' ' . $this->personasIDX[$precandidatoCursoDO->getFkPersona()]->getVPrimerApellido() . ' ' . $this->personasIDX[$precandidatoCursoDO->getFkPersona()]->getVSegundoApellido() . '</a></span></p>';
+				}
+				
+			}
+		
+		?>
 		</div>
 <?
 		

@@ -9,19 +9,17 @@
     <form id="altaCentro" action="/centro/alta.html" method="post">
         <fieldset>
         
-            <legend>Alta de Centro</legend>
-        
         	<input type="hidden" value="1" name="send" />
         
-            <div class="campo controlado">
+            <div class="campo controlado multi">
                 <label for="nombre">Nombre*</label>
                 <input type="text" name="nombre" id="nombre" class="campoTexto" />
                 <p id="errorNombre" class="errorInput"><?=$this->errorNombre?></p>
             </div>
 			
-			<div class="campo controlado">
+			<div class="campo controlado multi">
             	<label for="academia">Academia*</label>
-	            <select class="grande" name="academia" id="academia">
+	            <select class="grande desplegable" name="academia" id="academia">
 	            	<option value=""></option>
 					<?
 					
@@ -37,9 +35,11 @@
 				<p id="errorAcademia" class="errorInput"><?= $this->errorAcademia ?></p>
 			</div>
 			
-			<div class="campo controlado clear">
+			<div class="separadorH"></div>
+			
+			<div class="campo controlado multi">
             	<label for="pais">País*</label>
-	            <select class="grande" name="pais" id="pais">
+	            <select class="grande desplegable" name="pais" id="pais">
 	            	<option value=""></option>
 					<?
 					
@@ -54,9 +54,9 @@
 				<p id="errorPais" class="errorInput"><?= $this->errorPais ?></p>
 			</div>
 			
-			<div class="campo controlado">
+			<div class="campo controlado multi">
             	<label for="provincia">Provincia*</label>
-	            <select class="grande" name="provincia" id="provincia">
+	            <select class="grande desplegable" name="provincia" id="provincia">
 	            	<option value=""></option>
 					<?
 					
@@ -72,20 +72,24 @@
 				<p id="errorProvincia" class="errorInput"><?= $this->errorProvincia ?></p>
 			</div>
 			
-			<div class="campo">
+			<div class="separadorH"></div>
+			
+			<div class="campo multi">
             	<label for="direccion">Dirección</label>
 	            <input type="text" name="direccion" id="direccion" class="campoTexto" />
 			</div>
 			
-            <div class="campo">
+            <div class="campo multi">
                 <label for="poblacion">Población</label>
                 <input type="text" name="poblacion" id="poblacion" class="campoTexto" />
             </div>			
 			
-			<div class="campo">
+			<div class="campo multi">
             	<label for="telefono">Teléfono</label>
-	            <input type="text" name="telefono" id="telefono" class="campoTexto" />
+	            <input type="text" name="telefono" id="telefono" class="campoTexto mediano" />
 			</div>
+			
+			<div class="separadorH"></div>
 			
             <div class="campo">
                 <label for="descripcion">Descripción</label>

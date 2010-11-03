@@ -1,7 +1,7 @@
 <?php
 /**
  * Este archivo ha sido generado con Ningen DoGen v.0.6
- * el 21 de October de 2010 a las 10:48:39
+ * el 02 de November de 2010 a las 12:43:46
  * @package dataAccess
  */
 
@@ -297,38 +297,6 @@ class TblAlumno extends NingenGenericDO{
     }
 
     /**
-     * Obtiene todas las filas de la tabla tblAlumno que coinciden con el criterio fkPais='$fkPais'.
-     *
-     * @param Connection $db Conexión con la base de datos.
-     * @param string fkPais string Valor del campo fkPais.
-     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
-     * @return array
-     */
-     public static function findByTblPais( $db, $fkPais, $orderBy='' ){
-         $sql = "SELECT * FROM tblAlumno WHERE fkPais='$fkPais'";
-         if( $orderBy != '' ){
-             $sql .= " ORDER BY $orderBy";
-         }
-         return NingenGenericDO::createCollection( $db, $sql, 'TblAlumno' );
-     }
-
-    /**
-     * Obtiene todas las filas de la tabla tblAlumno que coinciden con el criterio fkTipoIdentificacion='$fkTipoIdentificacion'.
-     *
-     * @param Connection $db Conexión con la base de datos.
-     * @param integer fkTipoIdentificacion string Valor del campo fkTipoIdentificacion.
-     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
-     * @return array
-     */
-     public static function findByTblTipoIdentificacion( $db, $fkTipoIdentificacion, $orderBy='' ){
-         $sql = "SELECT * FROM tblAlumno WHERE fkTipoIdentificacion='$fkTipoIdentificacion'";
-         if( $orderBy != '' ){
-             $sql .= " ORDER BY $orderBy";
-         }
-         return NingenGenericDO::createCollection( $db, $sql, 'TblAlumno' );
-     }
-
-    /**
      * Obtiene todas las filas de la tabla tblAlumno que coinciden con el criterio fkCurso='$fkCurso'.
      *
      * @param Connection $db Conexión con la base de datos.
@@ -370,6 +338,38 @@ class TblAlumno extends NingenGenericDO{
      */
      public static function findByTblEstadoLaboral( $db, $fkEstadoLaboral, $orderBy='' ){
          $sql = "SELECT * FROM tblAlumno WHERE fkEstadoLaboral='$fkEstadoLaboral'";
+         if( $orderBy != '' ){
+             $sql .= " ORDER BY $orderBy";
+         }
+         return NingenGenericDO::createCollection( $db, $sql, 'TblAlumno' );
+     }
+
+    /**
+     * Obtiene todas las filas de la tabla tblAlumno que coinciden con el criterio fkPais='$fkPais'.
+     *
+     * @param Connection $db Conexión con la base de datos.
+     * @param string fkPais string Valor del campo fkPais.
+     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
+     * @return array
+     */
+     public static function findByTblPais( $db, $fkPais, $orderBy='' ){
+         $sql = "SELECT * FROM tblAlumno WHERE fkPais='$fkPais'";
+         if( $orderBy != '' ){
+             $sql .= " ORDER BY $orderBy";
+         }
+         return NingenGenericDO::createCollection( $db, $sql, 'TblAlumno' );
+     }
+
+    /**
+     * Obtiene todas las filas de la tabla tblAlumno que coinciden con el criterio fkTipoIdentificacion='$fkTipoIdentificacion'.
+     *
+     * @param Connection $db Conexión con la base de datos.
+     * @param integer fkTipoIdentificacion string Valor del campo fkTipoIdentificacion.
+     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
+     * @return array
+     */
+     public static function findByTblTipoIdentificacion( $db, $fkTipoIdentificacion, $orderBy='' ){
+         $sql = "SELECT * FROM tblAlumno WHERE fkTipoIdentificacion='$fkTipoIdentificacion'";
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
@@ -814,46 +814,6 @@ class TblAlumno extends NingenGenericDO{
     // Relaciones
 
     /**
-     * Obtiene el objeto 'TblPais' relacionado.
-     *
-     * @return TblPais
-     */
-    public function getTblPais(){
-        require_once('TblPais.inc');
-        return TblPais::findByPrimaryKey( $this->_db, $this->fkPais );
-    }
-
-    /**
-     * Asigna el objeto 'TblPais' relacionado.
-     *
-     * @param TblPais $dataObject
-     */
-    public function setTblPais( $dataObject ){
-        require_once('TblPais.inc');
-        $this->setFkPais( $dataObject->getVIso() );
-    }
-
-    /**
-     * Obtiene el objeto 'TblTipoIdentificacion' relacionado.
-     *
-     * @return TblTipoIdentificacion
-     */
-    public function getTblTipoIdentificacion(){
-        require_once('TblTipoIdentificacion.inc');
-        return TblTipoIdentificacion::findByPrimaryKey( $this->_db, $this->fkTipoIdentificacion );
-    }
-
-    /**
-     * Asigna el objeto 'TblTipoIdentificacion' relacionado.
-     *
-     * @param TblTipoIdentificacion $dataObject
-     */
-    public function setTblTipoIdentificacion( $dataObject ){
-        require_once('TblTipoIdentificacion.inc');
-        $this->setFkTipoIdentificacion( $dataObject->getIdTipoIdentificacion() );
-    }
-
-    /**
      * Obtiene el objeto 'TblCurso' relacionado.
      *
      * @return TblCurso
@@ -911,6 +871,46 @@ class TblAlumno extends NingenGenericDO{
     public function setTblEstadoLaboral( $dataObject ){
         require_once('TblEstadoLaboral.inc');
         $this->setFkEstadoLaboral( $dataObject->getIdEstadoLaboral() );
+    }
+
+    /**
+     * Obtiene el objeto 'TblPais' relacionado.
+     *
+     * @return TblPais
+     */
+    public function getTblPais(){
+        require_once('TblPais.inc');
+        return TblPais::findByPrimaryKey( $this->_db, $this->fkPais );
+    }
+
+    /**
+     * Asigna el objeto 'TblPais' relacionado.
+     *
+     * @param TblPais $dataObject
+     */
+    public function setTblPais( $dataObject ){
+        require_once('TblPais.inc');
+        $this->setFkPais( $dataObject->getVIso() );
+    }
+
+    /**
+     * Obtiene el objeto 'TblTipoIdentificacion' relacionado.
+     *
+     * @return TblTipoIdentificacion
+     */
+    public function getTblTipoIdentificacion(){
+        require_once('TblTipoIdentificacion.inc');
+        return TblTipoIdentificacion::findByPrimaryKey( $this->_db, $this->fkTipoIdentificacion );
+    }
+
+    /**
+     * Asigna el objeto 'TblTipoIdentificacion' relacionado.
+     *
+     * @param TblTipoIdentificacion $dataObject
+     */
+    public function setTblTipoIdentificacion( $dataObject ){
+        require_once('TblTipoIdentificacion.inc');
+        $this->setFkTipoIdentificacion( $dataObject->getIdTipoIdentificacion() );
     }
 }
 ?>

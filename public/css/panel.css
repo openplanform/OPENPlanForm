@@ -1,0 +1,130 @@
+#panelPrincipal{
+	float: none;
+	overflow: hidden;
+	clear: both;
+}
+#panelPrincipal ul li.bloque{
+	width: 199px;
+	height: 132px;
+	float: left;
+	padding: 7px 6px 7px 7px;
+	background: url(/img/fdoPanel.gif) top center no-repeat;
+	margin-right: 20px;
+	margin-bottom: 20px;
+}
+#panelPrincipal ul li.bloque strong{
+	display: block;
+	height: 71px;
+	line-height: 71px;
+	text-align: center;
+	font: bold 58px Arial, Helvetica, sans-serif;
+	margin-top: 2px;
+}
+#panelPrincipal ul li.bloque div{
+	height: 25px;
+	text-align: center;
+}
+#panelPrincipal ul li.bloque div a{
+    font: bold 18px/25px Arial, Helvetica, sans-serif;
+    color: #fff;
+    text-decoration: none;	
+}
+#panelPrincipal ul li.bloque p{
+	font: normal 10px Arial, Helvetica, sans-serif;
+	margin-top: 8px;
+	text-align: center;
+}
+#panelPrincipal ul li.bloque p a{
+}
+
+/* Categorias */
+#panelPrincipal ul li.convocatorias strong{
+	color: #3585C5;
+}
+#panelPrincipal ul li.convocatorias div{
+	background-color: #3585C5;
+}
+#panelPrincipal ul li.convocatorias a{
+	color: #3585C5;
+}
+#panelPrincipal ul li.planes strong{
+	color: #28965F;
+}
+#panelPrincipal ul li.planes div{
+	background-color: #28965F;
+}
+#panelPrincipal ul li.planes a{
+	color: #28965F;
+}
+#panelPrincipal ul li.cursos strong{
+	color: #DC7A2D;
+}
+#panelPrincipal ul li.cursos div{
+	background-color: #DC7A2D;
+}
+#panelPrincipal ul li.cursos a{
+	color: #DC7A2D;
+}
+#panelPrincipal ul li.gestora strong{
+	color: #4D4D4D;
+}
+#panelPrincipal ul li.gestora div{
+	background-color: #4D4D4D;
+}
+#panelPrincipal ul li.gestora a{
+	color: #4D4D4D;
+}
+#panelPrincipal ul li.profesores strong{
+	color: #505B8F;
+}
+#panelPrincipal ul li.profesores div{
+	background-color: #505B8F;
+}
+#panelPrincipal ul li.profesores a{
+	color: #505B8F;
+}
+#panelPrincipal ul li.academias strong{
+	color: #CF264D;
+}
+#panelPrincipal ul li.academias div{
+	background-color: #CF264D;
+}
+#panelPrincipal ul li.academias a{
+	color: #CF264D;
+}
+#panelPrincipal ul li.alumnos strong{
+	color: #9ECF26;
+}
+#panelPrincipal ul li.alumnos div{
+	background-color: #9ECF26;
+}
+#panelPrincipal ul li.alumnos a{
+	color: #9ECF26;
+}
+#panelPrincipal ul li.aulas strong{
+	color: #1B3DDF;
+}
+#panelPrincipal ul li.aulas div{
+	background-color: #1B3DDF;
+}
+#panelPrincipal ul li.aulas a{
+	color: #1B3DDF;
+}
+#panelPrincipal ul li.centros strong{
+	color: #B986EF;
+}
+#panelPrincipal ul li.centros div{
+	background-color: #B986EF;
+}
+#panelPrincipal ul li.centros a{
+	color: #B986EF;
+}
+#panelPrincipal ul li.usuarios strong{
+	color: #8F8F8F;
+}
+#panelPrincipal ul li.usuarios div{
+	background-color: #8F8F8F;
+}
+#panelPrincipal ul li.usuarios a{
+	color: #8F8F8F;
+}

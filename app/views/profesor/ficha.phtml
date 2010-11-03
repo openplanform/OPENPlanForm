@@ -1,5 +1,3 @@
-<h2>Ficha de Profesor</h2>
-
 <?
 
 	if ( !is_null($this->profesorDO) ){
@@ -7,56 +5,93 @@
 ?>
 		<div class="ficha">
 			<h3>Datos del usuario</h3>
-			<p><label>Nombre:</label> <?= $this->usuarioDO->getVNombre() ?></p>
-			<p><label>Email:</label> <?= $this->usuarioDO->getVEmail() ?></p>
+			<p><strong>Nombre:</strong><span> <?= $this->usuarioDO->getVNombre() ?></span></p>
+			<p><strong>Email:</strong><span> <?= $this->usuarioDO->getVEmail() ?></span></p>
 		</div>
 		
 		<div class="ficha">
 			<h3>Datos del profesor</h3>
-			<p><label>Nombre:</label> <?= $this->profesorDO->getVNombre() . $this->profesorDO->getVPrimerApellido() . $this->profesorDO->getVSegundoApellido() ?></p>
-			<p><label>Fecha de nacimiento: </label> <?= NingenDate::getDiaMesAno($this->profesorDO->getDNacimiento())  ?></p>
-			<p><label><?= $this->profesorDO->getTblTipoIdentificacion()->getVNombre() ?>:</label> <?= $this->profesorDO->getVNumeroIdentificacion() ?></p>
+			<p><strong>Nombre:</strong><span> <?= $this->profesorDO->getVNombre() . ' ' . $this->profesorDO->getVPrimerApellido() . ' ' . $this->profesorDO->getVSegundoApellido() ?></span></p>
+			<p><strong>Fecha de nacimiento: </strong><span> <?= NingenDate::getDiaMesAno($this->profesorDO->getDNacimiento())  ?></span></p>
+			<p><strong><?= $this->profesorDO->getTblTipoIdentificacion()->getVNombre() ?>:</strong><span> <?= $this->profesorDO->getVNumeroIdentificacion() ?></span></p>
 			
 			<?
 			
 			$telefono = $this->profesorDO->getVTelefono();
 			if ( !empty($telefono) ){
-				?><p><label>Teléfono:</label> <?= $telefono ?></p><?
+				?><p><strong>Teléfono:</strong><span> <?= $telefono ?></span></p><?
 			}
 			
 			$movil = $this->profesorDO->getVMovil();
 			if ( !empty($movil) ){
-				?><p><label>Móvil:</label> <?= $movil ?></p><?
+				?><p><strong>Móvil:</strong><span> <?= $movil ?></span></p><?
 			}
 			
 			
 			$direccion = $this->profesorDO->getVDireccion();
 			if ( !empty($direccion) ){
-				?><p><label>Dirección:</label> <?= $direccion ?></p><?
+				?><p><strong>Dirección:</strong><span> <?= $direccion ?></span></p><?
 			}
 			
 			$poblacion = $this->profesorDO->getVPoblacion();
 			if ( !empty($poblacion) ){
-				?><p><label>Población:</label> <?= $poblacion ?></p><?
+				?><p><strong>Población:</strong><span> <?= $poblacion ?></span></p><?
 			}
 			
 			$cp = $this->profesorDO->getVCp();
 			if ( !empty($cp) ){
-				?><p><label>CP:</label> <?= $cp ?></p><?
+				?><p><strong>CP:</strong><span> <?= $cp ?></span></p><?
 			}
 			
 			$provincia = $this->profesorDO->getTblProvincia()->getVNombre();
 			if ( !empty($provincia) ){
-				?><p><label>Provincia:</label> <?= $provincia ?></p><?
+				?><p><strong>Provincia:</strong><span> <?= $provincia ?></span></p><?
 			}
 			
 			?>
-			<p><label>País:</label> <?= $this->profesorDO->getTblPais()->getVNombre() ?></p>
-			<p><label>Estado civil:</label> <?= $this->profesorDO->getTblEstadoCivil()->getVNombre() ?></p>
-			<p><label>Estado laboral:</label> <?= $this->profesorDO->getTblEstadoLaboral()->getVNombre() ?></p>
-			<p><label>Nivel de estudios:</label> <?= $this->profesorDO->getTblNivelEstudios()->getVNombre() ?></p>
+			<p><strong>País:</strong><span> <?= $this->profesorDO->getTblPais()->getVNombre() ?></span></p>
+			<p><strong>Estado civil:</strong><span> <?= $this->profesorDO->getTblEstadoCivil()->getVNombre() ?></span></p>
+			<p><strong>Estado laboral:</strong><span> <?= $this->profesorDO->getTblEstadoLaboral()->getVNombre() ?></span></p>
+			<p><strong>Nivel de estudios:</strong><span> <?= $this->profesorDO->getTblNivelEstudios()->getVNombre() ?></span></p>
+			
+			<?
+			
+			// Categorías
+			if ( count($this->categoriasProfesorARR) > 0){
+				
+				foreach ( $this->categoriasProfesorARR as $idCategoria ){
+				
+					$arrCategorias[] = $this->categoriasIDX[$idCategoria];
+				
+				}
+				
+				?><p><strong>Categorías:</strong><span><?= implode(', ', $arrCategorias) ?></span></p><?
+				
+			}
+			
+			?>
 			
 		</div>
+		
+		<?
+			if ( count($this->cursosImpartidosCOL) > 0  ){
+				
+				?><h3>Cursos que imparte</h3><?
+				
+				foreach ( $this->cursosImpartidosCOL as $profesorImparteCursoDO ){
+					
+					foreach ( $this->cursosCOL as $cursoDO ){
+
+						if ( $cursoDO->getIdCurso() == $profesorImparteCursoDO->getFkPlanCursoAula() ){
+							echo '<p><a href="/curso/ficha.html/' . $cursoDO->getIdCurso() . '">' . $cursoDO->getVNombre() . '</a></p>';	
+						}
+						
+					}
+					
+				}
+				
+			}
+		?>
 <?
 		
 	} else {

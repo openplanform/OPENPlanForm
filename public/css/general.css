@@ -14,7 +14,7 @@ li{
 	list-style: none;
 }
 #layout{
-	margin: 115px 25px 25px 25px;
+	margin: 140px 25px 25px 25px;
 }
 #layout.alternativo{
 	margin: 0px 25px 25px 25px;
@@ -34,16 +34,25 @@ h2, h3, h4, h5{
 	margin: 0 0 10px 0;
 }
 h2{
-   font: bold 26px Arial,Helvetica,sans-serif;
-   margin-bottom: 15px;
+	background-color: #D1DFEF;
+	border-bottom: 1px solid #A0C4EF;
+	color: #444444;
+	font: bolder 17px/34px Verdana,Helvetica,sans-serif;
+	height: 34px;
+	letter-spacing: 3px;
+	margin-bottom: 25px;
+	padding-left: 5px;
+	text-transform: uppercase;
 }
 h3{
 	color: #000;
 	margin-bottom: 15px;
+	font-weight: bold;
 }
 a{
 	text-decoration: underline;
-	color: #4A95EF;
+	/*color: #4A95EF;*/
+	color: #1764BF;
 }
 a:hover{
 	color: #000;
@@ -82,6 +91,11 @@ a:hover{
 	padding: 0 0 0 12px;
 	background: url(/img/iconos/flechaIzq.png) left center no-repeat;
 }
+.scroll{
+	max-height: 200px;
+	overflow: auto;
+}
+
 /* aviso */
 .aviso{
 	background: url(/img/iconos/ko22.png) 25px 1px no-repeat #FFFFE1;
@@ -134,9 +148,12 @@ select.desplegable{
 	padding: 0px;
 	height: 20px;
 }
-textarea,
 input.campoTexto{
 	width: 300px;
+}
+textarea{
+	width: 450px;
+	height: 120px;
 }
 .campo{
 	margin-bottom: 18px;
@@ -177,9 +194,11 @@ select.fecha,
 input.fecha{
     width:80px;
 }
-select.grande,
-input.grande{
+.grande{
     width: 300px;
+}
+select.grande{ 
+	width: 304px;
 }
 select.enorme,
 input.enorme{
@@ -197,6 +216,7 @@ input.enorme{
 	display: none;
 	z-index: 1000;
 	margin-left: 15px;
+    -moz-box-shadow:2px 3px 5px 0 #777777;	
 }
 
 /* Log sql */
@@ -233,6 +253,7 @@ input.enorme{
 	padding-right: 25px;
 	position: relative;
 	background-color: #F2F2F2;
+	height: 25px;
 }
 #barraNavegacion a{
 	font: bold 12px Verdana, Arial, Helvetica, sans-serif;
@@ -242,6 +263,30 @@ input.enorme{
 }
 #barraNavegacion a:hover{
     color: #5399BF;
+}
+#breadcrumbs{
+	height: 25px;
+	background-color: #F2F2F2;
+	border-bottom: 1px solid #808080;
+}
+#breadcrumbs .inner{
+	padding: 0 25px 0 30px;
+	line-height: 25px;
+}
+#breadcrumbs .inner a{
+	text-decoration: none;
+	/*color: #4A95EF;
+	font-weight: bold;*/
+}
+#breadcrumbs .inner a:hover{
+	color: #4A95EF;
+}
+#breadcrumbs .inner span{
+	background: url(/img/breadSep.gif) center center no-repeat;
+	padding-right: 17px;
+}
+#breadcrumbs .inner span strong{
+	display: none;
 }
 .barraTitulo{
 	height: 20px;
@@ -331,6 +376,9 @@ table.listado thead{
 	border-bottom: 1px solid #808080;
 	color: #fff;
 }
+.scroll .listado{
+    margin-bottom: 0;
+}
 a.ordenado.asc{
 	padding: 0 12px 0 0;
 	background: url(/img/asc.gif) right 8px no-repeat;
@@ -339,6 +387,7 @@ a.ordenado.desc{
     padding: 0 12px 0 0;
     background: url(/img/desc.gif) right 7px no-repeat;
 }
+a.btnAnadir,
 a.btnDuplicar,
 a.btnEditar,
 a.btnEliminar{
@@ -351,6 +400,7 @@ a.btnEliminar{
 a.btnEliminar.usuario{
     background: url(/img/iconos/borrarUsuario.png) top center no-repeat;	
 }
+a.btnAnadir span,
 a.btnDuplicar span,
 a.btnEditar span,
 a.btnEliminar span{
@@ -362,18 +412,60 @@ a.btnEditar{
 a.btnDuplicar{
     background: url(/img/iconos/duplicar16.png) top center no-repeat;
 }
+a.btnAnadir{
+    background: url(/img/iconos/anadir16.png) top center no-repeat;
+}
 table.listado tbody tr.alter{
 	background-color: #EFEFEF;
 }
+.contenedorMultiselect{
+	position: relative;
+}
+.contenedorMultiselect a.btnEliminar{
+	position: absolute;
+	top: -16px;
+	right: 0;
+}
 
 /* Ficha */
-.ficha label{
-	color: #4A95EF;
-	display: inline;
-	padding: 0 5px 0 0;
-}
 .ficha p{
     margin: 0 0 5px 0;
+    clear: both;
+    float: none;
+    overflow: hidden;
+}
+.ficha p strong{
+    font: normal 12px Verdana, Arial, Helvetica, sans-serif;
+    color: #000;
+    width: 170px;
+    display: block;
+    float: left;
+    height: 20px;
+    line-height: 20px;
+    background-color: #D1DFEF;
+    margin-right: 5px;
+    padding-left: 5px;
+    border: 1px solid #C3D0DF;    
+}
+.ficha p span{
+    font: normal 12px Verdana, Arial, Helvetica, sans-serif;
+    color: #000;
+    width: 340px;
+    padding-left: 5px;
+    display: block;
+    float: left;
+    height: 20px;
+    line-height: 20px;
+    background-color: #fff; 
+    border:1px solid #CFCFCF;   
+}
+.ficha p.extended strong{
+	height: 178px;
+}
+.ficha p.extended span{
+	height: 178px;
+	width: 690px;
+	padding-right: 5px;
 }
 .ficha .nuevaSeccion{
 	margin-top: 25px;
@@ -448,4 +540,34 @@ div.ficha{
 }
 .campo.check{
     margin-top: 17px;	
+}
+.listaItemsFicha{
+	
+}
+.listaItemsFicha li{
+	height: 20px;
+	clear: both;
+	float: none;
+	overflow: hidden;
+}
+.listaItemsFicha li a{
+	display: block;
+	height: 20px;
+	line-height: 20px;
+	float: left;
+}
+.listaItemsFicha li a.aprobado{
+	background: url(/img/iconos/verde16.png) left center no-repeat;
+	padding-left: 20px;
+}
+.listaItemsFicha li a.pendiente{
+	background: url(/img/iconos/amarillo16.png) left center no-repeat;
+	padding-left: 20px;
+}
+.listaItemsFicha li a.denegado{
+	background: url(/img/iconos/rojo16.png) left center no-repeat;
+	padding-left: 20px;
+}
+.multiple{
+	height: 115px;
 }

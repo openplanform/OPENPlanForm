@@ -5,29 +5,28 @@
     	echo '<script type="text/javascript">ventana' . ucfirst($this->popup['estado']) . '("' . $this->popup['titulo'] . '", "' . $this->popup['mensaje'] . '", "' . $this->popup['url'] . '");</script>'; 
 	}
 ?>
-    
     <form id="altaConvocatoria" action="/convocatoria/alta.html" method="post">
         <fieldset>
         
-            <legend>Alta de Convocatoria</legend>
-        
         	<input type="hidden" value="1" name="send" />
         
-            <div class="campo controlado">
+            <div class="campo controlado multi">
                 <label for="nombre">Nombre*</label>
                 <input type="text" name="nombre" id="nombre" class="campoTexto" />
                 <p id="errorNombre" class="errorInput"><?= $this->errorNombre ?></p>
             </div>
             
-            <div class="campo controlado">
+            <div class="campo controlado multi">
                 <label for="ano">Año*</label>
                 <input type="text" name="ano" id="ano" class="campoTexto mini numerico" />
                 <p id="errorAno" class="errorInput"><?= $this->errorAno ?></p>
             </div>
             
+            <div class="separadorH"></div>
+            
             <div class="campo controlado">
             	<label for="tipoConvocatoria">Tipo de Convocatoria*</label>
-	            <select class="mediano" name="tipoConvocatoria" id="tipoConvocatoria">
+	            <select class="grande desplegable" name="tipoConvocatoria" id="tipoConvocatoria">
 	            	<option value=""></option>
 					<?
 					

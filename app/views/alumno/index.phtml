@@ -1,0 +1,71 @@
+<?php 
+
+	if ( count($this->alumnosCOL) > 0 ){
+
+?>
+
+
+<table class="listado">
+    <thead>
+        <tr>
+            <th><a href="/alumno/index.html/?ob=id&o=<?=$this->order?>" <?=( ($this->orderBy == 'id')?'class="ordenado ' . $this->order . '"':'' )?> >Id</a></th>
+            <th><a href="/alumno/index.html/?ob=nom&o=<?=$this->order?>" <?=( ($this->orderBy == 'nom')?'class="ordenado ' . $this->order . '"':'' )?> >Nombre</a></th>
+            <th><a href="/alumno/index.html/?ob=pob&o=<?=$this->order?>" <?=( ($this->orderBy == 'pob')?'class="ordenado ' . $this->order . '"':'' )?> >Población</a></th>
+            <th><a href="/alumno/index.html/?ob=mov&o=<?=$this->order?>" <?=( ($this->orderBy == 'mov')?'class="ordenado ' . $this->order . '"':'' )?> >Móvil</a></th>
+            <?
+            
+                if ( $this->editar ){
+                    
+                    ?><th>Eliminar</th>
+                    <th>Editar</th>
+                    <th>Duplicar</th><?
+                     
+                }
+            
+        ?></tr>
+    </thead>
+    <tbody><?
+    
+        $alter = true;
+    
+        foreach ($this->alumnosCOL as $alumnoDO){
+    
+            $alter = !$alter;
+            $clave = $alumnoDO->getIdPersona();
+            $primerApellido = $alumnoDO->getVPrimerApellido();
+            $segundoApellido = $alumnoDO->getVSegundoApellido();
+            
+            ?><tr <?= $alter ? 'class="alter"' : '' ?>>
+                <td><?= $clave ?></td>
+                <td><a href="/alumno/ficha/<?= $clave ?>"><?= $alumnoDO->getVNombre() . (  !empty($primerApellido) ? ' '.$primerApellido:'' ) . (  !empty($segundoApellido) ? ' '.$segundoApellido:'' ) ?></a></td>
+                <td><?= $alumnoDO->getVPoblacion() ?></td>
+                <td><?= $alumnoDO->getVMovil() ?></td><?
+                
+                if ( $this->editar ){
+                	?><td class="accion"><a href="/alumno/eliminar/<?= $clave ?>" onclick="ventanaConfirmacion('Eliminar alumno', '¿Está seguro que desea eliminar el alumno <strong><?= $alumnoDO->getVNombre() . (  !empty($primerApellido) ? ' '.$primerApellido:'' ) ?></strong>?', this.href); return false;" class="btnEliminar usuario" title="Eliminar Alumno"><span>eliminar</span></a></td>
+                    <td class="accion"><a href="/alumno/editar.html/<?= $clave ?>" class="btnEditar" title="Editar Alumno"><span>editar</span></a></td>
+                    <td class="accion"><a href="/alumno/duplicar.html/<?= $clave ?>" class="btnDuplicar" title="Duplicar Alumno"><span>duplicar</span></a></td><?
+                }
+                        
+            ?></tr><?
+        
+        }
+        
+        ?>
+    </tbody>
+</table>
+<div id="paginadorContainer"><?= $this->paginador ?></div>
+
+<?php 
+
+	} else {
+
+?>
+
+<h3>No hay ningún alumno</h3>
+
+<?php 
+
+	}
+
+?>

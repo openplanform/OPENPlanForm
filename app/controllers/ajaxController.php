@@ -57,8 +57,6 @@ class ajaxController extends PplController{
     		} else {
     			$sql = "SELECT COUNT(*) AS total FROM tblEmpresa WHERE vCif = '" . $_POST['dni'] . "'";
     		}
-    		$arrRespuesta['empresa'] = $_POST['empresa'];
-    		$arrRespuesta['consulta'] = $sql;
             $this->db->executeQuery($sql);
             $row = $this->db->fetchRow();
             if (is_array($row) && array_key_exists('total', $row) && $row['total'] != 0){

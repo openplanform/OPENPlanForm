@@ -2,6 +2,7 @@
 
 require_once 'NingenCmsSession.inc';
 require_once 'NingenMailer.inc';
+require_once 'NingenPdf.inc';
 require_once 'NingenMailerTemplate.inc';
 require_once 'helper/NingenString.inc';
 require_once NINGENCMS_CLASSESDIR . 'PplController.inc';
@@ -18,6 +19,11 @@ class indexController extends PplController{
      * @see extranet.planespime.es/ningencms/lib/NingenController::initController()
      */
     public function initController(){
+        
+        // Necesitaremos los módulos para el panel principal
+        if ($this->actionName == 'panel'){
+            parent::initController();            
+        }
         
         // La página principal siempre será el login
         if ($this->actionName == 'index'){
@@ -51,7 +57,7 @@ class indexController extends PplController{
             // Si el usuario no tiene una empresa o persona asignada, obligamos a que complete sus datos.
             $claveUsuario = $this->usuario->getId();
             if ($this->aclManager->datosCompletosUsuario($claveUsuario)){
-                $this->redirectTo('usuario', 'ficha');
+                $this->redirectTo('index', 'panel');
             } else {
                 $this->redirectTo('usuario', 'nuevo', $this->usuario->getId());
             }
@@ -90,7 +96,7 @@ class indexController extends PplController{
                 $this->usuario = NingenCmsSession::getValue('usuario');
                 $claveUsuario = $this->usuario->getId();
                 if ($this->aclManager->datosCompletosUsuario($claveUsuario)){
-                    $this->redirectTo('usuario', 'ficha');
+                    $this->redirectTo('index', 'panel');
                 } else {
                     $this->redirectTo('usuario', 'nuevo', $this->usuario->getId());
                 }
@@ -189,6 +195,205 @@ class indexController extends PplController{
 	    }
 		
 	}
+	
+	/**
+	 * Panel Principal
+	 */
+    public function panelAction(){
+        
+        
+        // CONVOCATORIAS ------------------------------------
+        
+        $sql = "SELECT COUNT(*) AS total FROM tblConvocatoria;";
+        $this->db->executeQuery($sql);
+        $row = $this->db->fetchRow();
+        $this->view->totalConvocatorias = $row['total'];
+
+        $sql = "SELECT idConvocatoria, vNombre, last_modified FROM tblConvocatoria ORDER BY last_modified DESC LIMIT 1;";
+        $this->db->executeQuery($sql);
+        $this->view->ultimaConvocatoria = $this->db->fetchRow();
+        
+        
+        // PLANES DE FORMACIÓN -------------------------------
+        
+        $sql = "SELECT COUNT(*) AS total FROM tblPlan;";
+        $this->db->executeQuery($sql);
+        $row = $this->db->fetchRow();
+        $this->view->totalPlanes = $row['total'];
+        
+        $sql = "SELECT idPlan, vNombre, last_modified FROM tblPlan ORDER BY last_modified DESC LIMIT 1;";
+        $this->db->executeQuery($sql);
+        $this->view->ultimoPlan = $this->db->fetchRow();
+                
+
+        // CURSOS --------------------------------------------
+        
+        $sql = "SELECT COUNT(*) AS total FROM tblCurso;";
+        $this->db->executeQuery($sql);
+        $row = $this->db->fetchRow();
+        $this->view->totalCursos = $row['total'];
+        
+        $sql = "SELECT idCurso, vNombre, last_modified FROM tblCurso ORDER BY last_modified DESC LIMIT 1;";
+        $this->db->executeQuery($sql);
+        $this->view->ultimoCurso = $this->db->fetchRow();
+                
+
+        // ALUMNOS -------------------------------------------
+        
+        $rolAlumnos = PplAclManager::ROL_ALUMNO;
+        
+        $sql = "SELECT COUNT(*) AS total
+                FROM   tblPersona p
+                WHERE  EXISTS(SELECT NULL
+                              FROM   trelRolUsuario ru
+                              WHERE  p.fkusuario = ru.fkusuario
+                                     AND ru.fkrol = $rolAlumnos)";
+        
+        $this->db->executeQuery($sql);
+        $row = $this->db->fetchRow();
+        $this->view->totalAlumnos = $row['total'];
+                                     
+        $sql = "SELECT idPersona,
+               vNombre,
+               last_modified
+        FROM   tblPersona p
+        WHERE  EXISTS(SELECT NULL
+                      FROM   trelRolUsuario ru
+                      WHERE  p.fkusuario = ru.fkusuario
+                             AND ru.fkrol = $rolAlumnos)
+        ORDER  BY p.last_modified DESC
+        LIMIT  1";
+        
+        $this->db->executeQuery($sql);
+        $this->view->ultimoAlumno = $this->db->fetchRow();
+        
+        // GESTORAS --------------------------------------------
+        
+        $rolGestora = PplAclManager::ROL_CONSULTORA;
+        
+        $sql = "SELECT COUNT(*) AS total
+                FROM   tblEmpresa e
+                WHERE  EXISTS(SELECT NULL
+                              FROM   trelRolUsuario ru
+                              WHERE  e.fkUsuario = ru.fkUsuario
+                                     AND ru.fkRol = $rolGestora)";
+
+        $this->db->executeQuery($sql);
+        $row = $this->db->fetchRow();
+        $this->view->totalGestoras = $row['total'];
+        
+        $sql = "SELECT idEmpresa,
+                       vNombre,
+                       last_modified
+                FROM   tblEmpresa e
+                WHERE  EXISTS(SELECT NULL
+                              FROM   trelRolUsuario ru
+                              WHERE  e.fkusuario = ru.fkusuario
+                                     AND ru.fkrol = $rolGestora)
+                ORDER  BY e.last_modified DESC
+                LIMIT  1";
+        
+        $this->db->executeQuery($sql);
+        $this->view->ultimaGestora = $this->db->fetchRow();        
+
+
+        // PROFESORES ------------------------------------------
+        
+        $rolProfesores = PplAclManager::ROL_PROFESOR;
+        
+        $sql = "SELECT COUNT(*) AS total
+                FROM   tblPersona p
+                WHERE  EXISTS(SELECT NULL
+                              FROM   trelRolUsuario ru
+                              WHERE  p.fkUsuario = ru.fkUsuario
+                                     AND ru.fkRol = $rolProfesores)";
+        
+        $this->db->executeQuery($sql);
+        $row = $this->db->fetchRow();
+        $this->view->totalProfesores = $row['total'];
+        
+        $sql = "SELECT idPersona,
+                       vNombre,
+                       last_modified
+                FROM   tblPersona p
+                WHERE  EXISTS(SELECT NULL
+                              FROM   trelRolUsuario ru
+                              WHERE  p.fkusuario = ru.fkusuario
+                                     AND ru.fkrol = $rolProfesores)
+                ORDER  BY p.last_modified DESC
+                LIMIT  1";
+        
+        $this->db->executeQuery($sql);
+        $this->view->ultimoProfesor = $this->db->fetchRow();              
+
+
+        // ACADEMIAS ---------------------------------------------
+        
+        $rolAcademia = PplAclManager::ROL_ACADEMIA;
+        
+        $sql = "SELECT COUNT(*) AS total
+                FROM   tblEmpresa e
+                WHERE  EXISTS(SELECT NULL
+                              FROM   trelRolUsuario ru
+                              WHERE  e.fkUsuario = ru.fkUsuario
+                                     AND ru.fkRol = $rolAcademia)";
+
+        $this->db->executeQuery($sql);
+        $row = $this->db->fetchRow();
+        $this->view->totalAcademias = $row['total'];
+        
+        $sql = "SELECT idEmpresa,
+                       vNombre,
+                       last_modified
+                FROM   tblEmpresa e
+                WHERE  EXISTS(SELECT NULL
+                              FROM   trelRolUsuario ru
+                              WHERE  e.fkusuario = ru.fkusuario
+                                     AND ru.fkrol = $rolAcademia)
+                ORDER  BY e.last_modified DESC
+                LIMIT  1";
+        
+        $this->db->executeQuery($sql);
+        $this->view->ultimaAcademia = $this->db->fetchRow();
+
+        
+        // AULAS -----------------------------------------------
+        
+        $sql = "SELECT COUNT(*) AS total FROM tblAula;";
+        $this->db->executeQuery($sql);
+        $row = $this->db->fetchRow();
+        $this->view->totalAulas = $row['total'];
+        
+        $sql = "SELECT idAula, vNombre, last_modified FROM tblAula ORDER BY last_modified DESC LIMIT 1;";
+        $this->db->executeQuery($sql);
+        $this->view->ultimoAula = $this->db->fetchRow();
+
+        
+        // CENTROS ----------------------------------------------
+        
+        $sql = "SELECT COUNT(*) AS total FROM tblCentro;";
+        $this->db->executeQuery($sql);
+        $row = $this->db->fetchRow();
+        $this->view->totalCentros = $row['total'];
+        
+        $sql = "SELECT idCentro, vNombre, last_modified FROM tblCentro ORDER BY last_modified DESC LIMIT 1;";
+        $this->db->executeQuery($sql);
+        $this->view->ultimoCentro = $this->db->fetchRow();        
+        
+
+        // USUARIOS ----------------------------------------------
+        
+        $sql = "SELECT COUNT(*) AS total FROM tblUsuario;";
+        $this->db->executeQuery($sql);
+        $row = $this->db->fetchRow();
+        $this->view->totalUsuarios = $row['total'];
+        
+        $sql = "SELECT idUsuario, vNombre FROM tblUsuario ORDER BY idUsuario DESC LIMIT 1;";
+        $this->db->executeQuery($sql);
+        $this->view->ultimoUsuario = $this->db->fetchRow();
+
+    }
+	
 	
 }
 

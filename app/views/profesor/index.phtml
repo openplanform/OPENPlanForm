@@ -1,5 +1,3 @@
-<h2>Listado de profesores</h2>
-
 <?php 
 
 	if ( count($this->profesoresCOL) > 0 ){
@@ -34,10 +32,12 @@
     
             $alter = !$alter;
             $clave = $profesorDO->getIdPersona();
+            $primerApellido = $profesorDO->getVPrimerApellido();
+            $segundoApellido = $profesorDO->getVSegundoApellido();
             
             ?><tr <?= $alter ? 'class="alter"' : '' ?>>
                 <td><?= $clave ?></td>
-                <td><a href="/profesor/ficha/<?= $clave ?>"><?= $profesorDO->getVNombre() ?></a></td>
+                <td><a href="/profesor/ficha/<?= $clave ?>"><?= $profesorDO->getVNombre() . (  !empty($primerApellido) ? ' '.$primerApellido:'' ) . (  !empty($segundoApellido) ? ' '.$segundoApellido:'' ) ?></a></td>
                 <td><?= $profesorDO->getVPoblacion() ?></td>
                 <td><?= $profesorDO->getVMovil() ?></td>
                 <td><?
@@ -60,7 +60,7 @@
                 ?></td><?
                 
                 if ( $this->editar ){
-                	?><td class="accion"><a href="/profesor/eliminar/<?= $clave ?>" onclick="ventanaConfirmacion('Eliminar profesor', '¿Está seguro que desea eliminar el profesor <strong><?= $profesorDO->getVNombre() ?></strong>?', this.href); return false;" class="btnEliminar usuario" title="Eliminar Profesor"><span>eliminar</span></a></td>
+                	?><td class="accion"><a href="/profesor/eliminar/<?= $clave ?>" onclick="ventanaConfirmacion('Eliminar profesor', '¿Está seguro que desea eliminar el profesor <strong><?= $profesorDO->getVNombre() . (  !empty($primerApellido) ? ' '.$primerApellido:'' ) ?></strong>?', this.href); return false;" class="btnEliminar usuario" title="Eliminar Profesor"><span>eliminar</span></a></td>
                     <td class="accion"><a href="/profesor/editar.html/<?= $clave ?>" class="btnEditar" title="Editar Profesor"><span>editar</span></a></td>
                     <td class="accion"><a href="/profesor/duplicar.html/<?= $clave ?>" class="btnDuplicar" title="Duplicar Profesor"><span>duplicar</span></a></td><?
                 }
