@@ -1,5 +1,7 @@
 ningencms
-ningencms/.git
+ningencms/*
+ningencms/
 .htaccess
 owl
-owl/.git
+owl/
+owl/*
