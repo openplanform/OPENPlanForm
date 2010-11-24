@@ -1,20 +1,20 @@
 <?php
 
-require_once 'NingenController.inc';
+require_once 'OwlController.inc';
 
-require_once NINGENCMS_CLASSESDIR . 'PplAclManager.inc';
-require_once NINGENCMS_CLASSESDIR . 'PplCacheBO.inc';
+require_once CLASSESDIR . 'PplAclManager.inc';
+require_once CLASSESDIR . 'PplCacheBO.inc';
 
-require_once NINGENCMS_MODULEDIR . 'menuPrincipalModule.php';
-require_once NINGENCMS_MODULEDIR . 'logoutModule.php';
-require_once NINGENCMS_MODULEDIR . 'breadcrumbsModule.php';
-require_once NINGENCMS_MODULEDIR . 'popupModule.php';
-require_once NINGENCMS_MODULEDIR . 'barraHerramientasModule.php';
+require_once MODULEDIR . 'menuPrincipalModule.php';
+require_once MODULEDIR . 'logoutModule.php';
+require_once MODULEDIR . 'breadcrumbsModule.php';
+require_once MODULEDIR . 'popupModule.php';
+require_once MODULEDIR . 'barraHerramientasModule.php';
 
 /**
  * Sobreescritura del controlador genérico
  */
-class PplController extends NingenController{
+class PplController extends OwlController{
 
     /**
      * Manejador de listas de acceso
@@ -60,7 +60,7 @@ class PplController extends NingenController{
     
     /**
      * Se instancian los módulos mas significativos de la aplicacion
-     * @see extranet.planespime.es/ningencms/lib/NingenController::initController()
+     * @see extranet.planespime.es/owl/lib/OwlController::initController()
      */
     public function initController(){
         
@@ -69,7 +69,7 @@ class PplController extends NingenController{
          * cualquier acción del controlador
          */
         if ($this->controllerName != 'index' || ($this->controllerName == 'index' && $this->actionName == 'panel' )){
-            $usuarioBO = NingenCmsSession::getValue('usuario');
+            $usuarioBO = OwlSession::getValue('usuario');
             if (!$usuarioBO instanceof PplUsuarioSesion){
                 $this->redirectTo('index', 'login');
                 return;

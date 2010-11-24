@@ -1,21 +1,21 @@
 <?php
 
-require_once 'NingenController.inc';
-require_once 'helper/NingenDatabase.inc';
+require_once 'OwlController.inc';
+require_once 'dbase/OwlDatabase.inc';
 
-require_once NINGENCMS_MODELDIR . 'TblEmpresa.inc';
-require_once NINGENCMS_MODELDIR . 'TblEstadoPlan.inc';
-require_once NINGENCMS_MODELDIR . 'TblPais.inc';
-require_once NINGENCMS_MODELDIR . 'TblPersona.inc';
-require_once NINGENCMS_MODELDIR . 'TblProvincia.inc';
-require_once NINGENCMS_MODELDIR . 'TblTipoConvocatoria.inc';
-require_once NINGENCMS_MODELDIR . 'TblTipoPlan.inc';
+require_once MODELDIR . 'TblEmpresa.inc';
+require_once MODELDIR . 'TblEstadoPlan.inc';
+require_once MODELDIR . 'TblPais.inc';
+require_once MODELDIR . 'TblPersona.inc';
+require_once MODELDIR . 'TblProvincia.inc';
+require_once MODELDIR . 'TblTipoConvocatoria.inc';
+require_once MODELDIR . 'TblTipoPlan.inc';
 
 class PplCacheBO {
 	
 	/**
      * Referencia a la base de datos
-     * @var NingenConnection
+     * @var OwlConnection
      */
     protected $db;
     
@@ -225,9 +225,9 @@ class PplCacheBO {
     
     /**
      * Constructora, propaga la referencia a la base de datos 
-     * @param NingenConnection $db
+     * @param OwlConnection $db
      */
-    public function __construct( NingenConnection $db ){
+    public function __construct( OwlConnection $db ){
     	
         $this->db = $db;
         
@@ -649,7 +649,7 @@ class PplCacheBO {
 	public function getPaises(){
 	    
 	    $paisesCOL = TblPais::findAll($this->db, 'vNombre_es');
-	    $paisesIDX = NingenDatabase::indexFor('vIso', $paisesCOL);
+	    $paisesIDX = OwlDatabase::indexFor('vIso', $paisesCOL);
 	    
 	    return $paisesIDX;
 	    
@@ -661,7 +661,7 @@ class PplCacheBO {
 	public function getProvincias(){
 	    
 	    $provinciasCOL = TblProvincia::findAll($this->db, 'vNombre_es');
-	    $provinciasIDX = NingenDatabase::indexFor('idProvincia', $provinciasCOL);
+	    $provinciasIDX = OwlDatabase::indexFor('idProvincia', $provinciasCOL);
 	    
 	    return $provinciasIDX;
 	    
@@ -736,7 +736,7 @@ class PplCacheBO {
 		}
 		
 		$personasCOL = TblPersona::findAll($this->db, 'vNombre');
-	    $personasIDX = NingenDatabase::indexFor('idPersona', $personasCOL);
+	    $personasIDX = OwlDatabase::indexFor('idPersona', $personasCOL);
 		
 		$this->personasIDX = $personasIDX;
 		$this->personas_fetched = true;
@@ -751,7 +751,7 @@ class PplCacheBO {
 	 */
 	static public function getUploadDir(){
 	    
-	    return NINGENCMS_PUBDIR . 'docs/';
+	    return PUBDIR . 'docs/';
 	    
 	}
 	

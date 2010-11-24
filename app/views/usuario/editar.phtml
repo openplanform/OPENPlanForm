@@ -178,7 +178,7 @@
             
             <div class="campo multi controlado">
                 <label for="nacimientoPersona">Fecha de nacimiento*</label>
-                <input type="text" name="nacimientoPersona" id="nacimientoPersona" class="campoTexto mediano" onkeypress="return false;" value="<?= NingenDate::getDiaMesAno($this->personaDO->getDNacimiento()) ?>" />
+                <input type="text" name="nacimientoPersona" id="nacimientoPersona" class="campoTexto mediano" onkeypress="return false;" value="<?= OwlDate::getDiaMesAno($this->personaDO->getDNacimiento()) ?>" />
                 <p id="errorNacimientoPersona" class="errorInput"><?= $this->errorNacimientoPersona ?></p>
             </div>
             

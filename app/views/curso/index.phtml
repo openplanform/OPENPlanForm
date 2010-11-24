@@ -42,9 +42,9 @@
 					<td><?= $this->categoriasIDX[$cursoDO->getFkCategoria()] ?></td>
 					<?php
 					 
-					$fechaIni = NingenDate::getDiaMesAno($cursoDO->getDInicio());
+					$fechaIni = OwlDate::getDiaMesAno($cursoDO->getDInicio());
 					( $fechaIni == '01/01/1970' ) ? $fechaIni = '-' : '';
-					$fechaFin = NingenDate::getDiaMesAno($cursoDO->getDFin());
+					$fechaFin = OwlDate::getDiaMesAno($cursoDO->getDFin());
 					( $fechaFin == '01/01/1970' ) ? $fechaFin = '-' : '';
 					
 					?>

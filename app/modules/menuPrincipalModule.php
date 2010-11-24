@@ -1,14 +1,14 @@
 <?php
 
-require_once 'NingenModule.inc';
-require_once 'NingenException.inc';
+require_once 'OwlModule.inc';
+require_once 'OwlException.inc';
 
 
-class menuPrincipalModule extends NingenModule{
+class menuPrincipalModule extends OwlModule{
 
     /**
      * Referencia a la base de datos
-     * @var NingenConnection
+     * @var OwlConnection
      */
     protected $db;
     
@@ -35,7 +35,7 @@ class menuPrincipalModule extends NingenModule{
      * Set DB
      * @param $db
      */
-    public function setDb(NingenConnection $db){
+    public function setDb(OwlConnection $db){
         
         $this->db = $db;
         
@@ -50,7 +50,7 @@ class menuPrincipalModule extends NingenModule{
         
         if (!$this->menuDS = $menuDS){
             
-            throw new NingenException('Error crítico, no se han obtenido los datos del menu', 500);
+            throw new OwlException('Error crítico, no se han obtenido los datos del menu', 500);
              
         }
         
@@ -168,7 +168,7 @@ class menuPrincipalModule extends NingenModule{
     
     /**
      * Run
-     * @see extranet.planespime.es/ningencms/lib/NingenModule::runModule()
+     * @see extranet.planespime.es/owl/lib/OwlModule::runModule()
      */
     public function runModule(){
         

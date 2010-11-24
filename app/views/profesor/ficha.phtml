@@ -12,7 +12,7 @@
 		<div class="ficha">
 			<h3>Datos del profesor</h3>
 			<p><strong>Nombre:</strong><span> <?= $this->profesorDO->getVNombre() . ' ' . $this->profesorDO->getVPrimerApellido() . ' ' . $this->profesorDO->getVSegundoApellido() ?></span></p>
-			<p><strong>Fecha de nacimiento: </strong><span> <?= NingenDate::getDiaMesAno($this->profesorDO->getDNacimiento())  ?></span></p>
+			<p><strong>Fecha de nacimiento: </strong><span> <?= OwlDate::getDiaMesAno($this->profesorDO->getDNacimiento())  ?></span></p>
 			<p><strong><?= $this->profesorDO->getTblTipoIdentificacion()->getVNombre() ?>:</strong><span> <?= $this->profesorDO->getVNumeroIdentificacion() ?></span></p>
 			
 			<?

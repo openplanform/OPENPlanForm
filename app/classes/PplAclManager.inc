@@ -1,11 +1,11 @@
 <?php
 
-require_once 'NingenCmsSession.inc';
+require_once 'OwlSession.inc';
 
-require_once NINGENCMS_CLASSESDIR . 'PplUsuarioSesion.inc';
-require_once NINGENCMS_MODELDIR . 'TblAcceso.inc';
-require_once NINGENCMS_MODELDIR . 'TblUsuario.inc';
-require_once NINGENCMS_MODELDIR . 'TblRol.inc';
+require_once CLASSESDIR . 'PplUsuarioSesion.inc';
+require_once MODELDIR . 'TblAcceso.inc';
+require_once MODELDIR . 'TblUsuario.inc';
+require_once MODELDIR . 'TblRol.inc';
 
 
 /**
@@ -16,7 +16,7 @@ class PplAclManager{
     
     /**
      * Referencia a la base de datos
-     * @var NingenConnection
+     * @var OwlConnection
      */
     protected $db;
     
@@ -141,7 +141,7 @@ class PplAclManager{
         $rolesARR = $this->getRolesUsuario($row['idUsuario']);
         $usuarioSesion = new PplUsuarioSesion($row['idUsuario'], $row['vNombre'], $rolesARR, $row['vEmail']);
         
-        NingenCmsSession::setValue('usuario', $usuarioSesion);
+        OwlSession::setValue('usuario', $usuarioSesion);
         
         return true;
         
@@ -206,7 +206,7 @@ class PplAclManager{
      */
     public function hasPerms( $controllerName, $actionName){
         
-        $usuario = NingenCmsSession::getValue('usuario');
+        $usuario = OwlSession::getValue('usuario');
         $rolesUsuario = $usuario->getRoles();
         
         // Se busca el controlador

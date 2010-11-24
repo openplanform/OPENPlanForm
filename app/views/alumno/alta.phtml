@@ -271,8 +271,8 @@
 								<td><?= $this->categoriasIDX[$cursoDO->getFkCategoria()] ?></td-->
 								<td><?= $this->sectoresIDX[$cursoDO->getFkSector()] ?></td>
 								<td><?= $this->categoriasIDX[$cursoDO->getFkCategoria()] ?></td>
-								<td><?= NingenDate::getDiaMesAno($cursoDO->getDInicio()) ?></td>
-								<td><?= NingenDate::getDiaMesAno($cursoDO->getDFin()) ?></td>
+								<td><?= OwlDate::getDiaMesAno($cursoDO->getDInicio()) ?></td>
+								<td><?= OwlDate::getDiaMesAno($cursoDO->getDFin()) ?></td>
 								<td><a href="javascript:addCursoAlumno('<?= $cursoDO->getIdCurso() ?>', '<?= $cursoDO->getVNombre() ?>')" class="btnAnadir" title="Asignar al alumno"><span>añadir</span></a></td>
 							</tr>
 							<?

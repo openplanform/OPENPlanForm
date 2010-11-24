@@ -1,0 +1,4 @@
+Options +FollowSymLinks
+RewriteEngine On
+RewriteCond %{ENV:REDIRECT_STATUS} ^$
+RewriteRule ^(.*)$ public/$1 [QSA,L]

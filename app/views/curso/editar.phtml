@@ -157,7 +157,7 @@
             <div class="campo multi">
                 <label for="inicio">Fecha de inicio</label>
                 <?php 
-                	$fechaIni = NingenDate::getDiaMesAno($this->cursoDO->getDInicio());
+                	$fechaIni = OwlDate::getDiaMesAno($this->cursoDO->getDInicio());
 					( $fechaIni == '01/01/1970' ) ? $fechaIni = '' : '';
                 ?>
                 <input type="text" name="inicio" id="inicio" class="campoTexto pequeno" onkeypress="return false;" value="<?= $fechaIni ?>"/>
@@ -166,7 +166,7 @@
             <div class="campo multi">
                 <label for="fin">Fecha de fin</label>
                 <?php 
-					$fechaFin = NingenDate::getDiaMesAno($this->cursoDO->getDFin());
+					$fechaFin = OwlDate::getDiaMesAno($this->cursoDO->getDFin());
 					( $fechaFin == '01/01/1970' ) ? $fechaFin = '' : '';
                 ?>
                 <input type="text" name="fin" id="fin" class="campoTexto pequeno" onkeypress="return false;" value="<?= $fechaFin ?>"/>

@@ -30,7 +30,7 @@
         ?><h3>Datos personales: </h3>
         <p><strong>Nombre: </strong><span> <?= $this->personaDO->getVNombre()  ?></span></p>        
         <p><strong>Apellidos: </strong><span> <?= $this->personaDO->getVPrimerApellido() . ' ' . $this->personaDO->getVSegundoApellido()  ?></span></p>
-        <p><strong>Fecha de nacimiento: </strong><span> <?= NingenDate::getDiaMesAno($this->personaDO->getDNacimiento())  ?></span></p>        
+        <p><strong>Fecha de nacimiento: </strong><span> <?= OwlDate::getDiaMesAno($this->personaDO->getDNacimiento())  ?></span></p>        
         <p><strong><?= $this->personaDO->getTblTipoIdentificacion()->getVNombre() ?>: </strong><span> <?= $this->personaDO->getVNumeroIdentificacion() ?></span></p><?
         
         if ($telefono = $this->personaDO->getVTelefono()){
@@ -52,7 +52,7 @@
         <p class="nuevaSeccion"><strong>Estado civil: </strong><span><?= $this->personaDO->getTblEstadoCivil()->getVNombre() ?></span></p>
         <p><strong>Estado laboral: </strong><span> <?= $this->personaDO->getTblEstadoLaboral()->getVNombre()  ?></span></p>
         <p><strong>Nivel de estudios: </strong><span> <?= $this->personaDO->getTblNivelEstudios()->getVNombre()  ?></span></p>
-        <p><strong>Fecha de alta: </strong><span> <?= NingenDate::getDiaMesAno($this->personaDO->getDAlta())  ?></span></p><?
+        <p><strong>Fecha de alta: </strong><span> <?= OwlDate::getDiaMesAno($this->personaDO->getDAlta())  ?></span></p><?
         
     } elseif ($this->tipo = 'empresa'){
         
@@ -85,7 +85,7 @@
             
         }
         
-        ?><p><strong>Fecha de alta: </strong><span> <?= NingenDate::getDiaMesAno($this->empresaDO->getDAlta()) ?></span></p><?
+        ?><p><strong>Fecha de alta: </strong><span> <?= OwlDate::getDiaMesAno($this->empresaDO->getDAlta()) ?></span></p><?
         
     }
 

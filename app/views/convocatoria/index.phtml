@@ -37,8 +37,8 @@
 				<tr	<?= $clase ?> >
 					<td><a href="/convocatoria/ficha.html/<?= $convocatoriaDO->getIdConvocatoria() ?>"><?= $convocatoriaDO->getVNombre() ?></a></td>
 					<td><?= $convocatoriaDO->getIAno()?></td>
-					<td><?= NingenString::limitaTexto($convocatoriaDO->getVDescripcion(), 40)?></td>
-					<td><?= NingenNumeric::decimalFormatoEuropeo($convocatoriaDO->getEPresupuesto(), 2) ?>€</td>
+					<td><?= OwlString::limitaTexto($convocatoriaDO->getVDescripcion(), 40)?></td>
+					<td><?= OwlNumeric::decimalFormatoEuropeo($convocatoriaDO->getEPresupuesto(), 2) ?>€</td>
 					<td><?= $this->tiposConvocatoriaIDX[$convocatoriaDO->getFkTipoConvocatoria()] ?></td>
 					<?
 					
