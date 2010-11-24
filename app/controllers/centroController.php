@@ -1,21 +1,21 @@
 <?php
 
-require_once 'helper/NingenCmsHtmlHelper.inc';
-require_once 'NingenPaginator.inc';
+require_once 'helper/OwlHtmlHelper.inc';
+require_once 'OwlPaginator.inc';
 
-require_once NINGENCMS_CLASSESDIR . 'PplController.inc';
-require_once NINGENCMS_CLASSESDIR . 'PplCacheBO.inc';
+require_once CLASSESDIR . 'PplController.inc';
+require_once CLASSESDIR . 'PplCacheBO.inc';
 
-require_once NINGENCMS_MODELDIR . '/TblCentro.inc';
-require_once NINGENCMS_MODELDIR . '/TblPais.inc';
-require_once NINGENCMS_MODELDIR . '/TblProvincia.inc';
+require_once MODELDIR . '/TblCentro.inc';
+require_once MODELDIR . '/TblPais.inc';
+require_once MODELDIR . '/TblProvincia.inc';
 
 class centroController extends PplController{
     
     
     /**
      * Init
-     * @see extranet.planespime.es/ningencms/lib/NingenController::initController()
+     * @see extranet.planespime.es/owl/lib/OwlController::initController()
      */
     public function initController(){
        
@@ -25,7 +25,7 @@ class centroController extends PplController{
     
     /**
      * Acción inicial, por defecto, el listado
-     * @see extranet.planespime.es/ningencms/lib/NingenController::indexAction()
+     * @see extranet.planespime.es/owl/lib/OwlController::indexAction()
      */
     public function indexAction(){
         
@@ -56,7 +56,7 @@ class centroController extends PplController{
         $this->view->orderBy = $aliasOrderBy;
         
     	// Se instancia y configura el paginador
-        $paginador = new NingenPaginator($this->db, null, 'tblCentro', $this->helper);
+        $paginador = new OwlPaginator($this->db, null, 'tblCentro', $this->helper);
         $paginador->setItemsPorPagina(10);
         $paginaActual = $this->helper->escapeInjection($this->helper->get('p'));
         $paginaActual = empty($paginaActual) ? 1 : $paginaActual;
@@ -184,9 +184,9 @@ class centroController extends PplController{
         	
         } else {
         	
-        	if ( NingenCmsSession::getValue('centroDuplicado') instanceof TblCentro ){
+        	if ( OwlSession::getValue('centroDuplicado') instanceof TblCentro ){
         		
-        		$centroDO = NingenCmsSession::getValue('centroDuplicado');
+        		$centroDO = OwlSession::getValue('centroDuplicado');
         		$duplicar = true;
         		
         	}
@@ -289,7 +289,7 @@ class centroController extends PplController{
         	$nombreCentro = 'Copia de ' . $centroDO->getVNombre();
         	$centroDO->setVNombre($nombreCentro);
 //        	$centroDO->insert();
-        	NingenCmsSession::setValue('centroDuplicado', $centroDO);
+        	OwlSession::setValue('centroDuplicado', $centroDO);
         }
         
 //        $this->redirectTo('centro','editar', $this->db->getLastInsertId());
@@ -516,7 +516,7 @@ class centroController extends PplController{
             }
             
             // Se ejecuta la búsqueda
-            $paginador = new NingenPaginator($this->db, $where, 'tblCentro', $this->helper);
+            $paginador = new OwlPaginator($this->db, $where, 'tblCentro', $this->helper);
             $paginador->setItemsPorPagina(10);
             $paginaActual = $this->helper->escapeInjection($this->helper->get('p'));
             $paginaActual = empty($paginaActual) ? 1 : $paginaActual;

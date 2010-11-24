@@ -1,24 +1,24 @@
 <?php
 
-require_once 'helper/NingenCmsHtmlHelper.inc';
-require_once 'helper/NingenDate.inc';
-require_once 'NingenPaginator.inc';
+require_once 'helper/OwlHtmlHelper.inc';
+require_once 'helper/OwlDate.inc';
+require_once 'OwlPaginator.inc';
 
-require_once NINGENCMS_CLASSESDIR . 'PplController.inc';
+require_once CLASSESDIR . 'PplController.inc';
 
-require_once NINGENCMS_MODELDIR . '/TblAula.inc';
-require_once NINGENCMS_MODELDIR . '/TblCentro.inc';
-require_once NINGENCMS_MODELDIR . '/TblCategoria.inc';
-require_once NINGENCMS_MODELDIR . '/TblCategoria.inc';
-require_once NINGENCMS_MODELDIR . '/TblCategoriaExtendida.inc';
-require_once NINGENCMS_MODELDIR . '/TblColectivo.inc';
-require_once NINGENCMS_MODELDIR . '/TblCurso.inc';
-require_once NINGENCMS_MODELDIR . '/TblModalidad.inc';
-require_once NINGENCMS_MODELDIR . '/TblSector.inc';
-require_once NINGENCMS_MODELDIR . '/TblPlan.inc';
-require_once NINGENCMS_MODELDIR . '/TrelCandidato.inc';
-require_once NINGENCMS_MODELDIR . '/TrelPrecandidato.inc';
-require_once NINGENCMS_MODELDIR . '/TrelProfesor.inc';
+require_once MODELDIR . '/TblAula.inc';
+require_once MODELDIR . '/TblCentro.inc';
+require_once MODELDIR . '/TblCategoria.inc';
+require_once MODELDIR . '/TblCategoria.inc';
+require_once MODELDIR . '/TblCategoriaExtendida.inc';
+require_once MODELDIR . '/TblColectivo.inc';
+require_once MODELDIR . '/TblCurso.inc';
+require_once MODELDIR . '/TblModalidad.inc';
+require_once MODELDIR . '/TblSector.inc';
+require_once MODELDIR . '/TblPlan.inc';
+require_once MODELDIR . '/TrelCandidato.inc';
+require_once MODELDIR . '/TrelPrecandidato.inc';
+require_once MODELDIR . '/TrelProfesor.inc';
 
 
 class cursoController extends PplController{
@@ -31,7 +31,7 @@ class cursoController extends PplController{
     
     /**
      * Init
-     * @see extranet.planespime.es/ningencms/lib/NingenController::initController()
+     * @see extranet.planespime.es/owl/lib/OwlController::initController()
      */
     public function initController(){
 
@@ -41,7 +41,7 @@ class cursoController extends PplController{
     
     /**
      * Acción inicial, por defecto, el listado
-     * @see extranet.planespime.es/ningencms/lib/NingenController::indexAction()
+     * @see extranet.planespime.es/owl/lib/OwlController::indexAction()
      */
     public function indexAction(){
         
@@ -74,7 +74,7 @@ class cursoController extends PplController{
         $this->view->orderBy = $aliasOrderBy;
         
     	// Se instancia y configura el paginador
-        $paginador = new NingenPaginator($this->db, null, 'tblCurso', $this->helper);
+        $paginador = new OwlPaginator($this->db, null, 'tblCurso', $this->helper);
         $paginador->setItemsPorPagina(10);
         $paginaActual = $this->helper->escapeInjection($this->helper->get('p'));
         $paginaActual = empty($paginaActual) ? 1 : $paginaActual;
@@ -184,9 +184,9 @@ class cursoController extends PplController{
         	
         } else {
         	
-        	if ( NingenCmsSession::getValue('cursoDuplicado') instanceof TblCurso ){
+        	if ( OwlSession::getValue('cursoDuplicado') instanceof TblCurso ){
         		
-        		$cursoDO = NingenCmsSession::getValue('cursoDuplicado');
+        		$cursoDO = OwlSession::getValue('cursoDuplicado');
         		$duplicar = true;
         		
         	}
@@ -341,7 +341,7 @@ class cursoController extends PplController{
         	$nombreCurso = 'Copia de ' . $cursoDO->getVNombre();
         	$cursoDO->setVNombre($nombreCurso);
 //        	$cursoDO->insert();
-        	NingenCmsSession::setValue('cursoDuplicado', $cursoDO);
+        	OwlSession::setValue('cursoDuplicado', $cursoDO);
         }
         
 //        $this->redirectTo('curso','editar', $this->db->getLastInsertId());
@@ -558,8 +558,8 @@ class cursoController extends PplController{
 		    	$cursoDO->setIHorasPresenciales($horasP);
 		    	$cursoDO->setIHorasDistancia($horasD);
 		    	$cursoDO->setIHorasTutoria($horasT);
-		    	$cursoDO->setDInicio(NingenDate::europeoAmericano($inicio));
-		    	$cursoDO->setDFin(NingenDate::europeoAmericano($fin));
+		    	$cursoDO->setDInicio(OwlDate::europeoAmericano($inicio));
+		    	$cursoDO->setDFin(OwlDate::europeoAmericano($fin));
 		    	$cursoDO->setINumeroAlumnos($alumnos);
 		    	$cursoDO->setLastModified(date('Y-m-d'));
                 $cursoDO->setModUser($this->usuario->getNombre());
@@ -783,7 +783,7 @@ class cursoController extends PplController{
             }
             
             // Se ejecuta la búsqueda
-            $paginador = new NingenPaginator($this->db, $where, 'tblCurso', $this->helper);
+            $paginador = new OwlPaginator($this->db, $where, 'tblCurso', $this->helper);
             $paginador->setItemsPorPagina(10);
             $paginaActual = $this->helper->escapeInjection($this->helper->get('p'));
             $paginaActual = empty($paginaActual) ? 1 : $paginaActual;

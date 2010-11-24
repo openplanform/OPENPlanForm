@@ -1,8 +1,8 @@
 <?php
 
-require_once 'NingenModule.inc';
+require_once 'OwlModule.inc';
 
-class avisoModule extends NingenModule{
+class avisoModule extends OwlModule{
     
 	/**
 	 * Contiene la acción del controlador actual
@@ -34,7 +34,7 @@ class avisoModule extends NingenModule{
 	
     /**
      * (non-PHPdoc)
-     * @see extranet.planespime.es/ningencms/lib/NingenModule::requestModule()
+     * @see extranet.planespime.es/owl/lib/OwlModule::requestModule()
      */
     public function requestModule(){
         
@@ -44,7 +44,7 @@ class avisoModule extends NingenModule{
     
     /**
      * (non-PHPdoc)
-     * @see extranet.planespime.es/ningencms/lib/NingenModule::runModule()
+     * @see extranet.planespime.es/owl/lib/OwlModule::runModule()
      */
     public function runModule(){
 

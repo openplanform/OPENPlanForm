@@ -1,8 +1,8 @@
 <?php
 
-require_once 'NingenModule.inc';
+require_once 'OwlModule.inc';
 
-class breadcrumbsModule extends NingenModule{
+class breadcrumbsModule extends OwlModule{
     
     /**
      * Nombre del controlador
@@ -18,7 +18,7 @@ class breadcrumbsModule extends NingenModule{
     
     /**
      * Base de datos
-     * @var NingenConnection
+     * @var OwlConnection
      */
     protected $db;
     
@@ -44,9 +44,9 @@ class breadcrumbsModule extends NingenModule{
     
     /**
      * Establece la referencia a la base de datos
-     * @param NingenConection $db
+     * @param OwlConection $db
      */
-    public function setDb(NingenConnection $db){
+    public function setDb(OwlConnection $db){
         
         $this->db = $db;
         
@@ -54,7 +54,7 @@ class breadcrumbsModule extends NingenModule{
     
     /**
      * Ejecuta el módulo
-     * @see extranet.planespime.es/ningencms/lib/NingenModule::runModule()
+     * @see extranet.planespime.es/owl/lib/OwlModule::runModule()
      */
     public function runModule(){
         

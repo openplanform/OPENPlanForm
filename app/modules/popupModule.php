@@ -1,12 +1,12 @@
 <?php
 
-require_once 'NingenModule.inc';
+require_once 'OwlModule.inc';
 
-class popupModule extends NingenModule{
+class popupModule extends OwlModule{
     
     /**
      * Request
-     * @see extranet.planespime.es/ningencms/lib/NingenModule::requestModule()
+     * @see extranet.planespime.es/owl/lib/OwlModule::requestModule()
      */
     public function requestModule(){
         
@@ -16,7 +16,7 @@ class popupModule extends NingenModule{
     
     /**
      * Run
-     * @see extranet.planespime.es/ningencms/lib/NingenModule::runModule()
+     * @see extranet.planespime.es/owl/lib/OwlModule::runModule()
      */
     public function runModule(){
         

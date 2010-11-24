@@ -1,22 +1,22 @@
 <?php
 
-require_once NINGENCMS_CLASSESDIR . 'PplController.inc';
-require_once 'helper/NingenNumeric.inc';
-require_once 'NingenPaginator.inc';
+require_once CLASSESDIR . 'PplController.inc';
+require_once 'helper/OwlNumeric.inc';
+require_once 'OwlPaginator.inc';
 
-require_once NINGENCMS_MODULEDIR . 'menuPrincipalModule.php';
-require_once NINGENCMS_MODULEDIR . 'logoutModule.php';
-require_once NINGENCMS_MODULEDIR . 'barraHerramientasModule.php';
+require_once MODULEDIR . 'menuPrincipalModule.php';
+require_once MODULEDIR . 'logoutModule.php';
+require_once MODULEDIR . 'barraHerramientasModule.php';
 
-require_once NINGENCMS_MODELDIR . '/TblConvocatoria.inc';
-require_once NINGENCMS_MODELDIR . '/TblPlan.inc';
+require_once MODELDIR . '/TblConvocatoria.inc';
+require_once MODELDIR . '/TblPlan.inc';
 
 class planController extends PplController{
     
     
     /**
      * Init
-     * @see extranet.planespime.es/ningencms/lib/NingenController::initController()
+     * @see extranet.planespime.es/owl/lib/OwlController::initController()
      */
     public function initController(){
        
@@ -26,7 +26,7 @@ class planController extends PplController{
     
     /**
      * Acción inicial, por defecto, el listado
-     * @see extranet.planespime.es/ningencms/lib/NingenController::indexAction()
+     * @see extranet.planespime.es/owl/lib/OwlController::indexAction()
      */
     public function indexAction(){
         
@@ -59,7 +59,7 @@ class planController extends PplController{
         $this->view->orderBy = $aliasOrderBy;
     	
         // Se instancia y configura el paginador
-        $paginador = new NingenPaginator($this->db, null, 'tblPlan', $this->helper);
+        $paginador = new OwlPaginator($this->db, null, 'tblPlan', $this->helper);
         $paginador->setItemsPorPagina(10);
         $paginaActual = $this->helper->escapeInjection($this->helper->get('p'));
         $paginaActual = empty($paginaActual) ? 1 : $paginaActual;
@@ -184,9 +184,9 @@ class planController extends PplController{
         	
         } else {
         	
-        	if ( NingenCmsSession::getValue('planDuplicado') instanceof TblPlan ){
+        	if ( OwlSession::getValue('planDuplicado') instanceof TblPlan ){
         		
-        		$planDO = NingenCmsSession::getValue('planDuplicado');
+        		$planDO = OwlSession::getValue('planDuplicado');
         		$duplicar = true;
         		
         	}
@@ -275,7 +275,7 @@ class planController extends PplController{
         	$nombrePlan = 'Copia de ' . $planDO->getVNombre();
         	$planDO->setVNombre($nombrePlan);
 //        	$planDO->insert();
-        	NingenCmsSession::setValue('planDuplicado', $planDO);
+        	OwlSession::setValue('planDuplicado', $planDO);
         }
         
 //        $this->redirectTo('plan','editar', $this->db->getLastInsertId());
@@ -326,7 +326,7 @@ class planController extends PplController{
 	    if ( is_null($presupuesto) || empty($presupuesto) ){
 	    	$correcto = false;
 	    	$this->view->errorPresupuesto = 'El presupuesto no puede estar vacío';
-	    } else if ( !NingenNumeric::currencyEuro($presupuesto) ) {
+	    } else if ( !OwlNumeric::currencyEuro($presupuesto) ) {
 	    	$correcto = false;
 	    	$this->view->errorPresupuesto = 'El presupuesto no tiene el formato correcto';
 	    }
@@ -366,7 +366,7 @@ class planController extends PplController{
 	    	$planDO->setFkEstadoPlan($estado);
 	    	$planDO->setFkEmpresaPropietaria($propietario);
 	    	$planDO->setFkEmpresaConsultora($consultora);
-	    	$planDO->setEPresupuestoAsignado(NingenNumeric::formatoEuropeoDecimal($presupuesto, 2));
+	    	$planDO->setEPresupuestoAsignado(OwlNumeric::formatoEuropeoDecimal($presupuesto, 2));
 	    	$planDO->setVDescripcion($descripcion);
 	    	$planDO->setLastModified(date('Y-m-d'));
             $planDO->setModUser($this->usuario->getNombre());
@@ -510,7 +510,7 @@ class planController extends PplController{
             }
             
             // Se ejecuta la búsqueda
-            $paginador = new NingenPaginator($this->db, $where, 'tblPlan', $this->helper);
+            $paginador = new OwlPaginator($this->db, $where, 'tblPlan', $this->helper);
             $paginador->setItemsPorPagina(10);
             $paginaActual = $this->helper->escapeInjection($this->helper->get('p'));
             $paginaActual = empty($paginaActual) ? 1 : $paginaActual;

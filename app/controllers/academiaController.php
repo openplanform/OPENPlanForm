@@ -1,19 +1,19 @@
 <?php
 
-require_once NINGENCMS_CLASSESDIR . 'PplController.inc';
-require_once 'helper/NingenNumeric.inc';
-require_once 'helper/NingenString.inc';
-require_once 'NingenPaginator.inc';
+require_once CLASSESDIR . 'PplController.inc';
+require_once 'helper/OwlNumeric.inc';
+require_once 'helper/OwlString.inc';
+require_once 'OwlPaginator.inc';
 
-require_once NINGENCMS_MODULEDIR . 'menuPrincipalModule.php';
-require_once NINGENCMS_MODULEDIR . 'logoutModule.php';
-require_once NINGENCMS_MODULEDIR . 'barraHerramientasModule.php';
+require_once MODULEDIR . 'menuPrincipalModule.php';
+require_once MODULEDIR . 'logoutModule.php';
+require_once MODULEDIR . 'barraHerramientasModule.php';
 
-require_once NINGENCMS_MODELDIR . '/TblUsuario.inc';
-require_once NINGENCMS_MODELDIR . '/TblEmpresa.inc';
-require_once NINGENCMS_MODELDIR . '/TblPais.inc';
-require_once NINGENCMS_MODELDIR . '/TblProvincia.inc';
-require_once NINGENCMS_MODELDIR . '/TrelRolUsuario.inc';
+require_once MODELDIR . '/TblUsuario.inc';
+require_once MODELDIR . '/TblEmpresa.inc';
+require_once MODELDIR . '/TblPais.inc';
+require_once MODELDIR . '/TblProvincia.inc';
+require_once MODELDIR . '/TrelRolUsuario.inc';
 
 
 class academiaController extends PplController{
@@ -21,7 +21,7 @@ class academiaController extends PplController{
     
     /**
      * Init
-     * @see extranet.planespime.es/ningencms/lib/NingenController::initController()
+     * @see extranet.planespime.es/owl/lib/OwlController::initController()
      */
     public function initController(){
        
@@ -31,7 +31,7 @@ class academiaController extends PplController{
     
     /**
      * Acción inicial, por defecto, el listado
-     * @see extranet.planespime.es/ningencms/lib/NingenController::indexAction()
+     * @see extranet.planespime.es/owl/lib/OwlController::indexAction()
      */
     public function indexAction(){
         
@@ -62,7 +62,7 @@ class academiaController extends PplController{
         $this->view->orderBy = $aliasOrderBy;
         
     	// Se instancia y configura el paginador
-        $paginador = new NingenPaginator($this->db, 'e WHERE EXISTS ( SELECT NULL FROM trelRolUsuario ru WHERE e.fkUsuario = ru.fkUsuario AND ru.fkRol = ' . PplAclManager::ROL_ACADEMIA . ')', 'tblEmpresa', $this->helper);
+        $paginador = new OwlPaginator($this->db, 'e WHERE EXISTS ( SELECT NULL FROM trelRolUsuario ru WHERE e.fkUsuario = ru.fkUsuario AND ru.fkRol = ' . PplAclManager::ROL_ACADEMIA . ')', 'tblEmpresa', $this->helper);
         $paginador->setItemsPorPagina(10);
         $paginaActual = $this->helper->escapeInjection($this->helper->get('p'));
         $paginaActual = empty($paginaActual) ? 1 : $paginaActual;
@@ -152,9 +152,9 @@ class academiaController extends PplController{
 	    
         } else {
         	
-        	if ( NingenCmsSession::getValue('academiaDuplicada') instanceof TblEmpresa ){
+        	if ( OwlSession::getValue('academiaDuplicada') instanceof TblEmpresa ){
         		
-        		$academiaDO = NingenCmsSession::getValue('academiaDuplicada');
+        		$academiaDO = OwlSession::getValue('academiaDuplicada');
         		$this->view->academiaDO = $academiaDO;
         		$this->view->duplicar = $duplicar = true;
         		
@@ -290,7 +290,7 @@ class academiaController extends PplController{
         	$academiaDO = TblEmpresa::findByPrimaryKey($this->db, $paramsARR[0]);
         	$nombreAcademia = 'Copia de ' . $academiaDO->getVNombre();
         	$academiaDO->setVNombre($nombreAcademia);
-        	NingenCmsSession::setValue('academiaDuplicada', $academiaDO);
+        	OwlSession::setValue('academiaDuplicada', $academiaDO);
         	//$academiaDO->insert();
         }
         
@@ -381,7 +381,7 @@ class academiaController extends PplController{
         }
             
         // Email
-        if (!NingenString::validaMail($email)){
+        if (!OwlString::validaMail($email)){
             $this->view->errorEmail = 'La dirección de correo proporcionada no es correcta.';
             $correcto = false;
         }
@@ -677,7 +677,7 @@ class academiaController extends PplController{
             }
             
             // Se ejecuta la búsqueda
-            $paginador = new NingenPaginator($this->db, $where, 'tblEmpresa', $this->helper);
+            $paginador = new OwlPaginator($this->db, $where, 'tblEmpresa', $this->helper);
             $paginador->setItemsPorPagina(10);
             $paginaActual = $this->helper->escapeInjection($this->helper->get('p'));
             $paginaActual = empty($paginaActual) ? 1 : $paginaActual;

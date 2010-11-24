@@ -1,14 +1,14 @@
 <?php
 
-require_once 'NingenCmsSession.inc';
-require_once 'NingenMailer.inc';
-require_once 'NingenPdf.inc';
-require_once 'NingenMailerTemplate.inc';
-require_once 'helper/NingenString.inc';
-require_once NINGENCMS_CLASSESDIR . 'PplController.inc';
+require_once 'OwlSession.inc';
+require_once 'OwlMailer.inc';
+require_once 'OwlPdf.inc';
+require_once 'OwlMailerTemplate.inc';
+require_once 'helper/OwlString.inc';
 
-require_once NINGENCMS_MODELDIR . '/TblUsuario.inc';
-require_once NINGENCMS_MODELDIR . '/TblUsuarioSearch.inc';
+require_once CLASSESDIR . 'PplController.inc';
+require_once MODELDIR . '/TblUsuario.inc';
+require_once MODELDIR . '/TblUsuarioSearch.inc';
 
 
 class indexController extends PplController{
@@ -16,7 +16,7 @@ class indexController extends PplController{
     
     /**
      * Init
-     * @see extranet.planespime.es/ningencms/lib/NingenController::initController()
+     * @see extranet.planespime.es/owl/lib/OwlController::initController()
      */
     public function initController(){
         
@@ -37,7 +37,7 @@ class indexController extends PplController{
     
     /**
      * Acción inicial, redirige a login
-     * @see extranet.planespime.es/ningencms/lib/NingenController::indexAction()
+     * @see extranet.planespime.es/owl/lib/OwlController::indexAction()
      */
 	public function indexAction(){
 
@@ -50,7 +50,7 @@ class indexController extends PplController{
 	public function loginAction(){
 	    
 	    // Se verifica si el usuario se encuentra ya logueado
-        $this->usuario = NingenCmsSession::getValue('usuario');
+        $this->usuario = OwlSession::getValue('usuario');
         
         // De ser así lo redireccionamos a la página principal
         if ($this->usuario instanceof PplUsuarioSesion){
@@ -94,7 +94,7 @@ class indexController extends PplController{
     	    } else {
     	        
                 // Si el usuario no tiene una empresa o persona asignada, obligamos a que complete sus datos.
-                $this->usuario = NingenCmsSession::getValue('usuario');
+                $this->usuario = OwlSession::getValue('usuario');
                 $claveUsuario = $this->usuario->getId();
                 if ($this->aclManager->datosCompletosUsuario($claveUsuario)){
                     $this->redirectTo('index', 'panel');
@@ -119,7 +119,7 @@ class indexController extends PplController{
 	    $this->setAlternateLayout('libre');
 	    
 	    // Tararí tararí...
-	    NingenCmsSession::setValue('usuario', null);
+	    OwlSession::setValue('usuario', null);
 	    session_destroy();
 	    
 	    // Redirigimos al login nuevamente
@@ -158,23 +158,23 @@ class indexController extends PplController{
     	    
 	        if ( !empty($usuarioDO) ){
 		        
-	        	$password = NingenString::generaPassword(10,false);
+	        	$password = OwlString::generaPassword(10,false);
 	        	
 		        // Se obtiene la configuración del mailer
-	            $appConfig = $GLOBALS['NINGEN_CMS']['app_config'];
-	            if (!$appConfig instanceof NingenApplicationConfig){
-	                throw new NingenException('No se ha obtenido la configuración del mailer. Error crítico.', 500);
+	            $appConfig = $GLOBALS['OWL']['app_config'];
+	            if (!$appConfig instanceof OwlApplicationConfig){
+	                throw new OwlException('No se ha obtenido la configuración del mailer. Error crítico.', 500);
 	            }
 	            
 	            // Template del mail
-	            $mt = new NingenMailerTemplate();
-	            $mt->setTemplate(NINGENCMS_LAYOUTDIR . 'recordatorioContrasena.txt');
+	            $mt = new OwlMailerTemplate();
+	            $mt->setTemplate(LAYOUTDIR . 'recordatorioContrasena.txt');
 	            $mt->addField('USUARIO', $usuario);
 	            $mt->addField('CONTRASENA', $password);
 	            
 	            // Mailer
 	            $mailerConfig = $appConfig->getMailerConfiguration();
-	            $mailer = new NingenMailer($mailerConfig);
+	            $mailer = new OwlMailer($mailerConfig);
 	            $mailer->addTo($email, $usuario);
 	            $mailer->setSubject("Formación PIME - Cambio de contraseña");
 	            $mailer->setFrom('<noreply@planespime.es>', 'PlanesPIME');

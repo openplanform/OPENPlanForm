@@ -1,10 +1,10 @@
 <?php
 
-require_once NINGENCMS_CLASSESDIR . 'PplController.inc';
+require_once CLASSESDIR . 'PplController.inc';
 
-require_once NINGENCMS_MODULEDIR . 'menuPrincipalModule.php';
-require_once NINGENCMS_MODULEDIR . 'logoutModule.php';
-require_once NINGENCMS_MODULEDIR . 'barraHerramientasModule.php';
+require_once MODULEDIR . 'menuPrincipalModule.php';
+require_once MODULEDIR . 'logoutModule.php';
+require_once MODULEDIR . 'barraHerramientasModule.php';
 
 
 class empresaController extends PplController{
@@ -12,7 +12,7 @@ class empresaController extends PplController{
     
     /**
      * Init
-     * @see extranet.planespime.es/ningencms/lib/NingenController::initController()
+     * @see extranet.planespime.es/owl/lib/OwlController::initController()
      */
     public function initController(){
        
@@ -22,7 +22,7 @@ class empresaController extends PplController{
     
     /**
      * Acción inicial, por defecto, el listado
-     * @see extranet.planespime.es/ningencms/lib/NingenController::indexAction()
+     * @see extranet.planespime.es/owl/lib/OwlController::indexAction()
      */
     public function indexAction(){
         

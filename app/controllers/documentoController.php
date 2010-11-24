@@ -1,8 +1,8 @@
 <?php
 
-require_once NINGENCMS_CLASSESDIR . 'PplController.inc';
-require_once NINGENCMS_MODELDIR . 'TblDocumento.inc';
-require_once 'helper/NingenCmsHtmlHelper.inc';
+require_once CLASSESDIR . 'PplController.inc';
+require_once MODELDIR . 'TblDocumento.inc';
+require_once 'helper/OwlHtmlHelper.inc';
 
 
 class documentoController extends PplController{
@@ -10,7 +10,7 @@ class documentoController extends PplController{
     
     /**
      * Init
-     * @see extranet.planespime.es/ningencms/lib/NingenController::initController()
+     * @see extranet.planespime.es/owl/lib/OwlController::initController()
      */
     public function initController(){
         
@@ -22,7 +22,7 @@ class documentoController extends PplController{
     
     /**
      * Acción inicial, por defecto, el listado
-     * @see extranet.planespime.es/ningencms/lib/NingenController::indexAction()
+     * @see extranet.planespime.es/owl/lib/OwlController::indexAction()
      */
     public function indexAction(){
         

@@ -1,25 +1,25 @@
 <?php
-require_once 'helper/NingenNumeric.inc';
-require_once 'helper/NingenString.inc';
-require_once 'NingenPaginator.inc';
+require_once 'helper/OwlNumeric.inc';
+require_once 'helper/OwlString.inc';
+require_once 'OwlPaginator.inc';
 
-require_once NINGENCMS_CLASSESDIR . 'PplController.inc';
+require_once CLASSESDIR . 'PplController.inc';
 
-require_once NINGENCMS_MODULEDIR . 'menuPrincipalModule.php';
-require_once NINGENCMS_MODULEDIR . 'logoutModule.php';
-require_once NINGENCMS_MODULEDIR . 'barraHerramientasModule.php';
+require_once MODULEDIR . 'menuPrincipalModule.php';
+require_once MODULEDIR . 'logoutModule.php';
+require_once MODULEDIR . 'barraHerramientasModule.php';
 
-require_once NINGENCMS_MODELDIR . '/TblConvocatoria.inc';
-require_once NINGENCMS_MODELDIR . '/TblRequisito.inc';
-require_once NINGENCMS_MODELDIR . '/TrelRequisitoConvocatoria.inc';
-require_once NINGENCMS_MODELDIR . '/TblTipoConvocatoria.inc';
+require_once MODELDIR . '/TblConvocatoria.inc';
+require_once MODELDIR . '/TblRequisito.inc';
+require_once MODELDIR . '/TrelRequisitoConvocatoria.inc';
+require_once MODELDIR . '/TblTipoConvocatoria.inc';
 
 class convocatoriaController extends PplController{
     
     
     /**
      * Init
-     * @see extranet.planespime.es/ningencms/lib/NingenController::initController()
+     * @see extranet.planespime.es/owl/lib/OwlController::initController()
      */
     public function initController(){
 
@@ -29,7 +29,7 @@ class convocatoriaController extends PplController{
     
     /**
      * Acción inicial, por defecto, el listado
-     * @see extranet.planespime.es/ningencms/lib/NingenController::indexAction()
+     * @see extranet.planespime.es/owl/lib/OwlController::indexAction()
      */
     public function indexAction(){
         
@@ -60,7 +60,7 @@ class convocatoriaController extends PplController{
         $this->view->orderBy = $aliasOrderBy;
         
     	// Se instancia y configura el paginador
-        $paginador = new NingenPaginator($this->db, null, 'tblConvocatoria', $this->helper);
+        $paginador = new OwlPaginator($this->db, null, 'tblConvocatoria', $this->helper);
         $paginador->setItemsPorPagina(10);
         $paginaActual = $this->helper->escapeInjection($this->helper->get('p'));
         $paginaActual = empty($paginaActual) ? 1 : $paginaActual;
@@ -212,9 +212,9 @@ class convocatoriaController extends PplController{
         	
         } else {
         	
-        	if ( NingenCmsSession::getValue('convocatoriaDuplicado') instanceof TblConvocatoria ){
+        	if ( OwlSession::getValue('convocatoriaDuplicado') instanceof TblConvocatoria ){
         		
-        		$convocatoriaDO = NingenCmsSession::getValue('convocatoriaDuplicado');
+        		$convocatoriaDO = OwlSession::getValue('convocatoriaDuplicado');
         		$duplicar = true;
         		
         	}
@@ -302,7 +302,7 @@ class convocatoriaController extends PplController{
         	$nombreConvocatoria = 'Copia de ' . $convocatoriaDO->getVNombre();
         	$convocatoriaDO->setVNombre($nombreConvocatoria);
 //        	$convocatoriaDO->insert();
-			NingenCmsSession::setValue('convocatoriaDuplicado', $convocatoriaDO);
+			OwlSession::setValue('convocatoriaDuplicado', $convocatoriaDO);
         }
         
 //        $this->redirectTo('convocatoria','editar', $this->db->getLastInsertId());
@@ -342,7 +342,7 @@ class convocatoriaController extends PplController{
 	    }
 	    		
 		// Descripción
-		$descripcion = NingenString::escapeFromMceditor($this->helper->get('descripcion'));
+		$descripcion = OwlString::escapeFromMceditor($this->helper->get('descripcion'));
 	    if ( is_null($descripcion) ){
 	    	$descripcion = '';
 	    }
@@ -352,7 +352,7 @@ class convocatoriaController extends PplController{
 	    if ( is_null($presupuesto) || empty($presupuesto) ){
 	    	$correcto = false;
 	    	$this->view->errorPresupuesto = 'El presupuesto no puede estar vacío';
-	    } else if ( !NingenNumeric::currencyEuro($presupuesto) ) {
+	    } else if ( !OwlNumeric::currencyEuro($presupuesto) ) {
 	    	$correcto = false;
 	    	$this->view->errorPresupuesto = 'El presupuesto no tiene el formato correcto';
 	    }
@@ -380,7 +380,7 @@ class convocatoriaController extends PplController{
 	    	$convocatoriaDO->setIAno($ano);
 	    	$convocatoriaDO->setVDescripcion($descripcion);
 	    	$convocatoriaDO->setFkTipoConvocatoria($tipo);
-	    	$convocatoriaDO->setEPresupuesto(NingenNumeric::formatoEuropeoDecimal($presupuesto, 2));
+	    	$convocatoriaDO->setEPresupuesto(OwlNumeric::formatoEuropeoDecimal($presupuesto, 2));
 	    	$convocatoriaDO->setLastModified(date('Y-m-d'));
             $convocatoriaDO->setModUser($this->usuario->getNombre());
 	    	
@@ -520,7 +520,7 @@ class convocatoriaController extends PplController{
             }
             
             // Se ejecuta la búsqueda
-            $paginador = new NingenPaginator($this->db, $where, 'tblConvocatoria', $this->helper);
+            $paginador = new OwlPaginator($this->db, $where, 'tblConvocatoria', $this->helper);
             $paginador->setItemsPorPagina(2);
             $paginaActual = $this->helper->escapeInjection($this->helper->get('p'));
             $paginaActual = empty($paginaActual) ? 1 : $paginaActual;

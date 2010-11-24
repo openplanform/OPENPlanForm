@@ -1,8 +1,8 @@
 <?php
 
-require_once 'NingenModule.inc';
+require_once 'OwlModule.inc';
 
-class barraHerramientasModule extends NingenModule{
+class barraHerramientasModule extends OwlModule{
     
 	/**
 	 * Contiene la acción del controlador actual
@@ -40,7 +40,7 @@ class barraHerramientasModule extends NingenModule{
 	
     /**
      * (non-PHPdoc)
-     * @see extranet.planespime.es/ningencms/lib/NingenModule::requestModule()
+     * @see extranet.planespime.es/owl/lib/OwlModule::requestModule()
      */
     public function requestModule(){
         
@@ -48,7 +48,7 @@ class barraHerramientasModule extends NingenModule{
     
     /**
      * (non-PHPdoc)
-     * @see extranet.planespime.es/ningencms/lib/NingenModule::runModule()
+     * @see extranet.planespime.es/owl/lib/OwlModule::runModule()
      */
     public function runModule(){
 
