@@ -1,15 +1,15 @@
 <?php
 /**
- * Este archivo ha sido generado con Ningen DoGen v.0.6
- * el 15 de November de 2010 a las 08:45:42
+ * Este archivo ha sido generado con Owl DoGen v.0.6
+ * el 24 de November de 2010 a las 08:55:33
  * @package dataAccess
  */
 
 /**
  * Archivos requeridos.
  */
-require_once( 'dbase/NingenConnection.inc');
-require_once( 'dbase/NingenGenericDO.inc');
+require_once( 'dbase/OwlConnection.inc');
+require_once( 'dbase/OwlGenericDO.inc');
 require_once( 'TrelProfesorSearch.inc' );
 require_once( 'TrelProfesorPK.inc' );
 
@@ -18,7 +18,7 @@ require_once( 'TrelProfesorPK.inc' );
  *
  * @package dataAccess
  */
-class TrelProfesor extends NingenGenericDO{
+class TrelProfesor extends OwlGenericDO{
 
     /**
      * Atributo que representa el campo "fkPersona"
@@ -85,7 +85,7 @@ class TrelProfesor extends NingenGenericDO{
         if( $orderBy != '' ){
             $sql.=" ORDER BY $orderBy";
         }
-        return NingenGenericDO::createCollection( $db, $sql, 'TrelProfesor' );
+        return OwlGenericDO::createCollection( $db, $sql, 'TrelProfesor' );
 }
 
     /**
@@ -100,7 +100,7 @@ class TrelProfesor extends NingenGenericDO{
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
-         return NingenGenericDO::createCollection( $db, $sql, 'TrelProfesor' );
+         return OwlGenericDO::createCollection( $db, $sql, 'TrelProfesor' );
     }
 
     /**
@@ -115,7 +115,7 @@ class TrelProfesor extends NingenGenericDO{
 
        $db->executeQuery("SELECT * FROM trelProfesor WHERE fkPersona = '$fkPersona' AND fkCurso = '$fkCurso'");
        $data = $db->fetchRow();
-       return NingenGenericDO::createDO( $db, $data, 'TrelProfesor');
+       return OwlGenericDO::createDO( $db, $data, 'TrelProfesor');
 
     }
 
@@ -134,7 +134,7 @@ class TrelProfesor extends NingenGenericDO{
         $where = implode(' AND ',$where);
         $db->executeQuery("SELECT * FROM trelProfesor WHERE $where");
         $data = $db->fetchRow();
-        return NingenGenericDO::createDO( $db, $data, 'TrelProfesor');
+        return OwlGenericDO::createDO( $db, $data, 'TrelProfesor');
 
     }
 
@@ -151,7 +151,7 @@ class TrelProfesor extends NingenGenericDO{
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
-         return NingenGenericDO::createCollection( $db, $sql, 'TrelProfesor' );
+         return OwlGenericDO::createCollection( $db, $sql, 'TrelProfesor' );
      }
 
     /**
@@ -167,7 +167,7 @@ class TrelProfesor extends NingenGenericDO{
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
-         return NingenGenericDO::createCollection( $db, $sql, 'TrelProfesor' );
+         return OwlGenericDO::createCollection( $db, $sql, 'TrelProfesor' );
      }
 
     /**

@@ -1,33 +1,33 @@
 <?php
 
-require_once 'NingenPaginator.inc';
-require_once 'NingenMailer.inc';
-require_once 'NingenMailerTemplate.inc';
-require_once 'helper/NingenDate.inc';
-require_once 'helper/NingenString.inc';
+require_once 'OwlPaginator.inc';
+require_once 'OwlMailer.inc';
+require_once 'OwlMailerTemplate.inc';
+require_once 'helper/OwlDate.inc';
+require_once 'helper/OwlString.inc';
 
-require_once NINGENCMS_CLASSESDIR . 'PplController.inc';
-require_once NINGENCMS_MODULEDIR . 'menuPrincipalModule.php';
-require_once NINGENCMS_MODULEDIR . 'logoutModule.php';
-require_once NINGENCMS_MODULEDIR . 'barraHerramientasModule.php';
-require_once NINGENCMS_MODULEDIR . 'avisoModule.php';
+require_once CLASSESDIR . 'PplController.inc';
+require_once MODULEDIR . 'menuPrincipalModule.php';
+require_once MODULEDIR . 'logoutModule.php';
+require_once MODULEDIR . 'barraHerramientasModule.php';
+require_once MODULEDIR . 'avisoModule.php';
 
-require_once NINGENCMS_MODELDIR . 'TblUsuario.inc';
-require_once NINGENCMS_MODELDIR . 'TblPersona.inc';
-require_once NINGENCMS_MODELDIR . 'TblProvincia.inc';
-require_once NINGENCMS_MODELDIR . 'TblPais.inc';
-require_once NINGENCMS_MODELDIR . 'TrelRolUsuario.inc';
-require_once NINGENCMS_MODELDIR . 'TblTipoIdentificacion.inc';
-require_once NINGENCMS_MODELDIR . 'TblEstadoCivil.inc';
-require_once NINGENCMS_MODELDIR . 'TblEstadoLaboral.inc';
-require_once NINGENCMS_MODELDIR . 'TblNivelEstudios.inc';
+require_once MODELDIR . 'TblUsuario.inc';
+require_once MODELDIR . 'TblPersona.inc';
+require_once MODELDIR . 'TblProvincia.inc';
+require_once MODELDIR . 'TblPais.inc';
+require_once MODELDIR . 'TrelRolUsuario.inc';
+require_once MODELDIR . 'TblTipoIdentificacion.inc';
+require_once MODELDIR . 'TblEstadoCivil.inc';
+require_once MODELDIR . 'TblEstadoLaboral.inc';
+require_once MODELDIR . 'TblNivelEstudios.inc';
 
 class usuarioController extends PplController{
     
     
     /**
      * Init
-     * @see extranet.planespime.es/ningencms/lib/NingenController::initController()
+     * @see extranet.planespime.es/owl/lib/OwlController::initController()
      */
     public function initController(){
        
@@ -37,7 +37,7 @@ class usuarioController extends PplController{
     
     /**
      * Acción inicial, por defecto, el listado
-     * @see extranet.planespime.es/ningencms/lib/NingenController::indexAction()
+     * @see extranet.planespime.es/owl/lib/OwlController::indexAction()
      */
     public function indexAction(){
         
@@ -70,7 +70,7 @@ class usuarioController extends PplController{
         $this->view->idUsuarioActual = $this->usuario->getId();
         
         // Se instancia y configura el paginador
-        $paginador = new NingenPaginator($this->db, null, 'tblUsuario', $this->helper);
+        $paginador = new OwlPaginator($this->db, null, 'tblUsuario', $this->helper);
         $paginador->setItemsPorPagina(10);
         $paginador->setOrderBy($orderBy);
         $paginador->setOrder($order);
@@ -183,7 +183,7 @@ class usuarioController extends PplController{
             } 
             
             // Email
-        	if (!NingenString::validaMail($email)){
+        	if (!OwlString::validaMail($email)){
                 $this->view->errorEmail = 'La dirección de correo proporcionada no es correcta.';
                 return;
             }
@@ -256,21 +256,21 @@ class usuarioController extends PplController{
             if ($avisar == 'on'){
             
                 // Se obtiene la configuración del mailer
-                $appConfig = $GLOBALS['NINGEN_CMS']['app_config'];
-                if (!$appConfig instanceof NingenApplicationConfig){
-                    throw new NingenException('No se ha obtenido la configuración del mailer. Error crítico.', 500);
+                $appConfig = $GLOBALS['OWL']['app_config'];
+                if (!$appConfig instanceof OwlApplicationConfig){
+                    throw new OwlException('No se ha obtenido la configuración del mailer. Error crítico.', 500);
                 }
     
                 // Template del mail
-                $mt = new NingenMailerTemplate();
-                $mt->setTemplate(NINGENCMS_LAYOUTDIR . 'nuevoUsuario.txt');
+                $mt = new OwlMailerTemplate();
+                $mt->setTemplate(LAYOUTDIR . 'nuevoUsuario.txt');
                 $mt->addField('ENLACE', 'http://' . $appConfig->getAppHostname());
                 $mt->addField('USUARIO', $username);
                 $mt->addField('CONTRASENA', $password);
                
                 // Mailer
                 $mailerConfig = $appConfig->getMailerConfiguration();
-                $mailer = new NingenMailer($mailerConfig);
+                $mailer = new OwlMailer($mailerConfig);
                 $mailer->setSubject("Formación PIME - Datos de acceso");
                 $mailer->setFrom('<noreply@planespime.es>', 'PlanesPIME');
                 $mailer->setBody($mt->getContent());
@@ -328,16 +328,16 @@ class usuarioController extends PplController{
         } else {
 
             // Si no se pasa clave de usuario redirigimos a la ficha
-            $usuarioBO = NingenCmsSession::getValue('usuario');
+            $usuarioBO = OwlSession::getValue('usuario');
             $claveUsuario = $usuarioBO->getId();
             
         }
         
         // Se guardará el antiguo nombre de usuario en la sesión, ya que en el apartado de edición es necesario saberlo
-        NingenCmsSession::setValue('oldUsername', $usuarioBO->getNombre());
+        OwlSession::setValue('oldUsername', $usuarioBO->getNombre());
         
         $this->view->usuarioBO = $usuarioBO;
-        $this->view->datehelper = new NingenDate();
+        $this->view->datehelper = new OwlDate();
         
         $rolPrincipalUsuario = $this->aclManager->getRolMasRelevanteUsuario($claveUsuario);
         
@@ -349,7 +349,7 @@ class usuarioController extends PplController{
             $this->view->empresaDO = array_shift(TblEmpresa::findByTblUsuario($this->db, $claveUsuario));
             
             if (!$this->view->empresaDO instanceof TblEmpresa){
-                throw new NingenException('No se puede determinar la empresa vinculada al usuario. Por favor contacte con el administrador.', 500);
+                throw new OwlException('No se puede determinar la empresa vinculada al usuario. Por favor contacte con el administrador.', 500);
             }
             
         } elseif($this->aclManager->isRolPersona($rolPrincipalUsuario)){
@@ -358,12 +358,12 @@ class usuarioController extends PplController{
             $this->view->personaDO = array_shift(TblPersona::findByTblUsuario($this->db, $claveUsuario));
             
             if (!$this->view->personaDO instanceof TblPersona){
-                throw new NingenException('No se puede determinar la persona vinculada al usuario. Por favor contacte con el administrador.', 500);
+                throw new OwlException('No se puede determinar la persona vinculada al usuario. Por favor contacte con el administrador.', 500);
             }
             
         } else {
             
-            throw new NingenException('No se puede determinar el tipo de entidad del usuario a mostrar. Por favor contacte con el administrador.', 500);
+            throw new OwlException('No se puede determinar el tipo de entidad del usuario a mostrar. Por favor contacte con el administrador.', 500);
             
         }
         
@@ -502,7 +502,7 @@ class usuarioController extends PplController{
             }
             
             // Se ejecuta la búsqueda
-            $paginador = new NingenPaginator($this->db, $where, 'tblUsuario', $this->helper);
+            $paginador = new OwlPaginator($this->db, $where, 'tblUsuario', $this->helper);
             $paginador->setItemsPorPagina(10);
             $paginaActual = $this->helper->escapeInjection($this->helper->get('p'));
             $paginaActual = empty($paginaActual) ? 1 : $paginaActual;
@@ -621,7 +621,7 @@ class usuarioController extends PplController{
             }
             
             // Se verificará la existencia del nombre de usuario, solo en el caso que el nombre haya cambiado
-            $oldUsername = NingenCmsSession::getValue('oldUsername');
+            $oldUsername = OwlSession::getValue('oldUsername');
             
             if (strtolower($oldUsername) != strtolower($nombreUsuario)){
 
@@ -658,7 +658,7 @@ class usuarioController extends PplController{
             }            
 
             // Email
-            if (!NingenString::validaMail($email)){
+            if (!OwlString::validaMail($email)){
                 $this->view->errorEmail = 'La dirección de correo proporcionada no es correcta.';
                 return;
             }
@@ -823,7 +823,7 @@ class usuarioController extends PplController{
                 $personaDO->setVNombre($nombre);
                 $personaDO->setVPrimerApellido($apellido);
                 $personaDO->setVSegundoApellido($apellido2);
-                $personaDO->setDNacimiento(NingenDate::europeoAmericano($nacimiento));
+                $personaDO->setDNacimiento(OwlDate::europeoAmericano($nacimiento));
                 $personaDO->setVNumeroIdentificacion($dni);
                 $personaDO->setVTelefono($telefono);
                 $personaDO->setVMovil($movil);
@@ -948,13 +948,13 @@ class usuarioController extends PplController{
         } else {
 
             // Si no se pasa clave de usuario redirigimos a la ficha
-            $usuarioBO = NingenCmsSession::getValue('usuario');
+            $usuarioBO = OwlSession::getValue('usuario');
             $claveUsuario = $usuarioBO->getId();
             
         }
         
         // Se guardará el antiguo nombre de usuario en la sesión, ya que en el apartado de edición es necesario saberlo
-        NingenCmsSession::setValue('oldUsername', $usuarioBO->getNombre());
+        OwlSession::setValue('oldUsername', $usuarioBO->getNombre());
         
         $this->view->usuarioBO = $usuarioBO;
         
@@ -972,7 +972,7 @@ class usuarioController extends PplController{
             
         } else {
             
-            throw new NingenException('No se puede determinar el tipo de entidad del usuario a mostrar. Por favor contacte con el administrador.', 500);
+            throw new OwlException('No se puede determinar el tipo de entidad del usuario a mostrar. Por favor contacte con el administrador.', 500);
             
         }
         
@@ -985,7 +985,7 @@ class usuarioController extends PplController{
     
     /**
      * Nuevo usuario
-     * @throws NingenException
+     * @throws OwlException
      */
     public function nuevoAction(){
         
@@ -1050,7 +1050,7 @@ class usuarioController extends PplController{
             }
             
             // Se verificará la existencia del nombre de usuario, solo en el caso que el nombre haya cambiado
-            $oldUsername = NingenCmsSession::getValue('oldUsername');
+            $oldUsername = OwlCmsSession::getValue('oldUsername');
             
             if ($oldUsername != $nombreUsuario){
 
@@ -1087,7 +1087,7 @@ class usuarioController extends PplController{
             }            
 
             // Email
-            if (!NingenString::validaMail($email)){
+            if (!OwlString::validaMail($email)){
                 $this->view->errorEmail = 'La dirección de correo proporcionada no es correcta.';
                 return;
             }
@@ -1208,7 +1208,7 @@ class usuarioController extends PplController{
                 $personaDO->setVNombre($nombre);
                 $personaDO->setVPrimerApellido($apellido);
                 $personaDO->setVSegundoApellido($apellido2);
-                $personaDO->setDNacimiento(NingenDate::europeoAmericano($nacimiento));
+                $personaDO->setDNacimiento(OwlDate::europeoAmericano($nacimiento));
                 $personaDO->setVNumeroIdentificacion($dni);
                 $personaDO->setVTelefono($telefono);
                 $personaDO->setVMovil($movil);

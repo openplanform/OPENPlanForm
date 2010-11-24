@@ -1,6 +1,6 @@
 <?php
 
-require_once NINGENCMS_CLASSESDIR . 'PplController.inc';
+require_once CLASSESDIR . 'PplController.inc';
 
 /**
  * Controlador encargado de responder las peticiones asíncronas

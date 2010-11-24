@@ -6,17 +6,17 @@
  */
 
 /**
- * Objeto que representa la clave primaria de la tabla tblEquipamiento.
+ * Objeto que representa la clave primaria de la tabla tblHorario.
  *
  * @package dataAccess
  */
-class TblEquipamientoPK{
+class TblHorarioPK{
 
     /**
-     * Representa el atributo idEquipamiento.
+     * Representa el atributo idHorario.
      *
      * @var integer
      */
-    public $idEquipamiento;
+    public $idHorario;
 }
 ?>

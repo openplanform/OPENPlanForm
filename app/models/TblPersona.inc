@@ -1,15 +1,15 @@
 <?php
 /**
- * Este archivo ha sido generado con Ningen DoGen v.0.6
- * el 02 de November de 2010 a las 12:43:47
+ * Este archivo ha sido generado con Owl DoGen v.0.6
+ * el 24 de November de 2010 a las 08:55:33
  * @package dataAccess
  */
 
 /**
  * Archivos requeridos.
  */
-require_once( 'dbase/NingenConnection.inc');
-require_once( 'dbase/NingenGenericDO.inc');
+require_once( 'dbase/OwlConnection.inc');
+require_once( 'dbase/OwlGenericDO.inc');
 require_once( 'TblPersonaSearch.inc' );
 require_once( 'TblPersonaPK.inc' );
 
@@ -18,7 +18,7 @@ require_once( 'TblPersonaPK.inc' );
  *
  * @package dataAccess
  */
-class TblPersona extends NingenGenericDO{
+class TblPersona extends OwlGenericDO{
 
     /**
      * Atributo que representa el campo "idPersona"
@@ -295,7 +295,7 @@ class TblPersona extends NingenGenericDO{
         if( $orderBy != '' ){
             $sql.=" ORDER BY $orderBy";
         }
-        return NingenGenericDO::createCollection( $db, $sql, 'TblPersona' );
+        return OwlGenericDO::createCollection( $db, $sql, 'TblPersona' );
 }
 
     /**
@@ -310,7 +310,7 @@ class TblPersona extends NingenGenericDO{
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
-         return NingenGenericDO::createCollection( $db, $sql, 'TblPersona' );
+         return OwlGenericDO::createCollection( $db, $sql, 'TblPersona' );
     }
 
     /**
@@ -324,7 +324,7 @@ class TblPersona extends NingenGenericDO{
 
        $db->executeQuery("SELECT * FROM tblPersona WHERE idPersona = '$idPersona'");
        $data = $db->fetchRow();
-       return NingenGenericDO::createDO( $db, $data, 'TblPersona');
+       return OwlGenericDO::createDO( $db, $data, 'TblPersona');
 
     }
 
@@ -342,57 +342,9 @@ class TblPersona extends NingenGenericDO{
         $where = implode(' AND ',$where);
         $db->executeQuery("SELECT * FROM tblPersona WHERE $where");
         $data = $db->fetchRow();
-        return NingenGenericDO::createDO( $db, $data, 'TblPersona');
+        return OwlGenericDO::createDO( $db, $data, 'TblPersona');
 
     }
-
-    /**
-     * Obtiene todas las filas de la tabla tblPersona que coinciden con el criterio fkPais='$fkPais'.
-     *
-     * @param Connection $db Conexión con la base de datos.
-     * @param string fkPais string Valor del campo fkPais.
-     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
-     * @return array
-     */
-     public static function findByTblPais( $db, $fkPais, $orderBy='' ){
-         $sql = "SELECT * FROM tblPersona WHERE fkPais='$fkPais'";
-         if( $orderBy != '' ){
-             $sql .= " ORDER BY $orderBy";
-         }
-         return NingenGenericDO::createCollection( $db, $sql, 'TblPersona' );
-     }
-
-    /**
-     * Obtiene todas las filas de la tabla tblPersona que coinciden con el criterio fkUsuario='$fkUsuario'.
-     *
-     * @param Connection $db Conexión con la base de datos.
-     * @param integer fkUsuario string Valor del campo fkUsuario.
-     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
-     * @return array
-     */
-     public static function findByTblUsuario( $db, $fkUsuario, $orderBy='' ){
-         $sql = "SELECT * FROM tblPersona WHERE fkUsuario='$fkUsuario'";
-         if( $orderBy != '' ){
-             $sql .= " ORDER BY $orderBy";
-         }
-         return NingenGenericDO::createCollection( $db, $sql, 'TblPersona' );
-     }
-
-    /**
-     * Obtiene todas las filas de la tabla tblPersona que coinciden con el criterio fkTipoIdentificacion='$fkTipoIdentificacion'.
-     *
-     * @param Connection $db Conexión con la base de datos.
-     * @param integer fkTipoIdentificacion string Valor del campo fkTipoIdentificacion.
-     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
-     * @return array
-     */
-     public static function findByTblTipoIdentificacion( $db, $fkTipoIdentificacion, $orderBy='' ){
-         $sql = "SELECT * FROM tblPersona WHERE fkTipoIdentificacion='$fkTipoIdentificacion'";
-         if( $orderBy != '' ){
-             $sql .= " ORDER BY $orderBy";
-         }
-         return NingenGenericDO::createCollection( $db, $sql, 'TblPersona' );
-     }
 
     /**
      * Obtiene todas las filas de la tabla tblPersona que coinciden con el criterio fkEstadoCivil='$fkEstadoCivil'.
@@ -407,7 +359,7 @@ class TblPersona extends NingenGenericDO{
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
-         return NingenGenericDO::createCollection( $db, $sql, 'TblPersona' );
+         return OwlGenericDO::createCollection( $db, $sql, 'TblPersona' );
      }
 
     /**
@@ -423,7 +375,7 @@ class TblPersona extends NingenGenericDO{
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
-         return NingenGenericDO::createCollection( $db, $sql, 'TblPersona' );
+         return OwlGenericDO::createCollection( $db, $sql, 'TblPersona' );
      }
 
     /**
@@ -439,7 +391,23 @@ class TblPersona extends NingenGenericDO{
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
-         return NingenGenericDO::createCollection( $db, $sql, 'TblPersona' );
+         return OwlGenericDO::createCollection( $db, $sql, 'TblPersona' );
+     }
+
+    /**
+     * Obtiene todas las filas de la tabla tblPersona que coinciden con el criterio fkPais='$fkPais'.
+     *
+     * @param Connection $db Conexión con la base de datos.
+     * @param string fkPais string Valor del campo fkPais.
+     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
+     * @return array
+     */
+     public static function findByTblPais( $db, $fkPais, $orderBy='' ){
+         $sql = "SELECT * FROM tblPersona WHERE fkPais='$fkPais'";
+         if( $orderBy != '' ){
+             $sql .= " ORDER BY $orderBy";
+         }
+         return OwlGenericDO::createCollection( $db, $sql, 'TblPersona' );
      }
 
     /**
@@ -455,7 +423,39 @@ class TblPersona extends NingenGenericDO{
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
-         return NingenGenericDO::createCollection( $db, $sql, 'TblPersona' );
+         return OwlGenericDO::createCollection( $db, $sql, 'TblPersona' );
+     }
+
+    /**
+     * Obtiene todas las filas de la tabla tblPersona que coinciden con el criterio fkTipoIdentificacion='$fkTipoIdentificacion'.
+     *
+     * @param Connection $db Conexión con la base de datos.
+     * @param integer fkTipoIdentificacion string Valor del campo fkTipoIdentificacion.
+     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
+     * @return array
+     */
+     public static function findByTblTipoIdentificacion( $db, $fkTipoIdentificacion, $orderBy='' ){
+         $sql = "SELECT * FROM tblPersona WHERE fkTipoIdentificacion='$fkTipoIdentificacion'";
+         if( $orderBy != '' ){
+             $sql .= " ORDER BY $orderBy";
+         }
+         return OwlGenericDO::createCollection( $db, $sql, 'TblPersona' );
+     }
+
+    /**
+     * Obtiene todas las filas de la tabla tblPersona que coinciden con el criterio fkUsuario='$fkUsuario'.
+     *
+     * @param Connection $db Conexión con la base de datos.
+     * @param integer fkUsuario string Valor del campo fkUsuario.
+     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
+     * @return array
+     */
+     public static function findByTblUsuario( $db, $fkUsuario, $orderBy='' ){
+         $sql = "SELECT * FROM tblPersona WHERE fkUsuario='$fkUsuario'";
+         if( $orderBy != '' ){
+             $sql .= " ORDER BY $orderBy";
+         }
+         return OwlGenericDO::createCollection( $db, $sql, 'TblPersona' );
      }
 
     /**
@@ -1087,19 +1087,6 @@ class TblPersona extends NingenGenericDO{
     }
 
     /**
-     * Obtiene todos los elementos relacionados de la tabla 'trelPersonaCurso'
-     *
-     * @param Connection $db Conexión con la base de datos.
-     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
-     */
-    public function getTrelPersonaCursos( $orderBy='' ){
-
-        include_once('TrelPersonaCurso.inc');
-        return TrelPersonaCurso::findByTblPersona( $this->_db, $this->idPersona, $orderBy );
-
-    }
-
-    /**
      * Obtiene todos los elementos relacionados de la tabla 'trelPrecandidato'
      *
      * @param Connection $db Conexión con la base de datos.
@@ -1126,66 +1113,6 @@ class TblPersona extends NingenGenericDO{
     }
 
     // Relaciones
-
-    /**
-     * Obtiene el objeto 'TblPais' relacionado.
-     *
-     * @return TblPais
-     */
-    public function getTblPais(){
-        require_once('TblPais.inc');
-        return TblPais::findByPrimaryKey( $this->_db, $this->fkPais );
-    }
-
-    /**
-     * Asigna el objeto 'TblPais' relacionado.
-     *
-     * @param TblPais $dataObject
-     */
-    public function setTblPais( $dataObject ){
-        require_once('TblPais.inc');
-        $this->setFkPais( $dataObject->getVIso() );
-    }
-
-    /**
-     * Obtiene el objeto 'TblUsuario' relacionado.
-     *
-     * @return TblUsuario
-     */
-    public function getTblUsuario(){
-        require_once('TblUsuario.inc');
-        return TblUsuario::findByPrimaryKey( $this->_db, $this->fkUsuario );
-    }
-
-    /**
-     * Asigna el objeto 'TblUsuario' relacionado.
-     *
-     * @param TblUsuario $dataObject
-     */
-    public function setTblUsuario( $dataObject ){
-        require_once('TblUsuario.inc');
-        $this->setFkUsuario( $dataObject->getIdUsuario() );
-    }
-
-    /**
-     * Obtiene el objeto 'TblTipoIdentificacion' relacionado.
-     *
-     * @return TblTipoIdentificacion
-     */
-    public function getTblTipoIdentificacion(){
-        require_once('TblTipoIdentificacion.inc');
-        return TblTipoIdentificacion::findByPrimaryKey( $this->_db, $this->fkTipoIdentificacion );
-    }
-
-    /**
-     * Asigna el objeto 'TblTipoIdentificacion' relacionado.
-     *
-     * @param TblTipoIdentificacion $dataObject
-     */
-    public function setTblTipoIdentificacion( $dataObject ){
-        require_once('TblTipoIdentificacion.inc');
-        $this->setFkTipoIdentificacion( $dataObject->getIdTipoIdentificacion() );
-    }
 
     /**
      * Obtiene el objeto 'TblEstadoCivil' relacionado.
@@ -1248,6 +1175,26 @@ class TblPersona extends NingenGenericDO{
     }
 
     /**
+     * Obtiene el objeto 'TblPais' relacionado.
+     *
+     * @return TblPais
+     */
+    public function getTblPais(){
+        require_once('TblPais.inc');
+        return TblPais::findByPrimaryKey( $this->_db, $this->fkPais );
+    }
+
+    /**
+     * Asigna el objeto 'TblPais' relacionado.
+     *
+     * @param TblPais $dataObject
+     */
+    public function setTblPais( $dataObject ){
+        require_once('TblPais.inc');
+        $this->setFkPais( $dataObject->getVIso() );
+    }
+
+    /**
      * Obtiene el objeto 'TblProvincia' relacionado.
      *
      * @return TblProvincia
@@ -1265,6 +1212,46 @@ class TblPersona extends NingenGenericDO{
     public function setTblProvincia( $dataObject ){
         require_once('TblProvincia.inc');
         $this->setFkProvincia( $dataObject->getIdProvincia() );
+    }
+
+    /**
+     * Obtiene el objeto 'TblTipoIdentificacion' relacionado.
+     *
+     * @return TblTipoIdentificacion
+     */
+    public function getTblTipoIdentificacion(){
+        require_once('TblTipoIdentificacion.inc');
+        return TblTipoIdentificacion::findByPrimaryKey( $this->_db, $this->fkTipoIdentificacion );
+    }
+
+    /**
+     * Asigna el objeto 'TblTipoIdentificacion' relacionado.
+     *
+     * @param TblTipoIdentificacion $dataObject
+     */
+    public function setTblTipoIdentificacion( $dataObject ){
+        require_once('TblTipoIdentificacion.inc');
+        $this->setFkTipoIdentificacion( $dataObject->getIdTipoIdentificacion() );
+    }
+
+    /**
+     * Obtiene el objeto 'TblUsuario' relacionado.
+     *
+     * @return TblUsuario
+     */
+    public function getTblUsuario(){
+        require_once('TblUsuario.inc');
+        return TblUsuario::findByPrimaryKey( $this->_db, $this->fkUsuario );
+    }
+
+    /**
+     * Asigna el objeto 'TblUsuario' relacionado.
+     *
+     * @param TblUsuario $dataObject
+     */
+    public function setTblUsuario( $dataObject ){
+        require_once('TblUsuario.inc');
+        $this->setFkUsuario( $dataObject->getIdUsuario() );
     }
 }
 ?>

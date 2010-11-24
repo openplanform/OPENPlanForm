@@ -1,15 +1,15 @@
 <?php
 /**
- * Este archivo ha sido generado con Ningen DoGen v.0.6
- * el 15 de November de 2010 a las 08:53:54
+ * Este archivo ha sido generado con Owl DoGen v.0.6
+ * el 24 de November de 2010 a las 08:55:33
  * @package dataAccess
  */
 
 /**
  * Archivos requeridos.
  */
-require_once( 'dbase/NingenConnection.inc');
-require_once( 'dbase/NingenGenericDO.inc');
+require_once( 'dbase/OwlConnection.inc');
+require_once( 'dbase/OwlGenericDO.inc');
 require_once( 'TrelEquipamientoPlanCursoAulaSearch.inc' );
 require_once( 'TrelEquipamientoPlanCursoAulaPK.inc' );
 
@@ -18,7 +18,7 @@ require_once( 'TrelEquipamientoPlanCursoAulaPK.inc' );
  *
  * @package dataAccess
  */
-class TrelEquipamientoPlanCursoAula extends NingenGenericDO{
+class TrelEquipamientoPlanCursoAula extends OwlGenericDO{
 
     /**
      * Atributo que representa el campo "idEquipamientoPlanCursoAula"
@@ -115,7 +115,7 @@ class TrelEquipamientoPlanCursoAula extends NingenGenericDO{
         if( $orderBy != '' ){
             $sql.=" ORDER BY $orderBy";
         }
-        return NingenGenericDO::createCollection( $db, $sql, 'TrelEquipamientoPlanCursoAula' );
+        return OwlGenericDO::createCollection( $db, $sql, 'TrelEquipamientoPlanCursoAula' );
 }
 
     /**
@@ -130,7 +130,7 @@ class TrelEquipamientoPlanCursoAula extends NingenGenericDO{
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
-         return NingenGenericDO::createCollection( $db, $sql, 'TrelEquipamientoPlanCursoAula' );
+         return OwlGenericDO::createCollection( $db, $sql, 'TrelEquipamientoPlanCursoAula' );
     }
 
     /**
@@ -144,7 +144,7 @@ class TrelEquipamientoPlanCursoAula extends NingenGenericDO{
 
        $db->executeQuery("SELECT * FROM trelEquipamientoPlanCursoAula WHERE idEquipamientoPlanCursoAula = '$idEquipamientoPlanCursoAula'");
        $data = $db->fetchRow();
-       return NingenGenericDO::createDO( $db, $data, 'TrelEquipamientoPlanCursoAula');
+       return OwlGenericDO::createDO( $db, $data, 'TrelEquipamientoPlanCursoAula');
 
     }
 
@@ -162,7 +162,7 @@ class TrelEquipamientoPlanCursoAula extends NingenGenericDO{
         $where = implode(' AND ',$where);
         $db->executeQuery("SELECT * FROM trelEquipamientoPlanCursoAula WHERE $where");
         $data = $db->fetchRow();
-        return NingenGenericDO::createDO( $db, $data, 'TrelEquipamientoPlanCursoAula');
+        return OwlGenericDO::createDO( $db, $data, 'TrelEquipamientoPlanCursoAula');
 
     }
 
@@ -179,7 +179,7 @@ class TrelEquipamientoPlanCursoAula extends NingenGenericDO{
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
-         return NingenGenericDO::createCollection( $db, $sql, 'TrelEquipamientoPlanCursoAula' );
+         return OwlGenericDO::createCollection( $db, $sql, 'TrelEquipamientoPlanCursoAula' );
      }
 
     /**
@@ -195,7 +195,7 @@ class TrelEquipamientoPlanCursoAula extends NingenGenericDO{
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
-         return NingenGenericDO::createCollection( $db, $sql, 'TrelEquipamientoPlanCursoAula' );
+         return OwlGenericDO::createCollection( $db, $sql, 'TrelEquipamientoPlanCursoAula' );
      }
 
     /**

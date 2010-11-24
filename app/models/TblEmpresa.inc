@@ -1,15 +1,15 @@
 <?php
 /**
- * Este archivo ha sido generado con Ningen DoGen v.0.6
- * el 21 de October de 2010 a las 10:48:39
+ * Este archivo ha sido generado con Owl DoGen v.0.6
+ * el 24 de November de 2010 a las 08:55:33
  * @package dataAccess
  */
 
 /**
  * Archivos requeridos.
  */
-require_once( 'dbase/NingenConnection.inc');
-require_once( 'dbase/NingenGenericDO.inc');
+require_once( 'dbase/OwlConnection.inc');
+require_once( 'dbase/OwlGenericDO.inc');
 require_once( 'TblEmpresaSearch.inc' );
 require_once( 'TblEmpresaPK.inc' );
 
@@ -18,7 +18,7 @@ require_once( 'TblEmpresaPK.inc' );
  *
  * @package dataAccess
  */
-class TblEmpresa extends NingenGenericDO{
+class TblEmpresa extends OwlGenericDO{
 
     /**
      * Atributo que representa el campo "idEmpresa"
@@ -235,7 +235,7 @@ class TblEmpresa extends NingenGenericDO{
         if( $orderBy != '' ){
             $sql.=" ORDER BY $orderBy";
         }
-        return NingenGenericDO::createCollection( $db, $sql, 'TblEmpresa' );
+        return OwlGenericDO::createCollection( $db, $sql, 'TblEmpresa' );
 }
 
     /**
@@ -250,7 +250,7 @@ class TblEmpresa extends NingenGenericDO{
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
-         return NingenGenericDO::createCollection( $db, $sql, 'TblEmpresa' );
+         return OwlGenericDO::createCollection( $db, $sql, 'TblEmpresa' );
     }
 
     /**
@@ -264,7 +264,7 @@ class TblEmpresa extends NingenGenericDO{
 
        $db->executeQuery("SELECT * FROM tblEmpresa WHERE idEmpresa = '$idEmpresa'");
        $data = $db->fetchRow();
-       return NingenGenericDO::createDO( $db, $data, 'TblEmpresa');
+       return OwlGenericDO::createDO( $db, $data, 'TblEmpresa');
 
     }
 
@@ -282,7 +282,7 @@ class TblEmpresa extends NingenGenericDO{
         $where = implode(' AND ',$where);
         $db->executeQuery("SELECT * FROM tblEmpresa WHERE $where");
         $data = $db->fetchRow();
-        return NingenGenericDO::createDO( $db, $data, 'TblEmpresa');
+        return OwlGenericDO::createDO( $db, $data, 'TblEmpresa');
 
     }
 
@@ -299,7 +299,7 @@ class TblEmpresa extends NingenGenericDO{
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
-         return NingenGenericDO::createCollection( $db, $sql, 'TblEmpresa' );
+         return OwlGenericDO::createCollection( $db, $sql, 'TblEmpresa' );
      }
 
     /**
@@ -315,7 +315,7 @@ class TblEmpresa extends NingenGenericDO{
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
-         return NingenGenericDO::createCollection( $db, $sql, 'TblEmpresa' );
+         return OwlGenericDO::createCollection( $db, $sql, 'TblEmpresa' );
      }
 
     /**
@@ -331,7 +331,7 @@ class TblEmpresa extends NingenGenericDO{
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
-         return NingenGenericDO::createCollection( $db, $sql, 'TblEmpresa' );
+         return OwlGenericDO::createCollection( $db, $sql, 'TblEmpresa' );
      }
 
     /**

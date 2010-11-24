@@ -1,25 +1,25 @@
 <?php
 
-require_once 'helper/NingenString.inc';
-require_once 'helper/NingenDate.inc';
-require_once NINGENCMS_CLASSESDIR . 'PplController.inc';
+require_once 'helper/OwlString.inc';
+require_once 'helper/OwlDate.inc';
+require_once CLASSESDIR . 'PplController.inc';
 
-require_once NINGENCMS_MODELDIR . 'TblCategoria.inc';
-require_once NINGENCMS_MODELDIR . 'TblCurso.inc';
-require_once NINGENCMS_MODELDIR . 'TblEstadoCivil.inc';
-require_once NINGENCMS_MODELDIR . 'TblEstadoLaboral.inc';
-require_once NINGENCMS_MODELDIR . 'TblNivelEstudios.inc';
-require_once NINGENCMS_MODELDIR . 'TblPais.inc';
-require_once NINGENCMS_MODELDIR . 'TblPersona.inc';
-require_once NINGENCMS_MODELDIR . 'TblProvincia.inc';
-require_once NINGENCMS_MODELDIR . 'TblTipoIdentificacion.inc';
-require_once NINGENCMS_MODELDIR . 'TrelPersonaCategoria.inc';
-require_once NINGENCMS_MODELDIR . 'TrelProfesor.inc';
-require_once NINGENCMS_MODELDIR . 'TrelRolUsuario.inc';
+require_once MODELDIR . 'TblCategoria.inc';
+require_once MODELDIR . 'TblCurso.inc';
+require_once MODELDIR . 'TblEstadoCivil.inc';
+require_once MODELDIR . 'TblEstadoLaboral.inc';
+require_once MODELDIR . 'TblNivelEstudios.inc';
+require_once MODELDIR . 'TblPais.inc';
+require_once MODELDIR . 'TblPersona.inc';
+require_once MODELDIR . 'TblProvincia.inc';
+require_once MODELDIR . 'TblTipoIdentificacion.inc';
+require_once MODELDIR . 'TrelPersonaCategoria.inc';
+require_once MODELDIR . 'TrelProfesor.inc';
+require_once MODELDIR . 'TrelRolUsuario.inc';
 
-require_once 'helper/NingenCmsHtmlHelper.inc';
-require_once 'helper/NingenDatabase.inc';
-require_once 'NingenPaginator.inc';
+require_once 'helper/OwlHtmlHelper.inc';
+require_once 'dbase/OwlDatabase.inc';
+require_once 'OwlPaginator.inc';
 
 
 class profesorController extends PplController{
@@ -32,7 +32,7 @@ class profesorController extends PplController{
     
     /**
      * Init
-     * @see extranet.planespime.es/ningencms/lib/NingenController::initController()
+     * @see extranet.planespime.es/owl/lib/OwlController::initController()
      */
     public function initController(){
        
@@ -42,7 +42,7 @@ class profesorController extends PplController{
     
     /**
      * Acción inicial, por defecto, el listado
-     * @see extranet.planespime.es/ningencms/lib/NingenController::indexAction()
+     * @see extranet.planespime.es/owl/lib/OwlController::indexAction()
      */
     public function indexAction(){
         
@@ -75,7 +75,7 @@ class profesorController extends PplController{
         
         // Se instancia y configura el paginador
         $rolProfesor = PplAclManager::ROL_PROFESOR;
-        $paginador = new NingenPaginator($this->db, 'p WHERE EXISTS (SELECT null FROM trelRolUsuario ru WHERE ru.fkUsuario = p.fkUsuario AND ru.fkRol = ' . $rolProfesor . ')', 'tblPersona', $this->helper);
+        $paginador = new OwlPaginator($this->db, 'p WHERE EXISTS (SELECT null FROM trelRolUsuario ru WHERE ru.fkUsuario = p.fkUsuario AND ru.fkRol = ' . $rolProfesor . ')', 'tblPersona', $this->helper);
         $paginador->setItemsPorPagina(10);
         $paginador->setOrderBy($orderBy);
         $paginador->setOrder($order);
@@ -85,11 +85,11 @@ class profesorController extends PplController{
         
         // Categorías para profesores
         $categoriasProfesoresCOL = TrelPersonaCategoria::findAll($this->db, 'fkPersona');
-        $this->view->categoriasProfesoresIDX = NingenDatabase::groupBy('fkPersona', $categoriasProfesoresCOL);
+        $this->view->categoriasProfesoresIDX = OwlDatabase::groupBy('fkPersona', $categoriasProfesoresCOL);
         
         // Categorias
         $categoriasCOL = TblCategoria::findAll($this->db, 'idCategoria');
-        $this->view->categoriasIDX = NingenDatabase::indexFor('idCategoria', $categoriasCOL);
+        $this->view->categoriasIDX = OwlDatabase::indexFor('idCategoria', $categoriasCOL);
         
         // Obtengo todos los usuarios del sistema
         $profesoresCOL = $paginador->getItemCollection();
@@ -185,9 +185,9 @@ class profesorController extends PplController{
         	
         } else {
         	
-        	if ( NingenCmsSession::getValue('profesorDuplicado') instanceof TblPersona ){
+        	if ( OwlSession::getValue('profesorDuplicado') instanceof TblPersona ){
         		
-        		$profesorDO = NingenCmsSession::getValue('profesorDuplicado');
+        		$profesorDO = OwlSession::getValue('profesorDuplicado');
         		$this->view->profesorDO = $profesorDO;
         		$this->view->duplicar = $duplicar = true;
         		
@@ -364,7 +364,7 @@ class profesorController extends PplController{
         	$profesorDO = TblPersona::findByPrimaryKey($this->db, $paramsARR[0]);
         	$nombreProfesor = 'Copia de ' . $profesorDO->getVNombre();
         	$profesorDO->setVNombre($nombreProfesor);
-        	NingenCmsSession::setValue('profesorDuplicado', $profesorDO);
+        	OwlSession::setValue('profesorDuplicado', $profesorDO);
         }
         
         $this->redirectTo('profesor','editar');
@@ -508,7 +508,7 @@ class profesorController extends PplController{
         }
             
         // Email
-        if (!NingenString::validaMail($email)){
+        if (!OwlString::validaMail($email)){
             $this->view->errorEmail = 'La dirección de correo proporcionada no es correcta.';
             $correcto = false;
         }
@@ -672,7 +672,7 @@ class profesorController extends PplController{
 		    	$profesorDO->setVNombre($nombre);
 		    	$profesorDO->setVPrimerApellido($apellido);
 		    	$profesorDO->setVSegundoApellido($apellido2);
-		    	$profesorDO->setDNacimiento(NingenDate::europeoAmericano($nacimiento));
+		    	$profesorDO->setDNacimiento(OwlDate::europeoAmericano($nacimiento));
 		    	$profesorDO->setFkTipoIdentificacion($tipoIdentificacion);
 		    	$profesorDO->setVNumeroIdentificacion($dni);
 		    	$profesorDO->setFkPais($pais);
@@ -833,7 +833,7 @@ class profesorController extends PplController{
             $whereStr = 'p WHERE ' . implode(' AND ', $where);
             
             // Se efectúa la búsqueda
-            $paginador = new NingenPaginator($this->db, $whereStr , 'tblPersona', $this->helper);
+            $paginador = new OwlPaginator($this->db, $whereStr , 'tblPersona', $this->helper);
             $paginador->setItemsPorPagina(10);
             $paginador->setOrderBy($orderBy);
             $paginador->setOrder($order);
@@ -853,11 +853,11 @@ class profesorController extends PplController{
 
             // Categorías para profesores
             $categoriasProfesoresCOL = TrelPersonaCategoria::findAll($this->db, 'fkPersona');
-            $this->view->categoriasProfesoresIDX = NingenDatabase::groupBy('fkPersona', $categoriasProfesoresCOL);
+            $this->view->categoriasProfesoresIDX = OwlDatabase::groupBy('fkPersona', $categoriasProfesoresCOL);
             
             // Categorias
             $categoriasCOL = TblCategoria::findAll($this->db, 'idCategoria');
-            $this->view->categoriasIDX = NingenDatabase::indexFor('idCategoria', $categoriasCOL);
+            $this->view->categoriasIDX = OwlDatabase::indexFor('idCategoria', $categoriasCOL);
         
         }
         

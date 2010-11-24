@@ -1,15 +1,15 @@
 <?php
 /**
- * Este archivo ha sido generado con Ningen DoGen v.0.6
- * el 22 de October de 2010 a las 13:48:57
+ * Este archivo ha sido generado con Owl DoGen v.0.6
+ * el 24 de November de 2010 a las 08:55:32
  * @package dataAccess
  */
 
 /**
  * Archivos requeridos.
  */
-require_once( 'dbase/NingenConnection.inc');
-require_once( 'dbase/NingenGenericDO.inc');
+require_once( 'dbase/OwlConnection.inc');
+require_once( 'dbase/OwlGenericDO.inc');
 require_once( 'TblAccesoSearch.inc' );
 require_once( 'TblAccesoPK.inc' );
 
@@ -18,7 +18,7 @@ require_once( 'TblAccesoPK.inc' );
  *
  * @package dataAccess
  */
-class TblAcceso extends NingenGenericDO{
+class TblAcceso extends OwlGenericDO{
 
     /**
      * Atributo que representa el campo "idAcceso"
@@ -145,7 +145,7 @@ class TblAcceso extends NingenGenericDO{
         if( $orderBy != '' ){
             $sql.=" ORDER BY $orderBy";
         }
-        return NingenGenericDO::createCollection( $db, $sql, 'TblAcceso' );
+        return OwlGenericDO::createCollection( $db, $sql, 'TblAcceso' );
 }
 
     /**
@@ -160,7 +160,7 @@ class TblAcceso extends NingenGenericDO{
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
-         return NingenGenericDO::createCollection( $db, $sql, 'TblAcceso' );
+         return OwlGenericDO::createCollection( $db, $sql, 'TblAcceso' );
     }
 
     /**
@@ -175,7 +175,7 @@ class TblAcceso extends NingenGenericDO{
 
        $db->executeQuery("SELECT * FROM tblAcceso WHERE idAcceso = '$idAcceso' AND fkPadre = '$fkPadre'");
        $data = $db->fetchRow();
-       return NingenGenericDO::createDO( $db, $data, 'TblAcceso');
+       return OwlGenericDO::createDO( $db, $data, 'TblAcceso');
 
     }
 
@@ -194,9 +194,25 @@ class TblAcceso extends NingenGenericDO{
         $where = implode(' AND ',$where);
         $db->executeQuery("SELECT * FROM tblAcceso WHERE $where");
         $data = $db->fetchRow();
-        return NingenGenericDO::createDO( $db, $data, 'TblAcceso');
+        return OwlGenericDO::createDO( $db, $data, 'TblAcceso');
 
     }
+
+    /**
+     * Obtiene todas las filas de la tabla tblAcceso que coinciden con el criterio fkPadre='$fkPadre'.
+     *
+     * @param Connection $db Conexión con la base de datos.
+     * @param integer fkPadre string Valor del campo fkPadre.
+     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
+     * @return array
+     */
+     public static function findByTblAcceso( $db, $fkPadre, $orderBy='' ){
+         $sql = "SELECT * FROM tblAcceso WHERE fkPadre='$fkPadre'";
+         if( $orderBy != '' ){
+             $sql .= " ORDER BY $orderBy";
+         }
+         return OwlGenericDO::createCollection( $db, $sql, 'TblAcceso' );
+     }
 
     /**
      * Actualiza una fila de la tabla tblAcceso.
@@ -402,6 +418,41 @@ class TblAcceso extends NingenGenericDO{
 
         $this->vRoles = $value;
 
+    }
+
+    /**
+     * Obtiene todos los elementos relacionados de la tabla 'tblAcceso'
+     *
+     * @param Connection $db Conexión con la base de datos.
+     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
+     */
+    public function getTblAccesos( $orderBy='' ){
+
+        include_once('TblAcceso.inc');
+        return TblAcceso::findByTblAcceso( $this->_db, $this->idAcceso, $this->fkPadre, $orderBy );
+
+    }
+
+    // Relaciones
+
+    /**
+     * Obtiene el objeto 'TblAcceso' relacionado.
+     *
+     * @return TblAcceso
+     */
+    public function getTblAcceso(){
+        require_once('TblAcceso.inc');
+        return TblAcceso::findByPrimaryKey( $this->_db, $this->fkPadre );
+    }
+
+    /**
+     * Asigna el objeto 'TblAcceso' relacionado.
+     *
+     * @param TblAcceso $dataObject
+     */
+    public function setTblAcceso( $dataObject ){
+        require_once('TblAcceso.inc');
+        $this->setFkPadre( $dataObject->getIdAcceso() );
     }
 }
 ?>

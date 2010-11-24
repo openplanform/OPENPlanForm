@@ -1,6 +1,6 @@
 <?php
 
-require_once NINGENCMS_MODELDIR . 'TblCategoria.inc';
+require_once MODELDIR . 'TblCategoria.inc';
 
 class TblCategoriaExtendida extends TblCategoria{
     
@@ -16,7 +16,7 @@ class TblCategoriaExtendida extends TblCategoria{
        $db->executeQuery("SELECT * FROM tblCategoria WHERE idCategoria = '$idCategoria'");
        $data = $db->fetchRow();
        
-       return NingenGenericDO::createDO( $db, $data, 'TblCategoria');
+       return OwlGenericDO::createDO( $db, $data, 'TblCategoria');
 
     }    
     

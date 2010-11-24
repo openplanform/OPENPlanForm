@@ -1,7 +1,7 @@
 <?php
 /**
- * Este archivo ha sido generado con Ningen Dogen v.0.6
- * el 02 de November de 2010 a las 12:43:46
+ * Este archivo ha sido generado con Owl Dogen v.0.6
+ * el 24 de November de 2010 a las 08:55:32
  * @package dataAccess
  */
 

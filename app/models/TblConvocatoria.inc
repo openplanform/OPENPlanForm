@@ -1,15 +1,15 @@
 <?php
 /**
- * Este archivo ha sido generado con Ningen DoGen v.0.6
- * el 25 de October de 2010 a las 12:44:09
+ * Este archivo ha sido generado con Owl DoGen v.0.6
+ * el 24 de November de 2010 a las 08:55:33
  * @package dataAccess
  */
 
 /**
  * Archivos requeridos.
  */
-require_once( 'dbase/NingenConnection.inc');
-require_once( 'dbase/NingenGenericDO.inc');
+require_once( 'dbase/OwlConnection.inc');
+require_once( 'dbase/OwlGenericDO.inc');
 require_once( 'TblConvocatoriaSearch.inc' );
 require_once( 'TblConvocatoriaPK.inc' );
 
@@ -18,7 +18,7 @@ require_once( 'TblConvocatoriaPK.inc' );
  *
  * @package dataAccess
  */
-class TblConvocatoria extends NingenGenericDO{
+class TblConvocatoria extends OwlGenericDO{
 
     /**
      * Atributo que representa el campo "idConvocatoria"
@@ -145,7 +145,7 @@ class TblConvocatoria extends NingenGenericDO{
         if( $orderBy != '' ){
             $sql.=" ORDER BY $orderBy";
         }
-        return NingenGenericDO::createCollection( $db, $sql, 'TblConvocatoria' );
+        return OwlGenericDO::createCollection( $db, $sql, 'TblConvocatoria' );
 }
 
     /**
@@ -160,7 +160,7 @@ class TblConvocatoria extends NingenGenericDO{
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
-         return NingenGenericDO::createCollection( $db, $sql, 'TblConvocatoria' );
+         return OwlGenericDO::createCollection( $db, $sql, 'TblConvocatoria' );
     }
 
     /**
@@ -174,7 +174,7 @@ class TblConvocatoria extends NingenGenericDO{
 
        $db->executeQuery("SELECT * FROM tblConvocatoria WHERE idConvocatoria = '$idConvocatoria'");
        $data = $db->fetchRow();
-       return NingenGenericDO::createDO( $db, $data, 'TblConvocatoria');
+       return OwlGenericDO::createDO( $db, $data, 'TblConvocatoria');
 
     }
 
@@ -192,7 +192,7 @@ class TblConvocatoria extends NingenGenericDO{
         $where = implode(' AND ',$where);
         $db->executeQuery("SELECT * FROM tblConvocatoria WHERE $where");
         $data = $db->fetchRow();
-        return NingenGenericDO::createDO( $db, $data, 'TblConvocatoria');
+        return OwlGenericDO::createDO( $db, $data, 'TblConvocatoria');
 
     }
 
@@ -209,7 +209,7 @@ class TblConvocatoria extends NingenGenericDO{
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
-         return NingenGenericDO::createCollection( $db, $sql, 'TblConvocatoria' );
+         return OwlGenericDO::createCollection( $db, $sql, 'TblConvocatoria' );
      }
 
     /**

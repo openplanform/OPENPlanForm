@@ -1,15 +1,15 @@
 <?php
 /**
- * Este archivo ha sido generado con Ningen DoGen v.0.6
- * el 21 de October de 2010 a las 10:48:39
+ * Este archivo ha sido generado con Owl DoGen v.0.6
+ * el 24 de November de 2010 a las 08:55:33
  * @package dataAccess
  */
 
 /**
  * Archivos requeridos.
  */
-require_once( 'dbase/NingenConnection.inc');
-require_once( 'dbase/NingenGenericDO.inc');
+require_once( 'dbase/OwlConnection.inc');
+require_once( 'dbase/OwlGenericDO.inc');
 require_once( 'TrelRolUsuarioSearch.inc' );
 require_once( 'TrelRolUsuarioPK.inc' );
 
@@ -18,7 +18,7 @@ require_once( 'TrelRolUsuarioPK.inc' );
  *
  * @package dataAccess
  */
-class TrelRolUsuario extends NingenGenericDO{
+class TrelRolUsuario extends OwlGenericDO{
 
     /**
      * Atributo que representa el campo "fkUsuario"
@@ -85,7 +85,7 @@ class TrelRolUsuario extends NingenGenericDO{
         if( $orderBy != '' ){
             $sql.=" ORDER BY $orderBy";
         }
-        return NingenGenericDO::createCollection( $db, $sql, 'TrelRolUsuario' );
+        return OwlGenericDO::createCollection( $db, $sql, 'TrelRolUsuario' );
 }
 
     /**
@@ -100,7 +100,7 @@ class TrelRolUsuario extends NingenGenericDO{
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
-         return NingenGenericDO::createCollection( $db, $sql, 'TrelRolUsuario' );
+         return OwlGenericDO::createCollection( $db, $sql, 'TrelRolUsuario' );
     }
 
     /**
@@ -115,7 +115,7 @@ class TrelRolUsuario extends NingenGenericDO{
 
        $db->executeQuery("SELECT * FROM trelRolUsuario WHERE fkUsuario = '$fkUsuario' AND fkRol = '$fkRol'");
        $data = $db->fetchRow();
-       return NingenGenericDO::createDO( $db, $data, 'TrelRolUsuario');
+       return OwlGenericDO::createDO( $db, $data, 'TrelRolUsuario');
 
     }
 
@@ -134,25 +134,9 @@ class TrelRolUsuario extends NingenGenericDO{
         $where = implode(' AND ',$where);
         $db->executeQuery("SELECT * FROM trelRolUsuario WHERE $where");
         $data = $db->fetchRow();
-        return NingenGenericDO::createDO( $db, $data, 'TrelRolUsuario');
+        return OwlGenericDO::createDO( $db, $data, 'TrelRolUsuario');
 
     }
-
-    /**
-     * Obtiene todas las filas de la tabla trelRolUsuario que coinciden con el criterio fkUsuario='$fkUsuario'.
-     *
-     * @param Connection $db Conexión con la base de datos.
-     * @param integer fkUsuario string Valor del campo fkUsuario.
-     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
-     * @return array
-     */
-     public static function findByTblUsuario( $db, $fkUsuario, $orderBy='' ){
-         $sql = "SELECT * FROM trelRolUsuario WHERE fkUsuario='$fkUsuario'";
-         if( $orderBy != '' ){
-             $sql .= " ORDER BY $orderBy";
-         }
-         return NingenGenericDO::createCollection( $db, $sql, 'TrelRolUsuario' );
-     }
 
     /**
      * Obtiene todas las filas de la tabla trelRolUsuario que coinciden con el criterio fkRol='$fkRol'.
@@ -167,7 +151,23 @@ class TrelRolUsuario extends NingenGenericDO{
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
-         return NingenGenericDO::createCollection( $db, $sql, 'TrelRolUsuario' );
+         return OwlGenericDO::createCollection( $db, $sql, 'TrelRolUsuario' );
+     }
+
+    /**
+     * Obtiene todas las filas de la tabla trelRolUsuario que coinciden con el criterio fkUsuario='$fkUsuario'.
+     *
+     * @param Connection $db Conexión con la base de datos.
+     * @param integer fkUsuario string Valor del campo fkUsuario.
+     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
+     * @return array
+     */
+     public static function findByTblUsuario( $db, $fkUsuario, $orderBy='' ){
+         $sql = "SELECT * FROM trelRolUsuario WHERE fkUsuario='$fkUsuario'";
+         if( $orderBy != '' ){
+             $sql .= " ORDER BY $orderBy";
+         }
+         return OwlGenericDO::createCollection( $db, $sql, 'TrelRolUsuario' );
      }
 
     /**
@@ -255,26 +255,6 @@ class TrelRolUsuario extends NingenGenericDO{
     // Relaciones
 
     /**
-     * Obtiene el objeto 'TblUsuario' relacionado.
-     *
-     * @return TblUsuario
-     */
-    public function getTblUsuario(){
-        require_once('TblUsuario.inc');
-        return TblUsuario::findByPrimaryKey( $this->_db, $this->fkUsuario );
-    }
-
-    /**
-     * Asigna el objeto 'TblUsuario' relacionado.
-     *
-     * @param TblUsuario $dataObject
-     */
-    public function setTblUsuario( $dataObject ){
-        require_once('TblUsuario.inc');
-        $this->setFkUsuario( $dataObject->getIdUsuario() );
-    }
-
-    /**
      * Obtiene el objeto 'TblRol' relacionado.
      *
      * @return TblRol
@@ -292,6 +272,26 @@ class TrelRolUsuario extends NingenGenericDO{
     public function setTblRol( $dataObject ){
         require_once('TblRol.inc');
         $this->setFkRol( $dataObject->getIdRol() );
+    }
+
+    /**
+     * Obtiene el objeto 'TblUsuario' relacionado.
+     *
+     * @return TblUsuario
+     */
+    public function getTblUsuario(){
+        require_once('TblUsuario.inc');
+        return TblUsuario::findByPrimaryKey( $this->_db, $this->fkUsuario );
+    }
+
+    /**
+     * Asigna el objeto 'TblUsuario' relacionado.
+     *
+     * @param TblUsuario $dataObject
+     */
+    public function setTblUsuario( $dataObject ){
+        require_once('TblUsuario.inc');
+        $this->setFkUsuario( $dataObject->getIdUsuario() );
     }
 }
 ?>

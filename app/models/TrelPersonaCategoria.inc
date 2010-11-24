@@ -1,15 +1,15 @@
 <?php
 /**
- * Este archivo ha sido generado con Ningen DoGen v.0.6
- * el 25 de October de 2010 a las 09:30:07
+ * Este archivo ha sido generado con Owl DoGen v.0.6
+ * el 24 de November de 2010 a las 08:55:33
  * @package dataAccess
  */
 
 /**
  * Archivos requeridos.
  */
-require_once( 'dbase/NingenConnection.inc');
-require_once( 'dbase/NingenGenericDO.inc');
+require_once( 'dbase/OwlConnection.inc');
+require_once( 'dbase/OwlGenericDO.inc');
 require_once( 'TrelPersonaCategoriaSearch.inc' );
 require_once( 'TrelPersonaCategoriaPK.inc' );
 
@@ -18,7 +18,7 @@ require_once( 'TrelPersonaCategoriaPK.inc' );
  *
  * @package dataAccess
  */
-class TrelPersonaCategoria extends NingenGenericDO{
+class TrelPersonaCategoria extends OwlGenericDO{
 
     /**
      * Atributo que representa el campo "fkPersona"
@@ -85,7 +85,7 @@ class TrelPersonaCategoria extends NingenGenericDO{
         if( $orderBy != '' ){
             $sql.=" ORDER BY $orderBy";
         }
-        return NingenGenericDO::createCollection( $db, $sql, 'TrelPersonaCategoria' );
+        return OwlGenericDO::createCollection( $db, $sql, 'TrelPersonaCategoria' );
 }
 
     /**
@@ -100,7 +100,7 @@ class TrelPersonaCategoria extends NingenGenericDO{
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
-         return NingenGenericDO::createCollection( $db, $sql, 'TrelPersonaCategoria' );
+         return OwlGenericDO::createCollection( $db, $sql, 'TrelPersonaCategoria' );
     }
 
     /**
@@ -115,7 +115,7 @@ class TrelPersonaCategoria extends NingenGenericDO{
 
        $db->executeQuery("SELECT * FROM trelPersonaCategoria WHERE fkPersona = '$fkPersona' AND fkCategoria = '$fkCategoria'");
        $data = $db->fetchRow();
-       return NingenGenericDO::createDO( $db, $data, 'TrelPersonaCategoria');
+       return OwlGenericDO::createDO( $db, $data, 'TrelPersonaCategoria');
 
     }
 
@@ -134,25 +134,9 @@ class TrelPersonaCategoria extends NingenGenericDO{
         $where = implode(' AND ',$where);
         $db->executeQuery("SELECT * FROM trelPersonaCategoria WHERE $where");
         $data = $db->fetchRow();
-        return NingenGenericDO::createDO( $db, $data, 'TrelPersonaCategoria');
+        return OwlGenericDO::createDO( $db, $data, 'TrelPersonaCategoria');
 
     }
-
-    /**
-     * Obtiene todas las filas de la tabla trelPersonaCategoria que coinciden con el criterio fkPersona='$fkPersona'.
-     *
-     * @param Connection $db Conexión con la base de datos.
-     * @param integer fkPersona string Valor del campo fkPersona.
-     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
-     * @return array
-     */
-     public static function findByTblPersona( $db, $fkPersona, $orderBy='' ){
-         $sql = "SELECT * FROM trelPersonaCategoria WHERE fkPersona='$fkPersona'";
-         if( $orderBy != '' ){
-             $sql .= " ORDER BY $orderBy";
-         }
-         return NingenGenericDO::createCollection( $db, $sql, 'TrelPersonaCategoria' );
-     }
 
     /**
      * Obtiene todas las filas de la tabla trelPersonaCategoria que coinciden con el criterio fkCategoria='$fkCategoria'.
@@ -167,7 +151,23 @@ class TrelPersonaCategoria extends NingenGenericDO{
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
-         return NingenGenericDO::createCollection( $db, $sql, 'TrelPersonaCategoria' );
+         return OwlGenericDO::createCollection( $db, $sql, 'TrelPersonaCategoria' );
+     }
+
+    /**
+     * Obtiene todas las filas de la tabla trelPersonaCategoria que coinciden con el criterio fkPersona='$fkPersona'.
+     *
+     * @param Connection $db Conexión con la base de datos.
+     * @param integer fkPersona string Valor del campo fkPersona.
+     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
+     * @return array
+     */
+     public static function findByTblPersona( $db, $fkPersona, $orderBy='' ){
+         $sql = "SELECT * FROM trelPersonaCategoria WHERE fkPersona='$fkPersona'";
+         if( $orderBy != '' ){
+             $sql .= " ORDER BY $orderBy";
+         }
+         return OwlGenericDO::createCollection( $db, $sql, 'TrelPersonaCategoria' );
      }
 
     /**
@@ -255,26 +255,6 @@ class TrelPersonaCategoria extends NingenGenericDO{
     // Relaciones
 
     /**
-     * Obtiene el objeto 'TblPersona' relacionado.
-     *
-     * @return TblPersona
-     */
-    public function getTblPersona(){
-        require_once('TblPersona.inc');
-        return TblPersona::findByPrimaryKey( $this->_db, $this->fkPersona );
-    }
-
-    /**
-     * Asigna el objeto 'TblPersona' relacionado.
-     *
-     * @param TblPersona $dataObject
-     */
-    public function setTblPersona( $dataObject ){
-        require_once('TblPersona.inc');
-        $this->setFkPersona( $dataObject->getIdPersona() );
-    }
-
-    /**
      * Obtiene el objeto 'TblCategoria' relacionado.
      *
      * @return TblCategoria
@@ -292,6 +272,26 @@ class TrelPersonaCategoria extends NingenGenericDO{
     public function setTblCategoria( $dataObject ){
         require_once('TblCategoria.inc');
         $this->setFkCategoria( $dataObject->getIdCategoria() );
+    }
+
+    /**
+     * Obtiene el objeto 'TblPersona' relacionado.
+     *
+     * @return TblPersona
+     */
+    public function getTblPersona(){
+        require_once('TblPersona.inc');
+        return TblPersona::findByPrimaryKey( $this->_db, $this->fkPersona );
+    }
+
+    /**
+     * Asigna el objeto 'TblPersona' relacionado.
+     *
+     * @param TblPersona $dataObject
+     */
+    public function setTblPersona( $dataObject ){
+        require_once('TblPersona.inc');
+        $this->setFkPersona( $dataObject->getIdPersona() );
     }
 }
 ?>

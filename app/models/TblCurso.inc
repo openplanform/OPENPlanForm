@@ -1,15 +1,15 @@
 <?php
 /**
- * Este archivo ha sido generado con Ningen DoGen v.0.6
- * el 04 de November de 2010 a las 12:12:53
+ * Este archivo ha sido generado con Owl DoGen v.0.6
+ * el 24 de November de 2010 a las 08:55:33
  * @package dataAccess
  */
 
 /**
  * Archivos requeridos.
  */
-require_once( 'dbase/NingenConnection.inc');
-require_once( 'dbase/NingenGenericDO.inc');
+require_once( 'dbase/OwlConnection.inc');
+require_once( 'dbase/OwlGenericDO.inc');
 require_once( 'TblCursoSearch.inc' );
 require_once( 'TblCursoPK.inc' );
 
@@ -18,7 +18,7 @@ require_once( 'TblCursoPK.inc' );
  *
  * @package dataAccess
  */
-class TblCurso extends NingenGenericDO{
+class TblCurso extends OwlGenericDO{
 
     /**
      * Atributo que representa el campo "idCurso"
@@ -136,25 +136,25 @@ class TblCurso extends NingenGenericDO{
 
     /**
      * Atributo que representa el campo "iDeManana"
-     * @var integer
+     * @var string
      */
     public $iDeManana;
 
     /**
      * Atributo que representa el campo "iAManana"
-     * @var integer
+     * @var string
      */
     public $iAManana;
 
     /**
      * Atributo que representa el campo "iDeTarde"
-     * @var integer
+     * @var string
      */
     public $iDeTarde;
 
     /**
      * Atributo que representa el campo "iATarde"
-     * @var integer
+     * @var string
      */
     public $iATarde;
 
@@ -325,7 +325,7 @@ class TblCurso extends NingenGenericDO{
         if( $orderBy != '' ){
             $sql.=" ORDER BY $orderBy";
         }
-        return NingenGenericDO::createCollection( $db, $sql, 'TblCurso' );
+        return OwlGenericDO::createCollection( $db, $sql, 'TblCurso' );
 }
 
     /**
@@ -340,7 +340,7 @@ class TblCurso extends NingenGenericDO{
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
-         return NingenGenericDO::createCollection( $db, $sql, 'TblCurso' );
+         return OwlGenericDO::createCollection( $db, $sql, 'TblCurso' );
     }
 
     /**
@@ -354,7 +354,7 @@ class TblCurso extends NingenGenericDO{
 
        $db->executeQuery("SELECT * FROM tblCurso WHERE idCurso = '$idCurso'");
        $data = $db->fetchRow();
-       return NingenGenericDO::createDO( $db, $data, 'TblCurso');
+       return OwlGenericDO::createDO( $db, $data, 'TblCurso');
 
     }
 
@@ -372,7 +372,7 @@ class TblCurso extends NingenGenericDO{
         $where = implode(' AND ',$where);
         $db->executeQuery("SELECT * FROM tblCurso WHERE $where");
         $data = $db->fetchRow();
-        return NingenGenericDO::createDO( $db, $data, 'TblCurso');
+        return OwlGenericDO::createDO( $db, $data, 'TblCurso');
 
     }
 
@@ -389,7 +389,7 @@ class TblCurso extends NingenGenericDO{
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
-         return NingenGenericDO::createCollection( $db, $sql, 'TblCurso' );
+         return OwlGenericDO::createCollection( $db, $sql, 'TblCurso' );
      }
 
     /**
@@ -405,7 +405,7 @@ class TblCurso extends NingenGenericDO{
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
-         return NingenGenericDO::createCollection( $db, $sql, 'TblCurso' );
+         return OwlGenericDO::createCollection( $db, $sql, 'TblCurso' );
      }
 
     /**
@@ -421,7 +421,7 @@ class TblCurso extends NingenGenericDO{
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
-         return NingenGenericDO::createCollection( $db, $sql, 'TblCurso' );
+         return OwlGenericDO::createCollection( $db, $sql, 'TblCurso' );
      }
 
     /**
@@ -437,7 +437,7 @@ class TblCurso extends NingenGenericDO{
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
-         return NingenGenericDO::createCollection( $db, $sql, 'TblCurso' );
+         return OwlGenericDO::createCollection( $db, $sql, 'TblCurso' );
      }
 
     /**
@@ -453,7 +453,7 @@ class TblCurso extends NingenGenericDO{
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
-         return NingenGenericDO::createCollection( $db, $sql, 'TblCurso' );
+         return OwlGenericDO::createCollection( $db, $sql, 'TblCurso' );
      }
 
     /**
@@ -469,7 +469,7 @@ class TblCurso extends NingenGenericDO{
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
-         return NingenGenericDO::createCollection( $db, $sql, 'TblCurso' );
+         return OwlGenericDO::createCollection( $db, $sql, 'TblCurso' );
      }
 
     /**
@@ -954,7 +954,7 @@ class TblCurso extends NingenGenericDO{
     /**
       * Obtiene el valor del atributo 'iDeManana'.
       *
-      * @return integer
+      * @return string
       */
     public function getIDeManana(){
         return $this->iDeManana;
@@ -963,7 +963,7 @@ class TblCurso extends NingenGenericDO{
     /**
       * Establece el valor del atributo 'iDeManana'.
       *
-      * @param integer Valor.
+      * @param string Valor.
       */
     public function setIDeManana( $value ){
 
@@ -974,7 +974,7 @@ class TblCurso extends NingenGenericDO{
     /**
       * Obtiene el valor del atributo 'iAManana'.
       *
-      * @return integer
+      * @return string
       */
     public function getIAManana(){
         return $this->iAManana;
@@ -983,7 +983,7 @@ class TblCurso extends NingenGenericDO{
     /**
       * Establece el valor del atributo 'iAManana'.
       *
-      * @param integer Valor.
+      * @param string Valor.
       */
     public function setIAManana( $value ){
 
@@ -994,7 +994,7 @@ class TblCurso extends NingenGenericDO{
     /**
       * Obtiene el valor del atributo 'iDeTarde'.
       *
-      * @return integer
+      * @return string
       */
     public function getIDeTarde(){
         return $this->iDeTarde;
@@ -1003,7 +1003,7 @@ class TblCurso extends NingenGenericDO{
     /**
       * Establece el valor del atributo 'iDeTarde'.
       *
-      * @param integer Valor.
+      * @param string Valor.
       */
     public function setIDeTarde( $value ){
 
@@ -1014,7 +1014,7 @@ class TblCurso extends NingenGenericDO{
     /**
       * Obtiene el valor del atributo 'iATarde'.
       *
-      * @return integer
+      * @return string
       */
     public function getIATarde(){
         return $this->iATarde;
@@ -1023,7 +1023,7 @@ class TblCurso extends NingenGenericDO{
     /**
       * Establece el valor del atributo 'iATarde'.
       *
-      * @param integer Valor.
+      * @param string Valor.
       */
     public function setIATarde( $value ){
 

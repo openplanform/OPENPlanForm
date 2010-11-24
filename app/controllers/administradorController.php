@@ -1,11 +1,11 @@
 <?php
 
-require NINGENCMS_CLASSESDIR . 'PplController.inc';
-require_once NINGENCMS_MODELDIR . 'TblRol.inc';
-require_once NINGENCMS_MODELDIR . 'TblAcceso.inc';
-require_once NINGENCMS_MODELDIR . 'TblAccesoExtendido.inc';
+require CLASSESDIR . 'PplController.inc';
+require_once MODELDIR . 'TblRol.inc';
+require_once MODELDIR . 'TblAcceso.inc';
+require_once MODELDIR . 'TblAccesoExtendido.inc';
 
-require_once 'NingenPaginator.inc';
+require_once 'OwlPaginator.inc';
 
 class administradorController extends PplController{
            
@@ -129,7 +129,7 @@ class administradorController extends PplController{
         
         
         // Se inicia el paginador y se obtienen los datos
-        $paginador = new NingenPaginator($this->db, '', 'tblRol', $this->helper);
+        $paginador = new OwlPaginator($this->db, '', 'tblRol', $this->helper);
         $paginador->setPaginaActual(1);
         $paginador->setItemsPorPagina(10);
         $paginador->setOrderBy($orderBy);

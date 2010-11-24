@@ -7,52 +7,52 @@ $this->addCssInclude('/css/panel.css');
         <li class="convocatorias bloque">
             <strong><?= $this->totalConvocatorias ?></strong>
             <div><a href="/convocatoria/index.html"><?= ($this->totalConvocatorias == 1) ?  'Convocatoria' : 'Convocatorias' ?></a></div>
-            <p>última añadida: <a href="/convocatoria/ficha/<?= $this->ultimaConvocatoria['idConvocatoria'] ?>"><?= NingenString::limitaTexto($this->ultimaConvocatoria['vNombre'], 20) ?></a></p>
+            <p>última añadida: <a href="/convocatoria/ficha/<?= $this->ultimaConvocatoria['idConvocatoria'] ?>"><?= OwlString::limitaTexto($this->ultimaConvocatoria['vNombre'], 20) ?></a></p>
         </li>
         <li class="planes bloque">
             <strong><?= $this->totalPlanes ?></strong>
             <div><a href="/plan/index.html"><?= ($this->totalPlanes == 1) ?  'Plan de formación' : 'Planes de formación' ?></a></div>
-            <p>último añadido: <a href="/plan/ficha/<?= $this->ultimoPlan['idPlan'] ?>"><?= NingenString::limitaTexto($this->ultimoPlan['vNombre'], 20) ?></a></p>
+            <p>último añadido: <a href="/plan/ficha/<?= $this->ultimoPlan['idPlan'] ?>"><?= OwlString::limitaTexto($this->ultimoPlan['vNombre'], 20) ?></a></p>
         </li>
         <li class="cursos bloque">
             <strong><?= $this->totalCursos ?></strong>
             <div><a href="/curso/index.html"><?= ($this->totalCursos == 1) ?  'Curso' : 'Cursos' ?></a></div>
-            <p>último añadido: <a href="/curso/ficha/<?= $this->ultimoCurso['idCurso'] ?>"><?= NingenString::limitaTexto($this->ultimoCurso['vNombre'], 20) ?></a></p>
+            <p>último añadido: <a href="/curso/ficha/<?= $this->ultimoCurso['idCurso'] ?>"><?= OwlString::limitaTexto($this->ultimoCurso['vNombre'], 20) ?></a></p>
         </li>
         <li class="alumnos bloque">
             <strong><?= $this->totalAlumnos ?></strong>
             <div><a href="/alumno/index.html"><?= ($this->totalAlumnos == 1) ?  'Alumno' : 'Alumnos' ?></a></div>
-            <p>último añadido: <a href="/alumno/ficha/<?= $this->ultimoAlumno['idPersona'] ?>"><?= NingenString::limitaTexto($this->ultimoAlumno['vNombre'], 20) ?></a></p>
+            <p>último añadido: <a href="/alumno/ficha/<?= $this->ultimoAlumno['idPersona'] ?>"><?= OwlString::limitaTexto($this->ultimoAlumno['vNombre'], 20) ?></a></p>
         </li>
         <li class="gestora bloque">
             <strong><?= $this->totalGestoras ?></strong>
             <div><a href="/consultora/index.html"><?= ($this->totalGestoras == 1) ?  'Gestora' : 'Gestoras' ?></a></div>
-            <p>última añadida: <a href="/consultora/ficha/<?= $this->ultimaGestora['idEmpresa'] ?>"><?= NingenString::limitaTexto($this->ultimaGestora['vNombre'], 20) ?></a></p>
+            <p>última añadida: <a href="/consultora/ficha/<?= $this->ultimaGestora['idEmpresa'] ?>"><?= OwlString::limitaTexto($this->ultimaGestora['vNombre'], 20) ?></a></p>
         </li>
         <li class="profesores bloque">
             <strong><?= $this->totalProfesores ?></strong>
             <div><a href="/consultora/index.html"><?= ($this->totalProfesores == 1) ?  'Profesor' : 'Profesores' ?></a></div>
-            <p>último añadido: <a href="/profesor/ficha/<?= $this->ultimoProfesor['idPersona'] ?>"><?= NingenString::limitaTexto($this->ultimoProfesor['vNombre'], 20) ?></a></p>
+            <p>último añadido: <a href="/profesor/ficha/<?= $this->ultimoProfesor['idPersona'] ?>"><?= OwlString::limitaTexto($this->ultimoProfesor['vNombre'], 20) ?></a></p>
         </li>
         <li class="academias bloque">
             <strong><?= $this->totalAcademias ?></strong>
             <div><a href="/academia/index.html"><?= ($this->totalAcademias == 1) ?  'Academia' : 'Academias' ?></a></div>
-            <p>última añadida: <a href="/academia/ficha/<?= $this->ultimaAcademia['idEmpresa'] ?>"><?= NingenString::limitaTexto($this->ultimaAcademia['vNombre'], 20) ?></a></p>
+            <p>última añadida: <a href="/academia/ficha/<?= $this->ultimaAcademia['idEmpresa'] ?>"><?= OwlString::limitaTexto($this->ultimaAcademia['vNombre'], 20) ?></a></p>
         </li>
         <li class="aulas bloque">
             <strong><?= $this->totalAulas ?></strong>
             <div><a href="/aula/index.html"><?= ($this->totalAulas == 1) ?  'Aula' : 'Aulas' ?></a></div>
-            <p>última añadida: <a href="/aula/ficha/<?= $this->ultimoAula['idAula'] ?>"><?= NingenString::limitaTexto($this->ultimoAula['vNombre'], 20) ?></a></p>
+            <p>última añadida: <a href="/aula/ficha/<?= $this->ultimoAula['idAula'] ?>"><?= OwlString::limitaTexto($this->ultimoAula['vNombre'], 20) ?></a></p>
         </li>
         <li class="centros bloque">
             <strong><?= $this->totalCentros ?></strong>
             <div><a href="/centro/index.html"><?= ($this->totalCentros == 1) ?  'Centro' : 'Centros' ?></a></div>
-            <p>último añadido: <a href="/centro/ficha/<?= $this->ultimoCentro['idCentro'] ?>"><?= NingenString::limitaTexto($this->ultimoCentro['vNombre'], 20) ?></a></p>
+            <p>último añadido: <a href="/centro/ficha/<?= $this->ultimoCentro['idCentro'] ?>"><?= OwlString::limitaTexto($this->ultimoCentro['vNombre'], 20) ?></a></p>
         </li>
         <li class="usuarios bloque">
             <strong><?= $this->totalUsuarios ?></strong>
             <div><a href="/usuario/index.html"><?= ($this->totalUsuarios == 1) ?  'Usuario' : 'Usuarios' ?></a></div>
-            <p>último añadido: <a href="/usuario/ficha/<?= $this->ultimoUsuario['idUsuario'] ?>"><?= NingenString::limitaTexto($this->ultimoUsuario['vNombre'], 20) ?></a></p>
+            <p>último añadido: <a href="/usuario/ficha/<?= $this->ultimoUsuario['idUsuario'] ?>"><?= OwlString::limitaTexto($this->ultimoUsuario['vNombre'], 20) ?></a></p>
         </li>
     </ul>
 </div>

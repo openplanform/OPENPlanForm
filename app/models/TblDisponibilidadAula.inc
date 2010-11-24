@@ -1,15 +1,15 @@
 <?php
 /**
- * Este archivo ha sido generado con Ningen DoGen v.0.6
- * el 21 de October de 2010 a las 10:48:39
+ * Este archivo ha sido generado con Owl DoGen v.0.6
+ * el 24 de November de 2010 a las 08:55:33
  * @package dataAccess
  */
 
 /**
  * Archivos requeridos.
  */
-require_once( 'dbase/NingenConnection.inc');
-require_once( 'dbase/NingenGenericDO.inc');
+require_once( 'dbase/OwlConnection.inc');
+require_once( 'dbase/OwlGenericDO.inc');
 require_once( 'TblDisponibilidadAulaSearch.inc' );
 require_once( 'TblDisponibilidadAulaPK.inc' );
 
@@ -18,7 +18,7 @@ require_once( 'TblDisponibilidadAulaPK.inc' );
  *
  * @package dataAccess
  */
-class TblDisponibilidadAula extends NingenGenericDO{
+class TblDisponibilidadAula extends OwlGenericDO{
 
     /**
      * Atributo que representa el campo "idDisponibilidadAula"
@@ -105,7 +105,7 @@ class TblDisponibilidadAula extends NingenGenericDO{
         if( $orderBy != '' ){
             $sql.=" ORDER BY $orderBy";
         }
-        return NingenGenericDO::createCollection( $db, $sql, 'TblDisponibilidadAula' );
+        return OwlGenericDO::createCollection( $db, $sql, 'TblDisponibilidadAula' );
 }
 
     /**
@@ -120,7 +120,7 @@ class TblDisponibilidadAula extends NingenGenericDO{
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
-         return NingenGenericDO::createCollection( $db, $sql, 'TblDisponibilidadAula' );
+         return OwlGenericDO::createCollection( $db, $sql, 'TblDisponibilidadAula' );
     }
 
     /**
@@ -134,7 +134,7 @@ class TblDisponibilidadAula extends NingenGenericDO{
 
        $db->executeQuery("SELECT * FROM tblDisponibilidadAula WHERE idDisponibilidadAula = '$idDisponibilidadAula'");
        $data = $db->fetchRow();
-       return NingenGenericDO::createDO( $db, $data, 'TblDisponibilidadAula');
+       return OwlGenericDO::createDO( $db, $data, 'TblDisponibilidadAula');
 
     }
 
@@ -152,7 +152,7 @@ class TblDisponibilidadAula extends NingenGenericDO{
         $where = implode(' AND ',$where);
         $db->executeQuery("SELECT * FROM tblDisponibilidadAula WHERE $where");
         $data = $db->fetchRow();
-        return NingenGenericDO::createDO( $db, $data, 'TblDisponibilidadAula');
+        return OwlGenericDO::createDO( $db, $data, 'TblDisponibilidadAula');
 
     }
 
@@ -169,7 +169,7 @@ class TblDisponibilidadAula extends NingenGenericDO{
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
-         return NingenGenericDO::createCollection( $db, $sql, 'TblDisponibilidadAula' );
+         return OwlGenericDO::createCollection( $db, $sql, 'TblDisponibilidadAula' );
      }
 
     /**

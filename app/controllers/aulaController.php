@@ -1,21 +1,21 @@
 <?php
 
-require_once 'helper/NingenCmsHtmlHelper.inc';
-require_once 'NingenPaginator.inc';
+require_once 'helper/OwlHtmlHelper.inc';
+require_once 'OwlPaginator.inc';
 
-require_once NINGENCMS_CLASSESDIR . 'PplController.inc';
+require_once CLASSESDIR . 'PplController.inc';
 
-require_once NINGENCMS_MODELDIR . '/TblAula.inc';
-require_once NINGENCMS_MODELDIR . '/TblCentro.inc';
-require_once NINGENCMS_MODELDIR . '/TblPais.inc';
-require_once NINGENCMS_MODELDIR . '/TblProvincia.inc';
+require_once MODELDIR . '/TblAula.inc';
+require_once MODELDIR . '/TblCentro.inc';
+require_once MODELDIR . '/TblPais.inc';
+require_once MODELDIR . '/TblProvincia.inc';
 
 class aulaController extends PplController{
     
     
     /**
      * Init
-     * @see extranet.planespime.es/ningencms/lib/NingenController::initController()
+     * @see extranet.planespime.es/owl/lib/OwlController::initController()
      */
     public function initController(){
        
@@ -25,7 +25,7 @@ class aulaController extends PplController{
     
     /**
      * Acción inicial, por defecto, el listado
-     * @see extranet.planespime.es/ningencms/lib/NingenController::indexAction()
+     * @see extranet.planespime.es/owl/lib/OwlController::indexAction()
      */
     public function indexAction(){
         
@@ -56,7 +56,7 @@ class aulaController extends PplController{
         $this->view->orderBy = $aliasOrderBy;
         
     	// Se instancia y configura el paginador
-        $paginador = new NingenPaginator($this->db, null, 'tblAula', $this->helper);
+        $paginador = new OwlPaginator($this->db, null, 'tblAula', $this->helper);
         $paginador->setItemsPorPagina(10);
         $paginaActual = $this->helper->escapeInjection($this->helper->get('p'));
         $paginaActual = empty($paginaActual) ? 1 : $paginaActual;
@@ -184,9 +184,9 @@ class aulaController extends PplController{
         	
         } else {
         	
-        	if ( NingenCmsSession::getValue('aulaDuplicado') instanceof TblAula ){
+        	if ( OwlSession::getValue('aulaDuplicado') instanceof TblAula ){
         		
-        		$aulaDO = NingenCmsSession::getValue('aulaDuplicado');
+        		$aulaDO = OwlSession::getValue('aulaDuplicado');
         		$duplicar = true;
         		
         	}
@@ -289,7 +289,7 @@ class aulaController extends PplController{
         	$nombreAula = 'Copia de ' . $aulaDO->getVNombre();
         	$aulaDO->setVNombre($nombreAula);
 //        	$aulaDO->insert();
-			NingenCmsSession::setValue('aulaDuplicado', $aulaDO);
+			OwlSession::setValue('aulaDuplicado', $aulaDO);
         }
         
 //        $this->redirectTo('aula','editar', $this->db->getLastInsertId());
@@ -507,7 +507,7 @@ class aulaController extends PplController{
             }
             
             // Se ejecuta la búsqueda
-            $paginador = new NingenPaginator($this->db, $where, 'tblAula', $this->helper);
+            $paginador = new OwlPaginator($this->db, $where, 'tblAula', $this->helper);
             $paginador->setItemsPorPagina(10);
             $paginaActual = $this->helper->escapeInjection($this->helper->get('p'));
             $paginaActual = empty($paginaActual) ? 1 : $paginaActual;

@@ -1,15 +1,15 @@
 <?php
 /**
- * Este archivo ha sido generado con Ningen DoGen v.0.6
- * el 21 de October de 2010 a las 10:48:39
+ * Este archivo ha sido generado con Owl DoGen v.0.6
+ * el 24 de November de 2010 a las 08:55:33
  * @package dataAccess
  */
 
 /**
  * Archivos requeridos.
  */
-require_once( 'dbase/NingenConnection.inc');
-require_once( 'dbase/NingenGenericDO.inc');
+require_once( 'dbase/OwlConnection.inc');
+require_once( 'dbase/OwlGenericDO.inc');
 require_once( 'TblPlanSearch.inc' );
 require_once( 'TblPlanPK.inc' );
 
@@ -18,7 +18,7 @@ require_once( 'TblPlanPK.inc' );
  *
  * @package dataAccess
  */
-class TblPlan extends NingenGenericDO{
+class TblPlan extends OwlGenericDO{
 
     /**
      * Atributo que representa el campo "idPlan"
@@ -175,7 +175,7 @@ class TblPlan extends NingenGenericDO{
         if( $orderBy != '' ){
             $sql.=" ORDER BY $orderBy";
         }
-        return NingenGenericDO::createCollection( $db, $sql, 'TblPlan' );
+        return OwlGenericDO::createCollection( $db, $sql, 'TblPlan' );
 }
 
     /**
@@ -190,7 +190,7 @@ class TblPlan extends NingenGenericDO{
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
-         return NingenGenericDO::createCollection( $db, $sql, 'TblPlan' );
+         return OwlGenericDO::createCollection( $db, $sql, 'TblPlan' );
     }
 
     /**
@@ -204,7 +204,7 @@ class TblPlan extends NingenGenericDO{
 
        $db->executeQuery("SELECT * FROM tblPlan WHERE idPlan = '$idPlan'");
        $data = $db->fetchRow();
-       return NingenGenericDO::createDO( $db, $data, 'TblPlan');
+       return OwlGenericDO::createDO( $db, $data, 'TblPlan');
 
     }
 
@@ -222,41 +222,9 @@ class TblPlan extends NingenGenericDO{
         $where = implode(' AND ',$where);
         $db->executeQuery("SELECT * FROM tblPlan WHERE $where");
         $data = $db->fetchRow();
-        return NingenGenericDO::createDO( $db, $data, 'TblPlan');
+        return OwlGenericDO::createDO( $db, $data, 'TblPlan');
 
     }
-
-    /**
-     * Obtiene todas las filas de la tabla tblPlan que coinciden con el criterio fkTipoPlan='$fkTipoPlan'.
-     *
-     * @param Connection $db Conexión con la base de datos.
-     * @param integer fkTipoPlan string Valor del campo fkTipoPlan.
-     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
-     * @return array
-     */
-     public static function findByTblTipoPlan( $db, $fkTipoPlan, $orderBy='' ){
-         $sql = "SELECT * FROM tblPlan WHERE fkTipoPlan='$fkTipoPlan'";
-         if( $orderBy != '' ){
-             $sql .= " ORDER BY $orderBy";
-         }
-         return NingenGenericDO::createCollection( $db, $sql, 'TblPlan' );
-     }
-
-    /**
-     * Obtiene todas las filas de la tabla tblPlan que coinciden con el criterio fkEstadoPlan='$fkEstadoPlan'.
-     *
-     * @param Connection $db Conexión con la base de datos.
-     * @param integer fkEstadoPlan string Valor del campo fkEstadoPlan.
-     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
-     * @return array
-     */
-     public static function findByTblEstadoPlan( $db, $fkEstadoPlan, $orderBy='' ){
-         $sql = "SELECT * FROM tblPlan WHERE fkEstadoPlan='$fkEstadoPlan'";
-         if( $orderBy != '' ){
-             $sql .= " ORDER BY $orderBy";
-         }
-         return NingenGenericDO::createCollection( $db, $sql, 'TblPlan' );
-     }
 
     /**
      * Obtiene todas las filas de la tabla tblPlan que coinciden con el criterio fkConvocatoria='$fkConvocatoria'.
@@ -271,10 +239,10 @@ class TblPlan extends NingenGenericDO{
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
-         return NingenGenericDO::createCollection( $db, $sql, 'TblPlan' );
+         return OwlGenericDO::createCollection( $db, $sql, 'TblPlan' );
      }
 
-	/**
+/**
      * Obtiene todas las filas de la tabla tblPlan que coinciden con el criterio fkEmpresaConsultora='$fkEmpresaConsultora'.
      *
      * @param Connection $db Conexión con la base de datos.
@@ -304,6 +272,38 @@ class TblPlan extends NingenGenericDO{
              $sql .= " ORDER BY $orderBy";
          }
          return NingenGenericDO::createCollection( $db, $sql, 'TblPlan' );
+     }
+
+    /**
+     * Obtiene todas las filas de la tabla tblPlan que coinciden con el criterio fkEstadoPlan='$fkEstadoPlan'.
+     *
+     * @param Connection $db Conexión con la base de datos.
+     * @param integer fkEstadoPlan string Valor del campo fkEstadoPlan.
+     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
+     * @return array
+     */
+     public static function findByTblEstadoPlan( $db, $fkEstadoPlan, $orderBy='' ){
+         $sql = "SELECT * FROM tblPlan WHERE fkEstadoPlan='$fkEstadoPlan'";
+         if( $orderBy != '' ){
+             $sql .= " ORDER BY $orderBy";
+         }
+         return OwlGenericDO::createCollection( $db, $sql, 'TblPlan' );
+     }
+
+    /**
+     * Obtiene todas las filas de la tabla tblPlan que coinciden con el criterio fkTipoPlan='$fkTipoPlan'.
+     *
+     * @param Connection $db Conexión con la base de datos.
+     * @param integer fkTipoPlan string Valor del campo fkTipoPlan.
+     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
+     * @return array
+     */
+     public static function findByTblTipoPlan( $db, $fkTipoPlan, $orderBy='' ){
+         $sql = "SELECT * FROM tblPlan WHERE fkTipoPlan='$fkTipoPlan'";
+         if( $orderBy != '' ){
+             $sql .= " ORDER BY $orderBy";
+         }
+         return OwlGenericDO::createCollection( $db, $sql, 'TblPlan' );
      }
 
     /**
@@ -596,46 +596,6 @@ class TblPlan extends NingenGenericDO{
     // Relaciones
 
     /**
-     * Obtiene el objeto 'TblTipoPlan' relacionado.
-     *
-     * @return TblTipoPlan
-     */
-    public function getTblTipoPlan(){
-        require_once('TblTipoPlan.inc');
-        return TblTipoPlan::findByPrimaryKey( $this->_db, $this->fkTipoPlan );
-    }
-
-    /**
-     * Asigna el objeto 'TblTipoPlan' relacionado.
-     *
-     * @param TblTipoPlan $dataObject
-     */
-    public function setTblTipoPlan( $dataObject ){
-        require_once('TblTipoPlan.inc');
-        $this->setFkTipoPlan( $dataObject->getIdTipoPlan() );
-    }
-
-    /**
-     * Obtiene el objeto 'TblEstadoPlan' relacionado.
-     *
-     * @return TblEstadoPlan
-     */
-    public function getTblEstadoPlan(){
-        require_once('TblEstadoPlan.inc');
-        return TblEstadoPlan::findByPrimaryKey( $this->_db, $this->fkEstadoPlan );
-    }
-
-    /**
-     * Asigna el objeto 'TblEstadoPlan' relacionado.
-     *
-     * @param TblEstadoPlan $dataObject
-     */
-    public function setTblEstadoPlan( $dataObject ){
-        require_once('TblEstadoPlan.inc');
-        $this->setFkEstadoPlan( $dataObject->getIdEstadoPlan() );
-    }
-
-    /**
      * Obtiene el objeto 'TblConvocatoria' relacionado.
      *
      * @return TblConvocatoria
@@ -693,6 +653,46 @@ class TblPlan extends NingenGenericDO{
     public function setTblEmpresaPropietaria( $dataObject ){
         require_once('TblEmpresa.inc');
         $this->setFkEmpresaPropietaria( $dataObject->getIdEmpresa() );
+    }
+
+    /**
+     * Obtiene el objeto 'TblEstadoPlan' relacionado.
+     *
+     * @return TblEstadoPlan
+     */
+    public function getTblEstadoPlan(){
+        require_once('TblEstadoPlan.inc');
+        return TblEstadoPlan::findByPrimaryKey( $this->_db, $this->fkEstadoPlan );
+    }
+
+    /**
+     * Asigna el objeto 'TblEstadoPlan' relacionado.
+     *
+     * @param TblEstadoPlan $dataObject
+     */
+    public function setTblEstadoPlan( $dataObject ){
+        require_once('TblEstadoPlan.inc');
+        $this->setFkEstadoPlan( $dataObject->getIdEstadoPlan() );
+    }
+
+    /**
+     * Obtiene el objeto 'TblTipoPlan' relacionado.
+     *
+     * @return TblTipoPlan
+     */
+    public function getTblTipoPlan(){
+        require_once('TblTipoPlan.inc');
+        return TblTipoPlan::findByPrimaryKey( $this->_db, $this->fkTipoPlan );
+    }
+
+    /**
+     * Asigna el objeto 'TblTipoPlan' relacionado.
+     *
+     * @param TblTipoPlan $dataObject
+     */
+    public function setTblTipoPlan( $dataObject ){
+        require_once('TblTipoPlan.inc');
+        $this->setFkTipoPlan( $dataObject->getIdTipoPlan() );
     }
 }
 ?>

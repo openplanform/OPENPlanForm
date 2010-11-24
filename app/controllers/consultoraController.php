@@ -1,14 +1,14 @@
 <?php
 
-require_once NINGENCMS_CLASSESDIR . 'PplController.inc';
-require_once NINGENCMS_MODELDIR . 'TblPais.inc';
-require_once NINGENCMS_MODELDIR . 'TblProvincia.inc';
-require_once NINGENCMS_MODELDIR . 'TblUsuario.inc';
-require_once NINGENCMS_MODELDIR . 'TrelRolUsuario.inc';
+require_once CLASSESDIR . 'PplController.inc';
+require_once MODELDIR . 'TblPais.inc';
+require_once MODELDIR . 'TblProvincia.inc';
+require_once MODELDIR . 'TblUsuario.inc';
+require_once MODELDIR . 'TrelRolUsuario.inc';
 
-require_once 'helper/NingenCmsHtmlHelper.inc';
-require_once 'helper/NingenString.inc';
-require_once 'NingenPaginator.inc';
+require_once 'helper/OwlHtmlHelper.inc';
+require_once 'helper/OwlString.inc';
+require_once 'OwlPaginator.inc';
 
 
 class consultoraController extends PplController{
@@ -16,7 +16,7 @@ class consultoraController extends PplController{
     
     /**
      * Init
-     * @see extranet.planespime.es/ningencms/lib/NingenController::initController()
+     * @see extranet.planespime.es/owl/lib/OwlController::initController()
      */
     public function initController(){
        
@@ -26,7 +26,7 @@ class consultoraController extends PplController{
     
     /**
      * Acción inicial, por defecto, el listado
-     * @see extranet.planespime.es/ningencms/lib/NingenController::indexAction()
+     * @see extranet.planespime.es/owl/lib/OwlController::indexAction()
      */
     public function indexAction(){
         
@@ -57,7 +57,7 @@ class consultoraController extends PplController{
         $this->view->orderBy = $aliasOrderBy;
         
         // Se instancia y configura el paginador
-        $paginador = new NingenPaginator($this->db, 'e WHERE EXISTS ( SELECT NULL FROM trelRolUsuario ru WHERE e.fkUsuario = ru.fkUsuario AND ru.fkRol = ' . PplAclManager::ROL_CONSULTORA . ')', 'tblEmpresa', $this->helper);
+        $paginador = new OwlPaginator($this->db, 'e WHERE EXISTS ( SELECT NULL FROM trelRolUsuario ru WHERE e.fkUsuario = ru.fkUsuario AND ru.fkRol = ' . PplAclManager::ROL_CONSULTORA . ')', 'tblEmpresa', $this->helper);
         $paginador->setItemsPorPagina(10);
         $paginaActual = $this->helper->escapeInjection($this->helper->get('p'));
         $paginaActual = empty($paginaActual) ? 1 : $paginaActual;
@@ -148,7 +148,7 @@ class consultoraController extends PplController{
             $consultoraDO = TblEmpresa::findByPrimaryKey($this->db, $paramsARR[0]);
             $nombreconsultora = 'Copia de ' . $consultoraDO->getVNombre();
             $consultoraDO->setVNombre($nombreconsultora);
-            NingenCmsSession::setValue('consultoraDuplicada', $consultoraDO);
+            OwlSession::setValue('consultoraDuplicada', $consultoraDO);
             //$consultoraDO->insert();
         }
         
@@ -182,9 +182,9 @@ class consultoraController extends PplController{
         
         } else {
             
-            if ( NingenCmsSession::getValue('consultoraDuplicada') instanceof TblEmpresa ){
+            if ( OwlSession::getValue('consultoraDuplicada') instanceof TblEmpresa ){
                 
-                $consultoraDO = NingenCmsSession::getValue('consultoraDuplicada');
+                $consultoraDO = OwlCmsSession::getValue('consultoraDuplicada');
                 $this->view->consultoraDO = $consultoraDO;
                 $this->view->duplicar = $duplicar = true;
                 
@@ -372,7 +372,7 @@ class consultoraController extends PplController{
         }
             
         // Email
-        if (!NingenString::validaMail($email)){
+        if (!OwlString::validaMail($email)){
             $this->view->errorEmail = 'La dirección de correo proporcionada no es correcta.';
             $correcto = false;
         }
@@ -667,7 +667,7 @@ class consultoraController extends PplController{
             }
             
             // Se ejecuta la búsqueda
-            $paginador = new NingenPaginator($this->db, $where, 'tblEmpresa', $this->helper);
+            $paginador = new OwlPaginator($this->db, $where, 'tblEmpresa', $this->helper);
             $paginador->setItemsPorPagina(10);
             $paginaActual = $this->helper->escapeInjection($this->helper->get('p'));
             $paginaActual = empty($paginaActual) ? 1 : $paginaActual;

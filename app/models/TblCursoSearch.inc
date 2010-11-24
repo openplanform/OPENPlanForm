@@ -1,7 +1,7 @@
 <?php
 /**
- * Este archivo ha sido generado con Ningen Dogen v.0.6
- * el 04 de November de 2010 a las 12:12:53
+ * Este archivo ha sido generado con Owl Dogen v.0.6
+ * el 24 de November de 2010 a las 08:55:33
  * @package dataAccess
  */
 
@@ -148,28 +148,28 @@ class TblCursoSearch{
     /**
      * Representa el atributo iDeManana.
      *
-     * @var integer
+     * @var string
      */
     public $iDeManana;
 
     /**
      * Representa el atributo iAManana.
      *
-     * @var integer
+     * @var string
      */
     public $iAManana;
 
     /**
      * Representa el atributo iDeTarde.
      *
-     * @var integer
+     * @var string
      */
     public $iDeTarde;
 
     /**
      * Representa el atributo iATarde.
      *
-     * @var integer
+     * @var string
      */
     public $iATarde;
 
