@@ -1,15 +1,15 @@
 <?php
 /**
- * Este archivo ha sido generado con Ningen DoGen v.0.6
- * el 02 de November de 2010 a las 12:43:46
+ * Este archivo ha sido generado con Owl DoGen v.0.6
+ * el 24 de November de 2010 a las 08:55:33
  * @package dataAccess
  */
 
 /**
  * Archivos requeridos.
  */
-require_once( 'dbase/NingenConnection.inc');
-require_once( 'dbase/NingenGenericDO.inc');
+require_once( 'dbase/OwlConnection.inc');
+require_once( 'dbase/OwlGenericDO.inc');
 require_once( 'TblDisponibilidadProfesorSearch.inc' );
 require_once( 'TblDisponibilidadProfesorPK.inc' );
 
@@ -18,13 +18,13 @@ require_once( 'TblDisponibilidadProfesorPK.inc' );
  *
  * @package dataAccess
  */
-class TblDisponibilidadProfesor extends NingenGenericDO{
+class TblDisponibilidadProfesor extends OwlGenericDO{
 
     /**
-     * Atributo que representa el campo "tblPersona_idPersona"
+     * Atributo que representa el campo "fkPersona"
      * @var integer
      */
-    public $tblPersonaIdPersona;
+    public $fkPersona;
 
     /**
      * Atributo que representa el campo "dInicio"
@@ -66,7 +66,7 @@ class TblDisponibilidadProfesor extends NingenGenericDO{
     private function _setData( $data ){
 
         $this->_data = $data;
-        $this->tblPersonaIdPersona = $data['tblPersona_idPersona'];
+        $this->fkPersona = $data['fkPersona'];
         $this->dInicio = $data['dInicio'];
         $this->dFin = $data['dFin'];
         $this->idDisponibilidad = $data['idDisponibilidad'];
@@ -86,8 +86,8 @@ class TblDisponibilidadProfesor extends NingenGenericDO{
 
         $sql = 'SELECT * FROM tblDisponibilidadProfesor';
         $where = array();
-        if( $tmp = $searchItem->tblPersonaIdPersona ){
-            $where[] = "tblPersona_idPersona='$tmp'";
+        if( $tmp = $searchItem->fkPersona ){
+            $where[] = "fkPersona='$tmp'";
         }
         if( $tmp = $searchItem->dInicio ){
             $where[] = "dInicio='$tmp'";
@@ -105,7 +105,7 @@ class TblDisponibilidadProfesor extends NingenGenericDO{
         if( $orderBy != '' ){
             $sql.=" ORDER BY $orderBy";
         }
-        return NingenGenericDO::createCollection( $db, $sql, 'TblDisponibilidadProfesor' );
+        return OwlGenericDO::createCollection( $db, $sql, 'TblDisponibilidadProfesor' );
 }
 
     /**
@@ -120,7 +120,7 @@ class TblDisponibilidadProfesor extends NingenGenericDO{
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
-         return NingenGenericDO::createCollection( $db, $sql, 'TblDisponibilidadProfesor' );
+         return OwlGenericDO::createCollection( $db, $sql, 'TblDisponibilidadProfesor' );
     }
 
     /**
@@ -134,7 +134,7 @@ class TblDisponibilidadProfesor extends NingenGenericDO{
 
        $db->executeQuery("SELECT * FROM tblDisponibilidadProfesor WHERE idDisponibilidad = '$idDisponibilidad'");
        $data = $db->fetchRow();
-       return NingenGenericDO::createDO( $db, $data, 'TblDisponibilidadProfesor');
+       return OwlGenericDO::createDO( $db, $data, 'TblDisponibilidadProfesor');
 
     }
 
@@ -152,24 +152,24 @@ class TblDisponibilidadProfesor extends NingenGenericDO{
         $where = implode(' AND ',$where);
         $db->executeQuery("SELECT * FROM tblDisponibilidadProfesor WHERE $where");
         $data = $db->fetchRow();
-        return NingenGenericDO::createDO( $db, $data, 'TblDisponibilidadProfesor');
+        return OwlGenericDO::createDO( $db, $data, 'TblDisponibilidadProfesor');
 
     }
 
     /**
-     * Obtiene todas las filas de la tabla tblDisponibilidadProfesor que coinciden con el criterio tblPersona_idPersona='$tblPersonaIdPersona'.
+     * Obtiene todas las filas de la tabla tblDisponibilidadProfesor que coinciden con el criterio fkPersona='$fkPersona'.
      *
      * @param Connection $db Conexión con la base de datos.
-     * @param integer tblPersonaIdPersona string Valor del campo tblPersona_idPersona.
+     * @param integer fkPersona string Valor del campo fkPersona.
      * @param string $orderBy Cadena con los campos de ordenación separados por comas.
      * @return array
      */
-     public static function findByTblPersona( $db, $tblPersonaIdPersona, $orderBy='' ){
-         $sql = "SELECT * FROM tblDisponibilidadProfesor WHERE tblPersona_idPersona='$tblPersonaIdPersona'";
+     public static function findByTblPersona( $db, $fkPersona, $orderBy='' ){
+         $sql = "SELECT * FROM tblDisponibilidadProfesor WHERE fkPersona='$fkPersona'";
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
-         return NingenGenericDO::createCollection( $db, $sql, 'TblDisponibilidadProfesor' );
+         return OwlGenericDO::createCollection( $db, $sql, 'TblDisponibilidadProfesor' );
      }
 
     /**
@@ -177,7 +177,7 @@ class TblDisponibilidadProfesor extends NingenGenericDO{
      */
     public function update(){
         $sets = array();
-        $sets[] = 'tblPersona_idPersona=' . ( ( ( $value = $this->tblPersonaIdPersona ) === null || !isset($this->tblPersonaIdPersona) ) ? 'null' :  "'".addslashes($value)."'" );
+        $sets[] = 'fkPersona=' . ( ( ( $value = $this->fkPersona ) === null || !isset($this->fkPersona) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'dInicio=' . ( ( ( $value = $this->dInicio ) === null || !isset($this->dInicio) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'dFin=' . ( ( ( $value = $this->dFin ) === null || !isset($this->dFin) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'idDisponibilidad=' . ( ( ( $value = $this->idDisponibilidad ) === null || !isset($this->idDisponibilidad) ) ? 'null' :  "'".addslashes($value)."'" );
@@ -190,13 +190,13 @@ class TblDisponibilidadProfesor extends NingenGenericDO{
       */
     public function insert(){
         $attributes = array();
-        $attributes[] = 'tblPersona_idPersona';
+        $attributes[] = 'fkPersona';
         $attributes[] = 'dInicio';
         $attributes[] = 'dFin';
         $attributes[] = 'idDisponibilidad';
         $attributes = implode(',', $attributes);
         $values = array();
-        $values[] = (( $value = $this->tblPersonaIdPersona ) === null || !isset($this->tblPersonaIdPersona) ) ? 'null' : "'".addslashes($value)."'";
+        $values[] = (( $value = $this->fkPersona ) === null || !isset($this->fkPersona) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->dInicio ) === null || !isset($this->dInicio) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->dFin ) === null || !isset($this->dFin) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->idDisponibilidad ) === null || !isset($this->idDisponibilidad) ) ? 'null' : "'".addslashes($value)."'";
@@ -220,22 +220,22 @@ class TblDisponibilidadProfesor extends NingenGenericDO{
     }
 
     /**
-      * Obtiene el valor del atributo 'tblPersona_idPersona'.
+      * Obtiene el valor del atributo 'fkPersona'.
       *
       * @return integer
       */
-    public function getTblPersonaIdPersona(){
-        return $this->tblPersonaIdPersona;
+    public function getFkPersona(){
+        return $this->fkPersona;
     }
 
     /**
-      * Establece el valor del atributo 'tblPersona_idPersona'.
+      * Establece el valor del atributo 'fkPersona'.
       *
       * @param integer Valor.
       */
-    public function setTblPersonaIdPersona( $value ){
+    public function setFkPersona( $value ){
 
-        $this->tblPersonaIdPersona = $value;
+        $this->fkPersona = $value;
 
     }
 
@@ -308,7 +308,7 @@ class TblDisponibilidadProfesor extends NingenGenericDO{
      */
     public function getTblPersona(){
         require_once('TblPersona.inc');
-        return TblPersona::findByPrimaryKey( $this->_db, $this->tblPersonaIdPersona );
+        return TblPersona::findByPrimaryKey( $this->_db, $this->fkPersona );
     }
 
     /**
@@ -318,7 +318,7 @@ class TblDisponibilidadProfesor extends NingenGenericDO{
      */
     public function setTblPersona( $dataObject ){
         require_once('TblPersona.inc');
-        $this->setTblPersonaIdPersona( $dataObject->getIdPersona() );
+        $this->setFkPersona( $dataObject->getIdPersona() );
     }
 }
 ?>

@@ -1,15 +1,15 @@
 <?php
 /**
- * Este archivo ha sido generado con Ningen DoGen v.0.6
- * el 27 de October de 2010 a las 11:12:12
+ * Este archivo ha sido generado con Owl DoGen v.0.6
+ * el 24 de November de 2010 a las 08:55:33
  * @package dataAccess
  */
 
 /**
  * Archivos requeridos.
  */
-require_once( 'dbase/NingenConnection.inc');
-require_once( 'dbase/NingenGenericDO.inc');
+require_once( 'dbase/OwlConnection.inc');
+require_once( 'dbase/OwlGenericDO.inc');
 require_once( 'TblCentroSearch.inc' );
 require_once( 'TblCentroPK.inc' );
 
@@ -18,7 +18,7 @@ require_once( 'TblCentroPK.inc' );
  *
  * @package dataAccess
  */
-class TblCentro extends NingenGenericDO{
+class TblCentro extends OwlGenericDO{
 
     /**
      * Atributo que representa el campo "idCentro"
@@ -175,7 +175,7 @@ class TblCentro extends NingenGenericDO{
         if( $orderBy != '' ){
             $sql.=" ORDER BY $orderBy";
         }
-        return NingenGenericDO::createCollection( $db, $sql, 'TblCentro' );
+        return OwlGenericDO::createCollection( $db, $sql, 'TblCentro' );
 }
 
     /**
@@ -190,7 +190,7 @@ class TblCentro extends NingenGenericDO{
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
-         return NingenGenericDO::createCollection( $db, $sql, 'TblCentro' );
+         return OwlGenericDO::createCollection( $db, $sql, 'TblCentro' );
     }
 
     /**
@@ -204,7 +204,7 @@ class TblCentro extends NingenGenericDO{
 
        $db->executeQuery("SELECT * FROM tblCentro WHERE idCentro = '$idCentro'");
        $data = $db->fetchRow();
-       return NingenGenericDO::createDO( $db, $data, 'TblCentro');
+       return OwlGenericDO::createDO( $db, $data, 'TblCentro');
 
     }
 
@@ -222,7 +222,7 @@ class TblCentro extends NingenGenericDO{
         $where = implode(' AND ',$where);
         $db->executeQuery("SELECT * FROM tblCentro WHERE $where");
         $data = $db->fetchRow();
-        return NingenGenericDO::createDO( $db, $data, 'TblCentro');
+        return OwlGenericDO::createDO( $db, $data, 'TblCentro');
 
     }
 
@@ -239,7 +239,7 @@ class TblCentro extends NingenGenericDO{
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
-         return NingenGenericDO::createCollection( $db, $sql, 'TblCentro' );
+         return OwlGenericDO::createCollection( $db, $sql, 'TblCentro' );
      }
 
     /**
@@ -255,7 +255,7 @@ class TblCentro extends NingenGenericDO{
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
-         return NingenGenericDO::createCollection( $db, $sql, 'TblCentro' );
+         return OwlGenericDO::createCollection( $db, $sql, 'TblCentro' );
      }
 
     /**
@@ -271,7 +271,7 @@ class TblCentro extends NingenGenericDO{
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
-         return NingenGenericDO::createCollection( $db, $sql, 'TblCentro' );
+         return OwlGenericDO::createCollection( $db, $sql, 'TblCentro' );
      }
 
     /**

@@ -1,15 +1,15 @@
 <?php
 /**
- * Este archivo ha sido generado con Ningen DoGen v.0.6
- * el 21 de October de 2010 a las 10:48:39
+ * Este archivo ha sido generado con Owl DoGen v.0.6
+ * el 24 de November de 2010 a las 08:55:33
  * @package dataAccess
  */
 
 /**
  * Archivos requeridos.
  */
-require_once( 'dbase/NingenConnection.inc');
-require_once( 'dbase/NingenGenericDO.inc');
+require_once( 'dbase/OwlConnection.inc');
+require_once( 'dbase/OwlGenericDO.inc');
 require_once( 'TrelRequisitoConvocatoriaSearch.inc' );
 require_once( 'TrelRequisitoConvocatoriaPK.inc' );
 
@@ -18,7 +18,7 @@ require_once( 'TrelRequisitoConvocatoriaPK.inc' );
  *
  * @package dataAccess
  */
-class TrelRequisitoConvocatoria extends NingenGenericDO{
+class TrelRequisitoConvocatoria extends OwlGenericDO{
 
     /**
      * Atributo que representa el campo "fkConvocatoria"
@@ -85,7 +85,7 @@ class TrelRequisitoConvocatoria extends NingenGenericDO{
         if( $orderBy != '' ){
             $sql.=" ORDER BY $orderBy";
         }
-        return NingenGenericDO::createCollection( $db, $sql, 'TrelRequisitoConvocatoria' );
+        return OwlGenericDO::createCollection( $db, $sql, 'TrelRequisitoConvocatoria' );
 }
 
     /**
@@ -100,7 +100,7 @@ class TrelRequisitoConvocatoria extends NingenGenericDO{
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
-         return NingenGenericDO::createCollection( $db, $sql, 'TrelRequisitoConvocatoria' );
+         return OwlGenericDO::createCollection( $db, $sql, 'TrelRequisitoConvocatoria' );
     }
 
     /**
@@ -115,7 +115,7 @@ class TrelRequisitoConvocatoria extends NingenGenericDO{
 
        $db->executeQuery("SELECT * FROM trelRequisitoConvocatoria WHERE fkConvocatoria = '$fkConvocatoria' AND fkRequisito = '$fkRequisito'");
        $data = $db->fetchRow();
-       return NingenGenericDO::createDO( $db, $data, 'TrelRequisitoConvocatoria');
+       return OwlGenericDO::createDO( $db, $data, 'TrelRequisitoConvocatoria');
 
     }
 
@@ -134,7 +134,7 @@ class TrelRequisitoConvocatoria extends NingenGenericDO{
         $where = implode(' AND ',$where);
         $db->executeQuery("SELECT * FROM trelRequisitoConvocatoria WHERE $where");
         $data = $db->fetchRow();
-        return NingenGenericDO::createDO( $db, $data, 'TrelRequisitoConvocatoria');
+        return OwlGenericDO::createDO( $db, $data, 'TrelRequisitoConvocatoria');
 
     }
 
@@ -151,7 +151,7 @@ class TrelRequisitoConvocatoria extends NingenGenericDO{
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
-         return NingenGenericDO::createCollection( $db, $sql, 'TrelRequisitoConvocatoria' );
+         return OwlGenericDO::createCollection( $db, $sql, 'TrelRequisitoConvocatoria' );
      }
 
     /**
@@ -167,7 +167,7 @@ class TrelRequisitoConvocatoria extends NingenGenericDO{
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
-         return NingenGenericDO::createCollection( $db, $sql, 'TrelRequisitoConvocatoria' );
+         return OwlGenericDO::createCollection( $db, $sql, 'TrelRequisitoConvocatoria' );
      }
 
     /**

@@ -6,7 +6,7 @@
 		<div class="ficha">
 			<p><strong>Nombre:</strong><span> <?= $this->convocatoriaDO->getVNombre() ?></span></p>
 			<p><strong>Tipo:</strong><span> <?= $this->tiposConvocatoriaIDX[$this->convocatoriaDO->getFkTipoConvocatoria()] ?></span></p>
-			<p><strong>Presupuesto:</strong><span> <?= NingenNumeric::decimalFormatoEuropeo($this->convocatoriaDO->getEPresupuesto(), 2) ?>€</span></p>
+			<p><strong>Presupuesto:</strong><span> <?= OwlNumeric::decimalFormatoEuropeo($this->convocatoriaDO->getEPresupuesto(), 2) ?>€</span></p>
 			<?
 			
 			$descripcion = $this->convocatoriaDO->getVDescripcion();

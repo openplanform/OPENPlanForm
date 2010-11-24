@@ -75,7 +75,7 @@
             
             <div class="campo multi controlado">
                 <label for="nacimiento">Fecha de nacimiento*</label>
-                <input type="text" name="nacimiento" id="nacimiento" class="campoTexto mediano" onkeypress="return false;"  value="<?= NingenDate::getDiaMesAno($this->alumnoDO->getDNacimiento()) ?>"/>
+                <input type="text" name="nacimiento" id="nacimiento" class="campoTexto mediano" onkeypress="return false;"  value="<?= OwlDate::getDiaMesAno($this->alumnoDO->getDNacimiento()) ?>"/>
                 <p id="errorNacimiento" class="errorInput"><?= $this->errorNacimiento ?></p>
             </div>
             
@@ -301,8 +301,8 @@
 					<td><?= $this->categoriasIDX[$cursoDO->getFkCategoria()] ?></td-->
 					<td><?= $this->sectoresIDX[$cursoDO->getFkSector()] ?></td>
 					<td><?= $this->categoriasIDX[$cursoDO->getFkCategoria()] ?></td>
-					<td><?= NingenDate::getDiaMesAno($cursoDO->getDInicio()) ?></td>
-					<td><?= NingenDate::getDiaMesAno($cursoDO->getDFin()) ?></td>
+					<td><?= OwlDate::getDiaMesAno($cursoDO->getDInicio()) ?></td>
+					<td><?= OwlDate::getDiaMesAno($cursoDO->getDFin()) ?></td>
 					<td><a href="javascript:comprobarCandidatoCurso('<?= $this->alumnoDO->getIdPersona() ?>','<?= $cursoDO->getIdCurso() ?>', '<?= $cursoDO->getVNombre() ?>')" class="btnAnadir" title="Asignar al alumno"><span>añadir</span></a></td>
 				</tr>
 				<?

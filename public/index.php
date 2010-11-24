@@ -27,7 +27,7 @@ set_include_path(get_include_path() .
 
 // Se inicia la sessión
 require_once 'OwlSession.inc';
-OwlCmsSession::create();
+OwlSession::create();
 
 // Se instancia la aplicación
 require_once 'OwlApplication.inc';

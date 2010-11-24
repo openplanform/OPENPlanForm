@@ -1,15 +1,15 @@
 <?php
 /**
- * Este archivo ha sido generado con Ningen DoGen v.0.6
- * el 21 de October de 2010 a las 10:48:39
+ * Este archivo ha sido generado con Owl DoGen v.0.6
+ * el 24 de November de 2010 a las 08:55:33
  * @package dataAccess
  */
 
 /**
  * Archivos requeridos.
  */
-require_once( 'dbase/NingenConnection.inc');
-require_once( 'dbase/NingenGenericDO.inc');
+require_once( 'dbase/OwlConnection.inc');
+require_once( 'dbase/OwlGenericDO.inc');
 require_once( 'TblCategoriaSearch.inc' );
 require_once( 'TblCategoriaPK.inc' );
 
@@ -18,7 +18,7 @@ require_once( 'TblCategoriaPK.inc' );
  *
  * @package dataAccess
  */
-class TblCategoria extends NingenGenericDO{
+class TblCategoria extends OwlGenericDO{
 
     /**
      * Atributo que representa el campo "idCategoria"
@@ -105,7 +105,7 @@ class TblCategoria extends NingenGenericDO{
         if( $orderBy != '' ){
             $sql.=" ORDER BY $orderBy";
         }
-        return NingenGenericDO::createCollection( $db, $sql, 'TblCategoria' );
+        return OwlGenericDO::createCollection( $db, $sql, 'TblCategoria' );
 }
 
     /**
@@ -120,7 +120,7 @@ class TblCategoria extends NingenGenericDO{
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
-         return NingenGenericDO::createCollection( $db, $sql, 'TblCategoria' );
+         return OwlGenericDO::createCollection( $db, $sql, 'TblCategoria' );
     }
 
     /**
@@ -135,7 +135,7 @@ class TblCategoria extends NingenGenericDO{
 
        $db->executeQuery("SELECT * FROM tblCategoria WHERE idCategoria = '$idCategoria' AND fkPadre = '$fkPadre'");
        $data = $db->fetchRow();
-       return NingenGenericDO::createDO( $db, $data, 'TblCategoria');
+       return OwlGenericDO::createDO( $db, $data, 'TblCategoria');
 
     }
 
@@ -154,25 +154,9 @@ class TblCategoria extends NingenGenericDO{
         $where = implode(' AND ',$where);
         $db->executeQuery("SELECT * FROM tblCategoria WHERE $where");
         $data = $db->fetchRow();
-        return NingenGenericDO::createDO( $db, $data, 'TblCategoria');
+        return OwlGenericDO::createDO( $db, $data, 'TblCategoria');
 
     }
-
-    /**
-     * Obtiene todas las filas de la tabla tblCategoria que coinciden con el criterio fkPadre='$fkPadre'.
-     *
-     * @param Connection $db Conexión con la base de datos.
-     * @param integer fkPadre string Valor del campo fkPadre.
-     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
-     * @return array
-     */
-     public static function findByTblCategoria( $db, $fkPadre, $orderBy='' ){
-         $sql = "SELECT * FROM tblCategoria WHERE fkPadre='$fkPadre'";
-         if( $orderBy != '' ){
-             $sql .= " ORDER BY $orderBy";
-         }
-         return NingenGenericDO::createCollection( $db, $sql, 'TblCategoria' );
-     }
 
     /**
      * Actualiza una fila de la tabla tblCategoria.
@@ -289,19 +273,6 @@ class TblCategoria extends NingenGenericDO{
     }
 
     /**
-     * Obtiene todos los elementos relacionados de la tabla 'tblCategoria'
-     *
-     * @param Connection $db Conexión con la base de datos.
-     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
-     */
-    public function getTblCategorias( $orderBy='' ){
-
-        include_once('TblCategoria.inc');
-        return TblCategoria::findByTblCategoria( $this->_db, $this->idCategoria, $this->fkPadre, $orderBy );
-
-    }
-
-    /**
      * Obtiene todos los elementos relacionados de la tabla 'tblCurso'
      *
      * @param Connection $db Conexión con la base de datos.
@@ -314,26 +285,17 @@ class TblCategoria extends NingenGenericDO{
 
     }
 
-    // Relaciones
-
     /**
-     * Obtiene el objeto 'TblCategoria' relacionado.
+     * Obtiene todos los elementos relacionados de la tabla 'trelPersonaCategoria'
      *
-     * @return TblCategoria
+     * @param Connection $db Conexión con la base de datos.
+     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
      */
-    public function getTblCategoria(){
-        require_once('TblCategoria.inc');
-        return TblCategoria::findByPrimaryKey( $this->_db, $this->fkPadre );
-    }
+    public function getTrelPersonaCategorias( $orderBy='' ){
 
-    /**
-     * Asigna el objeto 'TblCategoria' relacionado.
-     *
-     * @param TblCategoria $dataObject
-     */
-    public function setTblCategoria( $dataObject ){
-        require_once('TblCategoria.inc');
-        $this->setFkPadre( $dataObject->getIdCategoria() );
+        include_once('TrelPersonaCategoria.inc');
+        return TrelPersonaCategoria::findByTblCategoria( $this->_db, $this->idCategoria, $this->fkPadre, $orderBy );
+
     }
 }
 ?>

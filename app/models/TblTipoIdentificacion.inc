@@ -1,15 +1,15 @@
 <?php
 /**
- * Este archivo ha sido generado con Ningen DoGen v.0.6
- * el 21 de October de 2010 a las 10:48:39
+ * Este archivo ha sido generado con Owl DoGen v.0.6
+ * el 24 de November de 2010 a las 08:55:33
  * @package dataAccess
  */
 
 /**
  * Archivos requeridos.
  */
-require_once( 'dbase/NingenConnection.inc');
-require_once( 'dbase/NingenGenericDO.inc');
+require_once( 'dbase/OwlConnection.inc');
+require_once( 'dbase/OwlGenericDO.inc');
 require_once( 'TblTipoIdentificacionSearch.inc' );
 require_once( 'TblTipoIdentificacionPK.inc' );
 
@@ -18,7 +18,7 @@ require_once( 'TblTipoIdentificacionPK.inc' );
  *
  * @package dataAccess
  */
-class TblTipoIdentificacion extends NingenGenericDO{
+class TblTipoIdentificacion extends OwlGenericDO{
 
     /**
      * Atributo que representa el campo "idTipoIdentificacion"
@@ -85,7 +85,7 @@ class TblTipoIdentificacion extends NingenGenericDO{
         if( $orderBy != '' ){
             $sql.=" ORDER BY $orderBy";
         }
-        return NingenGenericDO::createCollection( $db, $sql, 'TblTipoIdentificacion' );
+        return OwlGenericDO::createCollection( $db, $sql, 'TblTipoIdentificacion' );
 }
 
     /**
@@ -100,7 +100,7 @@ class TblTipoIdentificacion extends NingenGenericDO{
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
-         return NingenGenericDO::createCollection( $db, $sql, 'TblTipoIdentificacion' );
+         return OwlGenericDO::createCollection( $db, $sql, 'TblTipoIdentificacion' );
     }
 
     /**
@@ -114,7 +114,7 @@ class TblTipoIdentificacion extends NingenGenericDO{
 
        $db->executeQuery("SELECT * FROM tblTipoIdentificacion WHERE idTipoIdentificacion = '$idTipoIdentificacion'");
        $data = $db->fetchRow();
-       return NingenGenericDO::createDO( $db, $data, 'TblTipoIdentificacion');
+       return OwlGenericDO::createDO( $db, $data, 'TblTipoIdentificacion');
 
     }
 
@@ -132,7 +132,7 @@ class TblTipoIdentificacion extends NingenGenericDO{
         $where = implode(' AND ',$where);
         $db->executeQuery("SELECT * FROM tblTipoIdentificacion WHERE $where");
         $data = $db->fetchRow();
-        return NingenGenericDO::createDO( $db, $data, 'TblTipoIdentificacion');
+        return OwlGenericDO::createDO( $db, $data, 'TblTipoIdentificacion');
 
     }
 

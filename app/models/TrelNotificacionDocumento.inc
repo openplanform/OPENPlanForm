@@ -1,15 +1,15 @@
 <?php
 /**
- * Este archivo ha sido generado con Ningen DoGen v.0.6
- * el 21 de October de 2010 a las 10:48:39
+ * Este archivo ha sido generado con Owl DoGen v.0.6
+ * el 24 de November de 2010 a las 08:55:33
  * @package dataAccess
  */
 
 /**
  * Archivos requeridos.
  */
-require_once( 'dbase/NingenConnection.inc');
-require_once( 'dbase/NingenGenericDO.inc');
+require_once( 'dbase/OwlConnection.inc');
+require_once( 'dbase/OwlGenericDO.inc');
 require_once( 'TrelNotificacionDocumentoSearch.inc' );
 require_once( 'TrelNotificacionDocumentoPK.inc' );
 
@@ -18,7 +18,7 @@ require_once( 'TrelNotificacionDocumentoPK.inc' );
  *
  * @package dataAccess
  */
-class TrelNotificacionDocumento extends NingenGenericDO{
+class TrelNotificacionDocumento extends OwlGenericDO{
 
     /**
      * Atributo que representa el campo "fkNotificacion"
@@ -85,7 +85,7 @@ class TrelNotificacionDocumento extends NingenGenericDO{
         if( $orderBy != '' ){
             $sql.=" ORDER BY $orderBy";
         }
-        return NingenGenericDO::createCollection( $db, $sql, 'TrelNotificacionDocumento' );
+        return OwlGenericDO::createCollection( $db, $sql, 'TrelNotificacionDocumento' );
 }
 
     /**
@@ -100,7 +100,7 @@ class TrelNotificacionDocumento extends NingenGenericDO{
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
-         return NingenGenericDO::createCollection( $db, $sql, 'TrelNotificacionDocumento' );
+         return OwlGenericDO::createCollection( $db, $sql, 'TrelNotificacionDocumento' );
     }
 
     /**
@@ -115,7 +115,7 @@ class TrelNotificacionDocumento extends NingenGenericDO{
 
        $db->executeQuery("SELECT * FROM trelNotificacionDocumento WHERE fkNotificacion = '$fkNotificacion' AND fkDocumento = '$fkDocumento'");
        $data = $db->fetchRow();
-       return NingenGenericDO::createDO( $db, $data, 'TrelNotificacionDocumento');
+       return OwlGenericDO::createDO( $db, $data, 'TrelNotificacionDocumento');
 
     }
 
@@ -134,25 +134,9 @@ class TrelNotificacionDocumento extends NingenGenericDO{
         $where = implode(' AND ',$where);
         $db->executeQuery("SELECT * FROM trelNotificacionDocumento WHERE $where");
         $data = $db->fetchRow();
-        return NingenGenericDO::createDO( $db, $data, 'TrelNotificacionDocumento');
+        return OwlGenericDO::createDO( $db, $data, 'TrelNotificacionDocumento');
 
     }
-
-    /**
-     * Obtiene todas las filas de la tabla trelNotificacionDocumento que coinciden con el criterio fkNotificacion='$fkNotificacion'.
-     *
-     * @param Connection $db Conexión con la base de datos.
-     * @param integer fkNotificacion string Valor del campo fkNotificacion.
-     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
-     * @return array
-     */
-     public static function findByTblNotificacion( $db, $fkNotificacion, $orderBy='' ){
-         $sql = "SELECT * FROM trelNotificacionDocumento WHERE fkNotificacion='$fkNotificacion'";
-         if( $orderBy != '' ){
-             $sql .= " ORDER BY $orderBy";
-         }
-         return NingenGenericDO::createCollection( $db, $sql, 'TrelNotificacionDocumento' );
-     }
 
     /**
      * Obtiene todas las filas de la tabla trelNotificacionDocumento que coinciden con el criterio fkDocumento='$fkDocumento'.
@@ -167,7 +151,23 @@ class TrelNotificacionDocumento extends NingenGenericDO{
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
-         return NingenGenericDO::createCollection( $db, $sql, 'TrelNotificacionDocumento' );
+         return OwlGenericDO::createCollection( $db, $sql, 'TrelNotificacionDocumento' );
+     }
+
+    /**
+     * Obtiene todas las filas de la tabla trelNotificacionDocumento que coinciden con el criterio fkNotificacion='$fkNotificacion'.
+     *
+     * @param Connection $db Conexión con la base de datos.
+     * @param integer fkNotificacion string Valor del campo fkNotificacion.
+     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
+     * @return array
+     */
+     public static function findByTblNotificacion( $db, $fkNotificacion, $orderBy='' ){
+         $sql = "SELECT * FROM trelNotificacionDocumento WHERE fkNotificacion='$fkNotificacion'";
+         if( $orderBy != '' ){
+             $sql .= " ORDER BY $orderBy";
+         }
+         return OwlGenericDO::createCollection( $db, $sql, 'TrelNotificacionDocumento' );
      }
 
     /**
@@ -255,26 +255,6 @@ class TrelNotificacionDocumento extends NingenGenericDO{
     // Relaciones
 
     /**
-     * Obtiene el objeto 'TblNotificacion' relacionado.
-     *
-     * @return TblNotificacion
-     */
-    public function getTblNotificacion(){
-        require_once('TblNotificacion.inc');
-        return TblNotificacion::findByPrimaryKey( $this->_db, $this->fkNotificacion );
-    }
-
-    /**
-     * Asigna el objeto 'TblNotificacion' relacionado.
-     *
-     * @param TblNotificacion $dataObject
-     */
-    public function setTblNotificacion( $dataObject ){
-        require_once('TblNotificacion.inc');
-        $this->setFkNotificacion( $dataObject->getIdNotificacion() );
-    }
-
-    /**
      * Obtiene el objeto 'TblDocumento' relacionado.
      *
      * @return TblDocumento
@@ -292,6 +272,26 @@ class TrelNotificacionDocumento extends NingenGenericDO{
     public function setTblDocumento( $dataObject ){
         require_once('TblDocumento.inc');
         $this->setFkDocumento( $dataObject->getIdDocumento() );
+    }
+
+    /**
+     * Obtiene el objeto 'TblNotificacion' relacionado.
+     *
+     * @return TblNotificacion
+     */
+    public function getTblNotificacion(){
+        require_once('TblNotificacion.inc');
+        return TblNotificacion::findByPrimaryKey( $this->_db, $this->fkNotificacion );
+    }
+
+    /**
+     * Asigna el objeto 'TblNotificacion' relacionado.
+     *
+     * @param TblNotificacion $dataObject
+     */
+    public function setTblNotificacion( $dataObject ){
+        require_once('TblNotificacion.inc');
+        $this->setFkNotificacion( $dataObject->getIdNotificacion() );
     }
 }
 ?>

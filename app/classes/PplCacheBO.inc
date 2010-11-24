@@ -1,7 +1,7 @@
 <?php
 
 require_once 'OwlController.inc';
-require_once 'helper/OwlDatabase.inc';
+require_once 'dbase/OwlDatabase.inc';
 
 require_once MODELDIR . 'TblEmpresa.inc';
 require_once MODELDIR . 'TblEstadoPlan.inc';

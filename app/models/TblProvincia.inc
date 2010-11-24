@@ -1,15 +1,15 @@
 <?php
 /**
- * Este archivo ha sido generado con Ningen DoGen v.0.6
- * el 21 de October de 2010 a las 10:48:39
+ * Este archivo ha sido generado con Owl DoGen v.0.6
+ * el 24 de November de 2010 a las 08:55:33
  * @package dataAccess
  */
 
 /**
  * Archivos requeridos.
  */
-require_once( 'dbase/NingenConnection.inc');
-require_once( 'dbase/NingenGenericDO.inc');
+require_once( 'dbase/OwlConnection.inc');
+require_once( 'dbase/OwlGenericDO.inc');
 require_once( 'TblProvinciaSearch.inc' );
 require_once( 'TblProvinciaPK.inc' );
 
@@ -18,7 +18,7 @@ require_once( 'TblProvinciaPK.inc' );
  *
  * @package dataAccess
  */
-class TblProvincia extends NingenGenericDO{
+class TblProvincia extends OwlGenericDO{
 
     /**
      * Atributo que representa el campo "idProvincia"
@@ -105,7 +105,7 @@ class TblProvincia extends NingenGenericDO{
         if( $orderBy != '' ){
             $sql.=" ORDER BY $orderBy";
         }
-        return NingenGenericDO::createCollection( $db, $sql, 'TblProvincia' );
+        return OwlGenericDO::createCollection( $db, $sql, 'TblProvincia' );
 }
 
     /**
@@ -120,7 +120,7 @@ class TblProvincia extends NingenGenericDO{
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
-         return NingenGenericDO::createCollection( $db, $sql, 'TblProvincia' );
+         return OwlGenericDO::createCollection( $db, $sql, 'TblProvincia' );
     }
 
     /**
@@ -134,7 +134,7 @@ class TblProvincia extends NingenGenericDO{
 
        $db->executeQuery("SELECT * FROM tblProvincia WHERE idProvincia = '$idProvincia'");
        $data = $db->fetchRow();
-       return NingenGenericDO::createDO( $db, $data, 'TblProvincia');
+       return OwlGenericDO::createDO( $db, $data, 'TblProvincia');
 
     }
 
@@ -152,7 +152,7 @@ class TblProvincia extends NingenGenericDO{
         $where = implode(' AND ',$where);
         $db->executeQuery("SELECT * FROM tblProvincia WHERE $where");
         $data = $db->fetchRow();
-        return NingenGenericDO::createDO( $db, $data, 'TblProvincia');
+        return OwlGenericDO::createDO( $db, $data, 'TblProvincia');
 
     }
 
@@ -327,7 +327,7 @@ class TblProvincia extends NingenGenericDO{
       * Obtiene el valor de la atributo 'vNombre' según el idioma activo.
       *
       * @return string
-      * @see NingenGenericDO::setLang()
+      * @see OwlGenericDO::setLang()
       */
     public function getVNombre(){
 
@@ -340,7 +340,7 @@ class TblProvincia extends NingenGenericDO{
       * Establece el valor del atributo 'vNombre' según el idioma activo.
       *
       * @param string $value Valor.
-      * @see NingenGenericDO::setLang()
+      * @see OwlGenericDO::setLang()
       */
     public function setVNombre( $value ){
 

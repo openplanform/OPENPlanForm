@@ -1,7 +1,7 @@
 <?php
 /**
- * Este archivo ha sido generado con Ningen Dogen v.0.6
- * el 02 de November de 2010 a las 12:43:46
+ * Este archivo ha sido generado con Owl Dogen v.0.6
+ * el 24 de November de 2010 a las 08:55:33
  * @package dataAccess
  */
 
@@ -13,11 +13,11 @@
 class TblDisponibilidadProfesorSearch{
 
     /**
-     * Representa el atributo tblPersona_idPersona.
+     * Representa el atributo fkPersona.
      *
      * @var integer
      */
-    public $tblPersonaIdPersona;
+    public $fkPersona;
 
     /**
      * Representa el atributo dInicio.

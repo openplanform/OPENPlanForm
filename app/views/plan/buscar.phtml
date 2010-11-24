@@ -132,7 +132,7 @@
                                 <td><?= $this->tiposPlanIDX[$planDO->getFkTipoPlan()] ?></td>
                                 <td><?= $this->estadosPlanIDX[$planDO->getFkEstadoPlan()] ?></td>
                                 <td><?= $this->consultorasIDX[$planDO->getFkEmpresaPropietaria()] ?></td>
-                                <td><?= NingenNumeric::decimalFormatoEuropeo($planDO->getEPresupuestoAsignado(), 2) ?>€</td>
+                                <td><?= OwlNumeric::decimalFormatoEuropeo($planDO->getEPresupuestoAsignado(), 2) ?>€</td>
                                 <?
                         
                                     if ( $this->editar ){

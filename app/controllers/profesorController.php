@@ -18,7 +18,7 @@ require_once MODELDIR . 'TrelProfesor.inc';
 require_once MODELDIR . 'TrelRolUsuario.inc';
 
 require_once 'helper/OwlHtmlHelper.inc';
-require_once 'helper/OwlDatabase.inc';
+require_once 'dbase/OwlDatabase.inc';
 require_once 'OwlPaginator.inc';
 
 

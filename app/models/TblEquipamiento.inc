@@ -1,15 +1,15 @@
 <?php
 /**
- * Este archivo ha sido generado con Ningen DoGen v.0.6
- * el 21 de October de 2010 a las 10:48:39
+ * Este archivo ha sido generado con Owl DoGen v.0.6
+ * el 24 de November de 2010 a las 08:55:33
  * @package dataAccess
  */
 
 /**
  * Archivos requeridos.
  */
-require_once( 'dbase/NingenConnection.inc');
-require_once( 'dbase/NingenGenericDO.inc');
+require_once( 'dbase/OwlConnection.inc');
+require_once( 'dbase/OwlGenericDO.inc');
 require_once( 'TblEquipamientoSearch.inc' );
 require_once( 'TblEquipamientoPK.inc' );
 
@@ -18,7 +18,7 @@ require_once( 'TblEquipamientoPK.inc' );
  *
  * @package dataAccess
  */
-class TblEquipamiento extends NingenGenericDO{
+class TblEquipamiento extends OwlGenericDO{
 
     /**
      * Atributo que representa el campo "idEquipamiento"
@@ -95,7 +95,7 @@ class TblEquipamiento extends NingenGenericDO{
         if( $orderBy != '' ){
             $sql.=" ORDER BY $orderBy";
         }
-        return NingenGenericDO::createCollection( $db, $sql, 'TblEquipamiento' );
+        return OwlGenericDO::createCollection( $db, $sql, 'TblEquipamiento' );
 }
 
     /**
@@ -110,7 +110,7 @@ class TblEquipamiento extends NingenGenericDO{
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
-         return NingenGenericDO::createCollection( $db, $sql, 'TblEquipamiento' );
+         return OwlGenericDO::createCollection( $db, $sql, 'TblEquipamiento' );
     }
 
     /**
@@ -124,7 +124,7 @@ class TblEquipamiento extends NingenGenericDO{
 
        $db->executeQuery("SELECT * FROM tblEquipamiento WHERE idEquipamiento = '$idEquipamiento'");
        $data = $db->fetchRow();
-       return NingenGenericDO::createDO( $db, $data, 'TblEquipamiento');
+       return OwlGenericDO::createDO( $db, $data, 'TblEquipamiento');
 
     }
 
@@ -142,7 +142,7 @@ class TblEquipamiento extends NingenGenericDO{
         $where = implode(' AND ',$where);
         $db->executeQuery("SELECT * FROM tblEquipamiento WHERE $where");
         $data = $db->fetchRow();
-        return NingenGenericDO::createDO( $db, $data, 'TblEquipamiento');
+        return OwlGenericDO::createDO( $db, $data, 'TblEquipamiento');
 
     }
 

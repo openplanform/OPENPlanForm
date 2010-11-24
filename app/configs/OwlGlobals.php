@@ -61,7 +61,7 @@ define('MODULEDIR', APPDIR . 'modules/');
 define('CLASSESDIR', APPDIR . 'classes/');
 
 // Desarrollo | Producción
-define('DEV', preg_match('/\.in\./', $_SERVER['SERVER_NAME']));
+define('DEVELOPMENT', preg_match('/\.in\./', $_SERVER['SERVER_NAME']));
 
 // Codificación a utilizar
 define('APPENCODING', 'UTF-8');

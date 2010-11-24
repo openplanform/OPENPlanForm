@@ -1,6 +1,6 @@
 <?php
 
-require_once NINGENCMS_MODELDIR . 'TblAcceso.inc';
+require_once MODELDIR . 'TblAcceso.inc';
 
 class TblAccesoExtendido extends TblAcceso{
     
@@ -16,7 +16,7 @@ class TblAccesoExtendido extends TblAcceso{
        $db->executeQuery("SELECT * FROM tblAcceso WHERE idAcceso = '$idAcceso'");
        $data = $db->fetchRow();
        
-       return NingenGenericDO::createDO( $db, $data, 'TblAcceso');
+       return OwlGenericDO::createDO( $db, $data, 'TblAcceso');
 
     }    
     

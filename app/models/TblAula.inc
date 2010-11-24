@@ -1,15 +1,15 @@
 <?php
 /**
- * Este archivo ha sido generado con Ningen DoGen v.0.6
- * el 21 de October de 2010 a las 10:48:39
+ * Este archivo ha sido generado con Owl DoGen v.0.6
+ * el 24 de November de 2010 a las 08:55:32
  * @package dataAccess
  */
 
 /**
  * Archivos requeridos.
  */
-require_once( 'dbase/NingenConnection.inc');
-require_once( 'dbase/NingenGenericDO.inc');
+require_once( 'dbase/OwlConnection.inc');
+require_once( 'dbase/OwlGenericDO.inc');
 require_once( 'TblAulaSearch.inc' );
 require_once( 'TblAulaPK.inc' );
 
@@ -18,7 +18,7 @@ require_once( 'TblAulaPK.inc' );
  *
  * @package dataAccess
  */
-class TblAula extends NingenGenericDO{
+class TblAula extends OwlGenericDO{
 
     /**
      * Atributo que representa el campo "idAula"
@@ -175,7 +175,7 @@ class TblAula extends NingenGenericDO{
         if( $orderBy != '' ){
             $sql.=" ORDER BY $orderBy";
         }
-        return NingenGenericDO::createCollection( $db, $sql, 'TblAula' );
+        return OwlGenericDO::createCollection( $db, $sql, 'TblAula' );
 }
 
     /**
@@ -190,7 +190,7 @@ class TblAula extends NingenGenericDO{
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
-         return NingenGenericDO::createCollection( $db, $sql, 'TblAula' );
+         return OwlGenericDO::createCollection( $db, $sql, 'TblAula' );
     }
 
     /**
@@ -204,7 +204,7 @@ class TblAula extends NingenGenericDO{
 
        $db->executeQuery("SELECT * FROM tblAula WHERE idAula = '$idAula'");
        $data = $db->fetchRow();
-       return NingenGenericDO::createDO( $db, $data, 'TblAula');
+       return OwlGenericDO::createDO( $db, $data, 'TblAula');
 
     }
 
@@ -222,25 +222,9 @@ class TblAula extends NingenGenericDO{
         $where = implode(' AND ',$where);
         $db->executeQuery("SELECT * FROM tblAula WHERE $where");
         $data = $db->fetchRow();
-        return NingenGenericDO::createDO( $db, $data, 'TblAula');
+        return OwlGenericDO::createDO( $db, $data, 'TblAula');
 
     }
-
-    /**
-     * Obtiene todas las filas de la tabla tblAula que coinciden con el criterio fkProvincia='$fkProvincia'.
-     *
-     * @param Connection $db Conexión con la base de datos.
-     * @param integer fkProvincia string Valor del campo fkProvincia.
-     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
-     * @return array
-     */
-     public static function findByTblProvincia( $db, $fkProvincia, $orderBy='' ){
-         $sql = "SELECT * FROM tblAula WHERE fkProvincia='$fkProvincia'";
-         if( $orderBy != '' ){
-             $sql .= " ORDER BY $orderBy";
-         }
-         return NingenGenericDO::createCollection( $db, $sql, 'TblAula' );
-     }
 
     /**
      * Obtiene todas las filas de la tabla tblAula que coinciden con el criterio fkCentro='$fkCentro'.
@@ -255,7 +239,7 @@ class TblAula extends NingenGenericDO{
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
-         return NingenGenericDO::createCollection( $db, $sql, 'TblAula' );
+         return OwlGenericDO::createCollection( $db, $sql, 'TblAula' );
      }
 
     /**
@@ -271,7 +255,23 @@ class TblAula extends NingenGenericDO{
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
-         return NingenGenericDO::createCollection( $db, $sql, 'TblAula' );
+         return OwlGenericDO::createCollection( $db, $sql, 'TblAula' );
+     }
+
+    /**
+     * Obtiene todas las filas de la tabla tblAula que coinciden con el criterio fkProvincia='$fkProvincia'.
+     *
+     * @param Connection $db Conexión con la base de datos.
+     * @param integer fkProvincia string Valor del campo fkProvincia.
+     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
+     * @return array
+     */
+     public static function findByTblProvincia( $db, $fkProvincia, $orderBy='' ){
+         $sql = "SELECT * FROM tblAula WHERE fkProvincia='$fkProvincia'";
+         if( $orderBy != '' ){
+             $sql .= " ORDER BY $orderBy";
+         }
+         return OwlGenericDO::createCollection( $db, $sql, 'TblAula' );
      }
 
     /**
@@ -590,26 +590,6 @@ class TblAula extends NingenGenericDO{
     // Relaciones
 
     /**
-     * Obtiene el objeto 'TblProvincia' relacionado.
-     *
-     * @return TblProvincia
-     */
-    public function getTblProvincia(){
-        require_once('TblProvincia.inc');
-        return TblProvincia::findByPrimaryKey( $this->_db, $this->fkProvincia );
-    }
-
-    /**
-     * Asigna el objeto 'TblProvincia' relacionado.
-     *
-     * @param TblProvincia $dataObject
-     */
-    public function setTblProvincia( $dataObject ){
-        require_once('TblProvincia.inc');
-        $this->setFkProvincia( $dataObject->getIdProvincia() );
-    }
-
-    /**
      * Obtiene el objeto 'TblCentro' relacionado.
      *
      * @return TblCentro
@@ -647,6 +627,26 @@ class TblAula extends NingenGenericDO{
     public function setTblPais( $dataObject ){
         require_once('TblPais.inc');
         $this->setFkPais( $dataObject->getVIso() );
+    }
+
+    /**
+     * Obtiene el objeto 'TblProvincia' relacionado.
+     *
+     * @return TblProvincia
+     */
+    public function getTblProvincia(){
+        require_once('TblProvincia.inc');
+        return TblProvincia::findByPrimaryKey( $this->_db, $this->fkProvincia );
+    }
+
+    /**
+     * Asigna el objeto 'TblProvincia' relacionado.
+     *
+     * @param TblProvincia $dataObject
+     */
+    public function setTblProvincia( $dataObject ){
+        require_once('TblProvincia.inc');
+        $this->setFkProvincia( $dataObject->getIdProvincia() );
     }
 }
 ?>
