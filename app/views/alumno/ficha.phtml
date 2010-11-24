@@ -67,7 +67,7 @@
 				
 					foreach ( $this->cursosCOL as $cursoDO ){
 		            				
-            			if ( $cursoDO->getIdCurso() == $cursoPreinscritoDO->getFkPlanCursoCentro() ){
+            			if ( $cursoDO->getIdCurso() == $cursoPreinscritoDO->getFkCurso() ){
             				echo '<p><a href="/curso/ficha.html/' . $cursoDO->getIdCurso() . '">' . $cursoDO->getVNombre() . '</a></p>';
             			}
             				

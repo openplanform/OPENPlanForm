@@ -22,6 +22,7 @@ class indexController extends PplController{
         
         // Necesitaremos los módulos para el panel principal
         if ($this->actionName == 'panel'){
+            $this->rewriteControllerLabel('administrador');
             parent::initController();            
         }
         
@@ -200,7 +201,6 @@ class indexController extends PplController{
 	 * Panel Principal
 	 */
     public function panelAction(){
-        
         
         // CONVOCATORIAS ------------------------------------
         

@@ -1,10 +1,63 @@
 var $j = jQuery;
 
 /**
- * Quita los profesores seleccionados del curso
+ * Pasa los alumnos de un estado a otro
  */
-function quitarProfCurso(){
-	$j('#profesoresSeleccionados option:selected').remove();
+function mueveAlumno(origen, destino){
+	
+	var id;
+	var nombre;
+	var anadir;
+	
+	$j('#' + origen + ' option:selected').each( function(){
+
+		id = $j(this).val();
+		nombre = $j(this).attr('text');
+		anadir = true;
+		$j('#' + destino + ' option').each( function(){
+			if ( $j(this).val() == id ) {
+				anadir = false;
+			}
+		});
+		
+		if ( anadir ){
+			$j('#' + origen + ' option:selected').remove();
+			$j('#' + destino).prepend($('<option selected="selected" onclick="this.select"></option>').attr("value",id).text(nombre));
+		}
+		
+	});
+	
+}
+
+/**
+ * Redirige a la ficha del alumno seleccionado
+ */
+function fichaAlumno(idMultiselect){
+	
+	var id = $j('#' + idMultiselect + ' option:selected').attr('value');
+	if ( id ){
+		window.open("/alumno/ficha.html/" + id);
+	}
+
+}
+
+/**
+ * Redirige a la ficha del profesor seleccionado
+ */
+function fichaProfesor(){
+	
+	var idProfesor = $j('#profesoresSeleccionados option:selected').attr('value');
+	if ( idProfesor ){
+		window.open("/profesor/ficha.html/" + idProfesor);
+	}
+	
+}
+
+/**
+ * Quita las personas del curso
+ */
+function quitarPersonaCurso(idMultiselect){
+	$j('#' + idMultiselect + ' option:selected').remove();
 }
 
 /**
@@ -24,7 +77,7 @@ function addProfCurso(idProfesor, nombre){
 	});
 	
 	if ( anadir ){
-		$j('#profesoresSeleccionados').append($('<option selected="selected" onclick="this.select"></option>').attr("value",idProfesor).text(nombre));
+		$j('#profesoresSeleccionados').prepend($('<option selected="selected" onclick="this.select"></option>').attr("value",idProfesor).text(nombre));
 	}
 	
 }
@@ -32,8 +85,23 @@ function addProfCurso(idProfesor, nombre){
 /**
  * Función que selecciona todos los profesores para pasarlos por el form
  */
-function selectAll(){
+function selectProfesores(){
 	$j('#profesoresSeleccionados option').each( function(){
+		$j(this).attr("selected","selected");
+	});
+}
+
+/**
+ * Función que selecciona todos los alumnos para pasarlos por el form
+ */
+function selectAlumnos(){
+	$j('#precandidatos option').each( function(){
+		$j(this).attr("selected","selected");
+	});
+	$j('#candidatos option').each( function(){
+		$j(this).attr("selected","selected");
+	});
+	$j('#alumnos option').each( function(){
 		$j(this).attr("selected","selected");
 	});
 }
@@ -84,7 +152,7 @@ $j(document).ready(function(){
 	$j('#altaCurso').bind('submit', function() {
 		
 	    // Seleccionamos todos los profesores del curso para no perderlos al guardar
-	    selectAll();
+	    selectProfesores();
 		return comprobarCampos();
 		
 	});
@@ -92,7 +160,9 @@ $j(document).ready(function(){
 	$j('#editarCurso').bind('submit', function() {
 
 		// Seleccionamos todos los profesores del curso para no perderlos al guardar
-		selectAll();
+		selectProfesores();
+		// Seleccionamos todos los alumnos del curso para no perderlos al guardar
+		selectAlumnos();
 		return comprobarCampos();
 		
 	});
@@ -103,5 +173,5 @@ $j(document).ready(function(){
 	
     $j("#inicio" ).datepicker();
     $j("#fin" ).datepicker();
-	
+    
 });

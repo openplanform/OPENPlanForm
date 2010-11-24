@@ -745,6 +745,27 @@ class PplCacheBO {
 	    
 	}
 	
+	/**
+	 * Devuelve el directorio de subida de archivos,
+	 * siempre obtenerlo desde aqui, nunca hardcodearlo
+	 */
+	static public function getUploadDir(){
+	    
+	    return NINGENCMS_PUBDIR . 'docs/';
+	    
+	}
+	
+    /**
+     * Devuelve la ruta completa para el frontend de un documento
+     * Enter description here ...
+     * @param $docDO
+     */
+	static public function getDocLink(TblDocumento $docDO){
+
+	    return '/docs/doc_' . $docDO->getIdDocumento();
+	    
+	}
+	
 }
 
 ?>

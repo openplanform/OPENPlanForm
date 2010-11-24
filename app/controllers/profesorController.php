@@ -163,7 +163,7 @@ class profesorController extends PplController{
      * Al duplicar un profesor, se copian los datos del profesor, pero no los datos del
      * usuario del profesor. Es necesario el parámetro 'duplicar' para indicarle a la vista
      * si le llega una duplicada o no.
-     * Edita una academia
+     * Edita un profesor
      */
     public function editarAction(){
         
@@ -172,7 +172,11 @@ class profesorController extends PplController{
         if ( !empty($paramsARR) ){
         	
         	// Profesor
-        	$profesorDO = TblPersona::findByPrimaryKey($this->db, $paramsARR[0]);
+        	if (!$profesorDO = TblPersona::findByPrimaryKey($this->db, $paramsARR[0])){
+                $this->redirectTo('profesor', 'index');
+                return;
+            }
+            
         	$this->view->profesorDO = $profesorDO;
         	$this->view->duplicar = $duplicar = false;
         	
@@ -192,6 +196,7 @@ class profesorController extends PplController{
         }
         
         if ( isset($profesorDO) ){
+        	
         	// Categorías. Obtengo los ids de las categorías del profesor, y los paso a la función recursiva que
 	       	// recorre las categorías para que marque las seleccionadas
 	       	$personaCategoriasARR = TrelPersonaCategoria::findByTblPersona($this->db, $profesorDO->getIdPersona());
@@ -203,25 +208,26 @@ class profesorController extends PplController{
 	        $arbolDS = array();
 	        $arbolDS = $this->_IteraCategorias($arbolDS, 0);
 	        $this->view->htmlSelectCategorias = $this->_getSelectHtml($arbolDS, 0, $idsCategorias);
+	        
+	        // Paises
+	        $this->view->paisesCOL = TblPais::findAll($this->db, 'vIso');
+		        
+	        // Provincias
+	        $this->view->provinciasCOL = TblProvincia::findAll($this->db, 'vNombre_es');
+		        
+	        // Tipo identificación
+	        $this->view->tipoIdentificacionCOL = TblTipoIdentificacion::findAll($this->db, 'vNombre');
+	        
+	        // Estado civil
+	        $this->view->estadosCivilesCOL = TblEstadoCivil::findAll($this->db, 'vNombre');
+	        
+	        // Estado laboral
+	        $this->view->estadosLaboralesCOL = TblEstadoLaboral::findAll($this->db, 'vNombre');
+	        
+	        // Nivel estudios
+	        $this->view->nivelEstudiosCOL = TblNivelEstudios::findAll($this->db, 'vNombre');
+        
         }
-        
-        // Paises
-        $this->view->paisesCOL = TblPais::findAll($this->db, 'vIso');
-	        
-        // Provincias
-        $this->view->provinciasCOL = TblProvincia::findAll($this->db, 'vNombre_es');
-	        
-        // Tipo identificación
-        $this->view->tipoIdentificacionCOL = TblTipoIdentificacion::findAll($this->db, 'vNombre');
-        
-        // Estado civil
-        $this->view->estadosCivilesCOL = TblEstadoCivil::findAll($this->db, 'vNombre');
-        
-        // Estado laboral
-        $this->view->estadosLaboralesCOL = TblEstadoLaboral::findAll($this->db, 'vNombre');
-        
-        // Nivel estudios
-        $this->view->nivelEstudiosCOL = TblNivelEstudios::findAll($this->db, 'vNombre');
         
     	// Actualizo el profesor
     	if ( isset($profesorDO) && $this->helper->get('send') ){

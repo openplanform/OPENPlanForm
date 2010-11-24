@@ -1,7 +1,7 @@
 <?php
 /**
  * Este archivo ha sido generado con Ningen Dogen v.0.6
- * el 02 de November de 2010 a las 15:44:10
+ * el 15 de November de 2010 a las 08:45:42
  * @package dataAccess
  */
 

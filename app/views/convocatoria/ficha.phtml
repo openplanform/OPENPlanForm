@@ -44,12 +44,12 @@
             echo '<ul class="listaItemsFicha">';
             
             foreach ( $arrPlanesDO as $planDO ){
-                echo '<li><a href="/plan/ficha/' . $planDO->getIdPlan() . '" class="' . strtolower($this->estadosPlanIDX[$planDO->getFkEstadoPlan()]) . '">' . $planDO->getVNombre() . '</a></span></li>';
+                echo '<li><a href="/plan/ficha/' . $planDO->getIdPlan() . '" class="' . strtolower($this->estadosPlanIDX[$planDO->getFkEstadoPlan()]) . '">' . $planDO->getVNombre() . '</a></li>';
             }
             
             echo '</ul>';
             
-        }		
+        }
 		
 	} else {
 		

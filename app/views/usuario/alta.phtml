@@ -26,11 +26,13 @@
              <p class="tooltip" id="password1Tooltip">La contraseña debe tener 6 caracteres como mínimo y 16 como máximo. Puede estar compuesta por cualquier caracter, pero al menos debe contener un número.<em> Ej: test1_casa</em></p>
         </div>
         
-        <div class="campo controlado">
+        <div class="campo controlado multi">
              <label for="repassword1">Repetir Contraseña*</label>
              <input type="password" name="repassword1" id="repassword1" class="campoTexto" />
              <p id="errorRepassword1" class="errorInput"><?= $this->errorPassword ?></p>
         </div>
+        
+        <div class="separadorH"></div>
         
         <div class="campo multi">
              <label for="emailUsuario">Correo electrónico*</label>

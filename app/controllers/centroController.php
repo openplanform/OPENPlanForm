@@ -126,14 +126,108 @@ class centroController extends PplController{
      */
     public function editarAction(){
         
+//    	// Obtengo el centro que voy a editar
+//    	$paramsARR = $this->getParams();
+//        if ( !empty($paramsARR) ){
+//        	
+//        	// Centro
+//            if (!$centroDO = TblCentro::findByPrimaryKey($this->db, $paramsARR[0])){
+//                $this->redirectTo('centro', 'index');
+//                return;
+//            }
+//            
+//        	$this->view->centroDO = $centroDO;
+//        	
+//        	// Paises
+//	        $this->view->paisesCOL = TblPais::findAll($this->db, 'vIso');
+//	        
+//	        // Provincias
+//	        $this->view->provinciasCOL = TblProvincia::findAll($this->db, 'vNombre_es');
+//	        
+//	        // Empresas
+//	        $this->view->academiasIDX = $this->cacheBO->getAcademias();
+//	    	
+//        }
+//        
+//    	// Actualizo el centro
+//    	if ( isset($centroDO) && $this->helper->get('send') ){
+//    		
+//    		if ( $this->actualizarInsertar(true,$centroDO->getIdCentro() ) ){
+//    			
+//    			// centro
+//        		$centroDO = TblCentro::findByPrimaryKey($this->db, $paramsARR[0]);
+//        		$this->view->centroDO = $centroDO;
+//				
+//    		} else {
+//    			
+//    			$this->view->popup = array(
+//				    'estado' => 'ko',
+//				    'titulo' => 'Error',
+//				    'mensaje'=> 'Ha ocurrido un error con la edición del Centro. Inténtelo de nuevo en unos instantes por favor.<br/>Si el problema persiste póngase en contacto con el administrador. Muchas gracias.',
+//				    'url'=> '',
+//				);
+//				
+//    		}
+//    	}
+
     	// Obtengo el centro que voy a editar
-    	$paramsARR = $this->getParams();
-        if ( !empty($paramsARR) ){
+    	$idCentro = $this->getParam(0);
+        if ( !is_null($idCentro) ){
         	
-        	// centro
-        	$centroDO = TblCentro::findByPrimaryKey($this->db, $paramsARR[0]);
-        	$this->view->centroDO = $centroDO;
+        	// Centro
+            if (!$centroDO = TblCentro::findByPrimaryKey($this->db, $idCentro)){
+                $this->redirectTo('centro', 'index');
+                return;
+            }
+            
+        	$duplicar = false;
         	
+        } else {
+        	
+        	if ( NingenCmsSession::getValue('centroDuplicado') instanceof TblCentro ){
+        		
+        		$centroDO = NingenCmsSession::getValue('centroDuplicado');
+        		$duplicar = true;
+        		
+        	}
+        	
+        }
+        
+    	// Actualizo el centro
+        if ( isset($centroDO) && $this->helper->get('send') ){
+        	
+        	if ( $duplicar ){
+    			$correcto = $this->actualizarInsertar();
+    		} else {
+    			$correcto = $this->actualizarInsertar(true, $centroDO->getIdCentro());
+    		}
+    		
+            if ( $correcto ){
+                    
+            	if ( $duplicar ){
+                	$this->redirectTo('centro','editar', $this->db->getLastInsertId());
+            	} else {
+                	$centroDO = TblCentro::findByPrimaryKey($this->db, $centroDO->getIdCentro());
+            	}
+                $this->view->centroDO = $centroDO;
+                    
+			} else {
+                    
+            	$this->view->popup = array(
+                	'estado' => 'ko',
+                	'titulo' => 'Error',
+                    'mensaje'=> 'Ha ocurrido un error con la edición del centro. Inténtelo de nuevo en unos instantes por favor.<br/>Si el problema persiste póngase en contacto con el administrador. Muchas gracias.',
+                    'url'=> '',
+                );
+                    
+            }
+         }
+       
+		// Datos para la vista
+       	if ( isset($centroDO) ){
+        	
+       		$this->view->centroDO = $centroDO;
+       		
         	// Paises
 	        $this->view->paisesCOL = TblPais::findAll($this->db, 'vIso');
 	        
@@ -144,27 +238,6 @@ class centroController extends PplController{
 	        $this->view->academiasIDX = $this->cacheBO->getAcademias();
 	    	
         }
-        
-    	// Actualizo el centro
-    	if ( isset($centroDO) && $this->helper->get('send') ){
-    		
-    		if ( $this->actualizarInsertar(true,$centroDO->getIdCentro() ) ){
-    			
-    			// centro
-        		$centroDO = TblCentro::findByPrimaryKey($this->db, $paramsARR[0]);
-        		$this->view->centroDO = $centroDO;
-				
-    		} else {
-    			
-    			$this->view->popup = array(
-				    'estado' => 'ko',
-				    'titulo' => 'Error',
-				    'mensaje'=> 'Ha ocurrido un error con la edición del Centro. Inténtelo de nuevo en unos instantes por favor.<br/>Si el problema persiste póngase en contacto con el administrador. Muchas gracias.',
-				    'url'=> '',
-				);
-				
-    		}
-    	}
         
     }
     
@@ -215,10 +288,12 @@ class centroController extends PplController{
         	$centroDO = TblCentro::findByPrimaryKey($this->db, $paramsARR[0]);
         	$nombreCentro = 'Copia de ' . $centroDO->getVNombre();
         	$centroDO->setVNombre($nombreCentro);
-        	$centroDO->insert();
+//        	$centroDO->insert();
+        	NingenCmsSession::setValue('centroDuplicado', $centroDO);
         }
         
-        $this->redirectTo('centro','editar', $this->db->getLastInsertId());
+//        $this->redirectTo('centro','editar', $this->db->getLastInsertId());
+        $this->redirectTo('centro','editar');
         
     }
     

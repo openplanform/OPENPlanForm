@@ -29,11 +29,12 @@ class aulaController extends PplController{
      */
     public function indexAction(){
         
-   		 // Parámetros de ordenación para el paginador
+   		// Parámetros de ordenación para el paginador
     	$aliasCampos = array(
     		'cap'	=> 'iCapacidad',
     		'cen'	=> 'fkCentro',
-    		'nom' 	=> 'vNombre'
+    		'nom' 	=> 'vNombre',
+	    	'dir'	=> 'vDireccion'
     	);
     	
         if ( !empty($_REQUEST) && array_key_exists('o', $_GET) & array_key_exists('ob', $_GET) ){
@@ -116,7 +117,7 @@ class aulaController extends PplController{
 					
    			}
     	}
-        
+
     }
     
     /**
@@ -125,15 +126,109 @@ class aulaController extends PplController{
      */
     public function editarAction(){
         
-    	// Obtengo el centro que voy a editar
-    	$paramsARR = $this->getParams();
-        if ( !empty($paramsARR) ){
+//    	// Obtengo el centro que voy a editar
+//    	$paramsARR = $this->getParams();
+//        if ( !empty($paramsARR) ){
+//        	
+//        	// Aula
+//            if (!$aulaDO = TblAula::findByPrimaryKey($this->db, $paramsARR[0])){
+//                $this->redirectTo('aula', 'index');
+//                return;
+//            }
+//            
+//        	$this->view->aulaDO = $aulaDO;
+//        	
+//        	// Paises
+//	        $this->view->paisesCOL = TblPais::findAll($this->db, 'vIso');
+//	        
+//	        // Provincias
+//	        $this->view->provinciasCOL = TblProvincia::findAll($this->db, 'vNombre_es');
+//	        
+//	        // Centros
+//	        $this->view->centrosIDX = $this->cacheBO->getCentros();
+//	    	
+//        }
+//        
+//    	// Actualizo el centro
+//    	if ( isset($aulaDO) && $this->helper->get('send') ){
+//    		
+//    		if ( $this->actualizarInsertar(true,$aulaDO->getIdAula() ) ){
+//    			
+//    			// aula
+//        		$aulaDO = TblAula::findByPrimaryKey($this->db, $paramsARR[0]);
+//        		$this->view->aulaDO = $aulaDO;
+//				
+//    		} else {
+//    			
+//    			$this->view->popup = array(
+//				    'estado' => 'ko',
+//				    'titulo' => 'Error',
+//				    'mensaje'=> 'Ha ocurrido un error con la edición del aula. Inténtelo de nuevo en unos instantes por favor.<br/>Si el problema persiste póngase en contacto con el administrador. Muchas gracias.',
+//				    'url'=> '',
+//				);
+//				
+//    		}
+//    	}
+
+    	// Obtengo el aula que voy a editar
+    	$idAula = $this->getParam(0);
+        if ( !is_null($idAula) ){
         	
-        	// aula
-        	$aulaDO = TblAula::findByPrimaryKey($this->db, $paramsARR[0]);
-        	$this->view->aulaDO = $aulaDO;
+        	// Aula
+            if (!$aulaDO = TblAula::findByPrimaryKey($this->db, $idAula)){
+                $this->redirectTo('aula', 'index');
+                return;
+            }
+            
+        	$duplicar = false;
         	
-        	// Paises
+        } else {
+        	
+        	if ( NingenCmsSession::getValue('aulaDuplicado') instanceof TblAula ){
+        		
+        		$aulaDO = NingenCmsSession::getValue('aulaDuplicado');
+        		$duplicar = true;
+        		
+        	}
+        	
+        }
+        
+    	// Actualizo el aula
+        if ( isset($aulaDO) && $this->helper->get('send') ){
+        	
+        	if ( $duplicar ){
+    			$correcto = $this->actualizarInsertar();
+    		} else {
+    			$correcto = $this->actualizarInsertar(true, $aulaDO->getIdAula());
+    		}
+    		
+            if ( $correcto ){
+                    
+            	if ( $duplicar ){
+                	$this->redirectTo('aula','editar', $this->db->getLastInsertId());
+            	} else {
+                	$aulaDO = TblAula::findByPrimaryKey($this->db, $aulaDO->getIdAula());
+            	}
+                $this->view->aulaDO = $aulaDO;
+                    
+			} else {
+                    
+            	$this->view->popup = array(
+                	'estado' => 'ko',
+                	'titulo' => 'Error',
+                    'mensaje'=> 'Ha ocurrido un error con la edición del aula. Inténtelo de nuevo en unos instantes por favor.<br/>Si el problema persiste póngase en contacto con el administrador. Muchas gracias.',
+                    'url'=> '',
+                );
+                    
+            }
+         }
+       
+		// Datos para la vista
+       	if ( isset($aulaDO) ){
+        	
+       		$this->view->aulaDO = $aulaDO;
+       		
+	    	// Paises
 	        $this->view->paisesCOL = TblPais::findAll($this->db, 'vIso');
 	        
 	        // Provincias
@@ -143,27 +238,6 @@ class aulaController extends PplController{
 	        $this->view->centrosIDX = $this->cacheBO->getCentros();
 	    	
         }
-        
-    	// Actualizo el centro
-    	if ( isset($aulaDO) && $this->helper->get('send') ){
-    		
-    		if ( $this->actualizarInsertar(true,$aulaDO->getIdAula() ) ){
-    			
-    			// aula
-        		$aulaDO = TblAula::findByPrimaryKey($this->db, $paramsARR[0]);
-        		$this->view->aulaDO = $aulaDO;
-				
-    		} else {
-    			
-    			$this->view->popup = array(
-				    'estado' => 'ko',
-				    'titulo' => 'Error',
-				    'mensaje'=> 'Ha ocurrido un error con la edición del aula. Inténtelo de nuevo en unos instantes por favor.<br/>Si el problema persiste póngase en contacto con el administrador. Muchas gracias.',
-				    'url'=> '',
-				);
-				
-    		}
-    	}
         
     }
     
@@ -214,10 +288,12 @@ class aulaController extends PplController{
         	$aulaDO = TblAula::findByPrimaryKey($this->db, $paramsARR[0]);
         	$nombreAula = 'Copia de ' . $aulaDO->getVNombre();
         	$aulaDO->setVNombre($nombreAula);
-        	$aulaDO->insert();
+//        	$aulaDO->insert();
+			NingenCmsSession::setValue('aulaDuplicado', $aulaDO);
         }
         
-        $this->redirectTo('aula','editar', $this->db->getLastInsertId());
+//        $this->redirectTo('aula','editar', $this->db->getLastInsertId());
+        $this->redirectTo('aula','editar');
         
     }
     
@@ -352,12 +428,12 @@ class aulaController extends PplController{
             }
             
             // Parámetros de ordenación para el paginador
-            $aliasCampos = array(
-                'nom'   => 'vNombre',
-                'dir'   => 'vDireccion',
-                'pob'   => 'vPoblacion',
-                'tel'   => 'vTelefono'
-            );
+	    	$aliasCampos = array(
+	    		'cap'	=> 'iCapacidad',
+	    		'cen'	=> 'fkCentro',
+	    		'nom' 	=> 'vNombre',
+	    		'dir'	=> 'vDireccion'
+	    	);
 
             if ( !empty($_REQUEST) && array_key_exists('o', $_GET) & array_key_exists('ob', $_GET) ){
                 $order = $this->helper->escapeInjection($_GET['o']);

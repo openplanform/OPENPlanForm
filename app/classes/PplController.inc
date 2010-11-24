@@ -38,8 +38,13 @@ class PplController extends NingenController{
      */
     protected $usuario; 
     
+    /**
+     * Reescritura de la etiqueta de controlador
+     * @var string
+     */
+    protected $controllerRewrite = null;
     
-    
+
     /**
      * Añado el soporte de AclManager
      */
@@ -111,7 +116,7 @@ class PplController extends NingenController{
         // ------------ MÓDULO - BREADCRUMBS -------------------
         $pathModule = new breadcrumbsModule('contenedor_path');
         
-            $pathModule->setControllerAction($this->controllerName, $this->actionName);
+            $pathModule->setControllerAction($this->controllerName, $this->actionName, $this->controllerRewrite);
             $pathModule->setDb($this->db);
             $this->addModule($pathModule);
             

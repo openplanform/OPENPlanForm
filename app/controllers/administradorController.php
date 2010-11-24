@@ -402,7 +402,7 @@ class administradorController extends PplController{
             }
             
             $accesoDO = $arbol['DO'];
-            $html .= "\t" . '<li '.$clase.'><a href="/administrador/menu.html?e=' . $clave . '" ' . ($accesoDO->isBMenu() ? '' : 'class="inactivo"') . '>' . str_ireplace('_', '', $arbol['nombre']) . '</a></li>' . "\n";
+            $html .= "\t" . '<li '.$clase.'><a href="/administrador/menu.html?e=' . $clave . '" ' . ($accesoDO->isBMenu() ? '' : 'class="inactivo"') . '>' . str_ireplace('_', '', $arbol['nombre']) . '</a> <span>(' . $accesoDO->getIOrden() .')</span></li>' . "\n";
             
             if (count($arbol['hijos'])){
                 $html .= $this->_getTreeHtml($arbol['hijos'], $nivel, $selected);

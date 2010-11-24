@@ -75,10 +75,10 @@
 <table class="listado">
     <thead>
         <tr>
-            <th><a href="/aula/index.html/?ob=nom&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'nom')?'class="ordenado ' . $this->order . '"':'' )?> >Nombre</a></th>
-            <th><a href="/aula/index.html/?ob=cen&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'cen')?'class="ordenado ' . $this->order . '"':'' )?> >Centro</a></th>
-            <th><a href="/aula/index.html/?ob=cap&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'cap')?'class="ordenado ' . $this->order . '"':'' )?> >Capacidad</a></th>
-            <th><a href="/aula/index.html/?ob=dir&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'dir')?'class="ordenado ' . $this->order . '"':'' )?> >Dirección</a></th>
+            <th><a href="/aula/buscar.html/?ob=nom&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'nom')?'class="ordenado ' . $this->order . '"':'' )?> >Nombre</a></th>
+            <th><a href="/aula/buscar.html/?ob=cen&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'cen')?'class="ordenado ' . $this->order . '"':'' )?> >Centro</a></th>
+            <th><a href="/aula/buscar.html/?ob=cap&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'cap')?'class="ordenado ' . $this->order . '"':'' )?> >Capacidad</a></th>
+            <th><a href="/aula/buscar.html/?ob=dir&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'dir')?'class="ordenado ' . $this->order . '"':'' )?> >Dirección</a></th>
             <?
             
                 if ( $this->editar ){

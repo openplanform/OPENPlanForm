@@ -158,14 +158,104 @@ class convocatoriaController extends PplController{
      */
     public function editarAction(){
         
+//    	// Obtengo la convocatoria que voy a editar
+//    	$paramsARR = $this->getParams();
+//        if ( !empty($paramsARR) ){
+//        	
+//        	// Convocatoria
+//        	$convocatoriaDO = TblConvocatoria::findByPrimaryKey($this->db, $paramsARR[0]);
+//        	$this->view->convocatoriaDO = $convocatoriaDO;
+//        	
+//	    	// Tipos de Convocatoria
+//	    	$this->view->tiposConvocatoriaIDX = $this->cacheBO->getTiposConvocatoria();
+//	    	
+//	    	// Requisitos
+//	    	$this->view->requisitosIDX = $this->cacheBO->getRequisitos();
+//	    	
+//	    	// Requisitos de la convocatoria
+//	    	$this->view->requisitosConvocatoriaDO = $convocatoriaDO->getTrelRequisitoConvocatorias();
+//	    	
+//        }
+//        
+//    	// Actualizo la convocatoria
+//    	if ( isset($convocatoriaDO) && $this->helper->get('send') ){
+//    		
+//    		if ( $this->actualizarInsertar(true,$convocatoriaDO->getIdConvocatoria() ) ){
+//    			
+//    			// Convocatoria
+//	        	$convocatoriaDO = TblConvocatoria::findByPrimaryKey($this->db, $paramsARR[0]);
+//	        	$this->view->convocatoriaDO = $convocatoriaDO;
+//				
+//    		} else {
+//    			
+//    			$this->view->popup = array(
+//				    'estado' => 'ko',
+//				    'titulo' => 'Error',
+//				    'mensaje'=> 'Ha ocurrido un error con la edición de la convocatoria. Inténtelo de nuevo en unos instantes por favor.<br/>Si el problema persiste póngase en contacto con el administrador. Muchas gracias.',
+//				    'url'=> '',
+//				);
+//				
+//    		}
+//    	}
+        
     	// Obtengo la convocatoria que voy a editar
-    	$paramsARR = $this->getParams();
-        if ( !empty($paramsARR) ){
+    	$idConvocatoria = $this->getParam(0);
+        if ( !is_null($idConvocatoria) ){
         	
         	// Convocatoria
-        	$convocatoriaDO = TblConvocatoria::findByPrimaryKey($this->db, $paramsARR[0]);
-        	$this->view->convocatoriaDO = $convocatoriaDO;
+            if (!$convocatoriaDO = TblConvocatoria::findByPrimaryKey($this->db, $idConvocatoria)){
+                $this->redirectTo('convocatoria', 'index');
+                return;
+            }
+            
+        	$duplicar = false;
         	
+        } else {
+        	
+        	if ( NingenCmsSession::getValue('convocatoriaDuplicado') instanceof TblConvocatoria ){
+        		
+        		$convocatoriaDO = NingenCmsSession::getValue('convocatoriaDuplicado');
+        		$duplicar = true;
+        		
+        	}
+        	
+        }
+        
+    	// Actualizo la convocatoria
+        if ( isset($convocatoriaDO) && $this->helper->get('send') ){
+        	
+        	if ( $duplicar ){
+    			$correcto = $this->actualizarInsertar();
+    		} else {
+    			$correcto = $this->actualizarInsertar(true, $convocatoriaDO->getIdConvocatoria());
+    		}
+    		
+            if ( $correcto ){
+                    
+            	if ( $duplicar ){
+                	$this->redirectTo('convocatoria','editar', $this->db->getLastInsertId());
+            	} else {
+                	$convocatoriaDO = TblConvocatoria::findByPrimaryKey($this->db, $convocatoriaDO->getIdConvocatoria());
+            	}
+                $this->view->convocatoriaDO = $convocatoriaDO;
+                    
+			} else {
+                    
+            	$this->view->popup = array(
+                	'estado' => 'ko',
+                	'titulo' => 'Error',
+                    'mensaje'=> 'Ha ocurrido un error con la edición de la convocatoria. Inténtelo de nuevo en unos instantes por favor.<br/>Si el problema persiste póngase en contacto con el administrador. Muchas gracias.',
+                    'url'=> '',
+                );
+                    
+            }
+       }
+       
+		// Datos para la vista
+       	if ( isset($convocatoriaDO) ){
+        	
+       		$this->view->convocatoriaDO = $convocatoriaDO;
+       		
 	    	// Tipos de Convocatoria
 	    	$this->view->tiposConvocatoriaIDX = $this->cacheBO->getTiposConvocatoria();
 	    	
@@ -173,31 +263,12 @@ class convocatoriaController extends PplController{
 	    	$this->view->requisitosIDX = $this->cacheBO->getRequisitos();
 	    	
 	    	// Requisitos de la convocatoria
-	    	$this->view->requisitosConvocatoriaDO = $convocatoriaDO->getTrelRequisitoConvocatorias();
+	    	if ( !$duplicar ){
+	    		$this->view->requisitosConvocatoriaDO = $convocatoriaDO->getTrelRequisitoConvocatorias();
+	    	}
 	    	
         }
-        
-    	// Actualizo la convocatoria
-    	if ( isset($convocatoriaDO) && $this->helper->get('send') ){
-    		
-    		if ( $this->actualizarInsertar(true,$convocatoriaDO->getIdConvocatoria() ) ){
-    			
-    			// Convocatoria
-	        	$convocatoriaDO = TblConvocatoria::findByPrimaryKey($this->db, $paramsARR[0]);
-	        	$this->view->convocatoriaDO = $convocatoriaDO;
-				
-    		} else {
-    			
-    			$this->view->popup = array(
-				    'estado' => 'ko',
-				    'titulo' => 'Error',
-				    'mensaje'=> 'Ha ocurrido un error con la edición de la convocatoria. Inténtelo de nuevo en unos instantes por favor.<br/>Si el problema persiste póngase en contacto con el administrador. Muchas gracias.',
-				    'url'=> '',
-				);
-				
-    		}
-    	}
-        
+    	
     }
     
 	/**
@@ -224,16 +295,18 @@ class convocatoriaController extends PplController{
      */
     public function duplicarAction(){
         
-        $paramsARR = $this->getParams();
-        if ( !empty($paramsARR) ){
+        $idConvocatoria = $this->getParam(0);
+        if ( !is_null($idConvocatoria) ){
         	
-        	$convocatoriaDO = TblConvocatoria::findByPrimaryKey($this->db, $paramsARR[0]);
+        	$convocatoriaDO = TblConvocatoria::findByPrimaryKey($this->db, $idConvocatoria);
         	$nombreConvocatoria = 'Copia de ' . $convocatoriaDO->getVNombre();
         	$convocatoriaDO->setVNombre($nombreConvocatoria);
-        	$convocatoriaDO->insert();
+//        	$convocatoriaDO->insert();
+			NingenCmsSession::setValue('convocatoriaDuplicado', $convocatoriaDO);
         }
         
-        $this->redirectTo('convocatoria','editar', $this->db->getLastInsertId());
+//        $this->redirectTo('convocatoria','editar', $this->db->getLastInsertId());
+        $this->redirectTo('convocatoria','editar');
         
     }
     
@@ -269,11 +342,11 @@ class convocatoriaController extends PplController{
 	    }
 	    		
 		// Descripción
-		$descripcion = $this->helper->escapeInjection($this->helper->get('descripcion'));
+		$descripcion = NingenString::escapeFromMceditor($this->helper->get('descripcion'));
 	    if ( is_null($descripcion) ){
 	    	$descripcion = '';
 	    }
-	    		
+	    
 		// Presupuesto
 		$presupuesto = $this->helper->escapeInjection($this->helper->get('presupuesto'));
 	    if ( is_null($presupuesto) || empty($presupuesto) ){

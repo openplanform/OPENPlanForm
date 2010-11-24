@@ -1,7 +1,7 @@
 <?php
 /**
  * Este archivo ha sido generado con Ningen DoGen v.0.6
- * el 21 de October de 2010 a las 10:48:39
+ * el 04 de November de 2010 a las 14:57:40
  * @package dataAccess
  */
 
@@ -27,6 +27,12 @@ class TblDocumento extends NingenGenericDO{
     public $idDocumento;
 
     /**
+     * Atributo que representa el campo "vRealName"
+     * @var string
+     */
+    public $vRealName;
+
+    /**
      * Atributo que representa el campo "vNombre"
      * @var string
      */
@@ -43,6 +49,24 @@ class TblDocumento extends NingenGenericDO{
      * @var string
      */
     public $vTamano;
+
+    /**
+     * Atributo que representa el campo "vDescription"
+     * @var string
+     */
+    public $vDescription;
+
+    /**
+     * Atributo que representa el campo "mod_user"
+     * @var string
+     */
+    public $modUser;
+
+    /**
+     * Atributo que representa el campo "last_modified"
+     * @var string
+     */
+    public $lastModified;
 
     // Constructor
 
@@ -67,9 +91,13 @@ class TblDocumento extends NingenGenericDO{
 
         $this->_data = $data;
         $this->idDocumento = $data['idDocumento'];
+        $this->vRealName = $data['vRealName'];
         $this->vNombre = $data['vNombre'];
         $this->vMime = $data['vMime'];
         $this->vTamano = $data['vTamano'];
+        $this->vDescription = $data['vDescription'];
+        $this->modUser = $data['mod_user'];
+        $this->lastModified = $data['last_modified'];
 
     }
 
@@ -89,6 +117,9 @@ class TblDocumento extends NingenGenericDO{
         if( $tmp = $searchItem->idDocumento ){
             $where[] = "idDocumento='$tmp'";
         }
+        if( $tmp = $searchItem->vRealName ){
+            $where[] = "vRealName='$tmp'";
+        }
         if( $tmp = $searchItem->vNombre ){
             $where[] = "vNombre='$tmp'";
         }
@@ -97,6 +128,15 @@ class TblDocumento extends NingenGenericDO{
         }
         if( $tmp = $searchItem->vTamano ){
             $where[] = "vTamano='$tmp'";
+        }
+        if( $tmp = $searchItem->vDescription ){
+            $where[] = "vDescription='$tmp'";
+        }
+        if( $tmp = $searchItem->modUser ){
+            $where[] = "mod_user='$tmp'";
+        }
+        if( $tmp = $searchItem->lastModified ){
+            $where[] = "last_modified='$tmp'";
         }
         if( count($where) > 0 ){
             $where = implode( ' and ', $where );
@@ -161,9 +201,13 @@ class TblDocumento extends NingenGenericDO{
      */
     public function update(){
         $sets = array();
+        $sets[] = 'vRealName=' . ( ( ( $value = $this->vRealName ) === null || !isset($this->vRealName) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'vNombre=' . ( ( ( $value = $this->vNombre ) === null || !isset($this->vNombre) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'vMime=' . ( ( ( $value = $this->vMime ) === null || !isset($this->vMime) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'vTamano=' . ( ( ( $value = $this->vTamano ) === null || !isset($this->vTamano) ) ? 'null' :  "'".addslashes($value)."'" );
+        $sets[] = 'vDescription=' . ( ( ( $value = $this->vDescription ) === null || !isset($this->vDescription) ) ? 'null' :  "'".addslashes($value)."'" );
+        $sets[] = 'mod_user=' . ( ( ( $value = $this->modUser ) === null || !isset($this->modUser) ) ? 'null' :  "'".addslashes($value)."'" );
+        $sets[] = 'last_modified=' . ( ( ( $value = $this->lastModified ) === null || !isset($this->lastModified) ) ? 'null' :  "'".addslashes($value)."'" );
         $setStr = implode(',', $sets);
         return $this->_db->executeQuery("UPDATE tblDocumento SET $setStr WHERE idDocumento='".addslashes($this->_data['idDocumento'])."'");
     }
@@ -173,14 +217,22 @@ class TblDocumento extends NingenGenericDO{
       */
     public function insert(){
         $attributes = array();
+        $attributes[] = 'vRealName';
         $attributes[] = 'vNombre';
         $attributes[] = 'vMime';
         $attributes[] = 'vTamano';
+        $attributes[] = 'vDescription';
+        $attributes[] = 'mod_user';
+        $attributes[] = 'last_modified';
         $attributes = implode(',', $attributes);
         $values = array();
+        $values[] = (( $value = $this->vRealName ) === null || !isset($this->vRealName) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->vNombre ) === null || !isset($this->vNombre) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->vMime ) === null || !isset($this->vMime) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->vTamano ) === null || !isset($this->vTamano) ) ? 'null' : "'".addslashes($value)."'";
+        $values[] = (( $value = $this->vDescription ) === null || !isset($this->vDescription) ) ? 'null' : "'".addslashes($value)."'";
+        $values[] = (( $value = $this->modUser ) === null || !isset($this->modUser) ) ? 'null' : "'".addslashes($value)."'";
+        $values[] = (( $value = $this->lastModified ) === null || !isset($this->lastModified) ) ? 'null' : "'".addslashes($value)."'";
         $values = implode(',', $values);
         if( $this->_db->executeQuery("INSERT INTO tblDocumento($attributes) VALUES($values)") ){
             $eleDO = $this->findByPrimaryKey( $this->_db, $this->_db->getLastInsertId() );
@@ -207,6 +259,26 @@ class TblDocumento extends NingenGenericDO{
       */
     public function getIdDocumento(){
         return $this->idDocumento;
+    }
+
+    /**
+      * Obtiene el valor del atributo 'vRealName'.
+      *
+      * @return string
+      */
+    public function getVRealName(){
+        return $this->vRealName;
+    }
+
+    /**
+      * Establece el valor del atributo 'vRealName'.
+      *
+      * @param string Valor.
+      */
+    public function setVRealName( $value ){
+
+        $this->vRealName = $value;
+
     }
 
     /**
@@ -266,6 +338,66 @@ class TblDocumento extends NingenGenericDO{
     public function setVTamano( $value ){
 
         $this->vTamano = $value;
+
+    }
+
+    /**
+      * Obtiene el valor del atributo 'vDescription'.
+      *
+      * @return string
+      */
+    public function getVDescription(){
+        return $this->vDescription;
+    }
+
+    /**
+      * Establece el valor del atributo 'vDescription'.
+      *
+      * @param string Valor.
+      */
+    public function setVDescription( $value ){
+
+        $this->vDescription = $value;
+
+    }
+
+    /**
+      * Obtiene el valor del atributo 'mod_user'.
+      *
+      * @return string
+      */
+    public function getModUser(){
+        return $this->modUser;
+    }
+
+    /**
+      * Establece el valor del atributo 'mod_user'.
+      *
+      * @param string Valor.
+      */
+    public function setModUser( $value ){
+
+        $this->modUser = $value;
+
+    }
+
+    /**
+      * Obtiene el valor del atributo 'last_modified'.
+      *
+      * @return string
+      */
+    public function getLastModified(){
+        return $this->lastModified;
+    }
+
+    /**
+      * Establece el valor del atributo 'last_modified'.
+      *
+      * @param string Valor.
+      */
+    public function setLastModified( $value ){
+
+        $this->lastModified = $value;
 
     }
 

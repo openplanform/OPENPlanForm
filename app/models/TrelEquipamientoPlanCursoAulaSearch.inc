@@ -1,7 +1,7 @@
 <?php
 /**
  * Este archivo ha sido generado con Ningen Dogen v.0.6
- * el 21 de October de 2010 a las 10:48:39
+ * el 15 de November de 2010 a las 08:53:54
  * @package dataAccess
  */
 
@@ -27,11 +27,11 @@ class TrelEquipamientoPlanCursoAulaSearch{
     public $fkEquipamiento;
 
     /**
-     * Representa el atributo fkPlanCursoAula.
+     * Representa el atributo fkCurso.
      *
      * @var integer
      */
-    public $fkPlanCursoAula;
+    public $fkCurso;
 
     /**
      * Representa el atributo iCantidad.

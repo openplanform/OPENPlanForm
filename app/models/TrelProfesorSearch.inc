@@ -1,7 +1,7 @@
 <?php
 /**
  * Este archivo ha sido generado con Ningen Dogen v.0.6
- * el 02 de November de 2010 a las 12:43:47
+ * el 15 de November de 2010 a las 08:45:42
  * @package dataAccess
  */
 
@@ -20,10 +20,10 @@ class TrelProfesorSearch{
     public $fkPersona;
 
     /**
-     * Representa el atributo fkPlanCursoAula.
+     * Representa el atributo fkCurso.
      *
      * @var integer
      */
-    public $fkPlanCursoAula;
+    public $fkCurso;
 }
 ?>

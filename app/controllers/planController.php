@@ -171,13 +171,63 @@ class planController extends PplController{
     public function editarAction(){
         
     	// Obtengo el plan que voy a editar
-    	$paramsARR = $this->getParams();
-        if ( !empty($paramsARR) ){
+    	$idPlan = $this->getParam(0);
+        if ( !is_null($idPlan) ){
         	
         	// Plan
-        	$planDO = TblPlan::findByPrimaryKey($this->db, $paramsARR[0]);
-        	$this->view->planDO = $planDO;
+            if (!$planDO = TblPlan::findByPrimaryKey($this->db, $idPlan)){
+                $this->redirectTo('plan', 'index');
+                return;
+            }
+            
+        	$duplicar = false;
         	
+        } else {
+        	
+        	if ( NingenCmsSession::getValue('planDuplicado') instanceof TblPlan ){
+        		
+        		$planDO = NingenCmsSession::getValue('planDuplicado');
+        		$duplicar = true;
+        		
+        	}
+        	
+        }
+    	
+    	// Actualizo el plan
+        if ( isset($planDO) && $this->helper->get('send') ){
+        	
+        	if ( $duplicar ){
+    			$correcto = $this->actualizarInsertar();
+    		} else {
+    			$correcto = $this->actualizarInsertar(true, $planDO->getIdPlan());
+    		}
+    		
+            if ( $correcto ){
+                    
+            	if ( $duplicar ){
+                	$this->redirectTo('plan','editar', $this->db->getLastInsertId());
+            	} else {
+                	$planDO = TblPlan::findByPrimaryKey($this->db, $planDO->getIdPlan());
+            	}
+                $this->view->planDO = $planDO;
+                    
+			} else {
+                    
+            	$this->view->popup = array(
+                	'estado' => 'ko',
+                	'titulo' => 'Error',
+                    'mensaje'=> 'Ha ocurrido un error con la edición del plan. Inténtelo de nuevo en unos instantes por favor.<br/>Si el problema persiste póngase en contacto con el administrador. Muchas gracias.',
+                    'url'=> '',
+                );
+                    
+            }
+       }
+    	
+    	// Datos para la vista
+       	if ( isset($planDO) ){
+        	
+       		$this->view->planDO = $planDO;
+       		
 	    	// Tipos de Plan
 	    	$this->view->tiposPlanIDX = $this->cacheBO->getTiposPlan();
 	    	
@@ -191,27 +241,6 @@ class planController extends PplController{
     		$this->view->consultorasIDX = $this->cacheBO->getConsultoras();
 	    	
         }
-        
-    	// Actualizo el Plan
-    	if ( isset($planDO) && $this->helper->get('send') ){
-    		
-    		if ( $this->actualizarInsertar(true,$planDO->getIdPlan() ) ){
-    			
-    			// Plan
-	        	$planDO = TblPlan::findByPrimaryKey($this->db, $paramsARR[0]);
-	        	$this->view->planDO = $planDO;
-				
-    		} else {
-    			
-    			$this->view->popup = array(
-				    'estado' => 'ko',
-				    'titulo' => 'Error',
-				    'mensaje'=> 'Ha ocurrido un error con la edición del Plan. Inténtelo de nuevo en unos instantes por favor.<br/>Si el problema persiste póngase en contacto con el administrador. Muchas gracias.',
-				    'url'=> '',
-				);
-				
-    		}
-    	}
         
     }
     
@@ -239,16 +268,18 @@ class planController extends PplController{
      */
     public function duplicarAction(){
         
-        $paramsARR = $this->getParams();
-        if ( !empty($paramsARR) ){
+        $idPlan = $this->getParam(0);
+        if ( !is_null($idPlan) ){
         	
-        	$planDO = TblPlan::findByPrimaryKey($this->db, $paramsARR[0]);
+        	$planDO = TblPlan::findByPrimaryKey($this->db, $idPlan);
         	$nombrePlan = 'Copia de ' . $planDO->getVNombre();
         	$planDO->setVNombre($nombrePlan);
-        	$planDO->insert();
+//        	$planDO->insert();
+        	NingenCmsSession::setValue('planDuplicado', $planDO);
         }
         
-        $this->redirectTo('plan','editar', $this->db->getLastInsertId());
+//        $this->redirectTo('plan','editar', $this->db->getLastInsertId());
+        $this->redirectTo('plan','editar');
         
     }
     

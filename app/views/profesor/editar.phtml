@@ -159,7 +159,7 @@
                         foreach ($this->paisesCOL as $paisDO){
     
                             $clavePais = $paisDO->getVIso();
-                            echo '<option value="' . $clavePais . '" ' . ( ($this->profesorDO->getFkPais() == $clavePais)?'selected="selected"':'' ) . '>' . $paisDO->getVNombreEs() . '</option>' . "\n"; 
+                            echo '<option value="' . $clavePais . '" ' . ( ($this->profesorDO->getFkPais() == $clavePais)?'selected="selected"':'' ) . '>' . $paisDO->getVNombreEs() . '</option>' . "\n";
                             
                         }
                         

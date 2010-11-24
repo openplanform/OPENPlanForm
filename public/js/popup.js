@@ -21,16 +21,20 @@ function preparePopup(estado, titulo, mensaje, url, confirmacion){
 	
 	jQuery('#layoutTitleBar').html(titulo);
 	jQuery('#layoutTitle').html(titulo);
+	
 	jQuery('#layoutContent').removeClass('ok');
 	jQuery('#layoutContent').removeClass('ko');
 	jQuery('#layoutContent').removeClass('confirmacion');
 	jQuery('#layoutContent').addClass(estado);
+	
 	jQuery('#layoutMessage').html(mensaje);
+	
 	jQuery('#layerButtons').removeClass('ok');
 	jQuery('#layerButtons').removeClass('ko');
 	jQuery('#layerButtons').removeClass('confirmacion');
 	jQuery('#layerButtons').addClass(estado);
 	jQuery('#layerButtons a').attr('href', url);
+	
 	jQuery('#cancelarButton').remove();
 
 	if ( confirmacion ){

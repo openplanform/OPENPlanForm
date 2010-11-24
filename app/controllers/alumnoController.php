@@ -157,7 +157,11 @@ class alumnoController extends PplController{
         if ( !empty($paramsARR) ){
         	
         	// Alumno
-        	$alumnoDO = TblPersona::findByPrimaryKey($this->db, $paramsARR[0]);
+        	if (!$alumnoDO = TblPersona::findByPrimaryKey($this->db, $paramsARR[0])){
+                $this->redirectTo('alumno', 'index');
+                return;
+            }
+            
         	$this->view->alumnoDO = $alumnoDO;
         	$this->view->duplicar = $duplicar = false;
         	
@@ -175,37 +179,6 @@ class alumnoController extends PplController{
         	}
         	
         }
-        
-        
-        // Paises
-        $this->view->paisesCOL = TblPais::findAll($this->db, 'vIso');
-	        
-        // Provincias
-        $this->view->provinciasCOL = TblProvincia::findAll($this->db, 'vNombre_es');
-	        
-        // Tipo identificación
-        $this->view->tipoIdentificacionCOL = TblTipoIdentificacion::findAll($this->db, 'vNombre');
-        
-        // Estado civil
-        $this->view->estadosCivilesCOL = TblEstadoCivil::findAll($this->db, 'vNombre');
-        
-        // Estado laboral
-        $this->view->estadosLaboralesCOL = TblEstadoLaboral::findAll($this->db, 'vNombre');
-        
-        // Nivel estudios
-        $this->view->nivelEstudiosCOL = TblNivelEstudios::findAll($this->db, 'vNombre');
-        
-        // Cursos
-        $this->view->cursosCOL = TblCurso::findAll($this->db, 'vNombre');
-        
-        // Cursos alumno
-        $this->view->cursosAlumnoCOL = TrelPrecandidato::findByTblPersona($this->db, $alumnoDO->getIdPersona() , 'dAlta');
-        
-        // Sectores
-	    $this->view->sectoresIDX = $this->cacheBO->getSectores();
-	    
-	    // Categorías
-	    $this->view->categoriasIDX = $this->cacheBO->getCategorias();
         
     	// Actualizo el alumno
     	if ( isset($alumnoDO) && $this->helper->get('send') ){
@@ -232,6 +205,41 @@ class alumnoController extends PplController{
 				
     		}
     	}
+    	
+    	// Datos para la vista
+    	if ( isset($alumnoDO) ){
+        	
+	        // Paises
+	        $this->view->paisesCOL = TblPais::findAll($this->db, 'vIso');
+		        
+	        // Provincias
+	        $this->view->provinciasCOL = TblProvincia::findAll($this->db, 'vNombre_es');
+		        
+	        // Tipo identificación
+	        $this->view->tipoIdentificacionCOL = TblTipoIdentificacion::findAll($this->db, 'vNombre');
+	        
+	        // Estado civil
+	        $this->view->estadosCivilesCOL = TblEstadoCivil::findAll($this->db, 'vNombre');
+	        
+	        // Estado laboral
+	        $this->view->estadosLaboralesCOL = TblEstadoLaboral::findAll($this->db, 'vNombre');
+	        
+	        // Nivel estudios
+	        $this->view->nivelEstudiosCOL = TblNivelEstudios::findAll($this->db, 'vNombre');
+	        
+	        // Cursos
+	        $this->view->cursosCOL = TblCurso::findAll($this->db, 'vNombre');
+	        
+	        // Cursos alumno
+	        $this->view->cursosAlumnoCOL = TrelPrecandidato::findByTblPersona($this->db, $alumnoDO->getIdPersona() , 'dAlta');
+	        
+	        // Sectores
+		    $this->view->sectoresIDX = $this->cacheBO->getSectores();
+		    
+		    // Categorías
+		    $this->view->categoriasIDX = $this->cacheBO->getCategorias();
+		    
+        }
         
     }
     
@@ -628,13 +636,21 @@ class alumnoController extends PplController{
 	    		}
 	    		
 	    		foreach ( $cursosARR as $idCurso ){
-	    			$sql = 'INSERT INTO trelPrecandidato VALUES (' . $idAlumno . ',' . $idCurso . ',\'' . date('Y-m-d') . '\')';
-	    			if ( !$this->db->executeQuery($sql) ){
-	    				$correcto = false;
-	    			}
+	    			
+	    			// Antes de actualizar si es precandidato, compruebo que el alumno no sea candidato del curso
+	    			$sql = 'SELECT COUNT(*) AS total FROM trelCandidato WHERE fkPersona = ' . $idAlumno . ' AND fkCurso = '. $idCurso;
+	    			$this->db->executeQuery($sql);
+		            $row = $this->db->fetchRow();
+		            if (is_array($row) && array_key_exists('total', $row) && $row['total'] == 0){
+		            	
+		    			$sql = 'INSERT INTO trelPrecandidato VALUES (' . $idAlumno . ',' . $idCurso . ',\'' . date('Y-m-d') . '\')';
+		    			if ( !$this->db->executeQuery($sql) ){
+		    				$correcto = false;
+		    			}
+		    			
+		            }
 	    			
 	    		}
-	    		
 	    		
 	    	}
 	    	

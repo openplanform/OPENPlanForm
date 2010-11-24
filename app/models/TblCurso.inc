@@ -1,7 +1,7 @@
 <?php
 /**
  * Este archivo ha sido generado con Ningen DoGen v.0.6
- * el 21 de October de 2010 a las 10:48:39
+ * el 04 de November de 2010 a las 12:12:53
  * @package dataAccess
  */
 
@@ -69,6 +69,12 @@ class TblCurso extends NingenGenericDO{
     public $vNombre;
 
     /**
+     * Atributo que representa el campo "vDescripcion"
+     * @var string
+     */
+    public $vDescripcion;
+
+    /**
      * Atributo que representa el campo "iHorasPresenciales"
      * @var integer
      */
@@ -116,6 +122,60 @@ class TblCurso extends NingenGenericDO{
      */
     public $lastModified;
 
+    /**
+     * Atributo que representa el campo "iHorasManana"
+     * @var integer
+     */
+    public $iHorasManana;
+
+    /**
+     * Atributo que representa el campo "iHorasTarde"
+     * @var integer
+     */
+    public $iHorasTarde;
+
+    /**
+     * Atributo que representa el campo "iDeManana"
+     * @var integer
+     */
+    public $iDeManana;
+
+    /**
+     * Atributo que representa el campo "iAManana"
+     * @var integer
+     */
+    public $iAManana;
+
+    /**
+     * Atributo que representa el campo "iDeTarde"
+     * @var integer
+     */
+    public $iDeTarde;
+
+    /**
+     * Atributo que representa el campo "iATarde"
+     * @var integer
+     */
+    public $iATarde;
+
+    /**
+     * Atributo que representa el campo "iGrupo"
+     * @var integer
+     */
+    public $iGrupo;
+
+    /**
+     * Atributo que representa el campo "iAccion"
+     * @var integer
+     */
+    public $iAccion;
+
+    /**
+     * Atributo que representa el campo "iSesion"
+     * @var integer
+     */
+    public $iSesion;
+
     // Constructor
 
     /**
@@ -146,6 +206,7 @@ class TblCurso extends NingenGenericDO{
         $this->fkModalidad = $data['fkModalidad'];
         $this->fkAula = $data['fkAula'];
         $this->vNombre = $data['vNombre'];
+        $this->vDescripcion = $data['vDescripcion'];
         $this->iHorasPresenciales = $data['iHorasPresenciales'];
         $this->iHorasDistancia = $data['iHorasDistancia'];
         $this->iHorasTutoria = $data['iHorasTutoria'];
@@ -154,6 +215,15 @@ class TblCurso extends NingenGenericDO{
         $this->iNumeroAlumnos = $data['iNumeroAlumnos'];
         $this->modUser = $data['mod_user'];
         $this->lastModified = $data['last_modified'];
+        $this->iHorasManana = $data['iHorasManana'];
+        $this->iHorasTarde = $data['iHorasTarde'];
+        $this->iDeManana = $data['iDeManana'];
+        $this->iAManana = $data['iAManana'];
+        $this->iDeTarde = $data['iDeTarde'];
+        $this->iATarde = $data['iATarde'];
+        $this->iGrupo = $data['iGrupo'];
+        $this->iAccion = $data['iAccion'];
+        $this->iSesion = $data['iSesion'];
 
     }
 
@@ -194,6 +264,9 @@ class TblCurso extends NingenGenericDO{
         if( $tmp = $searchItem->vNombre ){
             $where[] = "vNombre='$tmp'";
         }
+        if( $tmp = $searchItem->vDescripcion ){
+            $where[] = "vDescripcion='$tmp'";
+        }
         if( $tmp = $searchItem->iHorasPresenciales ){
             $where[] = "iHorasPresenciales='$tmp'";
         }
@@ -217,6 +290,33 @@ class TblCurso extends NingenGenericDO{
         }
         if( $tmp = $searchItem->lastModified ){
             $where[] = "last_modified='$tmp'";
+        }
+        if( $tmp = $searchItem->iHorasManana ){
+            $where[] = "iHorasManana='$tmp'";
+        }
+        if( $tmp = $searchItem->iHorasTarde ){
+            $where[] = "iHorasTarde='$tmp'";
+        }
+        if( $tmp = $searchItem->iDeManana ){
+            $where[] = "iDeManana='$tmp'";
+        }
+        if( $tmp = $searchItem->iAManana ){
+            $where[] = "iAManana='$tmp'";
+        }
+        if( $tmp = $searchItem->iDeTarde ){
+            $where[] = "iDeTarde='$tmp'";
+        }
+        if( $tmp = $searchItem->iATarde ){
+            $where[] = "iATarde='$tmp'";
+        }
+        if( $tmp = $searchItem->iGrupo ){
+            $where[] = "iGrupo='$tmp'";
+        }
+        if( $tmp = $searchItem->iAccion ){
+            $where[] = "iAccion='$tmp'";
+        }
+        if( $tmp = $searchItem->iSesion ){
+            $where[] = "iSesion='$tmp'";
         }
         if( count($where) > 0 ){
             $where = implode( ' and ', $where );
@@ -275,38 +375,6 @@ class TblCurso extends NingenGenericDO{
         return NingenGenericDO::createDO( $db, $data, 'TblCurso');
 
     }
-
-    /**
-     * Obtiene todas las filas de la tabla tblCurso que coinciden con el criterio fkPlan='$fkPlan'.
-     *
-     * @param Connection $db Conexión con la base de datos.
-     * @param integer fkPlan string Valor del campo fkPlan.
-     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
-     * @return array
-     */
-     public static function findByTblPlan( $db, $fkPlan, $orderBy='' ){
-         $sql = "SELECT * FROM tblCurso WHERE fkPlan='$fkPlan'";
-         if( $orderBy != '' ){
-             $sql .= " ORDER BY $orderBy";
-         }
-         return NingenGenericDO::createCollection( $db, $sql, 'TblCurso' );
-     }
-
-    /**
-     * Obtiene todas las filas de la tabla tblCurso que coinciden con el criterio fkSector='$fkSector'.
-     *
-     * @param Connection $db Conexión con la base de datos.
-     * @param integer fkSector string Valor del campo fkSector.
-     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
-     * @return array
-     */
-     public static function findByTblSector( $db, $fkSector, $orderBy='' ){
-         $sql = "SELECT * FROM tblCurso WHERE fkSector='$fkSector'";
-         if( $orderBy != '' ){
-             $sql .= " ORDER BY $orderBy";
-         }
-         return NingenGenericDO::createCollection( $db, $sql, 'TblCurso' );
-     }
 
     /**
      * Obtiene todas las filas de la tabla tblCurso que coinciden con el criterio fkAula='$fkAula'.
@@ -373,6 +441,38 @@ class TblCurso extends NingenGenericDO{
      }
 
     /**
+     * Obtiene todas las filas de la tabla tblCurso que coinciden con el criterio fkSector='$fkSector'.
+     *
+     * @param Connection $db Conexión con la base de datos.
+     * @param integer fkSector string Valor del campo fkSector.
+     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
+     * @return array
+     */
+     public static function findByTblSector( $db, $fkSector, $orderBy='' ){
+         $sql = "SELECT * FROM tblCurso WHERE fkSector='$fkSector'";
+         if( $orderBy != '' ){
+             $sql .= " ORDER BY $orderBy";
+         }
+         return NingenGenericDO::createCollection( $db, $sql, 'TblCurso' );
+     }
+
+    /**
+     * Obtiene todas las filas de la tabla tblCurso que coinciden con el criterio fkPlan='$fkPlan'.
+     *
+     * @param Connection $db Conexión con la base de datos.
+     * @param integer fkPlan string Valor del campo fkPlan.
+     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
+     * @return array
+     */
+     public static function findByTblPlan( $db, $fkPlan, $orderBy='' ){
+         $sql = "SELECT * FROM tblCurso WHERE fkPlan='$fkPlan'";
+         if( $orderBy != '' ){
+             $sql .= " ORDER BY $orderBy";
+         }
+         return NingenGenericDO::createCollection( $db, $sql, 'TblCurso' );
+     }
+
+    /**
      * Actualiza una fila de la tabla tblCurso.
      */
     public function update(){
@@ -384,6 +484,7 @@ class TblCurso extends NingenGenericDO{
         $sets[] = 'fkModalidad=' . ( ( ( $value = $this->fkModalidad ) === null || !isset($this->fkModalidad) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'fkAula=' . ( ( ( $value = $this->fkAula ) === null || !isset($this->fkAula) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'vNombre=' . ( ( ( $value = $this->vNombre ) === null || !isset($this->vNombre) ) ? 'null' :  "'".addslashes($value)."'" );
+        $sets[] = 'vDescripcion=' . ( ( ( $value = $this->vDescripcion ) === null || !isset($this->vDescripcion) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'iHorasPresenciales=' . ( ( ( $value = $this->iHorasPresenciales ) === null || !isset($this->iHorasPresenciales) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'iHorasDistancia=' . ( ( ( $value = $this->iHorasDistancia ) === null || !isset($this->iHorasDistancia) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'iHorasTutoria=' . ( ( ( $value = $this->iHorasTutoria ) === null || !isset($this->iHorasTutoria) ) ? 'null' :  "'".addslashes($value)."'" );
@@ -392,6 +493,15 @@ class TblCurso extends NingenGenericDO{
         $sets[] = 'iNumeroAlumnos=' . ( ( ( $value = $this->iNumeroAlumnos ) === null || !isset($this->iNumeroAlumnos) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'mod_user=' . ( ( ( $value = $this->modUser ) === null || !isset($this->modUser) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'last_modified=' . ( ( ( $value = $this->lastModified ) === null || !isset($this->lastModified) ) ? 'null' :  "'".addslashes($value)."'" );
+        $sets[] = 'iHorasManana=' . ( ( ( $value = $this->iHorasManana ) === null || !isset($this->iHorasManana) ) ? 'null' :  "'".addslashes($value)."'" );
+        $sets[] = 'iHorasTarde=' . ( ( ( $value = $this->iHorasTarde ) === null || !isset($this->iHorasTarde) ) ? 'null' :  "'".addslashes($value)."'" );
+        $sets[] = 'iDeManana=' . ( ( ( $value = $this->iDeManana ) === null || !isset($this->iDeManana) ) ? 'null' :  "'".addslashes($value)."'" );
+        $sets[] = 'iAManana=' . ( ( ( $value = $this->iAManana ) === null || !isset($this->iAManana) ) ? 'null' :  "'".addslashes($value)."'" );
+        $sets[] = 'iDeTarde=' . ( ( ( $value = $this->iDeTarde ) === null || !isset($this->iDeTarde) ) ? 'null' :  "'".addslashes($value)."'" );
+        $sets[] = 'iATarde=' . ( ( ( $value = $this->iATarde ) === null || !isset($this->iATarde) ) ? 'null' :  "'".addslashes($value)."'" );
+        $sets[] = 'iGrupo=' . ( ( ( $value = $this->iGrupo ) === null || !isset($this->iGrupo) ) ? 'null' :  "'".addslashes($value)."'" );
+        $sets[] = 'iAccion=' . ( ( ( $value = $this->iAccion ) === null || !isset($this->iAccion) ) ? 'null' :  "'".addslashes($value)."'" );
+        $sets[] = 'iSesion=' . ( ( ( $value = $this->iSesion ) === null || !isset($this->iSesion) ) ? 'null' :  "'".addslashes($value)."'" );
         $setStr = implode(',', $sets);
         return $this->_db->executeQuery("UPDATE tblCurso SET $setStr WHERE idCurso='".addslashes($this->_data['idCurso'])."'");
     }
@@ -408,6 +518,7 @@ class TblCurso extends NingenGenericDO{
         $attributes[] = 'fkModalidad';
         $attributes[] = 'fkAula';
         $attributes[] = 'vNombre';
+        $attributes[] = 'vDescripcion';
         $attributes[] = 'iHorasPresenciales';
         $attributes[] = 'iHorasDistancia';
         $attributes[] = 'iHorasTutoria';
@@ -416,6 +527,15 @@ class TblCurso extends NingenGenericDO{
         $attributes[] = 'iNumeroAlumnos';
         $attributes[] = 'mod_user';
         $attributes[] = 'last_modified';
+        $attributes[] = 'iHorasManana';
+        $attributes[] = 'iHorasTarde';
+        $attributes[] = 'iDeManana';
+        $attributes[] = 'iAManana';
+        $attributes[] = 'iDeTarde';
+        $attributes[] = 'iATarde';
+        $attributes[] = 'iGrupo';
+        $attributes[] = 'iAccion';
+        $attributes[] = 'iSesion';
         $attributes = implode(',', $attributes);
         $values = array();
         $values[] = (( $value = $this->fkPlan ) === null || !isset($this->fkPlan) ) ? 'null' : "'".addslashes($value)."'";
@@ -425,6 +545,7 @@ class TblCurso extends NingenGenericDO{
         $values[] = (( $value = $this->fkModalidad ) === null || !isset($this->fkModalidad) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->fkAula ) === null || !isset($this->fkAula) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->vNombre ) === null || !isset($this->vNombre) ) ? 'null' : "'".addslashes($value)."'";
+        $values[] = (( $value = $this->vDescripcion ) === null || !isset($this->vDescripcion) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->iHorasPresenciales ) === null || !isset($this->iHorasPresenciales) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->iHorasDistancia ) === null || !isset($this->iHorasDistancia) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->iHorasTutoria ) === null || !isset($this->iHorasTutoria) ) ? 'null' : "'".addslashes($value)."'";
@@ -433,6 +554,15 @@ class TblCurso extends NingenGenericDO{
         $values[] = (( $value = $this->iNumeroAlumnos ) === null || !isset($this->iNumeroAlumnos) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->modUser ) === null || !isset($this->modUser) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->lastModified ) === null || !isset($this->lastModified) ) ? 'null' : "'".addslashes($value)."'";
+        $values[] = (( $value = $this->iHorasManana ) === null || !isset($this->iHorasManana) ) ? 'null' : "'".addslashes($value)."'";
+        $values[] = (( $value = $this->iHorasTarde ) === null || !isset($this->iHorasTarde) ) ? 'null' : "'".addslashes($value)."'";
+        $values[] = (( $value = $this->iDeManana ) === null || !isset($this->iDeManana) ) ? 'null' : "'".addslashes($value)."'";
+        $values[] = (( $value = $this->iAManana ) === null || !isset($this->iAManana) ) ? 'null' : "'".addslashes($value)."'";
+        $values[] = (( $value = $this->iDeTarde ) === null || !isset($this->iDeTarde) ) ? 'null' : "'".addslashes($value)."'";
+        $values[] = (( $value = $this->iATarde ) === null || !isset($this->iATarde) ) ? 'null' : "'".addslashes($value)."'";
+        $values[] = (( $value = $this->iGrupo ) === null || !isset($this->iGrupo) ) ? 'null' : "'".addslashes($value)."'";
+        $values[] = (( $value = $this->iAccion ) === null || !isset($this->iAccion) ) ? 'null' : "'".addslashes($value)."'";
+        $values[] = (( $value = $this->iSesion ) === null || !isset($this->iSesion) ) ? 'null' : "'".addslashes($value)."'";
         $values = implode(',', $values);
         if( $this->_db->executeQuery("INSERT INTO tblCurso($attributes) VALUES($values)") ){
             $eleDO = $this->findByPrimaryKey( $this->_db, $this->_db->getLastInsertId() );
@@ -602,6 +732,26 @@ class TblCurso extends NingenGenericDO{
     }
 
     /**
+      * Obtiene el valor del atributo 'vDescripcion'.
+      *
+      * @return string
+      */
+    public function getVDescripcion(){
+        return $this->vDescripcion;
+    }
+
+    /**
+      * Establece el valor del atributo 'vDescripcion'.
+      *
+      * @param string Valor.
+      */
+    public function setVDescripcion( $value ){
+
+        $this->vDescripcion = $value;
+
+    }
+
+    /**
       * Obtiene el valor del atributo 'iHorasPresenciales'.
       *
       * @return integer
@@ -762,6 +912,186 @@ class TblCurso extends NingenGenericDO{
     }
 
     /**
+      * Obtiene el valor del atributo 'iHorasManana'.
+      *
+      * @return integer
+      */
+    public function getIHorasManana(){
+        return $this->iHorasManana;
+    }
+
+    /**
+      * Establece el valor del atributo 'iHorasManana'.
+      *
+      * @param integer Valor.
+      */
+    public function setIHorasManana( $value ){
+
+        $this->iHorasManana = $value;
+
+    }
+
+    /**
+      * Obtiene el valor del atributo 'iHorasTarde'.
+      *
+      * @return integer
+      */
+    public function getIHorasTarde(){
+        return $this->iHorasTarde;
+    }
+
+    /**
+      * Establece el valor del atributo 'iHorasTarde'.
+      *
+      * @param integer Valor.
+      */
+    public function setIHorasTarde( $value ){
+
+        $this->iHorasTarde = $value;
+
+    }
+
+    /**
+      * Obtiene el valor del atributo 'iDeManana'.
+      *
+      * @return integer
+      */
+    public function getIDeManana(){
+        return $this->iDeManana;
+    }
+
+    /**
+      * Establece el valor del atributo 'iDeManana'.
+      *
+      * @param integer Valor.
+      */
+    public function setIDeManana( $value ){
+
+        $this->iDeManana = $value;
+
+    }
+
+    /**
+      * Obtiene el valor del atributo 'iAManana'.
+      *
+      * @return integer
+      */
+    public function getIAManana(){
+        return $this->iAManana;
+    }
+
+    /**
+      * Establece el valor del atributo 'iAManana'.
+      *
+      * @param integer Valor.
+      */
+    public function setIAManana( $value ){
+
+        $this->iAManana = $value;
+
+    }
+
+    /**
+      * Obtiene el valor del atributo 'iDeTarde'.
+      *
+      * @return integer
+      */
+    public function getIDeTarde(){
+        return $this->iDeTarde;
+    }
+
+    /**
+      * Establece el valor del atributo 'iDeTarde'.
+      *
+      * @param integer Valor.
+      */
+    public function setIDeTarde( $value ){
+
+        $this->iDeTarde = $value;
+
+    }
+
+    /**
+      * Obtiene el valor del atributo 'iATarde'.
+      *
+      * @return integer
+      */
+    public function getIATarde(){
+        return $this->iATarde;
+    }
+
+    /**
+      * Establece el valor del atributo 'iATarde'.
+      *
+      * @param integer Valor.
+      */
+    public function setIATarde( $value ){
+
+        $this->iATarde = $value;
+
+    }
+
+    /**
+      * Obtiene el valor del atributo 'iGrupo'.
+      *
+      * @return integer
+      */
+    public function getIGrupo(){
+        return $this->iGrupo;
+    }
+
+    /**
+      * Establece el valor del atributo 'iGrupo'.
+      *
+      * @param integer Valor.
+      */
+    public function setIGrupo( $value ){
+
+        $this->iGrupo = $value;
+
+    }
+
+    /**
+      * Obtiene el valor del atributo 'iAccion'.
+      *
+      * @return integer
+      */
+    public function getIAccion(){
+        return $this->iAccion;
+    }
+
+    /**
+      * Establece el valor del atributo 'iAccion'.
+      *
+      * @param integer Valor.
+      */
+    public function setIAccion( $value ){
+
+        $this->iAccion = $value;
+
+    }
+
+    /**
+      * Obtiene el valor del atributo 'iSesion'.
+      *
+      * @return integer
+      */
+    public function getISesion(){
+        return $this->iSesion;
+    }
+
+    /**
+      * Establece el valor del atributo 'iSesion'.
+      *
+      * @param integer Valor.
+      */
+    public function setISesion( $value ){
+
+        $this->iSesion = $value;
+
+    }
+
+    /**
      * Obtiene todos los elementos relacionados de la tabla 'tblAlumno'
      *
      * @param Connection $db Conexión con la base de datos.
@@ -771,6 +1101,19 @@ class TblCurso extends NingenGenericDO{
 
         include_once('TblAlumno.inc');
         return TblAlumno::findByTblCurso( $this->_db, $this->idCurso, $orderBy );
+
+    }
+
+    /**
+     * Obtiene todos los elementos relacionados de la tabla 'tblHorario'
+     *
+     * @param Connection $db Conexión con la base de datos.
+     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
+     */
+    public function getTblHorarios( $orderBy='' ){
+
+        include_once('TblHorario.inc');
+        return TblHorario::findByTblCurso( $this->_db, $this->idCurso, $orderBy );
 
     }
 
@@ -827,15 +1170,15 @@ class TblCurso extends NingenGenericDO{
     }
 
     /**
-     * Obtiene todos los elementos relacionados de la tabla 'trelPersonaCurso'
+     * Obtiene todos los elementos relacionados de la tabla 'trelPrecandidato'
      *
      * @param Connection $db Conexión con la base de datos.
      * @param string $orderBy Cadena con los campos de ordenación separados por comas.
      */
-    public function getTrelPersonaCursos( $orderBy='' ){
+    public function getTrelPrecandidatos( $orderBy='' ){
 
-        include_once('TrelPersonaCurso.inc');
-        return TrelPersonaCurso::findByTblCurso( $this->_db, $this->idCurso, $orderBy );
+        include_once('TrelPrecandidato.inc');
+        return TrelPrecandidato::findByTblCurso( $this->_db, $this->idCurso, $orderBy );
 
     }
 
@@ -853,46 +1196,6 @@ class TblCurso extends NingenGenericDO{
     }
 
     // Relaciones
-
-    /**
-     * Obtiene el objeto 'TblPlan' relacionado.
-     *
-     * @return TblPlan
-     */
-    public function getTblPlan(){
-        require_once('TblPlan.inc');
-        return TblPlan::findByPrimaryKey( $this->_db, $this->fkPlan );
-    }
-
-    /**
-     * Asigna el objeto 'TblPlan' relacionado.
-     *
-     * @param TblPlan $dataObject
-     */
-    public function setTblPlan( $dataObject ){
-        require_once('TblPlan.inc');
-        $this->setFkPlan( $dataObject->getIdPlan() );
-    }
-
-    /**
-     * Obtiene el objeto 'TblSector' relacionado.
-     *
-     * @return TblSector
-     */
-    public function getTblSector(){
-        require_once('TblSector.inc');
-        return TblSector::findByPrimaryKey( $this->_db, $this->fkSector );
-    }
-
-    /**
-     * Asigna el objeto 'TblSector' relacionado.
-     *
-     * @param TblSector $dataObject
-     */
-    public function setTblSector( $dataObject ){
-        require_once('TblSector.inc');
-        $this->setFkSector( $dataObject->getIdSector() );
-    }
 
     /**
      * Obtiene el objeto 'TblAula' relacionado.
@@ -972,6 +1275,46 @@ class TblCurso extends NingenGenericDO{
     public function setTblModalidad( $dataObject ){
         require_once('TblModalidad.inc');
         $this->setFkModalidad( $dataObject->getIdModalidad() );
+    }
+
+    /**
+     * Obtiene el objeto 'TblSector' relacionado.
+     *
+     * @return TblSector
+     */
+    public function getTblSector(){
+        require_once('TblSector.inc');
+        return TblSector::findByPrimaryKey( $this->_db, $this->fkSector );
+    }
+
+    /**
+     * Asigna el objeto 'TblSector' relacionado.
+     *
+     * @param TblSector $dataObject
+     */
+    public function setTblSector( $dataObject ){
+        require_once('TblSector.inc');
+        $this->setFkSector( $dataObject->getIdSector() );
+    }
+
+    /**
+     * Obtiene el objeto 'TblPlan' relacionado.
+     *
+     * @return TblPlan
+     */
+    public function getTblPlan(){
+        require_once('TblPlan.inc');
+        return TblPlan::findByPrimaryKey( $this->_db, $this->fkPlan );
+    }
+
+    /**
+     * Asigna el objeto 'TblPlan' relacionado.
+     *
+     * @param TblPlan $dataObject
+     */
+    public function setTblPlan( $dataObject ){
+        require_once('TblPlan.inc');
+        $this->setFkPlan( $dataObject->getIdPlan() );
     }
 }
 ?>

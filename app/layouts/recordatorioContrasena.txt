@@ -1,11 +1,12 @@
 Estimado usuario:
 
-    Este correo es para informarle que rellenó correctamente el formulario de olvido de contraseña.
+    Este correo es para informarle que rellenó correctamente el formulario de recuperación de contraseña.
     A continuación le detallamos sus nuevos datos de acceso:
     
     Usuario: %%USUARIO%%
     
     Contraseña: %%CONTRASENA%%    
+    
 --
 Fin del mensaje.
 Un cordial saludo.

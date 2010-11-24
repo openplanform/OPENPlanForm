@@ -70,7 +70,12 @@ class barraHerramientasModule extends NingenModule{
             	$this->echoBotonPanel();
             	
             	// Botones especiales para la sección de administración
-            	if ($this->controller == 'administrador'){
+            	$controladoresAdministracion = array(
+                    'administrador',
+                    'documento',
+            	);
+            	
+            	if (in_array($this->controller, $controladoresAdministracion)){
             	    
             	    switch ($this->action){
             	        
@@ -78,24 +83,35 @@ class barraHerramientasModule extends NingenModule{
             	            $this->echoBotonMenu(true);
                             $this->echoBotonConfig(true);
                             $this->echoBotonRoles(false);
+                            $this->echoBotonDocumentos(true);
         	            break;
             	            
             	        case 'menu' :
             	            $this->echoBotonMenu(false);
                             $this->echoBotonConfig(true);
                             $this->echoBotonRoles(true);
+                            $this->echoBotonDocumentos(true);
         	            break;
             	            
             	        case 'configuracion':
             	            $this->echoBotonMenu(true);
                             $this->echoBotonConfig(false);
                             $this->echoBotonRoles(true);
+                            $this->echoBotonDocumentos(true);
+        	            break;
+            	            
+            	        case 'index' && $this->controller == 'documento':
+            	            $this->echoBotonMenu(true);
+                            $this->echoBotonConfig(true);
+                            $this->echoBotonRoles(true);
+                            $this->echoBotonDocumentos(false);
         	            break;
             	            
             	        default:
             	            $this->echoBotonMenu(true);
                             $this->echoBotonConfig(true);
                             $this->echoBotonRoles(true);
+                            $this->echoBotonDocumentos(true);
         	            break;
             	        
             	    }
@@ -371,13 +387,16 @@ class barraHerramientasModule extends NingenModule{
 			
 			$url = '';
 			if ( !empty($this->param ) ){
-				$url = "javascript:ventanaConfirmacion('Confirmar','¿Está seguro que desea <strong>eliminar</strong> este elemento?','/" . $this->controller . "/eliminar.html/" . $this->param  . "')";	
+				$url = "javascript:ventanaConfirmacion('Confirmar','¿Está seguro que desea <strong>eliminar</strong> este elemento?','/" . $this->controller . "/eliminar.html/" . $this->param  . "')";
+				echo '<li class="eliminar">
+	          		<a href="' . $url . '" title="Elimina un elemento">Eliminar</a>
+             	</li>';	
+			} else {
+				echo '<li class="eliminar inactivo">
+	          		<a href="javascript:void(0)" title="Elimina un elemento">Eliminar</a>
+             	</li>';
 			}
 			
-			echo '<li class="eliminar">
-	          	<a href="' . $url . '" title="Elimina un elemento">Eliminar</a>
-             </li>';
-		
 		} else {
 			
 			echo '<li class="eliminar inactivo">
@@ -447,6 +466,27 @@ class barraHerramientasModule extends NingenModule{
             
             echo '<li class="roles inactivo">
                 <a href="javascript:void(0)" title="Administrar Roles">Roles</a>
+             </li>';
+            
+        }
+            
+    }
+	
+    /**
+     * Imprime el botón de documentos
+     */
+    public function echoBotonDocumentos($activo = true){
+        
+        if ($activo) {
+            
+            echo '<li class="documentos">
+                <a href="/documento/index.html" title="Administrar Documentos">Docs.</a>
+             </li>';
+            
+        } else {
+            
+            echo '<li class="documentos inactivo">
+                <a href="javascript:void(0)" title="Administrar Documentos">Docs.</a>
              </li>';
             
         }

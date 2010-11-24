@@ -23,14 +23,22 @@ class breadcrumbsModule extends NingenModule{
     protected $db;
     
     /**
+     * Reescritura del controlador
+     * @var string
+     */
+    protected $controllerRewrite = null;
+    
+    
+    /**
      * Establece el nombre del controlador y de la acción
      * @param string $controller
      * @param string $action
      */
-    public function setControllerAction($controller, $action = 'index'){
+    public function setControllerAction($controller, $action = 'index', $rewrite = null){
         
         $this->actionName = $action;
         $this->controllerName = $controller;
+        $this->controllerRewrite = $rewrite;
         
     }
     
@@ -51,7 +59,8 @@ class breadcrumbsModule extends NingenModule{
     public function runModule(){
         
         // Controlador
-        $sql = "SELECT vNombre AS label FROM tblAcceso WHERE vControlador = '" . $this->controllerName . "' AND vAccion IS NULL;";
+        $controllerName = !is_null($this->controllerRewrite) ? $this->controllerRewrite : $this->controllerName;
+        $sql = "SELECT vNombre AS label FROM tblAcceso WHERE vControlador = '" . $controllerName . "' AND vAccion IS NULL";
         $this->db->executeQuery($sql);
         $row = $this->db->fetchRow();
         $controllerLabel = $row['label'];

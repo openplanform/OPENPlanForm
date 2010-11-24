@@ -19,6 +19,16 @@ if ($this->editMode){
 </div>
 <div id="formularioMenu">
 
+	<?
+	if ($this->editMode){
+            
+		?><div class="campo">
+            <input type="button" class="btnSubmit" value="Nuevo" onclick="window.location='/administrador/menu.html'"/>
+        </div><?
+    
+    }
+	?>
+
     <h3><?= $tit ?></h3>
     
     <form action="<?= $_SERVER['REQUEST_URI'] ?>" method="post" id="formMenu">

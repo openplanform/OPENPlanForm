@@ -228,16 +228,17 @@
 	            <label for="cursosSeleccionados">Preinscripciones del alumno</label>
 	            
 	            <div class="contenedorMultiselect">
+	            	<a title="Ir a la ficha del curso" class="btnFicha" href="javascript:fichaCurso();hidePopups();"><span>ficha</span></a>
 		            <a title="Quitar curso" class="btnEliminar" href="javascript:ventanaConfirmacion('Confirmar','¿Está seguro que desea quitar el/los curso/s del alumno?', 'javascript:quitarCursoAlumno();hidePopups()')"><span>eliminar</span></a>
-		            <select name="cursos[]" multiple="multiple" id="cursosSeleccionados" class="campoTexto grande multiple"><?
+		            <select name="cursos[]" multiple="multiple" id="cursosSeleccionados" class="campoTexto enorme multiple"><?
 						
 		            	foreach ( $this->cursosAlumnoCOL as $cursoAlumnoDO ){
 		            		
-		            		?><option value="<?= $cursoAlumnoDO->getFkPlanCursoCentro() ?>"><?
+		            		?><option value="<?= $cursoAlumnoDO->getFkCurso() ?>"><?
 		            		
 		            			foreach ( $this->cursosCOL as $cursoDO ){
 		            				
-		            				if ( $cursoDO->getIdCurso() == $cursoAlumnoDO->getFkPlanCursoCentro() ){
+		            				if ( $cursoDO->getIdCurso() == $cursoAlumnoDO->getFkCurso() ){
 		            					echo $cursoDO->getVNombre(); 
 		            				}
 		            				
@@ -302,7 +303,7 @@
 					<td><?= $this->categoriasIDX[$cursoDO->getFkCategoria()] ?></td>
 					<td><?= NingenDate::getDiaMesAno($cursoDO->getDInicio()) ?></td>
 					<td><?= NingenDate::getDiaMesAno($cursoDO->getDFin()) ?></td>
-					<td><a href="javascript:addCursoAlumno('<?= $cursoDO->getIdCurso() ?>', '<?= $cursoDO->getVNombre() ?>')" class="btnAnadir" title="Asignar al alumno"><span>añadir</span></a></td>
+					<td><a href="javascript:comprobarCandidatoCurso('<?= $this->alumnoDO->getIdPersona() ?>','<?= $cursoDO->getIdCurso() ?>', '<?= $cursoDO->getVNombre() ?>')" class="btnAnadir" title="Asignar al alumno"><span>añadir</span></a></td>
 				</tr>
 				<?
 				

@@ -2,6 +2,40 @@ var $j = jQuery;
 var editar = false;
 
 /**
+ * Comprueba si el alumno es candidato de un curso
+ */
+function comprobarCandidatoCurso(idAlumno, idCurso, nombreCurso){
+	
+	$j.ajax({
+        type: 'POST',
+        url: '/ajax/comprobarCandidatoCurso.html',
+        data: 'alumno=' + idAlumno + '&curso=' + idCurso,
+        //Mostramos un mensaje con la respuesta
+        success: function(data) {
+			arrRespuesta = $j.parseJSON(data);
+        	if ( arrRespuesta.resultado == 'ko' ) {
+        		ventanaKo('AVISO', arrRespuesta.mensaje);
+            } else {
+            	addCursoAlumno(idCurso, nombreCurso);
+            }
+        }
+	});
+	
+}
+
+/**
+ * Redirige a la ficha del curso seleccionado
+ */
+function fichaCurso(){
+	
+	var idCurso = $j('#cursosSeleccionados option:selected').attr('value');
+	if ( idCurso ){
+		window.open("/curso/ficha.html/" + idCurso);
+	}
+	
+}
+
+/**
  * Quita los cursos seleccionados del curso
  */
 function quitarCursoAlumno(){
@@ -13,7 +47,7 @@ function quitarCursoAlumno(){
  * @param integer idCurso
  * @param string nombre
  */
-function addCursoAlumno(idCurso, nombre){
+function addCursoAlumno(idCurso, nombreCurso){
 	
 	idCurso = typeof(idCurso) != 'undefined' ? idCurso : false;
 	var anadir = true;
@@ -25,7 +59,7 @@ function addCursoAlumno(idCurso, nombre){
 	});
 	
 	if ( anadir ){
-		$j('#cursosSeleccionados').append($('<option selected="selected" onclick="this.select"></option>').attr("value",idCurso).text(nombre));
+		$j('#cursosSeleccionados').prepend($('<option selected="selected" onclick="this.select"></option>').attr("value",idCurso).text(nombreCurso));
 	}
 	
 }

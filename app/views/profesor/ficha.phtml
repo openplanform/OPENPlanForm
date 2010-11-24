@@ -82,7 +82,7 @@
 					
 					foreach ( $this->cursosCOL as $cursoDO ){
 
-						if ( $cursoDO->getIdCurso() == $profesorImparteCursoDO->getFkPlanCursoAula() ){
+						if ( $cursoDO->getIdCurso() == $profesorImparteCursoDO->getFkCurso() ){
 							echo '<p><a href="/curso/ficha.html/' . $cursoDO->getIdCurso() . '">' . $cursoDO->getVNombre() . '</a></p>';	
 						}
 						

@@ -7,17 +7,18 @@ require_once 'NingenPaginator.inc';
 require_once NINGENCMS_CLASSESDIR . 'PplController.inc';
 
 require_once NINGENCMS_MODELDIR . '/TblAula.inc';
-require_once NINGENCMS_MODELDIR . '/TblPlan.inc';
+require_once NINGENCMS_MODELDIR . '/TblCentro.inc';
 require_once NINGENCMS_MODELDIR . '/TblCategoria.inc';
-require_once NINGENCMS_MODELDIR . '/TblColectivo.inc';
-require_once NINGENCMS_MODELDIR . '/TblModalidad.inc';
-require_once NINGENCMS_MODELDIR . '/TblSector.inc';
 require_once NINGENCMS_MODELDIR . '/TblCategoria.inc';
 require_once NINGENCMS_MODELDIR . '/TblCategoriaExtendida.inc';
+require_once NINGENCMS_MODELDIR . '/TblColectivo.inc';
 require_once NINGENCMS_MODELDIR . '/TblCurso.inc';
+require_once NINGENCMS_MODELDIR . '/TblModalidad.inc';
+require_once NINGENCMS_MODELDIR . '/TblSector.inc';
+require_once NINGENCMS_MODELDIR . '/TblPlan.inc';
+require_once NINGENCMS_MODELDIR . '/TrelCandidato.inc';
 require_once NINGENCMS_MODELDIR . '/TrelPrecandidato.inc';
 require_once NINGENCMS_MODELDIR . '/TrelProfesor.inc';
-require_once NINGENCMS_MODELDIR . '/TblCentro.inc';
 
 
 class cursoController extends PplController{
@@ -169,41 +170,65 @@ class cursoController extends PplController{
      */
     public function editarAction(){
         
-    	// Obtengo el centro que voy a editar
-    	$paramsARR = $this->getParams();
-        if ( !empty($paramsARR) ){
-            
-            
-            // Curso
-            if (!$cursoDO = TblCurso::findByPrimaryKey($this->db, $paramsARR[0])){
+   	 	// Obtengo el curso que voy a editar
+    	$idCurso = $this->getParam(0);
+        if ( !is_null($idCurso) ){
+        	
+        	// Curso
+            if (!$cursoDO = TblCurso::findByPrimaryKey($this->db, $idCurso)){
                 $this->redirectTo('curso', 'index');
                 return;
             }
             
-        	$this->view->cursoDO = $cursoDO;
-            
-            // Actualizo el centro
-            if ( $this->helper->get('send') ){
-                
-                if ( $this->actualizarInsertar(true,$cursoDO->getIdCurso() ) ){
-                    
-                    // Curso
-                    $cursoDO = TblCurso::findByPrimaryKey($this->db, $cursoDO->getIdCurso());
-                    $this->view->cursoDO = $cursoDO;
-                    
-                } else {
-                    
-                    $this->view->popup = array(
-                        'estado' => 'ko',
-                        'titulo' => 'Error',
-                        'mensaje'=> 'Ha ocurrido un error con la edición del curso. Inténtelo de nuevo en unos instantes por favor.<br/>Si el problema persiste póngase en contacto con el administrador. Muchas gracias.',
-                        'url'=> '',
-                    );
-                    
-                }
-            }            
+        	$duplicar = false;
         	
+        } else {
         	
+        	if ( NingenCmsSession::getValue('cursoDuplicado') instanceof TblCurso ){
+        		
+        		$cursoDO = NingenCmsSession::getValue('cursoDuplicado');
+        		$duplicar = true;
+        		
+        	}
+        	
+        }
+    	
+        // Actualizo el curso
+        if ( isset($cursoDO) && $this->helper->get('send') ){
+        	
+        	if ( $duplicar ){
+    			$correcto = $this->actualizarInsertar();
+    		} else {
+    			$correcto = $this->actualizarInsertar(true, $cursoDO->getIdCurso());
+    		}
+    		
+            if ( $correcto ){
+                    
+            	// Curso
+            	if ( $duplicar ){
+                	$this->redirectTo('curso','editar', $this->db->getLastInsertId());
+            	} else {
+                	$cursoDO = TblCurso::findByPrimaryKey($this->db, $cursoDO->getIdCurso());
+            	}
+                $this->view->cursoDO = $cursoDO;
+                    
+			} else {
+                    
+            	$this->view->popup = array(
+                	'estado' => 'ko',
+                	'titulo' => 'Error',
+                    'mensaje'=> 'Ha ocurrido un error con la edición del curso. Inténtelo de nuevo en unos instantes por favor.<br/>Si el problema persiste póngase en contacto con el administrador. Muchas gracias.',
+                    'url'=> '',
+                );
+                    
+            }
+       }
+       
+       // Datos para la vista
+       if ( isset($cursoDO) ){
+       	
+       		$this->view->cursoDO = $cursoDO;
+       	
         	// Planes
 	        $this->view->planesIDX = $this->cacheBO->getPlanes();
 	        
@@ -225,7 +250,7 @@ class cursoController extends PplController{
 	        $this->view->aulasIDX = $this->cacheBO->getAulas();
 	    	
 	        // Profesores curso
-	        $this->view->profesoresCursoARR = TrelProfesor::findByTblCurso($this->db, $cursoDO->getIdCurso());
+	        $this->view->profesoresCursoCOL = TrelProfesor::findByTblCurso($this->db, $cursoDO->getIdCurso());
 	        
 	        // Profesores
 	        $this->view->profesoresIDX = $this->cacheBO->getProfesores();
@@ -235,7 +260,16 @@ class cursoController extends PplController{
 	        
 	        // Categorías de profesores
 	        $this->view->categoriasProfesoresIDX = $this->cacheBO->getProfesoresCategorias();
-        
+	        
+	        // Precandidatos
+	        $this->view->precandidatosCursoCOL = TrelPrecandidato::findByTblCurso($this->db, $cursoDO->getIdCurso());
+	        
+	        // Candidatos
+		    $this->view->candidatosCursoCOL = TrelCandidato::findByTblCurso($this->db, $cursoDO->getIdCurso());
+	        
+	        // Personas
+	        $this->view->personasIDX = $this->cacheBO->getPersonas();
+	        
         }
 
     }
@@ -246,10 +280,10 @@ class cursoController extends PplController{
      */
     public function fichaAction(){
         
-    	$paramsARR = $this->getParams();
-        if ( !empty($paramsARR) ){
+    	$idCurso = $this->getParam(0);
+        if ( !is_null($idCurso) ){
         	
-        	$cursoDO = TblCurso::findByPrimaryKey($this->db, $paramsARR[0]);
+        	$cursoDO = TblCurso::findByPrimaryKey($this->db, $idCurso);
         	
         	if ( !empty($cursoDO) ){
 	        	
@@ -259,7 +293,7 @@ class cursoController extends PplController{
 	        	$this->view->categoriaDO = TblCategoriaExtendida::findByPrimaryKeyId($this->db, $cursoDO->getFkCategoria());
 	        	
 	        	// Profesores curso
-		        $this->view->profesoresCursoARR = TrelProfesor::findByTblCurso($this->db, $cursoDO->getIdCurso());
+		        $this->view->profesoresCursoCOL = TrelProfesor::findByTblCurso($this->db, $cursoDO->getIdCurso());
 		        
 		        // Profesores
 		        $this->view->profesoresIDX = $this->cacheBO->getProfesores();
@@ -267,9 +301,9 @@ class cursoController extends PplController{
   		        // Personas
 		        $this->view->personasIDX = $this->cacheBO->getPersonas();
 		        
-		        // Preinscritos
-		        $this->view->precandidatosCursoARR = TrelPrecandidato::findByTblCurso($this->db, $cursoDO->getIdCurso());
-		        
+		        // Precandidatos
+		        $this->view->precandidatosCursoCOL = TrelPrecandidato::findByTblCurso($this->db, $cursoDO->getIdCurso());
+
         	}
         	
         }
@@ -306,10 +340,12 @@ class cursoController extends PplController{
         	$cursoDO = TblCurso::findByPrimaryKey($this->db, $paramsARR[0]);
         	$nombreCurso = 'Copia de ' . $cursoDO->getVNombre();
         	$cursoDO->setVNombre($nombreCurso);
-        	$cursoDO->insert();
+//        	$cursoDO->insert();
+        	NingenCmsSession::setValue('cursoDuplicado', $cursoDO);
         }
         
-        $this->redirectTo('curso','editar', $this->db->getLastInsertId());
+//        $this->redirectTo('curso','editar', $this->db->getLastInsertId());
+        $this->redirectTo('curso','editar');
         
     }
     
@@ -446,7 +482,7 @@ class cursoController extends PplController{
 	    }
 	    
     	// alumnos
-    	$alumnos = $this->helper->escapeInjection($this->helper->get('alumnos'));
+    	$alumnos = $this->helper->escapeInjection($this->helper->get('numAlumnos'));
 	    if ( is_null($alumnos) || empty($alumnos) ){
 	    	$alumnos = "";
 	    }
@@ -468,6 +504,30 @@ class cursoController extends PplController{
         if ( array_key_exists('profesores', $_POST) ){
         	foreach ($_POST['profesores'] as $profesor) {
             	$profesoresARR[] = $this->helper->escapeInjection($profesor);
+            }
+        }
+        
+	    // Precandidatos
+    	$precandidatosARR = array();
+        if ( array_key_exists('precandidatos', $_POST) ){
+        	foreach ($_POST['precandidatos'] as $precandidato) {
+            	$precandidatosARR[] = $this->helper->escapeInjection($precandidato);
+            }
+        }
+        
+	    // Candidatos
+    	$candidatosARR = array();
+        if ( array_key_exists('candidatos', $_POST) ){
+        	foreach ($_POST['candidatos'] as $candidato) {
+            	$candidatosARR[] = $this->helper->escapeInjection($candidato);
+            }
+        }
+
+        // Alumnos
+    	$alumnosARR = array();
+        if ( array_key_exists('alumnos', $_POST) ){
+        	foreach ($_POST['alumnos'] as $alumno) {
+            	$alumnosARR[] = $this->helper->escapeInjection($alumno);
             }
         }
         
@@ -516,20 +576,64 @@ class cursoController extends PplController{
 	    	if ( $correcto ){
 	    		
 	    		if ( $editar ){
-	    			$sql = 'DELETE FROM trelProfesor WHERE fkPlanCursoAula = ' . $idCurso;
-	    			$this->db->executeQuery($sql);
+	    			$sql = 'DELETE FROM trelProfesor WHERE fkCurso = ' . $idCurso;
+	    			if ( !$this->db->executeQuery($sql) ){
+	    				$correcto = false;
+	    			}
 	    		} else {
 	    			$idCurso = $this->db->getLastInsertId();
 	    		}
 	    		
-	    		foreach ( $profesoresARR as $idProfesor ){
-	    			$sql = 'INSERT INTO trelProfesor VALUES (' . $idProfesor . ',' . $idCurso . ')';
+	    		if ( $correcto ){
+		    		foreach ( $profesoresARR as $idProfesor ){
+		    			$sql = 'INSERT INTO trelProfesor VALUES (' . $idProfesor . ',' . $idCurso . ')';
+		    			if ( !$this->db->executeQuery($sql) ){
+		    				$correcto = false;
+		    			}
+		    		}
+	    		}
+	    		
+	    	}
+	    	
+		    // Precandidatos
+	    	if ( $correcto ){
+	    		
+	    		if ( $editar ){
+	    			$sql = 'DELETE FROM trelPrecandidato WHERE fkCurso = ' . $idCurso;
 	    			if ( !$this->db->executeQuery($sql) ){
 	    				$correcto = false;
 	    			}
-	    			
 	    		}
 	    		
+	    		if ( $correcto ){
+	    			foreach ( $precandidatosARR as $idPrecandidato ){
+		    			$sql = 'INSERT INTO trelPrecandidato VALUES (' . $idPrecandidato . ',' . $idCurso . ',\'' . date('Y-m-d') . '\')';
+		    			if ( !$this->db->executeQuery($sql) ){
+		    				$correcto = false;
+		    			}
+			    	}
+	    		}
+	    		
+	    	}
+
+	    	// Candidatos
+	    	if ( $correcto ){
+	    		
+	    		if ( $editar ){
+	    			$sql = 'DELETE FROM trelCandidato WHERE fkCurso = ' . $idCurso;
+	    			if ( !$this->db->executeQuery($sql) ){
+	    				$correcto = false;
+	    			}
+	    		}
+	    		
+	    		if ( $correcto ){
+	    			foreach ( $candidatosARR as $idCandidato ){
+		    			$sql = 'INSERT INTO trelCandidato VALUES (' . $idCandidato . ',' . $idCurso . ',\'' . date('Y-m-d') . '\')';
+		    			if ( !$this->db->executeQuery($sql) ){
+		    				$correcto = false;
+		    			}
+			    	}
+	    		}
 	    		
 	    	}
 	    	

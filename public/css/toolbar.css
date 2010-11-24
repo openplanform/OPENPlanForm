@@ -78,3 +78,6 @@
 #toolbarPrincipal ul li.roles a{
     background: url(/img/iconos/roles32.png) 50% 4px no-repeat;    
 }
+#toolbarPrincipal ul li.documentos a{
+    background: url(/img/iconos/documentos32.png) 50% 4px no-repeat;    
+}

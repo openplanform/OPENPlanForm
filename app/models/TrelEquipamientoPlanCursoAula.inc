@@ -1,7 +1,7 @@
 <?php
 /**
  * Este archivo ha sido generado con Ningen DoGen v.0.6
- * el 21 de October de 2010 a las 10:48:39
+ * el 15 de November de 2010 a las 08:53:54
  * @package dataAccess
  */
 
@@ -33,10 +33,10 @@ class TrelEquipamientoPlanCursoAula extends NingenGenericDO{
     public $fkEquipamiento;
 
     /**
-     * Atributo que representa el campo "fkPlanCursoAula"
+     * Atributo que representa el campo "fkCurso"
      * @var integer
      */
-    public $fkPlanCursoAula;
+    public $fkCurso;
 
     /**
      * Atributo que representa el campo "iCantidad"
@@ -74,7 +74,7 @@ class TrelEquipamientoPlanCursoAula extends NingenGenericDO{
         $this->_data = $data;
         $this->idEquipamientoPlanCursoAula = $data['idEquipamientoPlanCursoAula'];
         $this->fkEquipamiento = $data['fkEquipamiento'];
-        $this->fkPlanCursoAula = $data['fkPlanCursoAula'];
+        $this->fkCurso = $data['fkCurso'];
         $this->iCantidad = $data['iCantidad'];
         $this->ePrecio = $data['ePrecio'];
 
@@ -99,8 +99,8 @@ class TrelEquipamientoPlanCursoAula extends NingenGenericDO{
         if( $tmp = $searchItem->fkEquipamiento ){
             $where[] = "fkEquipamiento='$tmp'";
         }
-        if( $tmp = $searchItem->fkPlanCursoAula ){
-            $where[] = "fkPlanCursoAula='$tmp'";
+        if( $tmp = $searchItem->fkCurso ){
+            $where[] = "fkCurso='$tmp'";
         }
         if( $tmp = $searchItem->iCantidad ){
             $where[] = "iCantidad='$tmp'";
@@ -167,6 +167,22 @@ class TrelEquipamientoPlanCursoAula extends NingenGenericDO{
     }
 
     /**
+     * Obtiene todas las filas de la tabla trelEquipamientoPlanCursoAula que coinciden con el criterio fkCurso='$fkCurso'.
+     *
+     * @param Connection $db Conexión con la base de datos.
+     * @param integer fkCurso string Valor del campo fkCurso.
+     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
+     * @return array
+     */
+     public static function findByTblCurso( $db, $fkCurso, $orderBy='' ){
+         $sql = "SELECT * FROM trelEquipamientoPlanCursoAula WHERE fkCurso='$fkCurso'";
+         if( $orderBy != '' ){
+             $sql .= " ORDER BY $orderBy";
+         }
+         return NingenGenericDO::createCollection( $db, $sql, 'TrelEquipamientoPlanCursoAula' );
+     }
+
+    /**
      * Obtiene todas las filas de la tabla trelEquipamientoPlanCursoAula que coinciden con el criterio fkEquipamiento='$fkEquipamiento'.
      *
      * @param Connection $db Conexión con la base de datos.
@@ -183,28 +199,12 @@ class TrelEquipamientoPlanCursoAula extends NingenGenericDO{
      }
 
     /**
-     * Obtiene todas las filas de la tabla trelEquipamientoPlanCursoAula que coinciden con el criterio fkPlanCursoAula='$fkPlanCursoAula'.
-     *
-     * @param Connection $db Conexión con la base de datos.
-     * @param integer fkPlanCursoAula string Valor del campo fkPlanCursoAula.
-     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
-     * @return array
-     */
-     public static function findByTblCurso( $db, $fkPlanCursoAula, $orderBy='' ){
-         $sql = "SELECT * FROM trelEquipamientoPlanCursoAula WHERE fkPlanCursoAula='$fkPlanCursoAula'";
-         if( $orderBy != '' ){
-             $sql .= " ORDER BY $orderBy";
-         }
-         return NingenGenericDO::createCollection( $db, $sql, 'TrelEquipamientoPlanCursoAula' );
-     }
-
-    /**
      * Actualiza una fila de la tabla trelEquipamientoPlanCursoAula.
      */
     public function update(){
         $sets = array();
         $sets[] = 'fkEquipamiento=' . ( ( ( $value = $this->fkEquipamiento ) === null || !isset($this->fkEquipamiento) ) ? 'null' :  "'".addslashes($value)."'" );
-        $sets[] = 'fkPlanCursoAula=' . ( ( ( $value = $this->fkPlanCursoAula ) === null || !isset($this->fkPlanCursoAula) ) ? 'null' :  "'".addslashes($value)."'" );
+        $sets[] = 'fkCurso=' . ( ( ( $value = $this->fkCurso ) === null || !isset($this->fkCurso) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'iCantidad=' . ( ( ( $value = $this->iCantidad ) === null || !isset($this->iCantidad) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'ePrecio=' . ( ( ( $value = $this->ePrecio ) === null || !isset($this->ePrecio) ) ? 'null' :  "'".addslashes($value)."'" );
         $setStr = implode(',', $sets);
@@ -217,13 +217,13 @@ class TrelEquipamientoPlanCursoAula extends NingenGenericDO{
     public function insert(){
         $attributes = array();
         $attributes[] = 'fkEquipamiento';
-        $attributes[] = 'fkPlanCursoAula';
+        $attributes[] = 'fkCurso';
         $attributes[] = 'iCantidad';
         $attributes[] = 'ePrecio';
         $attributes = implode(',', $attributes);
         $values = array();
         $values[] = (( $value = $this->fkEquipamiento ) === null || !isset($this->fkEquipamiento) ) ? 'null' : "'".addslashes($value)."'";
-        $values[] = (( $value = $this->fkPlanCursoAula ) === null || !isset($this->fkPlanCursoAula) ) ? 'null' : "'".addslashes($value)."'";
+        $values[] = (( $value = $this->fkCurso ) === null || !isset($this->fkCurso) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->iCantidad ) === null || !isset($this->iCantidad) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->ePrecio ) === null || !isset($this->ePrecio) ) ? 'null' : "'".addslashes($value)."'";
         $values = implode(',', $values);
@@ -275,22 +275,22 @@ class TrelEquipamientoPlanCursoAula extends NingenGenericDO{
     }
 
     /**
-      * Obtiene el valor del atributo 'fkPlanCursoAula'.
+      * Obtiene el valor del atributo 'fkCurso'.
       *
       * @return integer
       */
-    public function getFkPlanCursoAula(){
-        return $this->fkPlanCursoAula;
+    public function getFkCurso(){
+        return $this->fkCurso;
     }
 
     /**
-      * Establece el valor del atributo 'fkPlanCursoAula'.
+      * Establece el valor del atributo 'fkCurso'.
       *
       * @param integer Valor.
       */
-    public function setFkPlanCursoAula( $value ){
+    public function setFkCurso( $value ){
 
-        $this->fkPlanCursoAula = $value;
+        $this->fkCurso = $value;
 
     }
 
@@ -337,6 +337,26 @@ class TrelEquipamientoPlanCursoAula extends NingenGenericDO{
     // Relaciones
 
     /**
+     * Obtiene el objeto 'TblCurso' relacionado.
+     *
+     * @return TblCurso
+     */
+    public function getTblCurso(){
+        require_once('TblCurso.inc');
+        return TblCurso::findByPrimaryKey( $this->_db, $this->fkCurso );
+    }
+
+    /**
+     * Asigna el objeto 'TblCurso' relacionado.
+     *
+     * @param TblCurso $dataObject
+     */
+    public function setTblCurso( $dataObject ){
+        require_once('TblCurso.inc');
+        $this->setFkCurso( $dataObject->getIdCurso() );
+    }
+
+    /**
      * Obtiene el objeto 'TblEquipamiento' relacionado.
      *
      * @return TblEquipamiento
@@ -354,26 +374,6 @@ class TrelEquipamientoPlanCursoAula extends NingenGenericDO{
     public function setTblEquipamiento( $dataObject ){
         require_once('TblEquipamiento.inc');
         $this->setFkEquipamiento( $dataObject->getIdEquipamiento() );
-    }
-
-    /**
-     * Obtiene el objeto 'TblCurso' relacionado.
-     *
-     * @return TblCurso
-     */
-    public function getTblCurso(){
-        require_once('TblCurso.inc');
-        return TblCurso::findByPrimaryKey( $this->_db, $this->fkPlanCursoAula );
-    }
-
-    /**
-     * Asigna el objeto 'TblCurso' relacionado.
-     *
-     * @param TblCurso $dataObject
-     */
-    public function setTblCurso( $dataObject ){
-        require_once('TblCurso.inc');
-        $this->setFkPlanCursoAula( $dataObject->getIdCurso() );
     }
 }
 ?>

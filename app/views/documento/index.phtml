@@ -1,0 +1,62 @@
+<div id="listadoDocumentos">
+    <table class="listado">
+        <thead>
+            <tr>
+                <th><a href="/documento/index.html/?ob=id&amp;o=<?=$this->order?>" <?=( ($this->orderBy == 'id')?'class="ordenado ' . $this->order . '"':'' )?> >Id</a></th>
+                <th><a href="/documento/index.html/?ob=nom&amp;o=<?=$this->order?>" <?=( ($this->orderBy == 'nom')?'class="ordenado ' . $this->order . '"':'' )?> >Nombre</a></th>
+                <th><a href="/documento/index.html/?ob=tipo&amp;o=<?=$this->order?>" <?=( ($this->orderBy == 'tipo')?'class="ordenado ' . $this->order . '"':'' )?> >Tipo</a></th>
+                <th>Eliminar</th>
+                <th>Editar</th> 
+                <th>Ver</th>
+            </tr>
+        </thead>
+        <tbody>
+        
+            <tr><?
+            
+                $alter = true;
+            
+                foreach ($this->documentosCOL as $documentoDO){
+                    
+                    //$documentoDO = new TblDocumento($this->db);
+                    $alter = !$alter;
+                    
+                    ?><tr <?= $alter ? 'class="alter"' : '' ?>>
+                        <td><?= $documentoDO->getIdDocumento() ?></td>
+                        <td><?= $documentoDO->getVNombre() ?></td>
+                        <td><?= $documentoDO->getVMime() ?></td>
+                        <td><a href="" class="btnEliminar"></a></td>
+                        <td><a href="" class="btnEditar"></a></td>
+                        <td><a href="<?= PplCacheBO::getDocLink($documentoDO) ?>" class=""><span>ver</span></a></td>
+                    </tr><?
+                    
+                }  
+            
+            ?></tr>
+        
+        </tbody>
+    </table>    
+</div>
+<div id="formAltaDocumento">
+    <form id="altaDocumento" action="/documento/index.html" method="post" enctype="multipart/form-data">
+        <fieldset>
+            <input type="hidden" name="sent" value="1" />
+            <input type="hidden" name="MAX_FILE_SIZE" value="2000000" />
+            <div class="campo">
+                <label for="nombre">Nombre:</label>
+                <input type="text" class="campoTexto" name="nombre" id="nombre" />
+            </div>
+            <div class="campo">
+                <label for="desc">Descripción:</label>
+                <textarea rows="10" cols="40" name="desc" id="desc"></textarea>
+            </div>
+            <div class="campo">
+                <label for="archivo">Archivo:</label>
+                <input type="file" name="archivo" id="archivo" size="40" />
+            </div>
+            <div class="campo">
+                <input type="submit" class="btnSubmit" value="Enviar" />
+            </div>
+        </fieldset>
+    </form>
+</div>

@@ -133,7 +133,11 @@ class academiaController extends PplController{
         if ( !empty($paramsARR) ){
         	
         	// Academia
-        	$academiaDO = TblEmpresa::findByPrimaryKey($this->db, $paramsARR[0]);
+        	if (!$academiaDO = TblEmpresa::findByPrimaryKey($this->db, $paramsARR[0])){
+                $this->redirectTo('academia', 'index');
+                return;
+            }
+            
         	$this->view->academiaDO = $academiaDO;
         	$this->view->duplicar = $duplicar = false;
         	
@@ -393,7 +397,7 @@ class academiaController extends PplController{
         
 	    // Cif
     	$cif = $this->helper->escapeInjection($this->helper->get('cif'));
-    	$oldCif = $this->helper->escapeInjection($this->helper->get('oldCif'));
+    	$oldCif = $this->helper->escapeInjection($this->helper->get('cifOculto'));
 	    if ( is_null($cif) || empty($cif) ){
 	    	
 	    	$correcto = false;

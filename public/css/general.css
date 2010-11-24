@@ -47,6 +47,7 @@ h2{
 h3{
 	color: #000;
 	margin-bottom: 15px;
+	margin-top: 25px;
 	font-weight: bold;
 }
 a{
@@ -55,7 +56,7 @@ a{
 	color: #1764BF;
 }
 a:hover{
-	color: #000;
+	color: #4A95EF;
 }
 #contenedorFijo{
     position: fixed;
@@ -390,7 +391,8 @@ a.ordenado.desc{
 a.btnAnadir,
 a.btnDuplicar,
 a.btnEditar,
-a.btnEliminar{
+a.btnEliminar,
+a.btnFicha{
 	display: block;
 	width: 16px;
 	height: 16px;
@@ -403,7 +405,8 @@ a.btnEliminar.usuario{
 a.btnAnadir span,
 a.btnDuplicar span,
 a.btnEditar span,
-a.btnEliminar span{
+a.btnEliminar span,
+a.btnFicha span{
 	display: none;
 }
 a.btnEditar{
@@ -414,6 +417,9 @@ a.btnDuplicar{
 }
 a.btnAnadir{
     background: url(/img/iconos/anadir16.png) top center no-repeat;
+}
+a.btnFicha{
+    background: url(/img/iconos/file16.png) top center no-repeat;
 }
 table.listado tbody tr.alter{
 	background-color: #EFEFEF;
@@ -426,6 +432,17 @@ table.listado tbody tr.alter{
 	top: -16px;
 	right: 0;
 }
+.contenedorMultiselect a.btnFicha{
+    position: absolute;
+    top: -17px;
+    right: 20px;
+}
+.botonesMultiselect{
+	margin: 45px 0 0 0;
+}
+.botonesMultiselect li{
+	margin: 0 0 10px 0;
+}
 
 /* Ficha */
 .ficha p{
@@ -433,6 +450,19 @@ table.listado tbody tr.alter{
     clear: both;
     float: none;
     overflow: hidden;
+}
+.ficha .separator{
+	margin-bottom: 25px;
+}
+.ficha .multi{
+	clear: both;
+	float: none;
+	overflow: hidden;
+}
+.ficha .multi p{
+	float: left;
+	margin-right: 5px;
+	clear: none;
 }
 .ficha p strong{
     font: normal 12px Verdana, Arial, Helvetica, sans-serif;
@@ -459,6 +489,12 @@ table.listado tbody tr.alter{
     background-color: #fff; 
     border:1px solid #CFCFCF;   
 }
+.ficha p .min{
+	width: 50px;
+}
+.ficha p .med{
+	width: 90px;
+}
 .ficha p.extended strong{
 	height: 178px;
 }
@@ -474,32 +510,32 @@ table.listado tbody tr.alter{
 #paginadorContainer{
 	
 }
-#paginadorContainer #paginador{
+#paginadorContainer .paginador{
     clear: both;
     float: none;
     overflow: hidden;
 }
-#paginadorContainer #paginador li{
+#paginadorContainer .paginador li{
 	float: left;
 	margin-right: 4px;
 }
-#paginadorContainer #paginador .siguiente,
-#paginadorContainer #paginador .anterior{
+#paginadorContainer .paginador .siguiente,
+#paginadorContainer .paginador .anterior{
 	color: #000;
 	text-decoration: none;
 }
-#paginadorContainer #paginador strong,
-#paginadorContainer #paginador a{
+#paginadorContainer .paginador strong,
+#paginadorContainer .paginador a{
 	line-height: 16px;
 }
-#paginadorContainer #paginador a span{
+#paginadorContainer .paginador a span{
 	display: none;
 }
-#paginadorContainer #paginador .siguiente{
+#paginadorContainer .paginador .siguiente{
 	background: url(/img/iconos/siguiente16.png) center right no-repeat;
 	padding-right: 20px;
 }
-#paginadorContainer #paginador .anterior{
+#paginadorContainer .paginador .anterior{
 	background: url(/img/iconos/anterior16.png) center left no-repeat;
 	padding-left: 20px;
 }
