@@ -101,6 +101,22 @@
                 <label for="movil">Teléfono movil</label>
                 <input type="text" name="movil" id="movil" class="campoTexto mediano" />
             </div>
+    
+           <div class="campo multi">
+                <label for="carnet">Carnet de conducir</label><?
+                
+                ?><select name="carnet" id="carnet" class="campoTexto desplegable mediano">
+                    <option value=""></option><?
+                    
+                    foreach ($this->carnetsCOL as $carnetDO){
+    
+                        $claveCarnet = $carnetDO->getIdCarnet();
+                        echo '<option value="' . $claveCarnet . '">' . $carnetDO->getVNombre() . '</option>' . "\n";
+                        
+                    }
+                    
+                ?></select>
+            </div>
             
             <div class="separadorH"></div>
     

@@ -5,6 +5,7 @@ require_once 'helper/OwlDate.inc';
 require_once CLASSESDIR . 'PplController.inc';
 
 require_once MODELDIR . 'TblCategoria.inc';
+require_once MODELDIR . 'TblCarnetConducir.inc';
 require_once MODELDIR . 'TblCurso.inc';
 require_once MODELDIR . 'TblEstadoCivil.inc';
 require_once MODELDIR . 'TblEstadoLaboral.inc';
@@ -127,6 +128,9 @@ class alumnoController extends PplController{
 	    // Categorías
 	    $this->view->categoriasIDX = $this->cacheBO->getCategorias();
         
+	    // Carnets de conducir
+	    $this->view->carnetsCOL = TblCarnetConducir::findAll($this->db,'vNombre');
+	    
    		// Doy de alta la persona
     	if ( $this->helper->get('send') ){
     		

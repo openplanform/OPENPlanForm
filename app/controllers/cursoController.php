@@ -1200,6 +1200,17 @@ class cursoController extends PplController{
     	
     }
     
+    
+    /**
+     * Página donde se genera toda la documentación dinámica disponible 
+     * para un curso en particular.
+     */
+    public function documentacionAction(){
+    	
+    	
+    	
+    }
+    
 }
 
 ?>
