@@ -205,6 +205,18 @@ class barraHerramientasModule extends OwlModule{
     	            		$this->echoBotonEliminar(false);
                 			break;
                 		
+                		// DOCUMENTACION
+                		case 'documentacion':
+                			$this->echoBotonBuscar(false);
+    	            		$this->echoBotonAnadir(false);
+    	            		$this->echoBotonListado();
+    		            	$this->echoBotonEditar(false);
+    		            	$this->echoBotonGuardar(false);
+    		            	$this->echoBotonDuplicar(false);
+    		            	$this->echoBotonLimpiar(false);
+    	            		$this->echoBotonEliminar(false);
+                			break;
+                		
                 		default:
                 			break;
                 	}

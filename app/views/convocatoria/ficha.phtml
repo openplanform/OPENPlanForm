@@ -35,6 +35,7 @@
 		?>
 		</div><?
 
+		
         // Planes
         $arrPlanesDO = $this->convocatoriaDO->getTblPlans();
         if ( !empty($arrPlanesDO) ){
@@ -50,6 +51,29 @@
             echo '</ul>';
             
         }
+        
+        
+        if ($this->documentosCOL){
+
+        	?><div id="documentacion">
+	        	<h3 class="conSubtitulo">Documentación seleccionada</h3>
+	        	<p>Documentación que podrá ser generada para los planes y cursos que han sido presentados para esta convocatoria</p>
+	        	
+				<ul id="convocatoriaDoc"><?
+				
+					foreach ($this->documentosCOL as $documentoDO){
+				
+						?><li>
+							<label><a href="/documento/ver/<?= $documentoDO->getIdDocumento() ?>" rel="external"><?= $documentoDO->getVNombre() ?></a></label>
+						</li><?
+					
+					}
+					
+				?></ul>
+			</div><?
+        	
+        }	
+        
 		
 	} else {
 		

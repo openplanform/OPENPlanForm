@@ -5,6 +5,7 @@ require_once 'helper/OwlDate.inc';
 require_once CLASSESDIR . 'PplController.inc';
 
 require_once MODELDIR . 'TblCategoria.inc';
+require_once MODELDIR . 'TblCarnetConducir.inc';
 require_once MODELDIR . 'TblCurso.inc';
 require_once MODELDIR . 'TblEstadoCivil.inc';
 require_once MODELDIR . 'TblEstadoLaboral.inc';
@@ -13,6 +14,7 @@ require_once MODELDIR . 'TblPais.inc';
 require_once MODELDIR . 'TblPersona.inc';
 require_once MODELDIR . 'TblProvincia.inc';
 require_once MODELDIR . 'TblTipoIdentificacion.inc';
+require_once MODELDIR . 'TrelPersonaCarnet.inc';
 require_once MODELDIR . 'TrelPersonaCategoria.inc';
 require_once MODELDIR . 'TrelProfesor.inc';
 require_once MODELDIR . 'TrelRolUsuario.inc';
@@ -131,6 +133,9 @@ class profesorController extends PplController{
         // Nivel estudios
         $this->view->nivelEstudiosCOL = TblNivelEstudios::findAll($this->db, 'vNombre');
         
+        // Carnets de conducir
+	    $this->view->carnetsCOL = TblCarnetConducir::findAll($this->db,'vNombre');
+        
          // Categorías
         $arbolDS = array();
         $arbolDS = $this->_IteraCategorias($arbolDS, 0);
@@ -226,6 +231,12 @@ class profesorController extends PplController{
 	        
 	        // Nivel estudios
 	        $this->view->nivelEstudiosCOL = TblNivelEstudios::findAll($this->db, 'vNombre');
+	        
+	         // Carnets de conducir
+	    	$this->view->carnetsCOL = TblCarnetConducir::findAll($this->db,'vNombre');
+	    	
+	    	// Carnets del alumno
+	    	$this->view->carnetsProfesorCOL = TrelPersonaCarnet::findByTblPersona($this->db, $profesorDO->getIdPersona());
         
         }
         
@@ -288,6 +299,12 @@ class profesorController extends PplController{
         		// Cursos
         		$this->view->cursosCOL = TblCurso::findAll($this->db);
         		
+        		// Carnets
+        		$this->view->carnetsIDX = $this->cacheBO->getCarnets();
+        		
+        		// Carnets del alumno
+	    		$this->view->carnetsProfesorCOL = TrelPersonaCarnet::findByTblPersona($this->db, $profesorDO->getIdPersona());
+	    		
         	}
         	
         }
@@ -540,7 +557,15 @@ class profesorController extends PplController{
             	$categoriasARR[] = $this->helper->escapeInjection($categoria);
             }
         }
-        //echo "<pre>"; echo print_r($categoriasARR); echo "</pre>";
+	    // Carnet: 'carnet_1', 'carnet_5'
+		$arrIdsCarnets = array();
+		foreach ( $_REQUEST as $key => $value ) {
+			$clave = explode('_', $key);
+			if ( $clave[0] == 'carnet' ) {
+				array_push($arrIdsCarnets,$clave[1]);
+			}
+		}
+		
         // Nombre 
         if (empty($nombre)){
         	$this->view->errorNombre = 'El nombre no puede quedar vacío';
@@ -725,8 +750,32 @@ class profesorController extends PplController{
 	    			}
 	    			
 	    		}
-	    		
-	    		
+	    	}
+	    	
+	    	// Carnets de conducir
+	    	if ( $correcto ){
+	    			
+    			if ( $editar ){
+	    			// Borramos los carnets antiguos
+	    			$sql = "DELETE FROM trelPersonaCarnet WHERE fkPersona = ".$idProfesor;
+	    			$this->db->executeQuery($sql);
+    			} else {
+    				$idAlumno = $this->db->getLastInsertId();
+    			}
+    			
+    			if ( !empty($arrIdsCarnets) ){
+	    				
+	    			// Insertamos los carnets
+		    		$carnetPersona = new TrelPersonaCarnet($this->db);
+		    		$carnetPersona->setFkPersona($idProfesor);
+		    		foreach ($arrIdsCarnets as $idCarnet) {
+		    			$carnetPersona->setFkCarnet($idCarnet);
+		    			if ( !$carnetPersona->insert() ){
+		    				$correcto = false;
+				    		break;
+		    			}
+		    		}
+	    		}
 	    	}
 	    	
     		if ( $correcto ){

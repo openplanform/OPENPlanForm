@@ -124,16 +124,18 @@ class convocatoriaController extends PplController{
     	
     }
     
+    
     /**
      * Acción de ficha
      * Ficha de una convocatoria
      */
     public function fichaAction(){
         
-    	$paramsARR = $this->getParams();
-        if ( !empty($paramsARR) ){
+    	$idConvocatoria = $this->getParam(0);
+    	
+        if ( !is_null($idConvocatoria) ){
         	
-        	$convocatoriaDO = TblConvocatoria::findByPrimaryKey($this->db, $paramsARR[0]);
+        	$convocatoriaDO = TblConvocatoria::findByPrimaryKey($this->db, $idConvocatoria);
         	
         	$this->view->convocatoriaDO = $convocatoriaDO;
         	
@@ -151,10 +153,14 @@ class convocatoriaController extends PplController{
     		
     		// Estados de plan
     		$this->view->estadosPlanIDX = $this->cacheBO->getEstadosPlan();
+    		
+    		// Documentos dinámicos seleccionados para esta convocatoria
+    		$this->view->documentosCOL = $this->cacheBO->getDocumentacionConvocatoria($idConvocatoria);
         	
         }
         
     }
+    
     
     /**
      * Acción de edición
@@ -244,6 +250,7 @@ class convocatoriaController extends PplController{
     	
     }
     
+    
 	/**
      * Acción de eliminar
      * Elimina una convocatoria
@@ -261,6 +268,7 @@ class convocatoriaController extends PplController{
         $this->redirectTo('convocatoria','index');
         
     }
+    
     
 	/**
      * Acción de duplicar
@@ -282,6 +290,7 @@ class convocatoriaController extends PplController{
         $this->redirectTo('convocatoria','editar');
         
     }
+    
     
     /**
      * Obtiene los datos de convocatoria y realiza el alta o la actualización

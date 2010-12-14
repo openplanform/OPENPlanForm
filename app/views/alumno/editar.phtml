@@ -169,7 +169,7 @@
             
             <div class="separadorH"></div>
             
-            <div class="campo multi">
+            <div class="campo multi controlado">
                 
                 <label for="estadoCivil">Estado Civil*</label>
                     <select name="estadoCivil" id="estadoCivil" class="campoTexto mediano">
@@ -187,7 +187,7 @@
             </div>
             
                     
-            <div class="campo multi">
+            <div class="campo multi controlado">
                 
                 <label for="estadoLaboral">Estado Laboral*</label>
                     <select name="estadoLaboral" id="estadoLaboral" class="campoTexto mediano">
@@ -205,7 +205,7 @@
             </div>
             
                             
-            <div class="campo multi">
+            <div class="campo multi controlado">
                 
                 <label for="nivelEstudios">Nivel de estudios*</label>
                     <select name="nivelEstudios" id="nivelEstudios" class="campoTexto mediano">
@@ -223,6 +223,34 @@
             </div>
 			
 			<div class="separadorH"></div>
+			
+			<h3>Carnet de conducir</h3>
+            <div class="campo">
+	            <?
+	            
+	            foreach ( $this->carnetsCOL as $carnetDO ){
+	            	
+	            	$checked = '';
+	            	
+	            	if ( !is_null($this->carnetsAlumnoCOL) ){
+		 				
+	            		foreach ( $this->carnetsAlumnoCOL as $carnetAlumnoDO ){
+	            			if ( $carnetAlumnoDO->getFkCarnet() == $carnetDO->getIdCarnetConducir() ){
+		 						$checked = 'checked="checked"';
+		 					}
+		 				}
+		 				
+	            	}
+	            	
+	            	?>
+	            	<label class="alter" for="carnet_<?=$carnetDO->getIdCarnetConducir()?>"><?=$carnetDO->getVNombre() . '(' . $carnetDO->getVDescripcion() . ')'?></label>
+	            	<input class="checkbox" type="checkbox" name="carnet_<?=$carnetDO->getIdCarnetConducir()?>" id="carnet_<?=$carnetDO->getIdCarnetConducir()?>" <?= $checked ?>/>
+	            	<?
+	            	
+	            }
+	            
+	            ?>
+            </div>
 			
 			<div class="campo">
 				<label for="observaciones">Observaciones</label>

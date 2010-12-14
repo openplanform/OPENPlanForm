@@ -6,12 +6,15 @@ jQuery(document).ready(function(){
 	// Dinero
 	jQuery(".dinero").numeric();
 	
-	//Números. No se permiten decimales.
+	// Números. No se permiten decimales.
 	jQuery(".numerico").numeric('none', 'none');
 	
 	var tooltipId;
 	var w;
 	var jQtooltip;
+	
+	// Enlaces externos
+	loadExternalUrl();
 	
 	// Tooltips
 	jQuery('.campoTexto').each( function(){
@@ -264,4 +267,20 @@ function comprobarDni(idCampo, empresa, editar) {
 		});
 	
 	}
+}
+
+//Tratamiento de target_blank
+function loadExternalUrl(){
+
+    if( !document.getElementsByTagName ){
+        return;
+    }
+
+    var links = document.getElementsByTagName( 'a' );
+    for( var i=0; i<links.length; i++ ){
+    	if( links[i].rel == "external" ){
+			links[i].target = "_blank";
+        }
+    }
+
 }

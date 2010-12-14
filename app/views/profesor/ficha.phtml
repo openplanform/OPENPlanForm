@@ -27,6 +27,20 @@
 				?><p><strong>Móvil:</strong><span> <?= $movil ?></span></p><?
 			}
 			
+			// Carnets
+			if ( count($this->carnetsProfesorCOL) > 0 ){
+				
+				?><p><strong>Carnets de conducir: </strong><span><?
+				
+				$contador = 0;
+				foreach ( $this->carnetsProfesorCOL as $carnetProfesorDO ){
+					echo ($contador)?', ':'';
+					echo $this->carnetsIDX[$carnetProfesorDO->getFkCarnet()];
+					$contador++;
+				}
+				?></span></p><?
+				
+			}
 			
 			$direccion = $this->profesorDO->getVDireccion();
 			if ( !empty($direccion) ){

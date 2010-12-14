@@ -16,6 +16,7 @@ require_once MODELDIR . 'TblProvincia.inc';
 require_once MODELDIR . 'TblSector.inc';
 require_once MODELDIR . 'TblTipoIdentificacion.inc';
 require_once MODELDIR . 'TrelPersonaCategoria.inc';
+require_once MODELDIR . 'TrelPersonaCarnet.inc';
 require_once MODELDIR . 'TrelPrecandidato.inc';
 require_once MODELDIR . 'TrelRolUsuario.inc';
 
@@ -249,6 +250,12 @@ class alumnoController extends PplController{
 		    // Categorías
 		    $this->view->categoriasIDX = $this->cacheBO->getCategorias();
 		    
+		    // Carnets de conducir
+	    	$this->view->carnetsCOL = TblCarnetConducir::findAll($this->db,'vNombre');
+	    	
+	    	// Carnets del alumno
+	    	$this->view->carnetsAlumnoCOL = TrelPersonaCarnet::findByTblPersona($this->db, $alumnoDO->getIdPersona());
+		    
         }
         
     }
@@ -276,6 +283,12 @@ class alumnoController extends PplController{
         		
         		// Cursos
         		$this->view->cursosCOL = TblCurso::findAll($this->db, 'vNombre');
+        		
+        		// Carnets
+        		$this->view->carnetsIDX = $this->cacheBO->getCarnets();
+        		
+        		// Carnets del alumno
+	    		$this->view->carnetsAlumnoCOL = TrelPersonaCarnet::findByTblPersona($this->db, $alumnoDO->getIdPersona());
         		
         	}
         	
@@ -478,6 +491,15 @@ class alumnoController extends PplController{
             }
         }
         
+    	// Carnet: 'carnet_1', 'carnet_5'
+		$arrIdsCarnets = array();
+		foreach ( $_REQUEST as $key => $value ) {
+			$clave = explode('_', $key);
+			if ( $clave[0] == 'carnet' ) {
+				array_push($arrIdsCarnets,$clave[1]);
+			}
+		}
+		
         // Nombre 
         if (empty($nombre)){
         	$this->view->errorNombre = 'El nombre no puede quedar vacío';
@@ -667,6 +689,32 @@ class alumnoController extends PplController{
 	    			
 	    		}
 	    		
+	    	}
+	    	
+	    	// Carnets de conducir
+	    	if ( $correcto ){
+	    			
+    			if ( $editar ){
+	    			// Borramos los carnets antiguos
+	    			$sql = "DELETE FROM trelPersonaCarnet WHERE fkPersona = ".$idAlumno;
+	    			$this->db->executeQuery($sql);
+    			} else {
+    				$idAlumno = $this->db->getLastInsertId();
+    			}
+    			
+    			if ( !empty($arrIdsCarnets) ){
+	    				
+	    			// Insertamos los carnets
+		    		$carnetPersona = new TrelPersonaCarnet($this->db);
+		    		$carnetPersona->setFkPersona($idAlumno);
+		    		foreach ($arrIdsCarnets as $idCarnet) {
+		    			$carnetPersona->setFkCarnet($idCarnet);
+		    			if ( !$carnetPersona->insert() ){
+		    				$correcto = false;
+				    		break;
+		    			}
+		    		}
+	    		}
 	    	}
 	    	
     		if ( $correcto ){

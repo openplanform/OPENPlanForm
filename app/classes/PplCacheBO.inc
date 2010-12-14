@@ -10,6 +10,8 @@ require_once MODELDIR . 'TblPersona.inc';
 require_once MODELDIR . 'TblProvincia.inc';
 require_once MODELDIR . 'TblTipoConvocatoria.inc';
 require_once MODELDIR . 'TblTipoPlan.inc';
+require_once MODELDIR . 'TblDocumento.inc';
+
 
 class PplCacheBO {
 	
@@ -210,6 +212,18 @@ class PplCacheBO {
      * @var boolean
      */
     private $profesores_fetched = false;
+    
+    /**
+     * carnets indexados por su clave
+     * @var array
+     */
+    private $carnetsIDX;
+    
+    /**
+     * Flag que indica que los carnets han sido cargados
+     * @var boolean
+     */
+    private $carnets_fetched = false;
     
     /**
      * personas indexadas por su clave
@@ -507,6 +521,7 @@ class PplCacheBO {
 		
 	}
 	
+	
 	/**
 	 * Obtiene los colectivos
 	 * @return array
@@ -533,6 +548,7 @@ class PplCacheBO {
 		return $this->colectivoIDX;
 		
 	}
+	
 	
 	/**
 	 * Obtiene la modalidad
@@ -561,6 +577,7 @@ class PplCacheBO {
 		
 	}
 	
+	
 	/**
 	 * Obtiene los sectores
 	 * @return array
@@ -587,6 +604,7 @@ class PplCacheBO {
 		return $this->sectorIDX;
 		
 	}
+	
 	
 	/**
 	 * Obtiene las categorías
@@ -615,6 +633,7 @@ class PplCacheBO {
 		
 	}
 	
+	
 	/**
 	 * Obtiene las aulas
 	 * @return array
@@ -642,6 +661,7 @@ class PplCacheBO {
 		
 	}
 	
+	
 	/**
 	 * Devuelve todos los paises indexados por su iso
 	 * @return array
@@ -655,6 +675,7 @@ class PplCacheBO {
 	    
 	}
 	
+	
 	/**
 	 * Devuelve un array con todas las provincias indexadas por su clave
 	 */
@@ -666,6 +687,7 @@ class PplCacheBO {
 	    return $provinciasIDX;
 	    
 	}
+	
 	
 	/**
 	 * Obtiene los profesores
@@ -694,6 +716,7 @@ class PplCacheBO {
 		return $this->profesoresIDX;
 		
 	}
+	
 	
 	/**
 	 * Devuelve todas las categorías de todos los profesores.
@@ -725,6 +748,7 @@ class PplCacheBO {
         return $resultARR;
 	   
 	}
+	
 	
 	/**
 	 * Devuelve un array con todas las personas indexadas por su clave
@@ -787,6 +811,80 @@ class PplCacheBO {
 		return $returnARR;
 		
 	}
+	
+	
+	/**
+	 * Obtiene los carnets
+	 * @return array
+	 */
+	public function getCarnets() {
+		
+		if ( $this->carnets_fetched ){
+			return $this->carnetsIDX;
+		}
+		
+		$carnetCOL = TblCarnetConducir::findAll($this->db, 'vNombre');
+		$carnetIDX = array();
+		
+		// Se indexarán los carnet por su clave
+		foreach ($carnetCOL as $carnetDO){
+		    
+		    $carnetIDX[$carnetDO->getIdCarnetConducir()] = $carnetDO->getVNombre() . '(' . $carnetDO->getVDescripcion() . ')';
+		    
+		}
+		
+		$this->carnetIDX = $carnetIDX;
+		$this->carnet_fetched = true;
+		
+		return $this->carnetIDX;
+		
+	}
+	
+
+	/**
+	 * Devuelve la coleccion de documentos dinámicos seleccionados para una convocatoria
+	 * 
+	 * @param integer $idConvocatoria
+	 * @return array
+	 */
+	public function getDocumentacionConvocatoria($idConvocatoria){
+		
+		$sql = "SELECT *
+				FROM   tblDocumento d
+				WHERE  EXISTS(SELECT NULL
+				              FROM   trelDocumentoConvocatoria dc
+				              WHERE  d.idDocumento = dc.fkDocumento
+				                     AND dc.fkConvocatoria = $idConvocatoria)
+				ORDER  BY d.last_modified ASC";
+		
+		return OwlGenericDO::createCollection( $this->db, $sql, 'TblDocumento' );
+		
+	}
+	
+	
+	/**
+	 * Devuelve la colección de documentos dinámicos seleccionados para un curso
+	 * a partir de la clave de plan.
+	 * 
+	 * @param integer $idCurso
+	 */
+	public function getDocumentacionCurso($idPlan){
+		
+		$sql = "SELECT *
+				FROM   tblDocumento d
+				WHERE  EXISTS(SELECT NULL
+				              FROM   trelDocumentoConvocatoria dc
+				              WHERE  dc.fkDocumento = d.idDocumento
+				                     AND fkConvocatoria = (SELECT fkConvocatoria
+				                                           FROM   tblPlan
+				                                           WHERE  idPlan = $idPlan));  ";	
+		
+		return OwlGenericDO::createCollection( $this->db, $sql, 'TblDocumento' );
+		
+	}
+	
+	
+	
 	
 }
 

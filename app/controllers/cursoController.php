@@ -7,6 +7,7 @@ require_once 'helper/OwlLanguage.inc';
 require_once 'OwlPaginator.inc';
 
 require_once CLASSESDIR . 'PplController.inc';
+//require_once CLASSESDIR . 'Ppl.inc';
 
 require_once MODELDIR . '/TblCentro.inc';
 require_once MODELDIR . '/TblCategoria.inc';
@@ -1206,6 +1207,34 @@ class cursoController extends PplController{
      * para un curso en particular.
      */
     public function documentacionAction(){
+
+    	// Sin clave no hay nada que hacer
+    	if (!$idCurso = $this->getParam(0)){
+    		$this->redirectTo('curso');
+    		return;
+    	}
+    	
+    	// El curso no existe
+    	if (!$cursoDO = TblCurso::findByPrimaryKey($this->db, $idCurso)){
+			$this->redirectTo('curso');
+    		return;    		
+    	}
+    	
+    	// Se obtienen los documentos seleccionados para convocatoria del curso
+    	$idPlan = $cursoDO->getFkPlan();
+    	$documentosCOL = $this->cacheBO->getDocumentacionCurso($idPlan);
+    	
+  
+    	foreach ($documentosCOL as $documentacionDO){
+    		
+    		
+    		
+    	}
+    	
+    	
+    	
+    	
+    	
     	
     	
     	
