@@ -456,6 +456,14 @@ class usuarioController extends PplController{
                 $aliasOrderBy = 'nom';
             }             
         
+            // Envío el orden a la vista
+	        if ( $order == 'asc' ){
+	            $this->view->order = 'desc';
+	        } else {
+	            $this->view->order = 'asc';
+	        }
+	        $this->view->orderBy = $aliasOrderBy; 
+            
             $id = $this->helper->getAndEscape('idUsuario');
             $username = strtolower($this->helper->getAndEscape('username'));
             $email = $this->helper->getAndEscape('email');
@@ -464,34 +472,45 @@ class usuarioController extends PplController{
             
             $where = array();
             $queryString = '&amp;sent=1';
+			$queryARR['sent'] = 1;
             
             // ID
             if (!empty($id)){
                 $where[] = "idUsuario = $id";
-                $this->view->id = id;
-                $queryString .= '&amp;idUsuario=' . $id;
+                $this->view->id = $id;
+//                $queryString .= '&amp;idUsuario=' . $id;
+				$queryARR['idUsuario'] = $id;
             }
             
             // NOMBRE DE USUARIO
             if (!empty($username)){
                 $where[] = "LOWER(vNombre) LIKE '%$username%'";
                 $this->view->username = $username;
-                $queryString .= '&amp;username=' . $username;
+//                $queryString .= '&amp;username=' . $username;
+                $queryARR['username'] = $username;
             }
             
             // EMAIL
             if (!empty($email)){
                 $where[] = "vEmail LIKE '%$email%'";
                 $this->view->email = $email;
-                $queryString .= '&amp;email=' . $email;
+//                $queryString .= '&amp;email=' . $email;
+                $queryARR['email'] = $email;
             }
             
             // ROLES
-            if (is_array($roles)){
-                $rolesStr = implode(',', $roles);
+            if (is_array($roles) || !empty($roles)){
+            	if ( is_array($roles) ){
+                	$rolesStr = implode(',', $roles);	
+                } else {
+                	$rolesStr = $roles;
+                	// Si hay más de un rol, no se marca en el selector si no se le pasa un array
+                	$roles = explode(',', $roles);
+                }
                 $where[] = " EXISTS (SELECT null FROM trelRolUsuario WHERE tblUsuario.idUsuario = trelRolUsuario.fkUsuario AND trelRolUsuario.fkRol IN($rolesStr))";
                 $this->view->roles = $roles;
-                $queryString .= '&amp;roles=' . $rolesStr;
+//                $queryString .= '&amp;roles=' . $rolesStr;
+                $queryARR['roles'] = $rolesStr;
             }
             
             // Se constuye el where
@@ -509,7 +528,8 @@ class usuarioController extends PplController{
             $paginador->setPaginaActual($paginaActual);
             $paginador->setOrderBy($orderBy);
             $paginador->setOrder($order);
-            $paginador->setExtraParams($queryString);
+//            $paginador->setExtraParams($queryString);
+            $paginador->setExtraParams($queryARR);
         
             // Obtengo las convocatorias
             $usuariosCOL = $paginador->getItemCollection();
@@ -518,6 +538,9 @@ class usuarioController extends PplController{
             $this->view->paginador = $paginador->getPaginatorHtml();
             
             // Se propagan las clausulas de búsqueda en el paginador
+            foreach ( $queryARR as $clave => $valor ){
+            	$queryString .= '&amp;' . $clave . '=' . $valor;
+            }
             $this->view->querystring = $queryString;    
 
             // Obtengo todos los roles 

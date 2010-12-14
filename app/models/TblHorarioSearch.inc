@@ -1,7 +1,7 @@
 <?php
 /**
  * Este archivo ha sido generado con Owl Dogen v.0.6
- * el 24 de November de 2010 a las 08:55:33
+ * el 13 de December de 2010 a las 08:54:13
  * @package dataAccess
  */
 
@@ -20,24 +20,38 @@ class TblHorarioSearch{
     public $idHorario;
 
     /**
-     * Representa el atributo iDesde.
+     * Representa el atributo fkCurso.
      *
      * @var integer
+     */
+    public $fkCurso;
+
+    /**
+     * Representa el atributo dDia.
+     *
+     * @var string
+     */
+    public $dDia;
+
+    /**
+     * Representa el atributo iDesde.
+     *
+     * @var string
      */
     public $iDesde;
 
     /**
      * Representa el atributo iHasta.
      *
-     * @var integer
+     * @var string
      */
     public $iHasta;
 
     /**
-     * Representa el atributo fkCurso.
+     * Representa el atributo iSesion.
      *
      * @var integer
      */
-    public $fkCurso;
+    public $iSesion;
 }
 ?>

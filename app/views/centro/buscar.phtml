@@ -1,6 +1,6 @@
 <div id="buscadorAcademia" class="buscador">
     
-    <form id="buscarAcademia" action="<?= $_SERVER['REQUEST_URI'] ?>" method="post">
+    <form id="buscarAcademia" action="/centro/buscar.html" method="post">
     
         <fieldset>
         
@@ -40,19 +40,8 @@
                     
                 ?></select>
             </div>
-
-            <div class="campo multi">
-                <label for="cif">Cif</label>
-                <input type="text" class="campoTexto mediano" id="cif" name="cif" value="<?= $this->cif ?>" />
-            </div>
             
             <div class="separadorH"></div>
-        
-            <div class="campo multi">
-                <label for="cp">Código Postal</label>
-                <input type="text" class="campoTexto mediano" id="cp" name="cp" value="<?= $this->cp ?>" />
-            </div>
-            
                         
             <div class="campo multi">
                 <label for="keyword">Palabra clave</label>
@@ -130,6 +119,10 @@
             
         <div id="paginadorContainer"><?= $this->paginador ?></div><?
     
+    } else if ($this->querystring){
+
+    	?><h3>No hay resultados</h3><?
+    	
     }
     
 ?></div>

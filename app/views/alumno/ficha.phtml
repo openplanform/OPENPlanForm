@@ -43,9 +43,12 @@
 				?><p><strong>CP:</strong><span> <?= $cp ?></span></p><?
 			}
 			
-			$provincia = $this->alumnoDO->getTblProvincia()->getVNombre();
-			if ( !empty($provincia) ){
-				?><p><strong>Provincia:</strong><span> <?= $provincia ?></span></p><?
+			$provinciaDO = $this->alumnoDO->getTblProvincia();
+			if ( !empty($provinciaDO) ){
+				$provincia = $this->alumnoDO->getTblProvincia()->getVNombre();
+				if ( !empty($provincia) ){
+					?><p><strong>Provincia:</strong><span> <?= $provincia ?></span></p><?
+				}
 			}
 			
 			?>
@@ -54,6 +57,17 @@
 			<p><strong>Estado laboral:</strong><span> <?= $this->alumnoDO->getTblEstadoLaboral()->getVNombre() ?></span></p>
 			<p><strong>Nivel de estudios:</strong><span> <?= $this->alumnoDO->getTblNivelEstudios()->getVNombre() ?></span></p>
 			
+			<?
+			
+			// Observaciones
+			$observaciones = $this->alumnoDO->getVObservaciones();
+			if ( !empty($observaciones) ){
+				?><p class="extended"><strong>Observaciones:</strong><span> <?= $observaciones ?></span></p><?
+			}
+			
+			?>
+			
+			
 		</div>
 		
 		<?
@@ -61,21 +75,40 @@
 		if ( count($this->cursosPreinscritosCOL) > 0){
 			
 			?><div class="ficha">
-			<h3>Preinscripciones del alumno</h3><?
+				<h3>Preinscripciones del alumno</h3>
 				
-				foreach ( $this->cursosPreinscritosCOL as $cursoPreinscritoDO ){
-				
-					foreach ( $this->cursosCOL as $cursoDO ){
+				<div class="scroll">
+					<table class="listado">
+						<thead>
+							<tr>
+								<th>Curso</th>
+							</tr>
+						</thead>
+						<tbody>
+						<?
+						$alter = true;
+						foreach ( $this->cursosPreinscritosCOL as $cursoPreinscritoDO ){
+						
+							foreach ( $this->cursosCOL as $cursoDO ){
+				            				
+		            			if ( $cursoDO->getIdCurso() == $cursoPreinscritoDO->getFkCurso() ){
+		            				$alter = !$alter;
+		            				?>
+		            				<tr <?= $alter ? 'class="alter"' : '' ?>>
+		            					<td><a href="/curso/ficha.html/<?= $cursoDO->getIdCurso() ?>"><?= $cursoDO->getVNombre() ?></a></td>
+		            				</tr>
+		            				<?
+		            			}
 		            				
-            			if ( $cursoDO->getIdCurso() == $cursoPreinscritoDO->getFkCurso() ){
-            				echo '<p><a href="/curso/ficha.html/' . $cursoDO->getIdCurso() . '">' . $cursoDO->getVNombre() . '</a></p>';
-            			}
-            				
-            		}
-				
-				}
-				
-			?></div><?
+		            		}
+						
+						}
+						
+					?></tbody>
+					</table>
+				</div>
+				<div class="separadorH"></div>
+			</div><?
 			
 		}
 		?>

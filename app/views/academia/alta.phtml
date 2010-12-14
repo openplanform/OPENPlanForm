@@ -1,6 +1,9 @@
 <?php
 	$this->addJavascriptInclude('/js/usuario.js');
 	$this->addJavascriptInclude('/js/academia.js');
+	$this->echoOnHead($this->cabeceraMapa);
+	$this->echoOnHead($this->mapa);
+	
 	
 	if ( !is_null($this->popup) ){
     	echo '<script type="text/javascript">ventana' . ucfirst($this->popup['estado']) . '("' . $this->popup['titulo'] . '", "' . $this->popup['mensaje'] . '", "' . $this->popup['url'] . '");</script>'; 
@@ -105,6 +108,27 @@
 	            <input type="text" name="cp" id="cp" class="campoTexto" />
 			</div>
 			
+			<div class="separadorH"></div>
+			
+			<div class="campo multi">
+            	<label for="latitud">Latitud</label>
+	            <input type="text" name="latitud" id="latitud" class="campoTexto" />
+			</div>
+			
+			<div class="campo multi">
+            	<label for="longitud">Longitud</label>
+	            <input type="text" name="longitud" id="longitud" class="campoTexto" />
+			</div>
+			
+			<div class="separadorH"></div>
+			
+			<div class="campo">
+				<p>Marca en el mapa el emplazamiento de la academia</p>
+				<div id="mapa"></div>
+			</div>
+			
+			<div class="separadorH"></div>
+			
 			<div class="campo multi">
             	<label for="telefono1">Teléfono 1</label>
 	            <input type="text" name="telefono1" id="telefono1" class="campoTexto" />
@@ -112,7 +136,7 @@
 			
 			<div class="campo multi">
             	<label for="telefono1">Teléfono 2</label>
-	            <input type="text" name="telefono1" id="telefono1" class="campoTexto" />
+	            <input type="text" name="telefono2" id="telefono2" class="campoTexto" />
 			</div>
 			
 			<div class="campo clear">

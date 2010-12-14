@@ -46,8 +46,16 @@
         }
             
         ?><p><strong>Dirección: </strong><span> <?= $this->personaDO->getVDireccion()  ?></span></p>        
-        <p><strong>Población: </strong><span> <?= $this->personaDO->getVPoblacion()  ?></span></p>        
-        <p><strong>Provincia: </strong><span> <?= $this->personaDO->getTblProvincia()->getVNombreEs()  ?></span></p>        
+        <p><strong>Población: </strong><span> <?= $this->personaDO->getVPoblacion()  ?></span></p>
+        <?
+    		$provinciaDO = $this->personaDO->getTblProvincia();
+			if ( !empty($provinciaDO) ){
+				$provincia = $this->personaDO->getTblProvincia()->getVNombre();
+				if ( !empty($provincia) ){
+					?><p><strong>Provincia:</strong><span> <?= $provincia ?></span></p><?
+				}
+			}
+        ?>
         <p><strong>País: </strong><span> <?= $this->personaDO->getTblPais()->getVNombreEs()  ?></span></p>
         <p class="nuevaSeccion"><strong>Estado civil: </strong><span><?= $this->personaDO->getTblEstadoCivil()->getVNombre() ?></span></p>
         <p><strong>Estado laboral: </strong><span> <?= $this->personaDO->getTblEstadoLaboral()->getVNombre()  ?></span></p>

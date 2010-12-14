@@ -4,31 +4,30 @@
 	if ( !is_null($this->popup) ){
     	echo '<script type="text/javascript">ventana' . ucfirst($this->popup['estado']) . '("' . $this->popup['titulo'] . '", "' . $this->popup['mensaje'] . '", "' . $this->popup['url'] . '");</script>'; 
 	}
-?>
-    
-<?
-	
+
 	if ( !is_null($this->convocatoriaDO) ){
 
-?>
+	?>
     <form id="editarConvocatoria" action="<?= $_SERVER['REQUEST_URI'] ?>" method="post">
         <fieldset>
         
         	<input type="hidden" value="1" name="send" />
         	
-            <div class="campo controlado">
+            <div class="campo controlado multi">
                 <label for="nombre">Nombre*</label>
                 <input type="text" name="nombre" id="nombre" class="campoTexto" value="<?= $this->convocatoriaDO->getVNombre() ?>"/>
                 <p id="errorNombre" class="errorInput"><?= $this->errorNombre ?></p>
             </div>
             
-            <div class="campo controlado">
+            <div class="campo controlado multi">
                 <label for="ano">Año*</label>
                 <input type="text" name="ano" id="ano" class="campoTexto mini numerico" value="<?= $this->convocatoriaDO->getIAno() ?>"/>
                 <p id="errorAno" class="errorInput"><?= $this->errorAno ?></p>
             </div>
             
-            <div class="campo controlado">
+            <div class="separadorH"></div>
+            
+            <div class="campo controlado multi">
             	<label for="tipoConvocatoria">Tipo de Convocatoria*</label>
 	            <select class="mediano" name="tipoConvocatoria" id="tipoConvocatoria">
 	            	<option value=""></option>
@@ -46,12 +45,14 @@
 				<p id="errorTipoConvocatoria" class="errorInput"><?= $this->errorTipo ?></p>
 			</div>
             
-            <div class="campo controlado">
+            <div class="campo controlado multi">
                 <label for="presupuesto">Fondos*</label>
                 <input class="campoTexto dinero" type="text" name="presupuesto" id="presupuesto" value="<?= OwlNumeric::decimalFormatoEuropeo($this->convocatoriaDO->getEPresupuesto(), 2) ?>"/>
                 <p id="errorPresupuesto" class="errorInput"><?= $this->errorPresupuesto ?></p>
                 <p class="tooltip" id="presupuestoTooltip">Utilice la coma(,) para separar decimales y el punto(.) para los miles</p>
             </div>
+            
+            <div class="separadorH"></div>
             
             <div class="campo">
                 <label for="descripcion">Descripción</label>
@@ -63,29 +64,59 @@
 	            <?
 	            
 	 			foreach ( $this->requisitosIDX as $clave => $nombre ){
-	            	$checked = '';
+	            	
+	 				$checked = '';
 	            	
 	            	if ( !is_null($this->requisitosConvocatoriaDO) ){
 		 				
 	            		foreach ( $this->requisitosConvocatoriaDO as $requisitoConvocatoriaDO ){
-		 					if ( $requisitoConvocatoriaDO->getFkRequisito() == $clave ){
+		 					
+	            			if ( $requisitoConvocatoriaDO->getFkRequisito() == $clave ){
 		 						$checked = 'checked="checked"';
 		 					}
+		 					
 		 				}
 		 				
 	            	}
 	 				
-	            	?>
-	            	<label class="alter" for="requisito_<?= $clave ?>"><?= $nombre ?></label>
-	            	<input class="checkbox" type="checkbox" name="requisito_<?= $clave ?>" id="requisito_<?=$clave?>" <?=$checked?>/>
-	            	<?
+	            	?><label class="alter" for="requisito_<?= $clave ?>"><?= $nombre ?></label>
+	            	<input class="checkbox" type="checkbox" name="requisito_<?= $clave ?>" id="requisito_<?=$clave?>" <?=$checked?>/><?
 	            	
 	            }
 	            
 	            ?>
-            </div>
+            </div><?
             
-            <input class="oculto" type="submit" value="Guardar" />
+            if (count($this->docsDinamicosCOL)){
+            
+	            ?><div id="documentacion">
+	            
+		            <h3>Documentación</h3>
+		            
+		            <p>A continuación se listan los documentos que podrán serán generados para los planes y cursos presentados para esta convocatoria.</p>
+		            
+		            <ul id="convocatoriaDoc"><?
+		            
+		            	foreach ($this->docsDinamicosCOL as $doc){
+		            		
+		            		$idDocumento = $doc['idDocumento'];
+		            		$check = '';
+		            		
+		            		if ($this->documentosConvocatoriaIDX && array_key_exists($idDocumento, $this->documentosConvocatoriaIDX)){
+		            			$check = ' checked="checked" ';
+	            			}
+		            
+		            		?><li><label for="doc_<?= $idDocumento ?>"><?= $doc['vNombre'] ?></label><input type="checkbox" class="doc" name="doc_<?= $doc['idDocumento'] ?>" id="doc_<?= $doc['idDocumento'] ?>" <?= $check ?>/></li><?
+		            	
+		            	}
+	            	
+	            	?></ul>
+	            	
+	           </div><?
+	            
+            }
+            
+            ?><input class="oculto" type="submit" value="Guardar" />
             
             <noscript>
             	<div class="campo">
@@ -94,15 +125,12 @@
             </noscript>
             
         </fieldset>
-    </form>
-    <p>* Campos obligatorios</p>
-    
-<?
+    </form><?
 	
 	} else {
 	
-	?><h3>No se ha encontrado la convocatoria</h3><?
+		?><h3>No se ha encontrado la convocatoria</h3><?
 	
 	}
-
+	
 ?>

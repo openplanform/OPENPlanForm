@@ -514,6 +514,7 @@ class aulaController extends PplController{
             $paginador->setPaginaActual($paginaActual);
             $paginador->setOrderBy($orderBy);
             $paginador->setOrder($order);
+            $paginador->setExtraParams($queryString);
         
             // Obtengo las aulas
             $aulasCOL = $paginador->getItemCollection();

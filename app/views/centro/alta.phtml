@@ -1,5 +1,7 @@
 <?php
 	$this->addJavascriptInclude('/js/centro.js');
+	$this->echoOnHead($this->cabeceraMapa);
+	$this->echoOnHead($this->mapa);
 	
 	if ( !is_null($this->popup) ){
     	echo '<script type="text/javascript">ventana' . ucfirst($this->popup['estado']) . '("' . $this->popup['titulo'] . '", "' . $this->popup['mensaje'] . '", "' . $this->popup['url'] . '");</script>'; 
@@ -87,6 +89,25 @@
 			<div class="campo multi">
             	<label for="telefono">Teléfono</label>
 	            <input type="text" name="telefono" id="telefono" class="campoTexto mediano" />
+			</div>
+			
+			<div class="separadorH"></div>
+			
+			<div class="campo multi">
+            	<label for="latitud">Latitud</label>
+	            <input type="text" name="latitud" id="latitud" class="campoTexto" />
+			</div>
+			
+			<div class="campo multi">
+            	<label for="longitud">Longitud</label>
+	            <input type="text" name="longitud" id="longitud" class="campoTexto" />
+			</div>
+			
+			<div class="separadorH"></div>
+			
+			<div class="campo">
+				<p>Marca en el mapa el emplazamiento del centro</p>
+				<div id="mapa"></div>
 			</div>
 			
 			<div class="separadorH"></div>

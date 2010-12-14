@@ -1,6 +1,6 @@
 <div id="buscadorAcademia" class="buscador">
     
-    <form id="buscarAcademia" action="<?= $_SERVER['REQUEST_URI'] ?>" method="post">
+    <form id="buscarAcademia" action="/academia/buscar.html" method="post">
     
         <fieldset>
         
@@ -130,6 +130,10 @@
             
         <div id="paginadorContainer"><?= $this->paginador ?></div><?
     
+    } else if ($this->querystring){
+
+    	?><h3>No hay resultados</h3><?
+    	
     }
     
 ?></div>

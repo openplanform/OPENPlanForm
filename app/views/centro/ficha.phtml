@@ -10,6 +10,16 @@
 			<p><strong>Provincia:</strong><span> <?= $this->centroDO->getTblProvincia()->getVNombre() ?></span></p>
 			<?
 			
+			$direccion = $this->centroDO->getVDireccion();
+			if ( !empty($direccion) ){
+				?><p><strong>Dirección:</strong><span> <?= $direccion ?></span></p><?
+			}
+			
+			$poblacion = $this->centroDO->getVPoblacion();
+			if ( !empty($poblacion) ){
+				?><p><strong>Población:</strong><span> <?= $poblacion ?></span></p><?
+			}
+			
 			$telefono = $this->centroDO->getVTelefono();
 			if ( !empty($telefono) ){
 				?><p><strong>Teléfono:</strong><span> <?= $telefono ?></span></p><?

@@ -1,7 +1,7 @@
 <?php
 /**
  * Este archivo ha sido generado con Owl DoGen v.0.6
- * el 24 de November de 2010 a las 08:55:33
+ * el 09 de December de 2010 a las 08:48:53
  * @package dataAccess
  */
 
@@ -57,6 +57,18 @@ class TblDocumento extends OwlGenericDO{
     public $vDescription;
 
     /**
+     * Atributo que representa el campo "bDinamico"
+     * @var string
+     */
+    public $bDinamico;
+
+    /**
+     * Atributo que representa el campo "vIdentificador"
+     * @var string
+     */
+    public $vIdentificador;
+
+    /**
      * Atributo que representa el campo "mod_user"
      * @var string
      */
@@ -96,6 +108,8 @@ class TblDocumento extends OwlGenericDO{
         $this->vMime = $data['vMime'];
         $this->vTamano = $data['vTamano'];
         $this->vDescription = $data['vDescription'];
+        $this->bDinamico = $data['bDinamico'];
+        $this->vIdentificador = $data['vIdentificador'];
         $this->modUser = $data['mod_user'];
         $this->lastModified = $data['last_modified'];
 
@@ -131,6 +145,12 @@ class TblDocumento extends OwlGenericDO{
         }
         if( $tmp = $searchItem->vDescription ){
             $where[] = "vDescription='$tmp'";
+        }
+        if( $tmp = $searchItem->bDinamico ){
+            $where[] = "bDinamico='$tmp'";
+        }
+        if( $tmp = $searchItem->vIdentificador ){
+            $where[] = "vIdentificador='$tmp'";
         }
         if( $tmp = $searchItem->modUser ){
             $where[] = "mod_user='$tmp'";
@@ -206,6 +226,8 @@ class TblDocumento extends OwlGenericDO{
         $sets[] = 'vMime=' . ( ( ( $value = $this->vMime ) === null || !isset($this->vMime) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'vTamano=' . ( ( ( $value = $this->vTamano ) === null || !isset($this->vTamano) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'vDescription=' . ( ( ( $value = $this->vDescription ) === null || !isset($this->vDescription) ) ? 'null' :  "'".addslashes($value)."'" );
+        $sets[] = 'bDinamico=' . ( ( ( $value = $this->bDinamico ) === null || !isset($this->bDinamico) ) ? 'null' :  "'".addslashes($value)."'" );
+        $sets[] = 'vIdentificador=' . ( ( ( $value = $this->vIdentificador ) === null || !isset($this->vIdentificador) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'mod_user=' . ( ( ( $value = $this->modUser ) === null || !isset($this->modUser) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'last_modified=' . ( ( ( $value = $this->lastModified ) === null || !isset($this->lastModified) ) ? 'null' :  "'".addslashes($value)."'" );
         $setStr = implode(',', $sets);
@@ -222,6 +244,8 @@ class TblDocumento extends OwlGenericDO{
         $attributes[] = 'vMime';
         $attributes[] = 'vTamano';
         $attributes[] = 'vDescription';
+        $attributes[] = 'bDinamico';
+        $attributes[] = 'vIdentificador';
         $attributes[] = 'mod_user';
         $attributes[] = 'last_modified';
         $attributes = implode(',', $attributes);
@@ -231,6 +255,8 @@ class TblDocumento extends OwlGenericDO{
         $values[] = (( $value = $this->vMime ) === null || !isset($this->vMime) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->vTamano ) === null || !isset($this->vTamano) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->vDescription ) === null || !isset($this->vDescription) ) ? 'null' : "'".addslashes($value)."'";
+        $values[] = (( $value = $this->bDinamico ) === null || !isset($this->bDinamico) ) ? 'null' : "'".addslashes($value)."'";
+        $values[] = (( $value = $this->vIdentificador ) === null || !isset($this->vIdentificador) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->modUser ) === null || !isset($this->modUser) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->lastModified ) === null || !isset($this->lastModified) ) ? 'null' : "'".addslashes($value)."'";
         $values = implode(',', $values);
@@ -358,6 +384,46 @@ class TblDocumento extends OwlGenericDO{
     public function setVDescription( $value ){
 
         $this->vDescription = $value;
+
+    }
+
+    /**
+      * Obtiene el valor del atributo 'bDinamico'.
+      *
+      * @return string
+      */
+    public function getBDinamico(){
+        return $this->bDinamico;
+    }
+
+    /**
+      * Establece el valor del atributo 'bDinamico'.
+      *
+      * @param string Valor.
+      */
+    public function setBDinamico( $value ){
+
+        $this->bDinamico = $value;
+
+    }
+
+    /**
+      * Obtiene el valor del atributo 'vIdentificador'.
+      *
+      * @return string
+      */
+    public function getVIdentificador(){
+        return $this->vIdentificador;
+    }
+
+    /**
+      * Establece el valor del atributo 'vIdentificador'.
+      *
+      * @param string Valor.
+      */
+    public function setVIdentificador( $value ){
+
+        $this->vIdentificador = $value;
 
     }
 

@@ -108,13 +108,13 @@
 			<div class="separadorH"></div>
 			
 			<div class="campo controlado multi">
-            	<label for="aula">Aula*</label>
-	            <select class="grande desplegable" name="aula" id="aula">
+            	<label for="centro">Centro*</label>
+	            <select class="grande desplegable" name="centro" id="centro">
 	            	<option value=""></option>
 					<?
 					
 					// Aula
-					foreach ( $this->aulasIDX as $clave => $nombre) {
+					foreach ( $this->centrosIDX as $clave => $nombre) {
 						
 						?><option value="<?= $clave ?>" ><?= $nombre ?></option><?
 						
@@ -150,6 +150,11 @@
             <div class="separadorH"></div>
             
             <div class="campo multi">
+                <label for="accion">Número de acción</label>
+                <input type="text" name="accion" id="accion" class="campoTexto mediano decimal" />
+            </div>
+            
+            <div class="campo multi">
                 <label for="inicio">Fecha de inicio</label>
                 <input type="text" name="inicio" id="inicio" class="campoTexto pequeno" onkeypress="return false;" />
             </div>
@@ -160,6 +165,11 @@
             </div>
             
             <div class="separadorH"></div>
+            
+            <div class="campo">
+            	<label for="descripcion">Descripción</label>
+            	<textarea name="descripcion" id="descripcion"></textarea>
+            </div>
             
             <div class="campo multi">
 	            <label for="profesoresSeleccionados">Profesores del curso</label>

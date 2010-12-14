@@ -224,6 +224,11 @@
 			
 			<div class="separadorH"></div>
 			
+			<div class="campo">
+				<label for="observaciones">Observaciones</label>
+		        <textarea name="observaciones" id="observaciones" ><?= $this->alumnoDO->getVObservaciones() ?></textarea>
+		    </div>
+			
 			<div class="campo multi">
 	            <label for="cursosSeleccionados">Preinscripciones del alumno</label>
 	            
@@ -301,8 +306,16 @@
 					<td><?= $this->categoriasIDX[$cursoDO->getFkCategoria()] ?></td-->
 					<td><?= $this->sectoresIDX[$cursoDO->getFkSector()] ?></td>
 					<td><?= $this->categoriasIDX[$cursoDO->getFkCategoria()] ?></td>
-					<td><?= OwlDate::getDiaMesAno($cursoDO->getDInicio()) ?></td>
-					<td><?= OwlDate::getDiaMesAno($cursoDO->getDFin()) ?></td>
+					<?php
+					 
+					$fechaIni = OwlDate::getDiaMesAno($cursoDO->getDInicio());
+					( $fechaIni == '01/01/1970' ) ? $fechaIni = '-' : '';
+					$fechaFin = OwlDate::getDiaMesAno($cursoDO->getDFin());
+					( $fechaFin == '01/01/1970' ) ? $fechaFin = '-' : '';
+					
+					?>
+					<td><?= $fechaIni ?></td>
+					<td><?= $fechaFin ?></td>
 					<td><a href="javascript:comprobarCandidatoCurso('<?= $this->alumnoDO->getIdPersona() ?>','<?= $cursoDO->getIdCurso() ?>', '<?= $cursoDO->getVNombre() ?>')" class="btnAnadir" title="Asignar al alumno"><span>añadir</span></a></td>
 				</tr>
 				<?

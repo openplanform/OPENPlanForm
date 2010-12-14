@@ -16,7 +16,9 @@
 			<?
 			
 				if ( $this->editar ){
-					?><th>Eliminar</th>
+					?><th>Docs.</th>
+					<th>Horario</th>
+					<th>Eliminar</th>
 					<th>Editar</th>
 					<th>Duplicar</th><?		
 				}
@@ -53,7 +55,9 @@
 					<?
 			
 						if ( $this->editar ){
-							?><td class="accion"><a href="javascript:ventanaConfirmacion('Confirmar','¿Está seguro que desea eliminar el curso <strong><?= $cursoDO->getVNombre() ?></strong>?','/curso/eliminar.html/<?= $cursoDO->getIdCurso() ?>')" class="btnEliminar" title="Eliminar Curso"><span>eliminar</span></a></td>
+							?><td class="accion"><a href="/curso/documentacion.html/<?= $cursoDO->getIdCurso() ?>" class="btnDocumentacion" title="Documentación"><span>Documentación</span></a></td>
+							<td class="accion"><a href="/curso/horario.html/<?= $cursoDO->getIdCurso() ?>" class="btnHorario" title="Horario"><span>horario</span></a></td>
+							<td class="accion"><a href="javascript:ventanaConfirmacion('Confirmar','¿Está seguro que desea eliminar el curso <strong><?= $cursoDO->getVNombre() ?></strong>?','/curso/eliminar.html/<?= $cursoDO->getIdCurso() ?>')" class="btnEliminar" title="Eliminar Curso"><span>eliminar</span></a></td>
 							<td class="accion"><a href="/curso/editar.html/<?= $cursoDO->getIdCurso() ?>" class="btnEditar" title="Editar Curso"><span>editar</span></a></td>
 							<td class="accion"><a href="/curso/duplicar.html/<?= $cursoDO->getIdCurso() ?>" class="btnDuplicar" title="Duplicar Curso"><span>duplicar</span></a></td><?	
 						}

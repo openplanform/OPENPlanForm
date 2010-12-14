@@ -60,7 +60,7 @@ class breadcrumbsModule extends OwlModule{
         
         // Controlador
         $controllerName = !is_null($this->controllerRewrite) ? $this->controllerRewrite : $this->controllerName;
-        $sql = "SELECT vNombre AS label FROM tblAcceso WHERE vControlador = '" . $controllerName . "' AND vAccion IS NULL";
+        $sql = "SELECT vNombre AS label FROM tblAcceso WHERE vControlador = '" . $controllerName . "' AND ( vAccion IS NULL OR vAccion = '' )";
         $this->db->executeQuery($sql);
         $row = $this->db->fetchRow();
         $controllerLabel = $row['label'];

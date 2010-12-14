@@ -25,14 +25,35 @@
 		$arrCursosDO = $this->planDO->getTblCursos();
 		if ( !empty($arrCursosDO) ){
 
-			?><br/><h3>Cursos</h3><?
-			
-			foreach ( $arrCursosDO as $cursoDO ){
-				echo '<p><a href="/curso/ficha/' . $cursoDO->getIdCurso() . '">' . $cursoDO->getVNombre() . '</a></span></p>';
-			}
+			?><h3>Cursos</h3>
+			<div class="scroll">
+				<table class="listado">
+					<thead>
+						<tr>
+							<th>Nombre</th>
+						</tr>
+					</thead>
+					<tbody><?
+				
+					$alter = true;
+					foreach ( $arrCursosDO as $cursoDO ){
+	
+						$alter = !$alter;
+						?>
+						
+	            		<tr <?= $alter ? 'class="alter"' : '' ?>>
+	            			<td><a href="/curso/ficha/<?=$cursoDO->getIdCurso()?>"><?=$cursoDO->getVNombre()?></a></td>
+	            		</tr>
+	            		<?
+	            		
+					}
+					
+				?></tbody>
+				</table>
+			</div>
+			<div class="separadorH"></div><?
 			
 		}
-		
 		
 		?>
 		</div>

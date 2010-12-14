@@ -25,7 +25,7 @@ jQuery(document).ready(function(){
 				w = jQuery(this).css("width");
 				jQuery(tooltipId).css('left', w);
 				
-				if (jQuery(tooltipId).lenght != 0){
+				if (jQuery(tooltipId).length != 0){
 					jQuery(tooltipId).fadeIn('normal');
 				}
 			},
@@ -184,6 +184,9 @@ function comprobarUsuario(idCampo, editar) {
 		var usuarioOculto = $j('#' + idCampo + "Oculto").val();
 		if ( usuarioOculto.toLowerCase() != usuario.toLowerCase() ){
 			comprobar = true;
+		} else {
+			$j('#' + idCampo).css("borderColor","#A6A6A6");
+			$j(idError).html('');
 		}
 	} else if ( usuario != '' ){
 		comprobar = true;
@@ -200,7 +203,6 @@ function comprobarUsuario(idCampo, editar) {
 				arrRespuesta = $j.parseJSON(data);
 	        	if ( arrRespuesta.resultado == 'ko' ) {
 	        		$j(idError).html(arrRespuesta.mensaje);
-	    			$j('#' + idCampo).focus();
 	    			$j('#' + idCampo).css("borderColor","#F00");
 	            } else {
 	            	$j('#' + idCampo).css("borderColor","#A6A6A6");
@@ -234,6 +236,9 @@ function comprobarDni(idCampo, empresa, editar) {
 		var dniOculto = $j('#' + idCampo + "Oculto").val();
 		if ( dniOculto != dni ){
 			comprobar = true;
+		} else {
+			$j('#' + idCampo).css("borderColor","#A6A6A6");
+			$j(idError).html('');
 		}
 	} else if ( dni != '' ){
 		comprobar = true;
@@ -250,7 +255,6 @@ function comprobarDni(idCampo, empresa, editar) {
 				arrRespuesta = $j.parseJSON(data);
 	        	if ( arrRespuesta.resultado == 'ko' ) {
 	        		$j(idError).html(arrRespuesta.mensaje);
-	    			$j('#' + idCampo).focus();
 	    			$j('#' + idCampo).css("borderColor","#F00");
 	            } else {
 	            	$j('#' + idCampo).css("borderColor","#A6A6A6");

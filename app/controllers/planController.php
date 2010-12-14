@@ -459,50 +459,57 @@ class planController extends PplController{
             
             $where = array();
             $queryString = '&amp;sent=1';
+            $queryARR['sent'] = 1;
             
             // ID
             if (!empty($id)){
-                $where[] = " idConvocatoria = $id";
+                $where[] = " idPlan = $id";
                 $this->view->id = $id;
-                $queryString .= "&amp;idConvocatoria=$id";
+//                $queryString .= "&amp;idPlan=$id";
+                $queryARR['idPlan'] = $id;
             }
             
             // TIPO
             if (!empty($tipo)){
                 $where[] = " fkTipoPlan = $tipo";
                 $this->view->tipo = $tipo;
-                $queryString .= "&amp;tipoPlan=$tipo";
+//                $queryString .= "&amp;tipoPlan=$tipo";
+                $queryARR['tipoPlan'] = $tipo;
             }
 
             // CONVOCATORIA
             if (!empty($convocatoria)){
                 $where[] = " fkConvocatoria = $convocatoria";
                 $this->view->convocatoria = $convocatoria;
-                $queryString .= "&amp;convocatoriaPlan=$convocatoria";
+//                $queryString .= "&amp;convocatoriaPlan=$convocatoria";
+                $queryARR['convocatoriaPlan'] = $convocatoria;
             }
 
             // CONSULTORA
             if (!empty($consultora)){
-                $where[] = " fkConvocatoria = $consultora";
+                $where[] = " fkEmpresaConsultora = $consultora";
                 $this->view->consultora = $consultora;
-                $queryString .= "&amp;consultoraPlan=$consultora";
+//                $queryString .= "&amp;consultoraPlan=$consultora";
+                $queryARR['consultoraPlan'] = $consultora;
             }
 
             // ESTADO
             if (!empty($estado)){
                 $where[] = " fkConvocatoria = $estado";
                 $this->view->estado = $estado;
-                $queryString .= "&amp;estadoPlan=$estado";
+//                $queryString .= "&amp;estadoPlan=$estado";
+                $queryARR['estadoPlan'] = $estado;
             }
             
             // KEYWORD
             if (!empty($kw)){
                 $where[] = "vNombre LIKE '%$kw%' OR vDescripcion LIKE '%$kw%'";
                 $this->view->kw = $kw;
-                $queryString .= "&amp;keyword=$kw";             
+                $queryString .= "&amp;keyword=$kw";
+                $queryARR['keyword'] = $kw;             
             }
             
-            // Se constuye el where
+            // Se construye el where
             if (count($where)){
                 $where = ' WHERE ' . implode(' AND ', $where);
             } else {
@@ -511,12 +518,14 @@ class planController extends PplController{
             
             // Se ejecuta la búsqueda
             $paginador = new OwlPaginator($this->db, $where, 'tblPlan', $this->helper);
-            $paginador->setItemsPorPagina(10);
+            $paginador->setItemsPorPagina(1);
             $paginaActual = $this->helper->escapeInjection($this->helper->get('p'));
             $paginaActual = empty($paginaActual) ? 1 : $paginaActual;
             $paginador->setPaginaActual($paginaActual);
             $paginador->setOrderBy($orderBy);
             $paginador->setOrder($order);
+//            $paginador->setExtraParams($queryString);
+            $paginador->setExtraParams($queryARR);
         
             // Obtengo los Planes
             $planesCOL = $paginador->getItemCollection();
@@ -525,7 +534,10 @@ class planController extends PplController{
             // Envío el paginador a la vista
             $this->view->paginador = $paginador->getPaginatorHtml();
             
-            // Se propagan las clausulas de búsqueda en el paginador
+            // Se propagan las clausulas de búsqueda en el paginado
+        	foreach ( $queryARR as $clave => $valor ){
+            	$queryString .= '&amp;' . $clave . '=' . $valor;
+            }
             $this->view->querystring = $queryString;
             
             

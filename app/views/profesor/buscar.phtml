@@ -1,4 +1,4 @@
-<form id="buscarUsuario" action="<?= $_SERVER['REQUEST_URI'] ?>" method="post">
+<form id="buscarUsuario" action="/profesor/buscar.html" method="post">
     
         <fieldset>
         
@@ -79,10 +79,10 @@ if ($this->profesoresCOL){
     <table class="listado">
         <thead>
             <tr>
-                <th><a href="/profesor/buscar.html/?ob=id&o=<?=$this->order?>" <?=( ($this->orderBy == 'id')?'class="ordenado ' . $this->order . '"':'' )?> >Id</a></th>
-                <th><a href="/profesor/buscar.html/?ob=nom&o=<?=$this->order?>" <?=( ($this->orderBy == 'nom')?'class="ordenado ' . $this->order . '"':'' )?> >Nombre</a></th>
-                <th><a href="/profesor/buscar.html/?ob=pob&o=<?=$this->order?>" <?=( ($this->orderBy == 'pob')?'class="ordenado ' . $this->order . '"':'' )?> >Población</a></th>
-                <th><a href="/profesor/buscar.html/?ob=mov&o=<?=$this->order?>" <?=( ($this->orderBy == 'mov')?'class="ordenado ' . $this->order . '"':'' )?> >Móvil</a></th>
+                <th><a href="/profesor/buscar.html/?ob=id&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'id')?'class="ordenado ' . $this->order . '"':'' )?> >Id</a></th>
+                <th><a href="/profesor/buscar.html/?ob=nom&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'nom')?'class="ordenado ' . $this->order . '"':'' )?> >Nombre</a></th>
+                <th><a href="/profesor/buscar.html/?ob=pob&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'pob')?'class="ordenado ' . $this->order . '"':'' )?> >Población</a></th>
+                <th><a href="/profesor/buscar.html/?ob=mov&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'mov')?'class="ordenado ' . $this->order . '"':'' )?> >Móvil</a></th>
                 <th>Categorias</th><?
                 
                     if ( $this->editar ){
@@ -143,6 +143,10 @@ if ($this->profesoresCOL){
     </table>
     <div id="paginadorContainer"><?= $this->paginador ?></div><?
     
+    } else if ($this->querystring){
+
+    	?><h3>No hay resultados</h3><?
+    	
     }
     
 ?>    

@@ -11,6 +11,14 @@
 	if ( !is_null($this->cursoDO) ){
 
 ?>
+	<ul class="pestanyas">
+		<li class="actual"><strong>Datos generales</strong></li>
+		<li><a href="/curso/horario.html/<?= $this->cursoDO->getIdCurso() ?>">Horario</a></li>
+		<li><a href="/curso/documentacion.html/<?= $this->cursoDO->getIdCurso() ?>">Documentación</a></li>
+	</ul>
+	
+	<div class="separadorH"></div>
+
     <form id="editarCurso" action="<?= $_SERVER['REQUEST_URI'] ?>" method="post">
         <fieldset>
         
@@ -113,15 +121,15 @@
 			<div class="separadorH"></div>
 			
 			<div class="campo controlado multi">
-            	<label for="aula">Aula*</label>
-	            <select class="grande" name="aula" id="aula">
+            	<label for="centro">Centro*</label>
+	            <select class="grande" name="centro" id="centro">
 	            	<option value=""></option>
 					<?
 					
 					// Aula
-					foreach ( $this->aulasIDX as $clave => $nombre) {
+					foreach ( $this->centrosIDX as $clave => $nombre) {
 						
-						?><option value="<?= $clave ?>" <?= ( ($this->cursoDO->getFkAula() == $clave)?'selected="selected"':'' ) ?>><?= $nombre ?></option><?
+						?><option value="<?= $clave ?>" <?= ( ($this->cursoDO->getFkCentro() == $clave)?'selected="selected"':'' ) ?>><?= $nombre ?></option><?
 						
 					}
 					
@@ -155,6 +163,11 @@
             <div class="separadorH"></div>
             
             <div class="campo multi">
+                <label for="accion">Número de acción</label>
+                <input type="text" name="accion" id="accion" class="campoTexto mediano decimal" value="<?= $this->cursoDO->getIAccion() ?>"/>
+            </div>
+            
+            <div class="campo multi">
                 <label for="inicio">Fecha de inicio</label>
                 <?php 
                 	$fechaIni = OwlDate::getDiaMesAno($this->cursoDO->getDInicio());
@@ -173,6 +186,11 @@
             </div>
             
             <div class="separadorH"></div>
+            
+            <div class="campo">
+            	<label for="descripcion">Descripción</label>
+            	<textarea name="descripcion" id="descripcion"><?= $this->cursoDO->getVDescripcion() ?></textarea>
+            </div>
             
             <h3>Profesores</h3>
             

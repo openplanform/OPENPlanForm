@@ -1,7 +1,7 @@
 <?php
 /**
  * Este archivo ha sido generado con Owl DoGen v.0.6
- * el 24 de November de 2010 a las 08:55:33
+ * el 09 de December de 2010 a las 08:48:53
  * @package dataAccess
  */
 
@@ -167,7 +167,6 @@ class TblDesiderata extends OwlGenericDO{
      */
     public function update(){
         $sets = array();
-        $sets[] = 'idDesiderata=' . ( ( ( $value = $this->idDesiderata ) === null || !isset($this->idDesiderata) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'fkPersona=' . ( ( ( $value = $this->fkPersona ) === null || !isset($this->fkPersona) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'vDescripcion=' . ( ( ( $value = $this->vDescripcion ) === null || !isset($this->vDescripcion) ) ? 'null' :  "'".addslashes($value)."'" );
         $setStr = implode(',', $sets);
@@ -179,17 +178,15 @@ class TblDesiderata extends OwlGenericDO{
       */
     public function insert(){
         $attributes = array();
-        $attributes[] = 'idDesiderata';
         $attributes[] = 'fkPersona';
         $attributes[] = 'vDescripcion';
         $attributes = implode(',', $attributes);
         $values = array();
-        $values[] = (( $value = $this->idDesiderata ) === null || !isset($this->idDesiderata) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->fkPersona ) === null || !isset($this->fkPersona) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->vDescripcion ) === null || !isset($this->vDescripcion) ) ? 'null' : "'".addslashes($value)."'";
         $values = implode(',', $values);
         if( $this->_db->executeQuery("INSERT INTO tblDesiderata($attributes) VALUES($values)") ){
-            $eleDO = $this->findByPrimaryKey( $this->_db, $this->idDesiderata );
+            $eleDO = $this->findByPrimaryKey( $this->_db, $this->_db->getLastInsertId() );
             $this->_setData($eleDO->_data);
             return true;
         }
@@ -213,17 +210,6 @@ class TblDesiderata extends OwlGenericDO{
       */
     public function getIdDesiderata(){
         return $this->idDesiderata;
-    }
-
-    /**
-      * Establece el valor del atributo 'idDesiderata'.
-      *
-      * @param integer Valor.
-      */
-    public function setIdDesiderata( $value ){
-
-        $this->idDesiderata = $value;
-
     }
 
     /**

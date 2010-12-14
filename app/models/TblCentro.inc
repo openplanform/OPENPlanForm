@@ -1,7 +1,7 @@
 <?php
 /**
  * Este archivo ha sido generado con Owl DoGen v.0.6
- * el 24 de November de 2010 a las 08:55:33
+ * el 09 de December de 2010 a las 08:48:53
  * @package dataAccess
  */
 
@@ -63,6 +63,18 @@ class TblCentro extends OwlGenericDO{
     public $vTelefono;
 
     /**
+     * Atributo que representa el campo "vLatitud"
+     * @var string
+     */
+    public $vLatitud;
+
+    /**
+     * Atributo que representa el campo "vLongitud"
+     * @var string
+     */
+    public $vLongitud;
+
+    /**
      * Atributo que representa el campo "vDireccion"
      * @var string
      */
@@ -115,6 +127,8 @@ class TblCentro extends OwlGenericDO{
         $this->vNombre = $data['vNombre'];
         $this->vPoblacion = $data['vPoblacion'];
         $this->vTelefono = $data['vTelefono'];
+        $this->vLatitud = $data['vLatitud'];
+        $this->vLongitud = $data['vLongitud'];
         $this->vDireccion = $data['vDireccion'];
         $this->vDescripcion = $data['vDescripcion'];
         $this->modUser = $data['mod_user'];
@@ -155,6 +169,12 @@ class TblCentro extends OwlGenericDO{
         }
         if( $tmp = $searchItem->vTelefono ){
             $where[] = "vTelefono='$tmp'";
+        }
+        if( $tmp = $searchItem->vLatitud ){
+            $where[] = "vLatitud='$tmp'";
+        }
+        if( $tmp = $searchItem->vLongitud ){
+            $where[] = "vLongitud='$tmp'";
         }
         if( $tmp = $searchItem->vDireccion ){
             $where[] = "vDireccion='$tmp'";
@@ -285,6 +305,8 @@ class TblCentro extends OwlGenericDO{
         $sets[] = 'vNombre=' . ( ( ( $value = $this->vNombre ) === null || !isset($this->vNombre) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'vPoblacion=' . ( ( ( $value = $this->vPoblacion ) === null || !isset($this->vPoblacion) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'vTelefono=' . ( ( ( $value = $this->vTelefono ) === null || !isset($this->vTelefono) ) ? 'null' :  "'".addslashes($value)."'" );
+        $sets[] = 'vLatitud=' . ( ( ( $value = $this->vLatitud ) === null || !isset($this->vLatitud) ) ? 'null' :  "'".addslashes($value)."'" );
+        $sets[] = 'vLongitud=' . ( ( ( $value = $this->vLongitud ) === null || !isset($this->vLongitud) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'vDireccion=' . ( ( ( $value = $this->vDireccion ) === null || !isset($this->vDireccion) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'vDescripcion=' . ( ( ( $value = $this->vDescripcion ) === null || !isset($this->vDescripcion) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'mod_user=' . ( ( ( $value = $this->modUser ) === null || !isset($this->modUser) ) ? 'null' :  "'".addslashes($value)."'" );
@@ -304,6 +326,8 @@ class TblCentro extends OwlGenericDO{
         $attributes[] = 'vNombre';
         $attributes[] = 'vPoblacion';
         $attributes[] = 'vTelefono';
+        $attributes[] = 'vLatitud';
+        $attributes[] = 'vLongitud';
         $attributes[] = 'vDireccion';
         $attributes[] = 'vDescripcion';
         $attributes[] = 'mod_user';
@@ -316,6 +340,8 @@ class TblCentro extends OwlGenericDO{
         $values[] = (( $value = $this->vNombre ) === null || !isset($this->vNombre) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->vPoblacion ) === null || !isset($this->vPoblacion) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->vTelefono ) === null || !isset($this->vTelefono) ) ? 'null' : "'".addslashes($value)."'";
+        $values[] = (( $value = $this->vLatitud ) === null || !isset($this->vLatitud) ) ? 'null' : "'".addslashes($value)."'";
+        $values[] = (( $value = $this->vLongitud ) === null || !isset($this->vLongitud) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->vDireccion ) === null || !isset($this->vDireccion) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->vDescripcion ) === null || !isset($this->vDescripcion) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->modUser ) === null || !isset($this->modUser) ) ? 'null' : "'".addslashes($value)."'";
@@ -465,6 +491,46 @@ class TblCentro extends OwlGenericDO{
     public function setVTelefono( $value ){
 
         $this->vTelefono = $value;
+
+    }
+
+    /**
+      * Obtiene el valor del atributo 'vLatitud'.
+      *
+      * @return string
+      */
+    public function getVLatitud(){
+        return $this->vLatitud;
+    }
+
+    /**
+      * Establece el valor del atributo 'vLatitud'.
+      *
+      * @param string Valor.
+      */
+    public function setVLatitud( $value ){
+
+        $this->vLatitud = $value;
+
+    }
+
+    /**
+      * Obtiene el valor del atributo 'vLongitud'.
+      *
+      * @return string
+      */
+    public function getVLongitud(){
+        return $this->vLongitud;
+    }
+
+    /**
+      * Establece el valor del atributo 'vLongitud'.
+      *
+      * @param string Valor.
+      */
+    public function setVLongitud( $value ){
+
+        $this->vLongitud = $value;
 
     }
 

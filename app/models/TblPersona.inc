@@ -1,7 +1,7 @@
 <?php
 /**
  * Este archivo ha sido generado con Owl DoGen v.0.6
- * el 24 de November de 2010 a las 08:55:33
+ * el 09 de December de 2010 a las 08:48:53
  * @package dataAccess
  */
 
@@ -141,6 +141,12 @@ class TblPersona extends OwlGenericDO{
     public $dNacimiento;
 
     /**
+     * Atributo que representa el campo "vObservaciones"
+     * @var string
+     */
+    public $vObservaciones;
+
+    /**
      * Atributo que representa el campo "dBaja"
      * @var string
      */
@@ -200,6 +206,7 @@ class TblPersona extends OwlGenericDO{
         $this->bActiva = $data['bActiva'];
         $this->dAlta = $data['dAlta'];
         $this->dNacimiento = $data['dNacimiento'];
+        $this->vObservaciones = $data['vObservaciones'];
         $this->dBaja = $data['dBaja'];
         $this->modUser = $data['mod_user'];
         $this->lastModified = $data['last_modified'];
@@ -278,6 +285,9 @@ class TblPersona extends OwlGenericDO{
         }
         if( $tmp = $searchItem->dNacimiento ){
             $where[] = "dNacimiento='$tmp'";
+        }
+        if( $tmp = $searchItem->vObservaciones ){
+            $where[] = "vObservaciones='$tmp'";
         }
         if( $tmp = $searchItem->dBaja ){
             $where[] = "dBaja='$tmp'";
@@ -482,6 +492,7 @@ class TblPersona extends OwlGenericDO{
         $sets[] = 'bActiva=' . ( ( ( $value = $this->bActiva ) === null || !isset($this->bActiva) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'dAlta=' . ( ( ( $value = $this->dAlta ) === null || !isset($this->dAlta) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'dNacimiento=' . ( ( ( $value = $this->dNacimiento ) === null || !isset($this->dNacimiento) ) ? 'null' :  "'".addslashes($value)."'" );
+        $sets[] = 'vObservaciones=' . ( ( ( $value = $this->vObservaciones ) === null || !isset($this->vObservaciones) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'dBaja=' . ( ( ( $value = $this->dBaja ) === null || !isset($this->dBaja) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'mod_user=' . ( ( ( $value = $this->modUser ) === null || !isset($this->modUser) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'last_modified=' . ( ( ( $value = $this->lastModified ) === null || !isset($this->lastModified) ) ? 'null' :  "'".addslashes($value)."'" );
@@ -513,6 +524,7 @@ class TblPersona extends OwlGenericDO{
         $attributes[] = 'bActiva';
         $attributes[] = 'dAlta';
         $attributes[] = 'dNacimiento';
+        $attributes[] = 'vObservaciones';
         $attributes[] = 'dBaja';
         $attributes[] = 'mod_user';
         $attributes[] = 'last_modified';
@@ -537,6 +549,7 @@ class TblPersona extends OwlGenericDO{
         $values[] = (( $value = $this->bActiva ) === null || !isset($this->bActiva) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->dAlta ) === null || !isset($this->dAlta) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->dNacimiento ) === null || !isset($this->dNacimiento) ) ? 'null' : "'".addslashes($value)."'";
+        $values[] = (( $value = $this->vObservaciones ) === null || !isset($this->vObservaciones) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->dBaja ) === null || !isset($this->dBaja) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->modUser ) === null || !isset($this->modUser) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->lastModified ) === null || !isset($this->lastModified) ) ? 'null' : "'".addslashes($value)."'";
@@ -945,6 +958,26 @@ class TblPersona extends OwlGenericDO{
     public function setDNacimiento( $value ){
 
         $this->dNacimiento = $value;
+
+    }
+
+    /**
+      * Obtiene el valor del atributo 'vObservaciones'.
+      *
+      * @return string
+      */
+    public function getVObservaciones(){
+        return $this->vObservaciones;
+    }
+
+    /**
+      * Establece el valor del atributo 'vObservaciones'.
+      *
+      * @param string Valor.
+      */
+    public function setVObservaciones( $value ){
+
+        $this->vObservaciones = $value;
 
     }
 

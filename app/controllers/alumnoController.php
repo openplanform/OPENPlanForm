@@ -121,6 +121,12 @@ class alumnoController extends PplController{
         // Cursos
         $this->view->cursosCOL = TblCurso::findAll($this->db, 'vNombre');
         
+         // Sectores
+	    $this->view->sectoresIDX = $this->cacheBO->getSectores();
+	    
+	    // Categorías
+	    $this->view->categoriasIDX = $this->cacheBO->getCategorias();
+        
    		// Doy de alta la persona
     	if ( $this->helper->get('send') ){
     		
@@ -230,7 +236,7 @@ class alumnoController extends PplController{
 	        // Cursos
 	        $this->view->cursosCOL = TblCurso::findAll($this->db, 'vNombre');
 	        
-	        // Cursos alumno
+	        // Cursos precandidato alumno
 	        $this->view->cursosAlumnoCOL = TrelPrecandidato::findByTblPersona($this->db, $alumnoDO->getIdPersona() , 'dAlta');
 	        
 	        // Sectores
@@ -343,6 +349,7 @@ class alumnoController extends PplController{
         	$alumnoDO = TblPersona::findByPrimaryKey($this->db, $paramsARR[0]);
         	$nombreAlumno = 'Copia de ' . $alumnoDO->getVNombre();
         	$alumnoDO->setVNombre($nombreAlumno);
+        	$alumnoDO->setVNumeroIdentificacion('');
         	OwlSession::setValue('alumnoDuplicado', $alumnoDO);
         }
         
@@ -457,6 +464,8 @@ class alumnoController extends PplController{
         $nivelEstudios = $this->helper->getAndEscape('nivelEstudios');
         $telefono = $this->helper->getAndEscape('tel');
         $movil = $this->helper->getAndEscape('movil');
+        $observaciones = $this->helper->get('observaciones');
+        
 	    // Cursos
     	$cursosARR = array();
         if ( array_key_exists('cursos', $_POST) ){
@@ -555,6 +564,7 @@ class alumnoController extends PplController{
 	    	
 	    	// Empieza la transacción
 		    $this->db->begin();
+		    $this->db->disableForeignChecks();
 	    	
 	    	if ( $editar ){
 	    		$correcto = $usuarioDO->update();
@@ -613,6 +623,7 @@ class alumnoController extends PplController{
 		    	$alumnoDO->setFkEstadoCivil($estadoCivil);
 		    	$alumnoDO->setFkEstadoLaboral($estadoLaboral);
 		    	$alumnoDO->setFkNivelEstudios($nivelEstudios);
+		    	$alumnoDO->setVObservaciones($observaciones);
 		    	$alumnoDO->setDAlta(date('Y-m-d'));
 		    	$alumnoDO->setLastModified(date('Y-m-d'));
                 $alumnoDO->setModUser($this->usuario->getNombre());
@@ -656,8 +667,10 @@ class alumnoController extends PplController{
 	    	
     		if ( $correcto ){
     			// Todo ha ido bien
+    			$this->db->enableForeignChecks();
     			$this->db->commit();
     		} else {
+    			$this->db->enableForeignChecks();
     			$this->db->rollback();
     		}
 	    	
@@ -712,6 +725,7 @@ class alumnoController extends PplController{
             
             $where = array();
             $queryString = '&amp;sent=1';
+            $queryARR['sent'] = 1;
             
             $id = $this->helper->getAndEscape('idPersona');
             $kw = $this->helper->getAndEscape('kw');
@@ -722,28 +736,32 @@ class alumnoController extends PplController{
             if (!empty($id)){
                 $where[] = "idPersona = $id";
                 $this->view->id = $id;
-                $queryString .= '&amp;idPersona=' . $id;
+//                $queryString .= '&amp;idPersona=' . $id;
+                $queryARR['idPersona'] = $id;
             }
             
             // KW
             if (!empty($kw)){
                 $where[] = "vNombre LIKE '%$kw%' OR vPrimerApellido LIKE '%$kw%' OR vSegundoApellido LIKE '%$kw%' OR vNumeroIdentificacion LIKE '%$kw%'";
                 $this->view->kw = $kw;
-                $queryString .= '&amp;kw=' . $kw;
+//                $queryString .= '&amp;kw=' . $kw;
+                $queryARR['kw'] = $kw;
             }
             
             // PAIS
             if (!empty($pais)){
-                $where[] = "fkPais = $pais";
+                $where[] = "fkPais = '$pais'";
                 $this->view->pais = $pais;
-                $queryString .= '&amp;pais=' . $pais;
+//                $queryString .= '&amp;pais=' . $pais;
+				$queryARR['pais'] = $pais;
             }
             
             // PROVINCIA
             if (!empty($provincia)){
                 $where[] = "fkProvincia= $provincia";
                 $this->view->provincia = $provincia;
-                $queryString .= '&amp;provincia=' . $provincia;
+//                $queryString .= '&amp;provincia=' . $provincia;
+                $queryARR['provinci'] = $provincia;
             }
             
             // Se instancia y configura el paginador
@@ -759,6 +777,8 @@ class alumnoController extends PplController{
             $paginaActual = $this->helper->escapeInjection($this->helper->get('p'));
             $paginaActual = empty($paginaActual) ? 1 : $paginaActual;
             $paginador->setPaginaActual($paginaActual);
+//            $paginador->setExtraParams($queryString);
+            $paginador->setExtraParams($queryARR);
             
             // Obtengo los alumnos
             $alumnosCOL = $paginador->getItemCollection();
@@ -768,6 +788,9 @@ class alumnoController extends PplController{
             $this->view->paginador = $paginador->getPaginatorHtml();
             
             // Se propagan las clausulas de búsqueda en el paginador
+        	foreach ( $queryARR as $clave => $valor ){
+            	$queryString .= '&amp;' . $clave . '=' . $valor;
+            }
             $this->view->querystring = $queryString;      
 
         }

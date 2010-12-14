@@ -1,4 +1,4 @@
-<form id="buscarUsuario" action="<?= $_SERVER['REQUEST_URI'] ?>" method="post">
+<form id="buscarUsuario" action="/alumno/buscar.html" method="post">
     
         <fieldset>
         
@@ -54,15 +54,6 @@
             <div class="separadorH"></div>
             
             <div class="campo">
-                <label for="selectorRol">Categorías del alumno</label>
-                <select name="categorias[]" multiple="multiple" id="selectorCategoria" class="campoTexto grande"><?
-                
-                    echo $this->htmlSelectCategorias;
-                    
-                ?></select>
-            </div>
-            
-            <div class="campo">
                 <input type="submit" class="btnSubmit" value="Buscar" />
             </div>
             
@@ -79,10 +70,10 @@ if ($this->alumnosCOL){
     <table class="listado">
         <thead>
             <tr>
-                <th><a href="/alumno/buscar.html/?ob=id&o=<?=$this->order?>" <?=( ($this->orderBy == 'id')?'class="ordenado ' . $this->order . '"':'' )?> >Id</a></th>
-                <th><a href="/alumno/buscar.html/?ob=nom&o=<?=$this->order?>" <?=( ($this->orderBy == 'nom')?'class="ordenado ' . $this->order . '"':'' )?> >Nombre</a></th>
-                <th><a href="/alumno/buscar.html/?ob=pob&o=<?=$this->order?>" <?=( ($this->orderBy == 'pob')?'class="ordenado ' . $this->order . '"':'' )?> >Población</a></th>
-                <th><a href="/alumno/buscar.html/?ob=mov&o=<?=$this->order?>" <?=( ($this->orderBy == 'mov')?'class="ordenado ' . $this->order . '"':'' )?> >Móvil</a></th>
+                <th><a href="/alumno/buscar.html/?ob=id&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'id')?'class="ordenado ' . $this->order . '"':'' )?> >Id</a></th>
+                <th><a href="/alumno/buscar.html/?ob=nom&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'nom')?'class="ordenado ' . $this->order . '"':'' )?> >Nombre</a></th>
+                <th><a href="/alumno/buscar.html/?ob=pob&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'pob')?'class="ordenado ' . $this->order . '"':'' )?> >Población</a></th>
+                <th><a href="/alumno/buscar.html/?ob=mov&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'mov')?'class="ordenado ' . $this->order . '"':'' )?> >Móvil</a></th>
                 <?
                 
                     if ( $this->editar ){
@@ -127,6 +118,10 @@ if ($this->alumnosCOL){
     </table>
     <div id="paginadorContainer"><?= $this->paginador ?></div><?
     
+    } else if ($this->querystring){
+
+    	?><h3>No hay resultados</h3><?
+    	
     }
     
 ?>    

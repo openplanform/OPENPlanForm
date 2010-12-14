@@ -1,7 +1,7 @@
 <?php
 /**
  * Este archivo ha sido generado con Owl Dogen v.0.6
- * el 24 de November de 2010 a las 08:55:33
+ * el 13 de December de 2010 a las 05:32:46
  * @package dataAccess
  */
 
@@ -55,11 +55,11 @@ class TblCursoSearch{
     public $fkModalidad;
 
     /**
-     * Representa el atributo fkAula.
+     * Representa el atributo fkCentro.
      *
      * @var integer
      */
-    public $fkAula;
+    public $fkCentro;
 
     /**
      * Representa el atributo vNombre.
@@ -183,7 +183,7 @@ class TblCursoSearch{
     /**
      * Representa el atributo iAccion.
      *
-     * @var integer
+     * @var string
      */
     public $iAccion;
 

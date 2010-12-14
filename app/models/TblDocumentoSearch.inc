@@ -1,7 +1,7 @@
 <?php
 /**
  * Este archivo ha sido generado con Owl Dogen v.0.6
- * el 24 de November de 2010 a las 08:55:33
+ * el 09 de December de 2010 a las 08:48:53
  * @package dataAccess
  */
 
@@ -53,6 +53,20 @@ class TblDocumentoSearch{
      * @var string
      */
     public $vDescription;
+
+    /**
+     * Representa el atributo bDinamico.
+     *
+     * @var string
+     */
+    public $bDinamico;
+
+    /**
+     * Representa el atributo vIdentificador.
+     *
+     * @var string
+     */
+    public $vIdentificador;
 
     /**
      * Representa el atributo mod_user.

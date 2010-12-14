@@ -1,7 +1,7 @@
 <?php
 /**
  * Este archivo ha sido generado con Owl Dogen v.0.6
- * el 24 de November de 2010 a las 08:55:33
+ * el 09 de December de 2010 a las 08:48:53
  * @package dataAccess
  */
 
@@ -151,6 +151,13 @@ class TblPersonaSearch{
      * @var string
      */
     public $dNacimiento;
+
+    /**
+     * Representa el atributo vObservaciones.
+     *
+     * @var string
+     */
+    public $vObservaciones;
 
     /**
      * Representa el atributo dBaja.

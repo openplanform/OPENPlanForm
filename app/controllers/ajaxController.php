@@ -2,6 +2,8 @@
 
 require_once CLASSESDIR . 'PplController.inc';
 
+require_once MODELDIR . '/TblHorario.inc';
+
 /**
  * Controlador encargado de responder las peticiones asíncronas
  * de la a aplicacióm
@@ -23,6 +25,7 @@ class ajaxController extends PplController{
     
     /**
      * Comprueba si ya existe un usuario
+     * @return array
      */
     public function comprobarUsuarioAction(){
     	
@@ -49,6 +52,7 @@ class ajaxController extends PplController{
     
     /**
      * Comprueba si ya existe el cif/dni
+     * @return array
      */
  	public function comprobarDniAction(){
     	
@@ -83,6 +87,7 @@ class ajaxController extends PplController{
     
     /**
      * Comprueba si un alumno es candidato de un curso
+     * @return array
      */
     public function comprobarCandidatoCursoAction(){
     	if ( array_key_exists('curso', $_POST) && !empty($_POST['curso']) && array_key_exists('alumno', $_POST) && !empty($_POST['alumno']) ) {
@@ -107,6 +112,46 @@ class ajaxController extends PplController{
     	}
     }
     
+    /**
+     * Edita el horario de un curso
+     * @return array
+     */
+    public function editarHorarioAction(){
+    	
+    	$arrRespuesta = array();
+    	if ( array_key_exists('idHorario', $_POST) && !empty($_POST['idHorario']) ) {
+    		
+    		if ( ( array_key_exists('nuevoInicio', $_POST) && !empty($_POST['nuevoInicio']) && preg_match('/^\d{1,2}:\d{1,2}$/', $_POST['nuevoInicio']) ) && ( array_key_exists('nuevoFin', $_POST) && !empty($_POST['nuevoFin']) && preg_match('/^\d{1,2}:\d{1,2}$/', $_POST['nuevoFin']) ) ){
+    			
+    			$horarioDO = TblHorario::findByPrimaryKey($this->db, $_POST['idHorario']);
+    			$horarioDO->setIDesde($_POST['nuevoInicio']);
+    			$horarioDO->setIHasta($_POST['nuevoFin']);
+    			if ( !$horarioDO->update() ){
+    				// Error al insertar
+	    			$arrRespuesta['resultado'] = 'ko';
+	    			$arrRespuesta['mensaje'] = 'Ha ocurrido un error al guardar el horario';
+    			}
+    			
+    		} else {
+    			
+    			// Horario vacío
+    			$arrRespuesta['resultado'] = 'ko';
+    			$arrRespuesta['mensaje'] = 'El formato de horario es HH:MM';
+    			
+    		}
+    		
+    	} else {
+    		
+    		// No se encuentra la clave del horario
+    		$arrRespuesta['resultado'] = 'ko';
+    		$arrRespuesta['mensaje'] = 'No se ha encontrado el horario';
+    		
+    	}
+    	
+    	$jsonArrRespuesta = json_encode($arrRespuesta);
+		echo $jsonArrRespuesta;
+    	
+    }
     
 }
 

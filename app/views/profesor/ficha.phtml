@@ -43,9 +43,12 @@
 				?><p><strong>CP:</strong><span> <?= $cp ?></span></p><?
 			}
 			
-			$provincia = $this->profesorDO->getTblProvincia()->getVNombre();
-			if ( !empty($provincia) ){
-				?><p><strong>Provincia:</strong><span> <?= $provincia ?></span></p><?
+			$provinciaDO = $this->profesorDO->getTblProvincia();
+			if ( !empty($provinciaDO) ){
+				$provincia = $this->profesorDO->getTblProvincia()->getVNombre();
+				if ( !empty($provincia) ){
+					?><p><strong>Provincia:</strong><span> <?= $provincia ?></span></p><?
+				}
 			}
 			
 			?>
@@ -69,6 +72,12 @@
 				
 			}
 			
+			// Observaciones
+			$observaciones = $this->profesorDO->getVObservaciones();
+			if ( !empty($observaciones) ){
+				?><p class="extended"><strong>Observaciones:</strong><span> <?= $observaciones ?></span></p><?
+			}
+			
 			?>
 			
 		</div>
@@ -76,19 +85,38 @@
 		<?
 			if ( count($this->cursosImpartidosCOL) > 0  ){
 				
-				?><h3>Cursos que imparte</h3><?
-				
-				foreach ( $this->cursosImpartidosCOL as $profesorImparteCursoDO ){
+				?><div class="ficha">
+					<h3>Cursos que imparte</h3>
+					<table class="listado">
+						<thead>
+							<tr>
+								<th>Curso</th>
+							</tr>
+						</thead>
+						<tbody>
+					<?
 					
-					foreach ( $this->cursosCOL as $cursoDO ){
-
-						if ( $cursoDO->getIdCurso() == $profesorImparteCursoDO->getFkCurso() ){
-							echo '<p><a href="/curso/ficha.html/' . $cursoDO->getIdCurso() . '">' . $cursoDO->getVNombre() . '</a></p>';	
+					$alter = true;
+					foreach ( $this->cursosImpartidosCOL as $profesorImparteCursoDO ){
+						
+						foreach ( $this->cursosCOL as $cursoDO ){
+	
+							if ( $cursoDO->getIdCurso() == $profesorImparteCursoDO->getFkCurso() ){
+								$alter = !$alter;
+	            				?>
+	            				<tr <?= $alter ? 'class="alter"' : '' ?>>
+	            					<td><a href="/curso/ficha.html/<?= $cursoDO->getIdCurso() ?>"><?= $cursoDO->getVNombre() ?></a></td>
+	            				</tr>
+	            				<?
+							}
+							
 						}
 						
 					}
 					
-				}
+					?></tbody>
+					</table>
+				</div><?
 				
 			}
 		?>

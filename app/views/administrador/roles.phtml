@@ -12,8 +12,8 @@
     <thead>
         <tr>
             <th><a href="/administrador/roles.html/?ob=id&o=<?=$this->order?>" <?=( ($this->orderBy == 'id')?'class="ordenado ' . $this->order . '"':'' )?> >Id</a></th>
-            <th><a href="/administrador/roles.html/?ob=id&o=<?=$this->order?>" <?=( ($this->orderBy == 'nom')?'class="ordenado ' . $this->order . '"':'' )?> >Nombre</a></th>
-            <th><a href="/administrador/roles.html/?ob=id&o=<?=$this->order?>" <?=( ($this->orderBy == 'desc')?'class="ordenado ' . $this->order . '"':'' )?> >Descripción</a></th>
+            <th><a href="/administrador/roles.html/?ob=nom&o=<?=$this->order?>" <?=( ($this->orderBy == 'nom')?'class="ordenado ' . $this->order . '"':'' )?> >Nombre</a></th>
+            <th><a href="/administrador/roles.html/?ob=desc&o=<?=$this->order?>" <?=( ($this->orderBy == 'desc')?'class="ordenado ' . $this->order . '"':'' )?> >Descripción</a></th>
             <th>Num. Usuarios</th>
             <th>Eliminar</th>
         </tr>

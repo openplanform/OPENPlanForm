@@ -192,6 +192,18 @@ class barraHerramientasModule extends OwlModule{
     		            	$this->echoBotonLimpiar(false);
     	            		$this->echoBotonEliminar();
                 			break;
+                			
+                		// HORARIO
+                		case 'horario':
+                			$this->echoBotonBuscar(false);
+    	            		$this->echoBotonAnadir(false);
+    	            		$this->echoBotonListado();
+    		            	$this->echoBotonEditar(false);
+    		            	$this->echoBotonGuardar(false);
+    		            	$this->echoBotonDuplicar(false);
+    		            	$this->echoBotonLimpiar(false);
+    	            		$this->echoBotonEliminar(false);
+                			break;
                 		
                 		default:
                 			break;

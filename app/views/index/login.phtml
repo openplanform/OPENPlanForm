@@ -2,7 +2,15 @@
 
 $this->addCssInclude('/css/login.css');
 $this->addJavascriptInclude('/js/login.js');
-
+$this->echoOnHead('
+	<script type="text/javascript">
+		//<![CDATA[
+		$j(document).ready(function(){
+			$j("#username").focus();
+		});
+		//]]>
+	</script>
+');
 
 ?><div id="wrapper">
     <div id="login">

@@ -541,7 +541,7 @@ class PplCacheBO {
 	public function getModalidades() {
 		
 		if ( $this->modalidades_fetched ){
-			return $this->modalidadIDX;
+			return $this->modalidadesIDX;
 		}
 		
 		$modalidadCOL = TblModalidad::findAll($this->db, 'vNombre');
@@ -554,10 +554,10 @@ class PplCacheBO {
 		    
 		}
 		
-		$this->modalidadIDX = $modalidadIDX;
-		$this->modalidad_fetched = true;
+		$this->modalidadesIDX = $modalidadIDX;
+		$this->modalidades_fetched = true;
 		
-		return $this->modalidadIDX;
+		return $this->modalidadesIDX;
 		
 	}
 	
@@ -748,6 +748,7 @@ class PplCacheBO {
 	/**
 	 * Devuelve el directorio de subida de archivos,
 	 * siempre obtenerlo desde aqui, nunca hardcodearlo
+	 * @return string
 	 */
 	static public function getUploadDir(){
 	    
@@ -757,13 +758,34 @@ class PplCacheBO {
 	
     /**
      * Devuelve la ruta completa para el frontend de un documento
-     * Enter description here ...
      * @param $docDO
+     * @return string
      */
 	static public function getDocLink(TblDocumento $docDO){
 
 	    return '/docs/doc_' . $docDO->getIdDocumento();
 	    
+	}
+	
+	
+	/**
+	 * Devuelve todos los documentos dinámicos
+	 * @return array
+	 */
+	public function getDocumentosDinamicos(){
+		
+		$sql = "SELECT * FROM tblDocumento WHERE bDinamico = 1";
+		$this->db->executeQuery($sql);
+		
+		$returnARR = array();
+		while ($row = $this->db->fetchRow()){
+			
+			$returnARR[] = $row;
+			
+		}
+		
+		return $returnARR;
+		
 	}
 	
 }

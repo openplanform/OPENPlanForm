@@ -13,6 +13,7 @@ require_once MODELDIR . '/TblConvocatoria.inc';
 require_once MODELDIR . '/TblRequisito.inc';
 require_once MODELDIR . '/TrelRequisitoConvocatoria.inc';
 require_once MODELDIR . '/TblTipoConvocatoria.inc';
+require_once MODELDIR . '/TrelDocumentoConvocatoria.inc';
 
 class convocatoriaController extends PplController{
     
@@ -97,6 +98,9 @@ class convocatoriaController extends PplController{
     	
     	// Requisitos
     	$this->view->requisitosIDX = $this->cacheBO->getRequisitos();
+    	
+		// Obtengo los documentos dinamicos disponibles
+    	$this->view->docsDinamicosCOL = $docsDinamicosCOL = $this->cacheBO->getDocumentosDinamicos();    	
 
     	// Doy de alta la convocatoria
     	if ( $this->helper->get('send') ){
@@ -158,46 +162,6 @@ class convocatoriaController extends PplController{
      */
     public function editarAction(){
         
-//    	// Obtengo la convocatoria que voy a editar
-//    	$paramsARR = $this->getParams();
-//        if ( !empty($paramsARR) ){
-//        	
-//        	// Convocatoria
-//        	$convocatoriaDO = TblConvocatoria::findByPrimaryKey($this->db, $paramsARR[0]);
-//        	$this->view->convocatoriaDO = $convocatoriaDO;
-//        	
-//	    	// Tipos de Convocatoria
-//	    	$this->view->tiposConvocatoriaIDX = $this->cacheBO->getTiposConvocatoria();
-//	    	
-//	    	// Requisitos
-//	    	$this->view->requisitosIDX = $this->cacheBO->getRequisitos();
-//	    	
-//	    	// Requisitos de la convocatoria
-//	    	$this->view->requisitosConvocatoriaDO = $convocatoriaDO->getTrelRequisitoConvocatorias();
-//	    	
-//        }
-//        
-//    	// Actualizo la convocatoria
-//    	if ( isset($convocatoriaDO) && $this->helper->get('send') ){
-//    		
-//    		if ( $this->actualizarInsertar(true,$convocatoriaDO->getIdConvocatoria() ) ){
-//    			
-//    			// Convocatoria
-//	        	$convocatoriaDO = TblConvocatoria::findByPrimaryKey($this->db, $paramsARR[0]);
-//	        	$this->view->convocatoriaDO = $convocatoriaDO;
-//				
-//    		} else {
-//    			
-//    			$this->view->popup = array(
-//				    'estado' => 'ko',
-//				    'titulo' => 'Error',
-//				    'mensaje'=> 'Ha ocurrido un error con la edición de la convocatoria. Inténtelo de nuevo en unos instantes por favor.<br/>Si el problema persiste póngase en contacto con el administrador. Muchas gracias.',
-//				    'url'=> '',
-//				);
-//				
-//    		}
-//    	}
-        
     	// Obtengo la convocatoria que voy a editar
     	$idConvocatoria = $this->getParam(0);
         if ( !is_null($idConvocatoria) ){
@@ -220,6 +184,9 @@ class convocatoriaController extends PplController{
         	}
         	
         }
+
+        // Obtengo los documentos dinamicos disponibles
+    	$this->view->docsDinamicosCOL = $docsDinamicosCOL = $this->cacheBO->getDocumentosDinamicos();
         
     	// Actualizo la convocatoria
         if ( isset($convocatoriaDO) && $this->helper->get('send') ){
@@ -266,6 +233,12 @@ class convocatoriaController extends PplController{
 	    	if ( !$duplicar ){
 	    		$this->view->requisitosConvocatoriaDO = $convocatoriaDO->getTrelRequisitoConvocatorias();
 	    	}
+	    	
+       	    // Obtengo los documentos dinámicos actualmente ASIGNADOS a la convocatoria
+		    $documentosConvocatoriaCOL = TrelDocumentoConvocatoria::findByTblConvocatoria($this->db, $idConvocatoria);
+		    if (count($documentosConvocatoriaCOL)){
+				$this->view->documentosConvocatoriaIDX = OwlDatabase::indexFor('fkDocumento', $documentosConvocatoriaCOL);
+	    	}	    	
 	    	
         }
     	
@@ -417,8 +390,53 @@ class convocatoriaController extends PplController{
 		    			}
 		    		}
 	    		}
+	    		
+	    		////////////////////////////////////////////////
+	    		//											  //
+	    		//		    DOCUMENTACIÓN DINÁMICA		      //
+	    		//											  //
+	    		////////////////////////////////////////////////
+	    		
+	    		// Documentos seleccionados
+	    		$selDocs = array();
+	    		
+	    		// 1- Recorremos el array de post en busqueda de algún doc dinámico
+	    		foreach ($_POST as $key => $value){
+	    			if (preg_match('/doc_([0-9]+)/', $key, $claveARR)) {
+	    				if (array_key_exists(1, $claveARR)){
+	    					if ($value == 'on'){
+	    						$selDocs[] = intval($claveARR[1]);
+	    					} else {
+	    						$delDocs[] = intval($claveARR[1]);
+	    					}
+	    				}
+	    			}
+	    		}
+	    		
+	    		// 2- Eliminaremos la documentación existente
+    			$sql = "DELETE FROM trelDocumentoConvocatoria WHERE fkConvocatoria = $idConvocatoria";
+    			if (!$this->db->executeQuery($sql)){
+    				$correcto = false;
+    			}
+    			
+	    		// 3- Crearemos una tupla por cada documento asignado
+	    		foreach ($selDocs as $idDoc){
+	    			
+	    			$documentoConvocatoriaDO = new TrelDocumentoConvocatoria($this->db);
+	    			$documentoConvocatoriaDO->setFkConvocatoria($idConvocatoria);
+	    			$documentoConvocatoriaDO->setFkDocumento($idDoc);
+	    			
+	    			if (!$documentoConvocatoriaDO->insert()){
+	    				$correcto = false;
+	    				break;
+	    			}
+	    			
+	    		}
+	    		
+	    		
+	    		
 			}
-	    	
+			
     		if ( $correcto ){
     			// Todo ha ido bien
     			$this->db->commit();
@@ -431,6 +449,7 @@ class convocatoriaController extends PplController{
 	    return $correcto;
     	
     }
+    
     
     /**
      * Buscador de convocatorias
@@ -450,11 +469,11 @@ class convocatoriaController extends PplController{
             
             // Parámetros de ordenación para el paginador
             $aliasCampos = array(
-                'nom'   => 'vNombre',
-                'desc'  => 'vDescripcion',
-                'pres'  => 'ePresupuesto',
-                'tipo'  => 'fkTipoConvocatoria'
-            );
+	    	    'anyo'  => 'iAno',
+	    		'nom' 	=> 'vNombre',
+	    		'pres'	=> 'ePresupuesto',
+	    		'tipo'	=> 'fkTipoConvocatoria'
+	    	);
             
 
             if ( !empty($_REQUEST) && array_key_exists('o', $_GET) & array_key_exists('ob', $_GET) ){
@@ -483,33 +502,38 @@ class convocatoriaController extends PplController{
             
             $where = array();
             $queryString = '&amp;sent=1';
+            $queryARR['sent'] = 1;
             
             // ID
             if (!empty($id)){
                 $where[] = " idConvocatoria = $id";
                 $this->view->id = $id;
-                $queryString .= "&amp;idConvocatoria=$id";
+//                $queryString .= "&amp;idConvocatoria=$id";
+                $queryARR['idConvocatoria'] = $id;
             }
             
             // TIPO
             if (!empty($tipo)){
                 $where[] = " fkTipoConvocatoria = $tipo";
                 $this->view->tipo = $tipo;
-                $queryString .= "&amp;tipoConvocatoria=$tipo";
+//                $queryString .= "&amp;tipoConvocatoria=$tipo";
+                $queryARR['tipoConvocatoria'] = $tipo;
             }
 
             // AÑO
             if (!empty($anyo)){
                 $where[] = " iAno = $anyo";
                 $this->view->anyo = $anyo;
-                $queryString .= "&amp;anoConvocatoria=$anyo";
+//                $queryString .= "&amp;anoConvocatoria=$anyo";
+                $queryARR['anoConvocatoria'] = $anyo;
             }
             
             // KEYWORD
             if (!empty($kw)){
                 $where[] = "vNombre LIKE '%$kw%' OR vDescripcion LIKE '%$kw%'";
                 $this->view->kw = $kw;
-                $queryString .= "&amp;keyword=$kw";             
+                $queryString .= "&amp;keyword=$kw";
+                $queryARR['keyword'] = $kw;             
             }
             
             // Se constuye el where
@@ -521,12 +545,14 @@ class convocatoriaController extends PplController{
             
             // Se ejecuta la búsqueda
             $paginador = new OwlPaginator($this->db, $where, 'tblConvocatoria', $this->helper);
-            $paginador->setItemsPorPagina(2);
+            $paginador->setItemsPorPagina(10);
             $paginaActual = $this->helper->escapeInjection($this->helper->get('p'));
             $paginaActual = empty($paginaActual) ? 1 : $paginaActual;
             $paginador->setPaginaActual($paginaActual);
             $paginador->setOrderBy($orderBy);
             $paginador->setOrder($order);
+//            $paginador->setExtraParams($queryString);
+            $paginador->setExtraParams($queryARR);
         
             // Obtengo las convocatorias
             $convocatoriasCOL = $paginador->getItemCollection();
@@ -536,6 +562,9 @@ class convocatoriaController extends PplController{
             $this->view->paginador = $paginador->getPaginatorHtml();
             
             // Se propagan las clausulas de búsqueda en el paginador
+        	foreach ( $queryARR as $clave => $valor ){
+            	$queryString .= '&amp;' . $clave . '=' . $valor;
+            }
             $this->view->querystring = $queryString;
             
             

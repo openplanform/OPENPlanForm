@@ -4,6 +4,7 @@ require_once CLASSESDIR . 'PplController.inc';
 require_once 'helper/OwlNumeric.inc';
 require_once 'helper/OwlString.inc';
 require_once 'OwlPaginator.inc';
+require_once 'OwlGoogleMaps.inc';
 
 require_once MODULEDIR . 'menuPrincipalModule.php';
 require_once MODULEDIR . 'logoutModule.php';
@@ -97,6 +98,14 @@ class academiaController extends PplController{
         // Provincias
         $this->view->provinciasCOL = TblProvincia::findAll($this->db, 'vNombre_es');
         
+        // Mapa para las coordenadas
+        $this->view->cabeceraMapa = OwlGoogleMaps::echoCabeceraMapa();
+        $mapaDO = new OwlGoogleMaps();
+        $mapaDO->setLatitud('39.57420604477404');
+		$mapaDO->setLongitud('2.655208557844162');
+		$mapaDO->setMarcadorCoordenadas(true);
+        $this->view->mapa = $mapaDO->echoMapa();
+        
    		// Doy de alta la academia
     	if ( $this->helper->get('send') ){
     		
@@ -144,12 +153,6 @@ class academiaController extends PplController{
         	// Usuario de la academia
         	$this->view->usuarioDO = $academiaDO->getTblUsuario();
         	
-        	// Paises
-	       	$this->view->paisesCOL = TblPais::findAll($this->db, 'vIso');
-	        
-		    // Provincias
-		    $this->view->provinciasCOL = TblProvincia::findAll($this->db, 'vNombre_es');
-	    
         } else {
         	
         	if ( OwlSession::getValue('academiaDuplicada') instanceof TblEmpresa ){
@@ -158,11 +161,6 @@ class academiaController extends PplController{
         		$this->view->academiaDO = $academiaDO;
         		$this->view->duplicar = $duplicar = true;
         		
-        		// Paises
-		       	$this->view->paisesCOL = TblPais::findAll($this->db, 'vIso');
-		        
-			    // Provincias
-			    $this->view->provinciasCOL = TblProvincia::findAll($this->db, 'vNombre_es');
         	}
         	
         }
@@ -193,6 +191,36 @@ class academiaController extends PplController{
     		}
     	}
         
+    	// Datos para la vista
+    	if ( isset($academiaDO) ){
+    		
+	    	// Mapa para las coordenadas
+	        $this->view->cabeceraMapa = OwlGoogleMaps::echoCabeceraMapa();
+	        $mapaDO = new OwlGoogleMaps();
+	        $latitud = $academiaDO->getVLatitud();
+	        $longitud = $academiaDO->getVLongitud();
+	        
+	        // El marcador sólo lo ponemos si el usuario introdujo previamente las coordenadas
+    		if ( !empty($latitud) && !empty($longitud) ){
+				$mapaDO->addMarcador('marcador', $latitud, $longitud);
+			}
+			
+			// Ponemos la latitud y longitud por defecto
+	        $latitud = empty($latitud) ? OwlGoogleMaps::LATITUD : $latitud;
+	        $longitud = empty($longitud) ? OwlGoogleMaps::LONGITUD : $longitud;
+	        
+	        $mapaDO->setLatitud( $latitud );
+			$mapaDO->setLongitud( $longitud );
+			$mapaDO->setMarcadorCoordenadas(true);
+	        $this->view->mapa = $mapaDO->echoMapa();
+	        
+	        // Paises
+	       	$this->view->paisesCOL = TblPais::findAll($this->db, 'vIso');
+	        
+		    // Provincias
+		    $this->view->provinciasCOL = TblProvincia::findAll($this->db, 'vNombre_es');
+    	}
+    	
     }
     
     /**
@@ -290,6 +318,7 @@ class academiaController extends PplController{
         	$academiaDO = TblEmpresa::findByPrimaryKey($this->db, $paramsARR[0]);
         	$nombreAcademia = 'Copia de ' . $academiaDO->getVNombre();
         	$academiaDO->setVNombre($nombreAcademia);
+        	$academiaDO->setVCif('');
         	OwlSession::setValue('academiaDuplicada', $academiaDO);
         	//$academiaDO->insert();
         }
@@ -450,6 +479,18 @@ class academiaController extends PplController{
 	    	$cp = '';
 	    }
 	    
+	    // Latitud
+    	$latitud = $this->helper->escapeInjection($this->helper->get('latitud'));
+	    if ( is_null($latitud) || empty($latitud) ){
+	    	$latitud = '';
+	    }
+	    
+	    // Longitud
+    	$longitud = $this->helper->escapeInjection($this->helper->get('longitud'));
+	    if ( is_null($longitud) || empty($longitud) ){
+	    	$longitud = '';
+	    }
+	    
     	// Teléfono 1
     	$telefono1 = $this->helper->escapeInjection($this->helper->get('telefono1'));
 	    if ( is_null($telefono1) || empty($telefono1) ){
@@ -467,6 +508,7 @@ class academiaController extends PplController{
 	    if ( is_null($fax) || empty($fax) ){
 	    	$fax = '';
 	    }
+	    
 	    
 		/**
 		 * 1. Insertamos o actualizamos un usuario
@@ -538,9 +580,11 @@ class academiaController extends PplController{
 		    	$academiaDO->setVPoblacion($poblacion);
 		    	$academiaDO->setVDireccion($direccion);
 		    	$academiaDO->setVCp($cp);
-		    	$academiaDO->setVTelefono($telefono1);
-		    	$academiaDO->setVTelefono2($telefono2);
-		    	$academiaDO->setVFax($fax);
+		    	$academiaDO->setVTelefono(str_ireplace(' ', '', $telefono1));
+		    	$academiaDO->setVTelefono2(str_ireplace(' ', '', $telefono2));
+		    	$academiaDO->setVFax(str_ireplace(' ', '', $fax));
+		    	$academiaDO->setVLatitud($latitud);
+		    	$academiaDO->setVLongitud($longitud);
 		    	$academiaDO->setDAlta(date('Y-m-d'));
 		    	$academiaDO->setLastModified(date('Y-m-d'));
                 $academiaDO->setModUser($this->usuario->getNombre());
@@ -620,45 +664,51 @@ class academiaController extends PplController{
             
             $where = array();
             
-            // Solo consultoras
+            // Sólo consultoras
             $claveRolAcademia = PplAclManager::ROL_ACADEMIA;
             $where[] = "EXISTS (SELECT NULL FROM trelRolUsuario WHERE trelRolUsuario.fkUsuario = tblEmpresa.fkUsuario AND trelRolUsuario.fkRol = $claveRolAcademia )";
             
             $queryString = '&amp;sent=1';
+            $queryARR['sent'] = 1;
             
             // ID
             if (!empty($id)){
                 $where[] = " idEmpresa = $id";
                 $this->view->id = $id;
-                $queryString .= "&amp;idEmpresa=$id";
+//                $queryString .= "&amp;idEmpresa=$id";
+                $queryARR['idEmpresa'] = $id;
             }
             
             // PAIS
             if (!empty($pais)){
                 $where[] = " fkPais = '$pais'";
                 $this->view->pais = $pais;
-                $queryString .= "&amp;pais=$pais";
+//                $queryString .= "&amp;pais=$pais";
+                $queryARR['pais'] = $pais;
             }
 
             // PROVINCIA
             if (!empty($provincia)){
                 $where[] = " fkProvincia = $provincia";
                 $this->view->provincia = $provincia;
-                $queryString .= "&amp;provincia=$provincia";
+//                $queryString .= "&amp;provincia=$provincia";
+                $queryARR['provincia'] = $provincia;
             }
 
             // CIF
             if (!empty($cif)){
-                $where[] = " vCif = $cif";
+                $where[] = " vCif = '$cif'";
                 $this->view->cif = $cif;
-                $queryString .= "&amp;cif=$cif";
+//                $queryString .= "&amp;cif=$cif";
+                $queryARR['cif'] = $cif;
             }
 
             // CP
             if (!empty($cp)){
                 $where[] = " vCp = $cp";
                 $this->view->cp = $cp;
-                $queryString .= "&amp;cp=$cp";
+//                $queryString .= "&amp;cp=$cp";
+                $queryARR['cp'] = $cp;
             }
             
             // KEYWORD
@@ -666,7 +716,8 @@ class academiaController extends PplController{
                 //$where[] = "vNombre LIKE '%$kw%' OR vDescripcion LIKE '%$kw%'";
                 $where[] = "vNombre LIKE '%$kw%'";
                 $this->view->kw = $kw;
-                $queryString .= "&amp;keyword=$kw";             
+//                $queryString .= "&amp;keyword=$kw";
+                $queryARR['keyword'] = $kw;
             }
             
             // Se constuye el where
@@ -684,6 +735,8 @@ class academiaController extends PplController{
             $paginador->setPaginaActual($paginaActual);
             $paginador->setOrderBy($orderBy);
             $paginador->setOrder($order);
+//            $paginador->setExtraParams($queryString);
+            $paginador->setExtraParams($queryARR);
         
             // Obtengo las convocatorias
             $academiasCOL = $paginador->getItemCollection();
@@ -693,8 +746,10 @@ class academiaController extends PplController{
             $this->view->paginador = $paginador->getPaginatorHtml();
             
             // Se propagan las clausulas de búsqueda en el paginador
+        	foreach ( $queryARR as $clave => $valor ){
+            	$queryString .= '&amp;' . $clave . '=' . $valor;
+            }
             $this->view->querystring = $queryString;
-            
             
         }        
         

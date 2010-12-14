@@ -141,8 +141,16 @@
                                 <td><a href="/plan/ficha.html/<?= $cursoDO->getFkPlan() ?>"><?= $this->planesIDX[$cursoDO->getFkPlan()] ?></a></td>
                                 <td><?= $this->sectoresIDX[$cursoDO->getFkSector()] ?></td>
                                 <td><?= $this->categoriasIDX[$cursoDO->getFkCategoria()] ?></td>
-                                <td><?= $cursoDO->getDInicio() ?></td>
-                                <td><?= $cursoDO->getDFin() ?></td>
+                                <?php
+                                
+								$fechaIni = OwlDate::getDiaMesAno($cursoDO->getDInicio());
+								( $fechaIni == '01/01/1970' ) ? $fechaIni = '-' : '';
+								$fechaFin = OwlDate::getDiaMesAno($cursoDO->getDFin());
+								( $fechaFin == '01/01/1970' ) ? $fechaFin = '-' : '';
+								
+								?>
+								<td><?= $fechaIni ?></td>
+								<td><?= $fechaFin ?></td>
                                 <?
                         
                                     if ( $this->editar ){
@@ -163,6 +171,10 @@
             
             <div id="paginadorContainer"><?= $this->paginador ?></div><?
     
+    } else if ($this->querystring){
+
+    	?><h3>No hay resultados</h3><?
+    	
     }
     
 ?></div>

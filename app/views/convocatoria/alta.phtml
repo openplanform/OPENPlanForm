@@ -24,8 +24,8 @@
             
             <div class="separadorH"></div>
             
-            <div class="campo controlado">
-            	<label for="tipoConvocatoria">Tipo de Convocatoria*</label>
+            <div class="campo multi">
+            	<label for="tipoConvocatoria multi">Tipo de Convocatoria*</label>
 	            <select class="grande desplegable" name="tipoConvocatoria" id="tipoConvocatoria">
 	            	<option value=""></option>
 					<?
@@ -39,19 +39,21 @@
 					
 					?>
 				</select>
-				<p id="errorTipoConvocatoria" class="errorInput"><?=$this->errorTipo?></p>
+				<p id="errorTipoConvocatoria" class="errorInput"><?= $this->errorTipo ?></p>
 			</div>
 			
+            <div class="campo controlado multi">
+                <label for="presupuesto">Fondos*</label>
+                <input class="campoTexto dinero" type="text" name="presupuesto" id="presupuesto" />
+                <p id="errorPresupuesto" class="errorInput"><?= $this->errorPresupuesto ?></p>
+                <p class="tooltip" id="presupuestoTooltip">Utilice la coma(,) para separar decimales y el punto(.) para los miles</p>
+            </div>
+            
+			<div class="separadorH"></div>            
+            
             <div class="campo">
                 <label for="descripcion">Descripción</label>
                 <textarea rows="5" cols="40" name="descripcion" id="descripcion"></textarea>
-            </div>
-            
-            <div class="campo controlado">
-                <label for="presupuesto">Fondos*</label>
-                <input class="campoTexto dinero" type="text" name="presupuesto" id="presupuesto" />
-                <p id="errorPresupuesto" class="errorInput"><?=$this->errorPresupuesto?></p>
-                <p class="tooltip" id="presupuestoTooltip">Utilice la coma(,) para separar decimales y el punto(.) para los miles</p>
             </div>
             
             <h3>Requisitos</h3>
@@ -68,9 +70,38 @@
 	            }
 	            
 	            ?>
-            </div>
+            </div><?
             
-            <input class="oculto" type="submit" value="Guardar" />
+            if (count($this->docsDinamicosCOL)){
+            
+	            ?><div id="documentacion">
+	            
+		            <h3>Documentación</h3>
+		            
+		            <p>A continuación se listan los documentos que podrán serán generados para los planes y cursos presentados para esta convocatoria.</p>
+		            
+		            <ul id="convocatoriaDoc"><?
+		            
+		            	foreach ($this->docsDinamicosCOL as $doc){
+		            		
+		            		$idDocumento = $doc['idDocumento'];
+		            		$check = '';
+		            		
+		            		if ($this->documentosConvocatoriaIDX && array_key_exists($idDocumento, $this->documentosConvocatoriaIDX)){
+		            			$check = ' checked="checked" ';
+	            			}
+		            
+		            		?><li><label for="doc_<?= $idDocumento ?>"><?= $doc['vNombre'] ?></label><input type="checkbox" class="doc" name="doc_<?= $doc['idDocumento'] ?>" id="doc_<?= $doc['idDocumento'] ?>" <?= $check ?>/></li><?
+		            	
+		            	}
+	            	
+	            	?></ul>
+	            	
+	           </div><?
+	            
+            }
+            
+            ?><input class="oculto" type="submit" value="Guardar" />
             
             <noscript>
             	<div class="campo">
@@ -80,4 +111,3 @@
             
         </fieldset>
     </form>
-    <p>* Campos obligatorios</p>

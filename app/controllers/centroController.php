@@ -2,6 +2,7 @@
 
 require_once 'helper/OwlHtmlHelper.inc';
 require_once 'OwlPaginator.inc';
+require_once 'OwlGoogleMaps.inc';
 
 require_once CLASSESDIR . 'PplController.inc';
 require_once CLASSESDIR . 'PplCacheBO.inc';
@@ -97,6 +98,14 @@ class centroController extends PplController{
         
         // Empresas
         $this->view->academiasIDX = $this->cacheBO->getAcademias();
+        
+        // Mapa para las coordenadas
+        $this->view->cabeceraMapa = OwlGoogleMaps::echoCabeceraMapa();
+        $mapaDO = new OwlGoogleMaps();
+        $mapaDO->setLatitud('39.57420604477404');
+		$mapaDO->setLongitud('2.655208557844162');
+		$mapaDO->setMarcadorCoordenadas(true);
+        $this->view->mapa = $mapaDO->echoMapa();
         
    		// Doy de alta el centro
     	if ( $this->helper->get('send') ){
@@ -237,6 +246,25 @@ class centroController extends PplController{
 	        // Empresas
 	        $this->view->academiasIDX = $this->cacheBO->getAcademias();
 	    	
+	        // Mapa para las coordenadas
+	        $this->view->cabeceraMapa = OwlGoogleMaps::echoCabeceraMapa();
+	        $mapaDO = new OwlGoogleMaps();
+	        $latitud = $centroDO->getVLatitud();
+	        $longitud = $centroDO->getVLongitud();
+	        
+	        // El marcador sólo lo ponemos si el usuario introdujo previamente las coordenadas
+    		if ( !empty($latitud) && !empty($longitud) ){
+				$mapaDO->addMarcador('marcador', $latitud, $longitud);
+			}
+			
+			// Ponemos la latitud y longitud por defecto
+	        $latitud = empty($latitud) ? OwlGoogleMaps::LATITUD : $latitud;
+	        $longitud = empty($longitud) ? OwlGoogleMaps::LONGITUD : $longitud;
+	        
+	        $mapaDO->setLatitud( $latitud );
+			$mapaDO->setLongitud( $longitud );
+			$mapaDO->setMarcadorCoordenadas(true);
+	        $this->view->mapa = $mapaDO->echoMapa();
         }
         
     }
@@ -355,6 +383,18 @@ class centroController extends PplController{
 	    	$poblacion = '';
 	    }
 	    
+    	// Latitud
+    	$latitud = $this->helper->escapeInjection($this->helper->get('latitud'));
+	    if ( is_null($latitud) || empty($latitud) ){
+	    	$latitud = '';
+	    }
+	    
+	    // Longitud
+    	$longitud = $this->helper->escapeInjection($this->helper->get('longitud'));
+	    if ( is_null($longitud) || empty($longitud) ){
+	    	$longitud = '';
+	    }
+	    
     	// Descripción
     	$descripcion = $this->helper->escapeInjection($this->helper->get('descripcion'));
 	    if ( is_null($descripcion) || empty($descripcion) ){
@@ -386,6 +426,8 @@ class centroController extends PplController{
 		    	$centroDO->setVDescripcion($descripcion);
 		    	$centroDO->setVTelefono($telefono);
 		    	$centroDO->setVPoblacion($poblacion);
+		    	$centroDO->setVLatitud($latitud);
+		    	$centroDO->setVLongitud($longitud);
 		    	$centroDO->setLastModified(date('Y-m-d'));
                 $centroDO->setModUser($this->usuario->getNombre());
 		    	
@@ -464,40 +506,30 @@ class centroController extends PplController{
             
             $where = array();
             $queryString = '&amp;sent=1';
+            $queryARR['sent'] = 1;
             
             // ID
             if (!empty($id)){
                 $where[] = " idCentro = $id";
                 $this->view->id = $id;
-                $queryString .= "&amp;idCentro=$id";
+//                $queryString .= "&amp;idCentro=$id";
+                $queryARR['idCentro'] = $id;
             }
             
             // PAIS
             if (!empty($pais)){
                 $where[] = " fkPais = '$pais'";
                 $this->view->pais = $pais;
-                $queryString .= "&amp;pais=$pais";
+//                $queryString .= "&amp;pais=$pais";
+                $queryARR['pais'] = $pais;
             }
 
             // PROVINCIA
             if (!empty($provincia)){
                 $where[] = " fkProvincia = $provincia";
                 $this->view->provincia = $provincia;
-                $queryString .= "&amp;provincia=$provincia";
-            }
-
-            // CIF
-            if (!empty($cif)){
-                $where[] = " vCif = $cif";
-                $this->view->cif = $cif;
-                $queryString .= "&amp;cif=$cif";
-            }
-
-            // CP
-            if (!empty($cp)){
-                $where[] = " vCp = $cp";
-                $this->view->cp = $cp;
-                $queryString .= "&amp;cp=$cp";
+//                $queryString .= "&amp;provincia=$provincia";
+                $queryARR['provincia'] = $provincia;
             }
             
             // KEYWORD
@@ -505,7 +537,8 @@ class centroController extends PplController{
                 //$where[] = "vNombre LIKE '%$kw%' OR vDescripcion LIKE '%$kw%'";
                 $where[] = "vNombre LIKE '%$kw%'";
                 $this->view->kw = $kw;
-                $queryString .= "&amp;keyword=$kw";             
+//                $queryString .= "&amp;keyword=$kw";
+                $queryARR['keyword'] = $kw;
             }
             
             // Se constuye el where
@@ -523,6 +556,8 @@ class centroController extends PplController{
             $paginador->setPaginaActual($paginaActual);
             $paginador->setOrderBy($orderBy);
             $paginador->setOrder($order);
+//            $paginador->setExtraParams($queryString);
+            $paginador->setExtraParams($queryARR);
         
             // Obtengo los centros
             $centrosCOL = $paginador->getItemCollection();
@@ -532,6 +567,9 @@ class centroController extends PplController{
             $this->view->paginador = $paginador->getPaginatorHtml();
             
             // Se propagan las clausulas de búsqueda en el paginador
+        	foreach ( $queryARR as $clave => $valor ){
+            	$queryString .= '&amp;' . $clave . '=' . $valor;
+            }
             $this->view->querystring = $queryString;        
         
         }

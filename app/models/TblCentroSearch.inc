@@ -1,7 +1,7 @@
 <?php
 /**
  * Este archivo ha sido generado con Owl Dogen v.0.6
- * el 24 de November de 2010 a las 08:55:33
+ * el 09 de December de 2010 a las 08:48:53
  * @package dataAccess
  */
 
@@ -60,6 +60,20 @@ class TblCentroSearch{
      * @var string
      */
     public $vTelefono;
+
+    /**
+     * Representa el atributo vLatitud.
+     *
+     * @var string
+     */
+    public $vLatitud;
+
+    /**
+     * Representa el atributo vLongitud.
+     *
+     * @var string
+     */
+    public $vLongitud;
 
     /**
      * Representa el atributo vDireccion.

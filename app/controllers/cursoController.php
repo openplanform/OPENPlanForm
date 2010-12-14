@@ -2,17 +2,19 @@
 
 require_once 'helper/OwlHtmlHelper.inc';
 require_once 'helper/OwlDate.inc';
+require_once 'helper/OwlString.inc';
+require_once 'helper/OwlLanguage.inc';
 require_once 'OwlPaginator.inc';
 
 require_once CLASSESDIR . 'PplController.inc';
 
-require_once MODELDIR . '/TblAula.inc';
 require_once MODELDIR . '/TblCentro.inc';
 require_once MODELDIR . '/TblCategoria.inc';
 require_once MODELDIR . '/TblCategoria.inc';
 require_once MODELDIR . '/TblCategoriaExtendida.inc';
 require_once MODELDIR . '/TblColectivo.inc';
 require_once MODELDIR . '/TblCurso.inc';
+require_once MODELDIR . '/TblHorario.inc';
 require_once MODELDIR . '/TblModalidad.inc';
 require_once MODELDIR . '/TblSector.inc';
 require_once MODELDIR . '/TblPlan.inc';
@@ -29,6 +31,7 @@ class cursoController extends PplController{
      */
     protected $categoriasCOL = null;
     
+    
     /**
      * Init
      * @see extranet.planespime.es/owl/lib/OwlController::initController()
@@ -38,6 +41,7 @@ class cursoController extends PplController{
     	parent::initController();
         
     }
+    
     
     /**
      * Acción inicial, por defecto, el listado
@@ -82,7 +86,7 @@ class cursoController extends PplController{
         $paginador->setOrderBy($orderBy);
         $paginador->setOrder($order);
         
-         // Obtengo las aulas
+         // Obtengo los cursos
         $cursosCOL = $paginador->getItemCollection();
         
         // Envío el paginador a la vista
@@ -107,6 +111,7 @@ class cursoController extends PplController{
         
     }
     
+    
     /**
      * Acción de alta
      * Da de alta un curso
@@ -130,8 +135,8 @@ class cursoController extends PplController{
         // Modalidades
         $this->view->modalidadesIDX = $this->cacheBO->getModalidades();
         
-        // Aulas
-        $this->view->aulasIDX = $this->cacheBO->getAulas();
+        // Centros
+        $this->view->centrosIDX = $this->cacheBO->getCentros();
         
         // Profesores
         $this->view->profesoresIDX = $this->cacheBO->getProfesores();
@@ -163,6 +168,7 @@ class cursoController extends PplController{
     	}
         
     }
+    
     
 	/**
      * Acción de edición
@@ -246,8 +252,8 @@ class cursoController extends PplController{
 	        // Modalidades
 	        $this->view->modalidadesIDX = $this->cacheBO->getModalidades();
 	        
-	        // Aulas
-	        $this->view->aulasIDX = $this->cacheBO->getAulas();
+	        // Centros
+	        $this->view->centrosIDX = $this->cacheBO->getCentros();
 	    	
 	        // Profesores curso
 	        $this->view->profesoresCursoCOL = TrelProfesor::findByTblCurso($this->db, $cursoDO->getIdCurso());
@@ -273,6 +279,7 @@ class cursoController extends PplController{
         }
 
     }
+    
     
 	/**
      * Acción de ficha
@@ -303,6 +310,9 @@ class cursoController extends PplController{
 		        
 		        // Precandidatos
 		        $this->view->precandidatosCursoCOL = TrelPrecandidato::findByTblCurso($this->db, $cursoDO->getIdCurso());
+		        
+		        // Candidatos
+		    	$this->view->candidatosCursoCOL = TrelCandidato::findByTblCurso($this->db, $cursoDO->getIdCurso());
 
         	}
         	
@@ -310,16 +320,17 @@ class cursoController extends PplController{
         
     }
     
+    
 	/**
      * Acción de eliminar
-     * Elimina un aula
+     * Elimina un curso
      */
     public function eliminarAction(){
         
-        $paramsARR = $this->getParams();
-        if ( !empty($paramsARR) ){
+    	$idCurso = $this->getParam(0);
+        if ( !is_null($idCurso) ){
         	
-        	$cursoDO = TblCurso::findByPrimaryKey($this->db, $paramsARR[0]);
+        	$cursoDO = TblCurso::findByPrimaryKey($this->db, $idCurso);
         	$cursoDO->delete();
         	
         }
@@ -327,6 +338,7 @@ class cursoController extends PplController{
         $this->redirectTo('curso','index');
         
     }
+    
     
 	/**
      * Acción de duplicar
@@ -348,6 +360,7 @@ class cursoController extends PplController{
         $this->redirectTo('curso','editar');
         
     }
+    
     
     /**
      * Función recursiva para tratar las categorias
@@ -376,6 +389,7 @@ class cursoController extends PplController{
         
     }
     
+    
     /**
      * 
      * prepara el código html para el árbol de categoria
@@ -402,6 +416,7 @@ class cursoController extends PplController{
         return $html;
         
     }
+    
     
     /**
      * Obtiene los datos de curso y realiza el alta o la actualización
@@ -456,26 +471,26 @@ class cursoController extends PplController{
 	    	$this->view->errorModalidad = 'La modalidad no puede estar vacía';
 	    }
 	    
-	    // Aula
-    	$aula = $this->helper->escapeInjection($this->helper->get('aula'));
-	    if ( is_null($aula) || empty($aula) ){
+	    // Centro
+    	$centro = $this->helper->escapeInjection($this->helper->get('centro'));
+	    if ( is_null($centro) || empty($centro) ){
 	    	$correcto = false;
-	    	$this->view->errorAula = 'El aula no puede estar vacía';
+	    	$this->view->errorCentro = 'El centro no puede estar vacío';
 	    }
 	    
-	     // horas presenciales
+	     // Horas presenciales
     	$horasP = $this->helper->escapeInjection($this->helper->get('horasP'));
 	    if ( is_null($horasP) || empty($horasP) ){
 	    	$horasP = "";
 	    }
 	    
-	     // horas a distacia
+	     // Horas a distacia
     	$horasD = $this->helper->escapeInjection($this->helper->get('horasD'));
 	    if ( is_null($horasD) || empty($horasD) ){
 	    	$horasD = "";
 	    }
 	    
-	     // horas de tutoría
+	     // Horas de tutoría
     	$horasT = $this->helper->escapeInjection($this->helper->get('horasT'));
 	    if ( is_null($horasT) || empty($horasT) ){
 	    	$horasT = "";
@@ -487,16 +502,28 @@ class cursoController extends PplController{
 	    	$alumnos = "";
 	    }
 	    
-	    // inicio
+	    // Acción
+    	$accion = $this->helper->escapeInjection($this->helper->get('accion'));
+	    if ( is_null($accion) || empty($accion) ){
+	    	$accion = "";
+	    }
+	    
+	    // Inicio
     	$inicio = $this->helper->escapeInjection($this->helper->get('inicio'));
 	    if ( is_null($inicio) || empty($inicio) ){
 	    	$inicio = "";
 	    }
 	    
-	    // fin
+	    // Fin
     	$fin = $this->helper->escapeInjection($this->helper->get('fin'));
 	    if ( is_null($fin) || empty($fin) ){
 	    	$fin = "";
+	    }
+	    
+    	// Descripción
+    	$descripcion = $this->helper->escapeInjection($this->helper->get('descripcion'));
+	    if ( is_null($descripcion) || empty($descripcion) ){
+	    	$descripcion = "";
 	    }
 	    
 	    // Profesores
@@ -532,7 +559,7 @@ class cursoController extends PplController{
         }
         
 		/**
-		 * Insertamos o actualizamos un centro
+		 * Insertamos o actualizamos un curso
 		 */
 	    if ( $correcto ){
 
@@ -554,13 +581,15 @@ class cursoController extends PplController{
 		    	$cursoDO->setFkColectivo($colectivo);
 		    	$cursoDO->setFkSector($sector);
 		    	$cursoDO->setFkModalidad($modalidad);
-		    	$cursoDO->setFkAula($aula);
+		    	$cursoDO->setFkCentro($centro);
 		    	$cursoDO->setIHorasPresenciales($horasP);
 		    	$cursoDO->setIHorasDistancia($horasD);
 		    	$cursoDO->setIHorasTutoria($horasT);
 		    	$cursoDO->setDInicio(OwlDate::europeoAmericano($inicio));
 		    	$cursoDO->setDFin(OwlDate::europeoAmericano($fin));
+		    	$cursoDO->setVDescripcion($descripcion);
 		    	$cursoDO->setINumeroAlumnos($alumnos);
+		    	$cursoDO->setIAccion($accion);
 		    	$cursoDO->setLastModified(date('Y-m-d'));
                 $cursoDO->setModUser($this->usuario->getNombre());
 		    	
@@ -723,47 +752,55 @@ class cursoController extends PplController{
             
             $where = array();
             $queryString = '&amp;sent=1';
+            $queryARR['sent'] = 1;
             
             // ID
             if (!empty($id)){
                 $where[] = " idCurso = $id";
                 $this->view->id = $id;
-                $queryString .= "&amp;idCurso=$id";
+//                $queryString .= "&amp;idCurso=$id";
+                $queryARR['idCurso'] = $id;
             }
             
             // PLAN
             if (!empty($plan)){
                 $where[] = " fkPlan = $plan";
                 $this->view->plan = $plan;
-                $queryString .= "&amp;idPlan=$plan";
+//                $queryString .= "&amp;idPlan=$plan";
+                $queryARR['idPlan'] = $plan;
             }
 
             // CATEGORÍA
             if (!empty($cat)){
                 $where[] = " fkCategoria = $cat";
                 $this->view->cat = $cat;
-                $queryString .= "&amp;cat=$cat";
+//                $queryString .= "&amp;cat=$cat";
+                $queryARR['cat'] = $cat;
+                $this->view->htmlSelectCategorias = $this->_getSelectHtml($arbolDS, 0, $cat);
             }
 
             // COLECTIVO
             if (!empty($colectivo)){
                 $where[] = " fkColectivo = $colectivo";
                 $this->view->colectivo = $colectivo;
-                $queryString .= "&amp;colectivoCurso=$colectivo";
+//                $queryString .= "&amp;colectivoCurso=$colectivo";
+                $queryARR['colectivoCurso'] = $colectivo;
             }
 
             // SECTOR
             if (!empty($sector)){
                 $where[] = " fkSector = $sector";
                 $this->view->sector = $sector;
-                $queryString .= "&amp;sector=$sector";
+//                $queryString .= "&amp;sector=$sector";
+                $queryARR['sector'] = $sector;
             }
 
             // MODALIDAD
             if (!empty($modalidad)){
                 $where[] = " fkModalidad = $modalidad";
                 $this->view->modalidad = $modalidad;
-                $queryString .= "&amp;mod=$modalidad";
+//                $queryString .= "&amp;mod=$modalidad";
+                $queryARR['mod'] = $modalidad;
             }
             
             
@@ -772,7 +809,8 @@ class cursoController extends PplController{
                 //$where[] = "vNombre LIKE '%$kw%' OR vDescripcion LIKE '%$kw%'";
                 $where[] = "vNombre LIKE '%$kw%'";
                 $this->view->kw = $kw;
-                $queryString .= "&amp;keyword=$kw";             
+//                $queryString .= "&amp;keyword=$kw";
+                $queryARR['keyword'] = $kw;             
             }
             
             // Se constuye el where
@@ -790,6 +828,8 @@ class cursoController extends PplController{
             $paginador->setPaginaActual($paginaActual);
             $paginador->setOrderBy($orderBy);
             $paginador->setOrder($order);
+//            $paginador->setExtraParams($queryString);
+            $paginador->setExtraParams($queryARR);
         
             // Obtengo las convocatorias
             $cursosCOL = $paginador->getItemCollection();
@@ -799,6 +839,9 @@ class cursoController extends PplController{
             $this->view->paginador = $paginador->getPaginatorHtml();
             
             // Se propagan las clausulas de búsqueda en el paginador
+        	foreach ( $queryARR as $clave => $valor ){
+            	$queryString .= '&amp;' . $clave . '=' . $valor;
+            }
             $this->view->querystring = $queryString;
             
             
@@ -806,6 +849,356 @@ class cursoController extends PplController{
         
     }
     
+    
+    /**
+     * Horario del curso
+     */
+    public function horarioAction(){
+    	
+    	$idCurso = $this->getParam(0);
+        if ( !is_null($idCurso) ){
+        	
+        	$cursoDO = TblCurso::findByPrimaryKey($this->db, $idCurso);
+        	
+        	if ( !empty($cursoDO) ){
+	        	
+        		$this->view->cursoDO = $cursoDO;
+	        	
+        		// Comprobamos que el curso tenga fecha inicio y fecha fin para poder crear horarios
+        		$fechaInicioCurso = $cursoDO->getDInicio();
+        		$fechaFinCurso = $cursoDO->getDFin();
+        		if ( $fechaInicioCurso == '0000-00-00' && $fechaFinCurso == '0000-00-00' ){
+        			$this->view->sinFechas = true;
+        		}
+        		
+        		// El usuario ha enviado horarios
+        		if ( $this->helper->getAndEscape(md5('sendHorario')) || $this->helper->getAndEscape(md5('sendDia')) ){
+        		
+        			$correcto = true;
+        			$fechasARR = array();
+        			
+	        		// Comprobamos si se ha enviado un grupo
+	        		if ( $this->helper->getAndEscape(md5('sendHorario')) ) {
+	        			
+	        			$lunes = $this->helper->escapeInjection($this->helper->get('lunes'));
+	        			$martes = $this->helper->escapeInjection($this->helper->get('martes'));
+	        			$miercoles = $this->helper->escapeInjection($this->helper->get('miercoes'));
+	        			$jueves = $this->helper->escapeInjection($this->helper->get('jueves'));
+	        			$viernes = $this->helper->escapeInjection($this->helper->get('viernes'));
+	        			$sabado = $this->helper->escapeInjection($this->helper->get('sabado'));
+	        			$domingo = $this->helper->escapeInjection($this->helper->get('domingo'));
+	        			$inicio = $this->helper->escapeInjection($this->helper->get('inicioGrupo'));
+	        			$fin = $this->helper->escapeInjection($this->helper->get('finGrupo'));
+	
+	        			if ( empty($lunes) && empty($martes) && empty($miercoles) && empty($jueves) && empty($viernes) && empty($sabado) && empty($domingo) ){
+	        				$correcto = false;
+	        				$this->view->errorSemana = "Debe seleccionar un día";
+	        			}
+	        			
+	        			if ( empty($inicio) ){
+	        				
+	        				$correcto = false;
+	        				$this->view->errorInicioGrupo = "Debe rellenar este campo";
+	        				
+	        			} elseif (!preg_match('/^\d{1,2}:\d{1,2}$/', $inicio)) {
+	        				
+	        				$correcto = false;
+	        				$this->view->errorInicioGrupo = "El formato no es correcto";
+	        				
+	        			}
+	        			
+	        			if ( empty($fin) ){
+	        				
+	        				$correcto = false;
+	        				$this->view->errorFinGrupo = "Debe rellenar este campo";
+	        				
+	        			} elseif (!preg_match('/^\d{1,2}:\d{1,2}$/', $fin)) {
+	        				
+	        				$correcto = false;
+	        				$this->view->errorFinGrupo = "El formato no es correcto";
+	        				
+	        			}
+	        			
+	        			// Cálculo de los días que habrá clase
+	        			if ( $correcto ){
+	        				
+	        				$diasARR = array();
+	        				if ( !empty($lunes) ) array_push($diasARR, '1');
+	        				if ( !empty($martes) ) array_push($diasARR, '2');
+	        				if ( !empty($miercoles) ) array_push($diasARR, '3');
+	        				if ( !empty($jueves) ) array_push($diasARR, '4');
+	        				if ( !empty($viernes) ) array_push($diasARR, '5');
+	        				if ( !empty($sabado) ) array_push($diasARR, '6');
+	        				if ( !empty($domingo) ) array_push($diasARR, '0');
+	        				
+	        				$fechaIniTime = strtotime($fechaInicioCurso);
+	        				$fechaFinTime = strtotime($fechaFinCurso);
+	        				$duracionCursoTime = $fechaFinTime - $fechaIniTime;
+	        				$duracionCurso = $duracionCursoTime/86400; // Número de días
+	        				
+	        				// Compruebo qué días ha seleccionado el usuario, y creo las tuplas
+	        				for ( $i=0; $i<=$duracionCurso; $i++ ){
+	        					
+	        					$diaSemana = date('w', $fechaIniTime);
+	        					if ( in_array($diaSemana, $diasARR) ){
+	        						$fechasARR[date('Y-m-d', $fechaIniTime)]['inicio'] = $inicio;
+	        						$fechasARR[date('Y-m-d', $fechaIniTime)]['fin'] = $fin;
+	        						$fechasARR[date('Y-m-d', $fechaIniTime)]['dia'] = date('Y-m-d', $fechaIniTime);
+	        					}
+	        					$fechaIniTime += 86400;
+	        					
+	        				}
+	        				
+//	        				echo '<pre>';
+//	        				print_r($fechasARR);
+//	        				echo '</pre>';
+	        				
+	        				// Obtenemos las sesiones
+	        				$fechasARR = $this->actualizarSesiones($fechasARR, $cursoDO->getIdCurso(), $fechaInicioCurso, $fechaFinCurso);
+	        				
+	        			}	
+	        			
+	        		}
+	
+	        		// Comprobamos si se ha enviado un día
+	        		if ( $this->helper->getAndEscape(md5('sendDia')) ) {
+	        			
+	        			$dia = $this->helper->escapeInjection($this->helper->get('dia'));
+	        			$inicio = $this->helper->escapeInjection($this->helper->get('inicioDia'));
+	        			$fin = $this->helper->escapeInjection($this->helper->get('finDia'));
+	        			
+	        			if ( empty($dia) ){
+	        				$correcto = false;
+	        				$this->view->errorDia = "Debe rellenar este campo";
+	        			}
+	        			
+	        			if ( empty($inicio) ){
+	        				
+	        				$correcto = false;
+	        				$this->view->errorInicioDia = "Debe rellenar este campo";
+	        				
+	        			} elseif (!preg_match('/^\d{1,2}:\d{1,2}$/', $inicio)) {
+	        				
+	        				$correcto = false;
+	        				$this->view->errorInicioDia = "El formato no es correcto";
+	        				
+	        			}
+	        			
+	        			if ( empty($fin) ){
+	        				
+	        				$correcto = false;
+	        				$this->view->errorFinDia = "Debe rellenar este campo";
+	        				
+	        			} elseif (!preg_match('/^\d{1,2}:\d{1,2}$/', $fin)) {
+	        				$correcto = false;
+	        				$this->view->errorFinDia = "El formato no es correcto";
+	        			}
+	        			
+	        			// Convierto el dia al formato de mysql
+	        			$dia = OwlDate::europeoAmericano($dia);
+	        			
+	        			$fechasARR[$dia]['inicio'] = $inicio;
+	        			$fechasARR[$dia]['fin'] = $fin;
+	        			$fechasARR[$dia]['dia'] = $dia;
+	        			
+	        			// Obtenemos las sesiones
+        				$fechasARR = $this->actualizarSesiones($fechasARR, $cursoDO->getIdCurso(), $fechaInicioCurso, $fechaFinCurso);
+	        			
+	        		}
+	        		
+	        		// Guardamos el horario
+	        		if ( $correcto ){
+	        			
+	        			// Empieza la transacción
+		    			$this->db->begin();
+		    			
+		    			// SE ELIMINAN TODAS LAS TUPLAS CORRESPONDIENTES A HORARIOS DE ESTE CURSO
+		    			$sql = 'DELETE FROM tblHorario WHERE fkCurso = ' . $cursoDO->getIdCurso();
+		    			
+		    			if (!$this->db->executeQuery($sql)){
+		    				
+		    				// ERROR ELIMINAR
+		    				echo '<h1>ERROR ELIMINAR</h1>';
+		    				$correcto = false;
+		    				
+		    			} 
+	        			
+	        			foreach ( $fechasARR as $clave=>$horario ){
+	        				
+	        				$horarioDO = new TblHorario($this->db);
+	        				$horarioDO->setFkCurso($cursoDO->getIdCurso());
+	        				$horarioDO->setDDia($horario['dia']);
+	        				$horarioDO->setIDesde($horario['inicio']);
+	        				$horarioDO->setIHasta($horario['fin']);
+	        				$horarioDO->setISesion(++$clave);
+	        				
+	        				if ( !$horarioDO->insert() ){
+	        					$correcto = false;
+	        					break;
+	        				}
+	        				
+	        			}
+	        			
+	        			if ( $correcto ){
+	        				$this->db->commit(); // np
+	        			} else {
+	        				$this->db->rollback();
+	        			}
+	        			
+	        		}
+	        		
+        		} // if ( $this->helper->getAndEscape(md5('sendHorario')) || $this->helper->getAndEscape(md5('sendDia')) )
+        		
+        		// Se instancia y configura el paginador
+        		$sql = "WHERE fkCurso = " . $cursoDO->getIdCurso();
+		        $paginador = new OwlPaginator($this->db, $sql, 'tblHorario', $this->helper);
+		        $paginador->setItemsPorPagina(10);
+		        $paginaActual = $this->helper->escapeInjection($this->helper->get('p'));
+		        $paginaActual = empty($paginaActual) ? 1 : $paginaActual;
+		        $paginador->setPaginaActual($paginaActual);
+		        $paginador->setOrderBy('dDia');
+		        
+		        // Datos para la vista
+		    	// Envío el horario
+		        $this->view->horariosCOL = $paginador->getItemCollection();
+		        
+		        // Envío el paginador
+		        $this->view->paginador = $paginador->getPaginatorHtml();
+		    	
+        		
+        	} // if ( !empty($cursoDO) )
+        	
+        } // if ( !is_null($idCurso) )
+        
+    }
+    
+    
+    /**
+     * Elimina un horario de un curso
+     */
+    public function eliminarHorarioAction(){
+    	
+    	$idHorario = $this->getParam(0);
+        if ( !is_null($idHorario) ){
+        	
+        	$horarioDO = TblHorario::findByPrimaryKey($this->db, $idHorario);
+        	$horarioDO->delete();
+        	$this->redirectTo('curso','horario', $horarioDO->getFkCurso());
+        }
+        
+         $this->redirectTo('curso','index');
+    	
+    }
+    
+    
+    /**
+     * Elimina todo el horario de un curso
+     */
+    public function eliminarTodoHorarioAction(){
+    	
+    	$idCurso = $this->getParam(0);
+        if ( !is_null($idCurso) ){
+        	
+        	$sql = "DELETE FROM tblHorario WHERE fkCurso = " . $idCurso;
+        	$this->db->executeQuery($sql);
+        	$this->redirectTo('curso','horario', $idCurso);
+        }
+        
+         $this->redirectTo('curso','index');
+    	
+    }
+    
+    
+    /**
+     * Devuelve un array con los días, horas y sesiones del curso. Indexado por fecha
+     * 
+     * @param array $fechasUsuarioARR
+     * @param integer $idCurso
+     * @param date $fechaInicio
+     * @param date $fechaFin
+     */
+    public function actualizarSesiones( $fechasUsuarioARR, $idCurso, $fechaInicio, $fechaFin ){
+    	
+		$fechasSesionARR = $fechasExistentesARR = array();
+    	
+    	// Obtenemos el horario del curso de la bbdd
+    	$sql = "SELECT * FROM tblHorario WHERE fkCurso = " . $idCurso . " ORDER BY dDia ASC";
+		$this->db->executeQuery($sql);
+
+		while ($row = $this->db->fetchRow()){
+			
+			$dia = $row['dDia'];
+			
+			$diaCurso = array(
+				'inicio' => $row['iDesde'],
+				'fin' => $row['iHasta'],
+				'dia' => $dia,			
+			);
+
+			// En la base de datos puede haber dos sesiones en un mismo día
+			if (array_key_exists($dia, $fechasExistentesARR)){
+				
+				$diaCursoExistenteARR = $fechasExistentesARR[$dia];
+				$fechasExistentesARR[$dia] = array();
+				
+				array_push($fechasExistentesARR[$dia], $diaCursoExistenteARR);
+				array_push($fechasExistentesARR[$dia], $diaCurso);
+				
+			} else {
+				
+				$fechasExistentesARR[$dia] = $diaCurso;
+				
+			}
+			
+		}
+		
+		$periodoARR = OwlDate::createDateRangeArray($fechaInicio, $fechaFin);
+		
+		// Se contruye el array de retorno
+		foreach ($periodoARR as $clave => $diaCurso){
+			
+			// Dos sesiones en el mismo día
+			if (array_key_exists($diaCurso, $fechasExistentesARR) && array_key_exists($diaCurso, $fechasUsuarioARR)){
+				
+				$horaInicioExistente = strtotime($fechasExistentesARR[$diaCurso]['inicio']);
+				$horaInicioUsuario = strtotime($fechasUsuarioARR[$diaCurso]['inicio']);
+				
+				if ($horaInicioExistente > $horaInicioUsuario){
+
+					array_push($fechasSesionARR, $fechasUsuarioARR[$diaCurso]);
+					array_push($fechasSesionARR, $fechasExistentesARR[$diaCurso]);
+					
+				} else {
+					
+					array_push($fechasSesionARR, $fechasExistentesARR[$diaCurso]);
+					array_push($fechasSesionARR, $fechasUsuarioARR[$diaCurso]);
+					
+				}
+				
+			} elseif (array_key_exists($diaCurso, $fechasExistentesARR)){
+				
+				// Si es un array, hay mas de una sesión
+				if (array_key_exists(0, $fechasExistentesARR[$diaCurso])){
+					
+					foreach ($fechasExistentesARR[$diaCurso] as $sesionCurso){
+						array_push($fechasSesionARR, $sesionCurso);
+					}
+					
+				} else {
+					array_push($fechasSesionARR, $fechasExistentesARR[$diaCurso]);
+				}
+				
+			} elseif (array_key_exists($diaCurso, $fechasUsuarioARR)){
+				
+				array_push($fechasSesionARR, $fechasUsuarioARR[$diaCurso]);	
+				
+			}
+			
+		}
+		
+	   	return $fechasSesionARR; 
+    	
+    }
     
 }
 

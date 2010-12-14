@@ -145,6 +145,7 @@ class administradorController extends PplController{
         $this->view->editar = $this->aclManager->getRolMasRelevanteUsuario($this->usuario->getId()) == PplAclManager::ROL_ADMINISTRADOR;
 
     }
+    
        
     /**
      * Administración de menú
@@ -169,7 +170,11 @@ class administradorController extends PplController{
            $activo = $this->helper->getAndEscape('activo') == 'on';
            $controlador = $this->helper->getAndEscape('controlador');
            $accion = $this->helper->getAndEscape('accion');
-           $roles = implode(',', $this->helper->getAndEscape('roles'));
+           
+           // Solo se recibiran roles de items no patriarcas
+           if (intval($padre) != 0){
+		       $roles = implode(',', $this->helper->getAndEscape('roles'));
+           }
            
            if (empty($nombre)){
                $this->view->errorNombre = 'El campo nombre no puede estar vacío.';
@@ -181,7 +186,7 @@ class administradorController extends PplController{
                $error = true;               
            }
            
-           if (empty($roles)){
+           if (empty($roles) && intval($padre) != 0){
                $this->view->errorRol = 'Debe seleccionar como mínimo un rol.';
                $error = true;               
            }
@@ -262,9 +267,9 @@ class administradorController extends PplController{
                        $accesoDO->setVNombre($nombre);
                        $accesoDO->setBMenu($activo);
                        $accesoDO->setVControlador($controlador);
-                       $accesoDO->setVAccion($accion);
+                       $accesoDO->setVAccion(!empty($accion) ? $accion : null);
                        $accesoDO->setIOrden($orden);
-                       $accesoDO->setVRoles($roles);
+                       $accesoDO->setVRoles(intval($padre) == 0 ? null : $roles);
                        
                        if (!$accesoDO->update()){
                            

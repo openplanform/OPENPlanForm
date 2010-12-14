@@ -364,6 +364,7 @@ class profesorController extends PplController{
         	$profesorDO = TblPersona::findByPrimaryKey($this->db, $paramsARR[0]);
         	$nombreProfesor = 'Copia de ' . $profesorDO->getVNombre();
         	$profesorDO->setVNombre($nombreProfesor);
+        	$profesorDO->setVNumeroIdentificacion('');
         	OwlSession::setValue('profesorDuplicado', $profesorDO);
         }
         
@@ -532,6 +533,7 @@ class profesorController extends PplController{
         $nivelEstudios = $this->helper->getAndEscape('nivelEstudios');
         $telefono = $this->helper->getAndEscape('tel');
         $movil = $this->helper->getAndEscape('movil');
+        $observaciones = $this->helper->get('observaciones');
     	$categoriasARR = array();
         if ( array_key_exists('categorias', $_POST) ){
         	foreach ($_POST['categorias'] as $categoria) {
@@ -587,6 +589,11 @@ class profesorController extends PplController{
         	$this->view->errorPais = 'Debe seleccionar un país';
             $correcto = false;
         }
+
+        // Provincia
+        if (empty($provincia)){
+            $provincia = '';
+        }
                 
         // Estado civil
         if (empty($estadoCivil)){
@@ -629,6 +636,7 @@ class profesorController extends PplController{
 	    	
 	    	// Empieza la transacción
 		    $this->db->begin();
+		    $this->db->disableForeignChecks();
 	    	
 	    	if ( $editar ){
 	    		$correcto = $usuarioDO->update();
@@ -687,6 +695,7 @@ class profesorController extends PplController{
 		    	$profesorDO->setFkEstadoCivil($estadoCivil);
 		    	$profesorDO->setFkEstadoLaboral($estadoLaboral);
 		    	$profesorDO->setFkNivelEstudios($nivelEstudios);
+		    	$profesorDO->setVObservaciones($observaciones);	    	
 		    	$profesorDO->setDAlta(date('Y-m-d'));
 		    	$profesorDO->setLastModified(date('Y-m-d'));
                 $profesorDO->setModUser($this->usuario->getNombre());
@@ -722,8 +731,10 @@ class profesorController extends PplController{
 	    	
     		if ( $correcto ){
     			// Todo ha ido bien
+    			$this->db->enableForeignChecks();
     			$this->db->commit();
     		} else {
+    			$this->db->enableForeignChecks();
     			$this->db->rollback();
     		}
 	    	
@@ -783,48 +794,69 @@ class profesorController extends PplController{
             
             $where = array();
             $queryString = '&amp;sent=1';
+            $queryARR['sent'] = 1;
             
             $id = $this->helper->getAndEscape('idPersona');
             $kw = $this->helper->getAndEscape('kw');
             $pais = $this->helper->getAndEscape('pais');
             $provincia = $this->helper->getAndEscape('provincia');
+            $poblacion = $this->helper->getAndEscape('poblacion');
             $categorias = $this->helper->getAndEscape('categorias');
             
             // ID
             if (!empty($id)){
                 $where[] = "idPersona = $id";
                 $this->view->id = $id;
-                $queryString .= '&amp;idPersona=' . $id;
+//                $queryString .= '&amp;idPersona=' . $id;
+                $queryARR['idPersona'] = $id;
             }
             
             // KW
             if (!empty($kw)){
                 $where[] = "vNombre LIKE '%$kw%' OR vPrimerApellido LIKE '%$kw%' OR vSegundoApellido LIKE '%$kw%' OR vNumeroIdentificacion LIKE '%$kw%'";
                 $this->view->kw = $kw;
-                $queryString .= '&amp;kw=' . $kw;
+//                $queryString .= '&amp;kw=' . $kw;
+                $queryARR['kw'] = $kw;
             }
             
             // PAIS
             if (!empty($pais)){
                 $where[] = "fkPais = '$pais'";
                 $this->view->pais = $pais;
-                $queryString .= '&amp;pais=' . $pais;
+//                $queryString .= '&amp;pais=' . $pais;
+                $queryARR['pais'] = $pais;
             }
             
             // PROVINCIA
             if (!empty($provincia)){
                 $where[] = "fkProvincia= $provincia";
                 $this->view->provincia = $provincia;
-                $queryString .= '&amp;provincia=' . $provincia;
+//                $queryString .= '&amp;provincia=' . $provincia;
+                $queryARR['provincia'] = $provincia;
+            }
+            
+	         // POBLACIÓN
+            if (!empty($poblacion)){
+                $where[] = "vPoblacion LIKE '%$poblacion%'";
+                $this->view->poblacion = $poblacion;
+//                $queryString .= '&amp;poblacion=' . $poblacion;
+                $queryARR['poblacion'] = $poblacion;
             }
             
             // CATEGORÍAS
-            if (is_array($categorias)){
-                $catsStr = implode(',', $categorias);
-                //$where[] = " EXISTS (SELECT null FROM trelPersonaCategoria WHERE tblPersona.idPersona = trelPersonaCategoria.fkPersona AND trelPersonaCategoria.fkCategoria IN($catsStr))";
+            if (is_array($categorias) || !empty($categorias)){
+                if ( is_array($categorias) ){
+                	$catsStr = implode(',', $categorias);	
+                } else {
+                	$catsStr = $categorias;
+                	// Si hay más de una categoría, no se marca en el selector si no se le pasa un array
+                	$categorias = explode(',', $categorias);
+                }
+//                $where[] = " EXISTS (SELECT null FROM trelPersonaCategoria WHERE tblPersona.idPersona = trelPersonaCategoria.fkPersona AND trelPersonaCategoria.fkCategoria IN($catsStr))";
                 $where[] = " EXISTS (SELECT null FROM trelPersonaCategoria WHERE p.idPersona = trelPersonaCategoria.fkPersona AND trelPersonaCategoria.fkCategoria IN($catsStr))";
                 $this->view->categorias = $categorias;
-                $queryString .= '&amp;categorias=' . $catsStr;
+//                $queryString .= '&amp;categorias=' . $catsStr;
+                $queryARR['categorias'] = $catsStr;
             }
             
             // Se instancia y configura el paginador
@@ -835,11 +867,13 @@ class profesorController extends PplController{
             // Se efectúa la búsqueda
             $paginador = new OwlPaginator($this->db, $whereStr , 'tblPersona', $this->helper);
             $paginador->setItemsPorPagina(10);
-            $paginador->setOrderBy($orderBy);
-            $paginador->setOrder($order);
             $paginaActual = $this->helper->escapeInjection($this->helper->get('p'));
             $paginaActual = empty($paginaActual) ? 1 : $paginaActual;
             $paginador->setPaginaActual($paginaActual);
+            $paginador->setOrderBy($orderBy);
+            $paginador->setOrder($order);
+//            $paginador->setExtraParams($queryString);
+            $paginador->setExtraParams($queryARR);
             
             // Obtengo los profesores
             $profesoresCOL = $paginador->getItemCollection();
@@ -849,8 +883,11 @@ class profesorController extends PplController{
             $this->view->paginador = $paginador->getPaginatorHtml();
             
             // Se propagan las clausulas de búsqueda en el paginador
-            $this->view->querystring = $queryString;      
-
+            foreach ( $queryARR as $clave => $valor ){
+            	$queryString .= '&amp;' . $clave . '=' . $valor;
+            }
+            $this->view->querystring = $queryString;
+            
             // Categorías para profesores
             $categoriasProfesoresCOL = TrelPersonaCategoria::findAll($this->db, 'fkPersona');
             $this->view->categoriasProfesoresIDX = OwlDatabase::groupBy('fkPersona', $categoriasProfesoresCOL);
@@ -858,6 +895,9 @@ class profesorController extends PplController{
             // Categorias
             $categoriasCOL = TblCategoria::findAll($this->db, 'idCategoria');
             $this->view->categoriasIDX = OwlDatabase::indexFor('idCategoria', $categoriasCOL);
+            
+            // Verificamos que el usuario actual tenga permisos para editar y/o eliminar desde el listado
+        	$this->view->editar = $this->aclManager->hasPerms('profesor', 'editar');
         
         }
         

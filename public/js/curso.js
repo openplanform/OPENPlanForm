@@ -1,6 +1,99 @@
 var $j = jQuery;
 
 /**
+ * Edita una fila del horario del curso
+ * @param idHorario
+ */
+function editarHorario(idHorario){
+	
+	var horaInicio = $j("#inicio_" + idHorario).html();
+	var horaFin = $j("#fin_" + idHorario).html();
+	
+	// Estilos de la celda
+	$j("#inicio_" + idHorario).css('padding','0px 10px');
+	$j("#fin_" + idHorario).css('padding','0px 10px');
+	
+	// Inputs para modificar el horario
+	$j("#inicio_" + idHorario).html('<input type="text" style="width:40px;border:1px solid #A6A6A6" name="nuevoInicio_' + idHorario + '" id="nuevoInicio_' + idHorario + '" value="' + horaInicio + '"/>')
+	$j("#fin_" + idHorario).html('<input type="text" style="width:40px;border:1px solid #A6A6A6" name="nuevoFin_' + idHorario + '" id="nuevoFin_' + idHorario + '" value="' + horaFin + '"/>')
+	
+	// Botón guardar
+	$j("#editar_" + idHorario).html('<a href="javascript:enviarHorario(\'' + idHorario + '\')" class="btnGuardar" title="Guardar Horario"><span>guardar</span></a>');
+	
+}
+
+/**
+ * Realiza la modificación real
+ * @param idHorario
+ */
+function enviarHorario(idHorario){
+	
+	var correcto = true;
+	var regExp = /^\d{1,2}:\d{1,2}$/; 
+	var nuevoInicio = $j("#nuevoInicio_" + idHorario).val();
+	var nuevoFin = $j("#nuevoFin_" + idHorario).val();
+	
+	// Comprobaciones
+	if ( !comprobarVacio('nuevoInicio_'+idHorario) ){
+		correcto = false;
+		alert('El horario no puede estar vacío');
+		return;
+	}
+	
+	if ( !comprobarRegExp('nuevoInicio_'+idHorario, regExp) ){
+		correcto = false;
+		alert('El formato correcto es HH:MM');
+		return;
+	}
+	
+	if ( !comprobarVacio('nuevoFin_'+idHorario) ){
+		correcto = false;
+		alert('El horario no puede estar vacío');
+		return;
+	}
+	
+	if ( !comprobarRegExp('nuevoFin_'+idHorario, regExp) ){
+		correcto = false;
+		alert('El formato correcto es HH:MM');
+		return;
+	}
+	
+	if ( correcto ) {
+		
+		// loading
+		$j("#editar_" + idHorario).html('<div class="cargando" title="guardando..."><span>guardando...</span></div>');
+		
+		$j.ajax({
+	        type: 'POST',
+	        url: '/ajax/editarHorario.html',
+	        data: 'idHorario=' + idHorario + '&nuevoInicio=' + nuevoInicio + '&nuevoFin=' + nuevoFin,
+	        //Mostramos un mensaje con la respuesta
+	        success: function(data) {
+				arrRespuesta = $j.parseJSON(data);
+	        	if ( arrRespuesta.resultado == 'ko' ) {
+
+	        		alert(arrRespuesta.mensaje);
+	        		// Botón guardar
+	        		$j("#editar_" + idHorario).html('<a href="javascript:enviarHorario(\'' + idHorario + '\')" class="btnGuardar" title="Guardar Horario"><span>guardar</span></a>');
+	        		
+	            } else {
+	            	// Estilos de la celda
+	        		$j("#inicio_" + idHorario).css('padding','5px 10px');
+	        		$j("#fin_" + idHorario).css('padding','5px 10px');
+	        		
+	        		// Quitamos los inputs para modificar el horario
+	        		$j("#inicio_" + idHorario).html(nuevoInicio);
+	        		$j("#fin_" + idHorario).html(nuevoFin);
+	        		
+	        		// Botón editar
+	        		$j("#editar_" + idHorario).html('<a href="javascript:editarHorario(\'' + idHorario + '\')" class="btnEditar" title="Editar Horario"><span>editar</span></a>');
+	            }
+	        }
+		});
+	}
+}
+
+/**
  * Pasa los alumnos de un estado a otro
  */
 function mueveAlumno(origen, destino){
@@ -167,11 +260,67 @@ $j(document).ready(function(){
 		
 	});
 	
+	$j('#horarioCurso').bind('submit', function() {
+		
+		var regExp = /^\d{1,2}:\d{1,2}$/; 
+		
+		if ( !$j("#lunes").attr("checked") && !$j("#martes").attr("checked") && !$j("#miercoles").attr("checked") && !$j("#jueves").attr("checked") && !$j("#viernes").attr("checked") && !$j("#sabado").attr("checked") && !$j("#domingo").attr("checked") ) {
+			$j("#errorSemana").html("Debe seleccionar un día");
+			return false;
+		}
+		
+		if ( !comprobarVacio('inicioGrupo', 'Debe rellenar este campo') ){
+			return false;
+		}
+		
+		if ( !comprobarRegExp('inicioGrupo', regExp, 'El formato no es correcto') ){
+			return false;
+		}
+		
+		if ( !comprobarVacio('finGrupo', 'Debe rellenar este campo') ){
+			return false;
+		}
+		
+		if ( !comprobarRegExp('finGrupo', regExp, 'El formato no es correcto') ){
+			return false;
+		}
+	});
+	
+	$j('#diaCurso').bind('submit', function() {
+		
+		var regExp = /^\d{1,2}:\d{1,2}$/; 
+		
+		if ( !comprobarVacio('dia', 'Debe rellenar este campo') ){
+			return false;
+		}
+		
+		if ( !comprobarVacio('inicioDia', 'Debe rellenar este campo') ){
+			return false;
+		}
+		
+		if ( !comprobarRegExp('inicioDia', regExp, 'El formato no es correcto') ){
+			return false;
+		}
+		
+		if ( !comprobarVacio('finDia', 'Debe rellenar este campo') ){
+			return false;
+		}
+		
+		if ( !comprobarRegExp('finDia', regExp, 'El formato no es correcto') ){
+			return false;
+		}
+		
+	});
+	
 	$j.datepicker.setDefaults({
 		yearRange: 'c-1:c+2'
 	});
 	
     $j("#inicio" ).datepicker();
     $j("#fin" ).datepicker();
+    $j("#dia" ).datepicker();
+    
+    // Se permite un decimal
+	$j(".decimal").numeric('.', 'none');
     
 });

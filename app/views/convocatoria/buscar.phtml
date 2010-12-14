@@ -1,6 +1,6 @@
 <div id="buscadorConvocatorias" class="buscador">
     
-    <form id="buscarConvocatoria" action="<?= $_SERVER['REQUEST_URI'] ?>" method="post">
+    <form id="buscarConvocatoria" action="/convocatoria/buscar.html" method="post">
     
         <fieldset>
         
@@ -107,6 +107,10 @@
             </tbody>
             </table><?
     
+    } else if ($this->querystring){
+
+    	?><h3>No hay resultados</h3><?
+    	
     }
     
 ?></div>

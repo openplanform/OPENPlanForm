@@ -148,6 +148,7 @@ class consultoraController extends PplController{
             $consultoraDO = TblEmpresa::findByPrimaryKey($this->db, $paramsARR[0]);
             $nombreconsultora = 'Copia de ' . $consultoraDO->getVNombre();
             $consultoraDO->setVNombre($nombreconsultora);
+            $consultoraDO->setVCif('');
             OwlSession::setValue('consultoraDuplicada', $consultoraDO);
             //$consultoraDO->insert();
         }
@@ -184,7 +185,7 @@ class consultoraController extends PplController{
             
             if ( OwlSession::getValue('consultoraDuplicada') instanceof TblEmpresa ){
                 
-                $consultoraDO = OwlCmsSession::getValue('consultoraDuplicada');
+                $consultoraDO = OwlSession::getValue('consultoraDuplicada');
                 $this->view->consultoraDO = $consultoraDO;
                 $this->view->duplicar = $duplicar = true;
                 
@@ -615,40 +616,46 @@ class consultoraController extends PplController{
             $where[] = "EXISTS (SELECT NULL FROM trelRolUsuario WHERE trelRolUsuario.fkUsuario = tblEmpresa.fkUsuario AND trelRolUsuario.fkRol = $claveRolConsultora )";
             
             $queryString = '&amp;sent=1';
+            $queryARR['sent'] = 1;
             
             // ID
             if (!empty($id)){
                 $where[] = " idEmpresa = $id";
                 $this->view->id = $id;
-                $queryString .= "&amp;idEmpresa=$id";
+//                $queryString .= "&amp;idEmpresa=$id";
+                $queryARR['idEmpresa'] = $id;
             }
             
             // PAIS
             if (!empty($pais)){
                 $where[] = " fkPais = '$pais'";
                 $this->view->pais = $pais;
-                $queryString .= "&amp;pais=$pais";
+//                $queryString .= "&amp;pais=$pais";
+                $queryARR['pais'] = $pais;
             }
 
             // PROVINCIA
             if (!empty($provincia)){
                 $where[] = " fkProvincia = $provincia";
                 $this->view->provincia = $provincia;
-                $queryString .= "&amp;provincia=$provincia";
+//                $queryString .= "&amp;provincia=$provincia";
+                $queryARR['provincia'] = $provincia;
             }
 
             // CIF
             if (!empty($cif)){
                 $where[] = " vCif = '$cif'";
                 $this->view->cif = $cif;
-                $queryString .= "&amp;cif=$cif";
+//                $queryString .= "&amp;cif=$cif";
+                $queryARR['cif'] = $cif;
             }
 
             // CP
             if (!empty($cp)){
                 $where[] = " vCp = $cp";
                 $this->view->cp = $cp;
-                $queryString .= "&amp;cp=$cp";
+//                $queryString .= "&amp;cp=$cp";
+                $queryARR['cp'] = $cp;
             }
             
             // KEYWORD
@@ -656,7 +663,8 @@ class consultoraController extends PplController{
                 //$where[] = "vNombre LIKE '%$kw%' OR vDescripcion LIKE '%$kw%'";
                 $where[] = "vNombre LIKE '%$kw%'";
                 $this->view->kw = $kw;
-                $queryString .= "&amp;keyword=$kw";             
+//                $queryString .= "&amp;keyword=$kw";
+                $queryARR['keyword'] = $kw;
             }
             
             // Se constuye el where
@@ -674,6 +682,8 @@ class consultoraController extends PplController{
             $paginador->setPaginaActual($paginaActual);
             $paginador->setOrderBy($orderBy);
             $paginador->setOrder($order);
+//            $paginador->setExtraParams($queryString);
+            $paginador->setExtraParams($queryARR);
         
             // Obtengo las convocatorias
             $consultorasCOL = $paginador->getItemCollection();
@@ -683,6 +693,9 @@ class consultoraController extends PplController{
             $this->view->paginador = $paginador->getPaginatorHtml();
             
             // Se propagan las clausulas de búsqueda en el paginador
+        	foreach ( $queryARR as $clave => $valor ){
+            	$queryString .= '&amp;' . $clave . '=' . $valor;
+            }
             $this->view->querystring = $queryString;
             
             

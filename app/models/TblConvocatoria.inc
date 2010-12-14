@@ -1,7 +1,7 @@
 <?php
 /**
  * Este archivo ha sido generado con Owl DoGen v.0.6
- * el 24 de November de 2010 a las 08:55:33
+ * el 09 de December de 2010 a las 08:48:53
  * @package dataAccess
  */
 
@@ -427,19 +427,6 @@ class TblConvocatoria extends OwlGenericDO{
 
         include_once('TblPlan.inc');
         return TblPlan::findByTblConvocatoria( $this->_db, $this->idConvocatoria, $orderBy );
-
-    }
-
-    /**
-     * Obtiene todos los elementos relacionados de la tabla 'trelDocumentacionConvocatoria'
-     *
-     * @param Connection $db Conexión con la base de datos.
-     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
-     */
-    public function getTrelDocumentacionConvocatorias( $orderBy='' ){
-
-        include_once('TrelDocumentacionConvocatoria.inc');
-        return TrelDocumentacionConvocatoria::findByTblConvocatoria( $this->_db, $this->idConvocatoria, $orderBy );
 
     }
 

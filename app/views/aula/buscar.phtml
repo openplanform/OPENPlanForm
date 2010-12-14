@@ -123,19 +123,15 @@
     </tbody>
 </table>
 <div id="paginadorContainer"><?= $this->paginador ?></div>
+<?
 
-<?php 
-
-    } else {
+    } else if ($this->querystring){
+    	
+    	?><h3>No hay resultados</h3><?
+    	
+    }
     
 ?>
 
-<h3>No hay ningún aula</h3>
-
-<?php 
-
-    }
-
-?>
     </div>
 </div>

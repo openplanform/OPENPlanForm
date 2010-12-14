@@ -1,7 +1,7 @@
 <?php
 /**
  * Este archivo ha sido generado con Owl DoGen v.0.6
- * el 24 de November de 2010 a las 08:55:33
+ * el 09 de December de 2010 a las 08:48:53
  * @package dataAccess
  */
 
@@ -266,6 +266,19 @@ class TblUsuario extends OwlGenericDO{
     public function setVEmail( $value ){
 
         $this->vEmail = $value;
+
+    }
+
+    /**
+     * Obtiene todos los elementos relacionados de la tabla 'tblAvatar'
+     *
+     * @param Connection $db Conexión con la base de datos.
+     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
+     */
+    public function getTblAvatars( $orderBy='' ){
+
+        include_once('TblAvatar.inc');
+        return TblAvatar::findByTblUsuario( $this->_db, $this->idUsuario, $orderBy );
 
     }
 
