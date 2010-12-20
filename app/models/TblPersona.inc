@@ -1,7 +1,7 @@
 <?php
 /**
  * Este archivo ha sido generado con Owl DoGen v.0.6
- * el 09 de December de 2010 a las 08:48:53
+ * el 16 de December de 2010 a las 04:06:51
  * @package dataAccess
  */
 
@@ -87,6 +87,12 @@ class TblPersona extends OwlGenericDO{
     public $vSegundoApellido;
 
     /**
+     * Atributo que representa el campo "vSexo"
+     * @var string
+     */
+    public $vSexo;
+
+    /**
      * Atributo que representa el campo "vPoblacion"
      * @var string
      */
@@ -103,6 +109,12 @@ class TblPersona extends OwlGenericDO{
      * @var string
      */
     public $vNumeroIdentificacion;
+
+    /**
+     * Atributo que representa el campo "vNumeroSS"
+     * @var string
+     */
+    public $vNumeroSS;
 
     /**
      * Atributo que representa el campo "vDireccion"
@@ -141,6 +153,12 @@ class TblPersona extends OwlGenericDO{
     public $dNacimiento;
 
     /**
+     * Atributo que representa el campo "bDiscapacidad"
+     * @var integer
+     */
+    public $bDiscapacidad;
+
+    /**
      * Atributo que representa el campo "vObservaciones"
      * @var string
      */
@@ -151,6 +169,72 @@ class TblPersona extends OwlGenericDO{
      * @var string
      */
     public $dBaja;
+
+    /**
+     * Atributo que representa el campo "fkCobros"
+     * @var integer
+     */
+    public $fkCobros;
+
+    /**
+     * Atributo que representa el campo "dAntiguedadParo"
+     * @var string
+     */
+    public $dAntiguedadParo;
+
+    /**
+     * Atributo que representa el campo "vTrabajoParo"
+     * @var string
+     */
+    public $vTrabajoParo;
+
+    /**
+     * Atributo que representa el campo "vSectorEmpresaActual"
+     * @var string
+     */
+    public $vSectorEmpresaActual;
+
+    /**
+     * Atributo que representa el campo "fkCategoriaEmpleo"
+     * @var integer
+     */
+    public $fkCategoriaEmpleo;
+
+    /**
+     * Atributo que representa el campo "bMas250Trabajadores"
+     * @var integer
+     */
+    public $bMas250Trabajadores;
+
+    /**
+     * Atributo que representa el campo "vRazonSocialEmpresaActual"
+     * @var string
+     */
+    public $vRazonSocialEmpresaActual;
+
+    /**
+     * Atributo que representa el campo "vCifEmpresaActual"
+     * @var string
+     */
+    public $vCifEmpresaActual;
+
+    /**
+     * Atributo que representa el campo "vDomicilioCentroTrabajo"
+     * @var string
+     */
+    public $vDomicilioCentroTrabajo;
+
+    /**
+     * Atributo que representa el campo "vLocalidadCentroTrabajo"
+     * @var string
+     */
+    public $vLocalidadCentroTrabajo;
+
+    /**
+     * Atributo que representa el campo "vCpCentroTrabajo"
+     * @var string
+     */
+    public $vCpCentroTrabajo;
 
     /**
      * Atributo que representa el campo "mod_user"
@@ -197,17 +281,31 @@ class TblPersona extends OwlGenericDO{
         $this->vNombre = $data['vNombre'];
         $this->vPrimerApellido = $data['vPrimerApellido'];
         $this->vSegundoApellido = $data['vSegundoApellido'];
+        $this->vSexo = $data['vSexo'];
         $this->vPoblacion = $data['vPoblacion'];
         $this->vCp = $data['vCp'];
         $this->vNumeroIdentificacion = $data['vNumeroIdentificacion'];
+        $this->vNumeroSS = $data['vNumeroSS'];
         $this->vDireccion = $data['vDireccion'];
         $this->vTelefono = $data['vTelefono'];
         $this->vMovil = $data['vMovil'];
         $this->bActiva = $data['bActiva'];
         $this->dAlta = $data['dAlta'];
         $this->dNacimiento = $data['dNacimiento'];
+        $this->bDiscapacidad = $data['bDiscapacidad'];
         $this->vObservaciones = $data['vObservaciones'];
         $this->dBaja = $data['dBaja'];
+        $this->fkCobros = $data['fkCobros'];
+        $this->dAntiguedadParo = $data['dAntiguedadParo'];
+        $this->vTrabajoParo = $data['vTrabajoParo'];
+        $this->vSectorEmpresaActual = $data['vSectorEmpresaActual'];
+        $this->fkCategoriaEmpleo = $data['fkCategoriaEmpleo'];
+        $this->bMas250Trabajadores = $data['bMas250Trabajadores'];
+        $this->vRazonSocialEmpresaActual = $data['vRazonSocialEmpresaActual'];
+        $this->vCifEmpresaActual = $data['vCifEmpresaActual'];
+        $this->vDomicilioCentroTrabajo = $data['vDomicilioCentroTrabajo'];
+        $this->vLocalidadCentroTrabajo = $data['vLocalidadCentroTrabajo'];
+        $this->vCpCentroTrabajo = $data['vCpCentroTrabajo'];
         $this->modUser = $data['mod_user'];
         $this->lastModified = $data['last_modified'];
 
@@ -259,6 +357,9 @@ class TblPersona extends OwlGenericDO{
         if( $tmp = $searchItem->vSegundoApellido ){
             $where[] = "vSegundoApellido='$tmp'";
         }
+        if( $tmp = $searchItem->vSexo ){
+            $where[] = "vSexo='$tmp'";
+        }
         if( $tmp = $searchItem->vPoblacion ){
             $where[] = "vPoblacion='$tmp'";
         }
@@ -267,6 +368,9 @@ class TblPersona extends OwlGenericDO{
         }
         if( $tmp = $searchItem->vNumeroIdentificacion ){
             $where[] = "vNumeroIdentificacion='$tmp'";
+        }
+        if( $tmp = $searchItem->vNumeroSS ){
+            $where[] = "vNumeroSS='$tmp'";
         }
         if( $tmp = $searchItem->vDireccion ){
             $where[] = "vDireccion='$tmp'";
@@ -286,11 +390,47 @@ class TblPersona extends OwlGenericDO{
         if( $tmp = $searchItem->dNacimiento ){
             $where[] = "dNacimiento='$tmp'";
         }
+        if( $tmp = $searchItem->bDiscapacidad ){
+            $where[] = "bDiscapacidad='$tmp'";
+        }
         if( $tmp = $searchItem->vObservaciones ){
             $where[] = "vObservaciones='$tmp'";
         }
         if( $tmp = $searchItem->dBaja ){
             $where[] = "dBaja='$tmp'";
+        }
+        if( $tmp = $searchItem->fkCobros ){
+            $where[] = "fkCobros='$tmp'";
+        }
+        if( $tmp = $searchItem->dAntiguedadParo ){
+            $where[] = "dAntiguedadParo='$tmp'";
+        }
+        if( $tmp = $searchItem->vTrabajoParo ){
+            $where[] = "vTrabajoParo='$tmp'";
+        }
+        if( $tmp = $searchItem->vSectorEmpresaActual ){
+            $where[] = "vSectorEmpresaActual='$tmp'";
+        }
+        if( $tmp = $searchItem->fkCategoriaEmpleo ){
+            $where[] = "fkCategoriaEmpleo='$tmp'";
+        }
+        if( $tmp = $searchItem->bMas250Trabajadores ){
+            $where[] = "bMas250Trabajadores='$tmp'";
+        }
+        if( $tmp = $searchItem->vRazonSocialEmpresaActual ){
+            $where[] = "vRazonSocialEmpresaActual='$tmp'";
+        }
+        if( $tmp = $searchItem->vCifEmpresaActual ){
+            $where[] = "vCifEmpresaActual='$tmp'";
+        }
+        if( $tmp = $searchItem->vDomicilioCentroTrabajo ){
+            $where[] = "vDomicilioCentroTrabajo='$tmp'";
+        }
+        if( $tmp = $searchItem->vLocalidadCentroTrabajo ){
+            $where[] = "vLocalidadCentroTrabajo='$tmp'";
+        }
+        if( $tmp = $searchItem->vCpCentroTrabajo ){
+            $where[] = "vCpCentroTrabajo='$tmp'";
         }
         if( $tmp = $searchItem->modUser ){
             $where[] = "mod_user='$tmp'";
@@ -355,6 +495,38 @@ class TblPersona extends OwlGenericDO{
         return OwlGenericDO::createDO( $db, $data, 'TblPersona');
 
     }
+
+    /**
+     * Obtiene todas las filas de la tabla tblPersona que coinciden con el criterio fkCategoriaEmpleo='$fkCategoriaEmpleo'.
+     *
+     * @param Connection $db Conexión con la base de datos.
+     * @param integer fkCategoriaEmpleo string Valor del campo fkCategoriaEmpleo.
+     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
+     * @return array
+     */
+     public static function findByTblCategoriaEmpleo( $db, $fkCategoriaEmpleo, $orderBy='' ){
+         $sql = "SELECT * FROM tblPersona WHERE fkCategoriaEmpleo='$fkCategoriaEmpleo'";
+         if( $orderBy != '' ){
+             $sql .= " ORDER BY $orderBy";
+         }
+         return OwlGenericDO::createCollection( $db, $sql, 'TblPersona' );
+     }
+
+    /**
+     * Obtiene todas las filas de la tabla tblPersona que coinciden con el criterio fkCobros='$fkCobros'.
+     *
+     * @param Connection $db Conexión con la base de datos.
+     * @param integer fkCobros string Valor del campo fkCobros.
+     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
+     * @return array
+     */
+     public static function findByTblCobroParo( $db, $fkCobros, $orderBy='' ){
+         $sql = "SELECT * FROM tblPersona WHERE fkCobros='$fkCobros'";
+         if( $orderBy != '' ){
+             $sql .= " ORDER BY $orderBy";
+         }
+         return OwlGenericDO::createCollection( $db, $sql, 'TblPersona' );
+     }
 
     /**
      * Obtiene todas las filas de la tabla tblPersona que coinciden con el criterio fkEstadoCivil='$fkEstadoCivil'.
@@ -483,17 +655,31 @@ class TblPersona extends OwlGenericDO{
         $sets[] = 'vNombre=' . ( ( ( $value = $this->vNombre ) === null || !isset($this->vNombre) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'vPrimerApellido=' . ( ( ( $value = $this->vPrimerApellido ) === null || !isset($this->vPrimerApellido) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'vSegundoApellido=' . ( ( ( $value = $this->vSegundoApellido ) === null || !isset($this->vSegundoApellido) ) ? 'null' :  "'".addslashes($value)."'" );
+        $sets[] = 'vSexo=' . ( ( ( $value = $this->vSexo ) === null || !isset($this->vSexo) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'vPoblacion=' . ( ( ( $value = $this->vPoblacion ) === null || !isset($this->vPoblacion) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'vCp=' . ( ( ( $value = $this->vCp ) === null || !isset($this->vCp) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'vNumeroIdentificacion=' . ( ( ( $value = $this->vNumeroIdentificacion ) === null || !isset($this->vNumeroIdentificacion) ) ? 'null' :  "'".addslashes($value)."'" );
+        $sets[] = 'vNumeroSS=' . ( ( ( $value = $this->vNumeroSS ) === null || !isset($this->vNumeroSS) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'vDireccion=' . ( ( ( $value = $this->vDireccion ) === null || !isset($this->vDireccion) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'vTelefono=' . ( ( ( $value = $this->vTelefono ) === null || !isset($this->vTelefono) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'vMovil=' . ( ( ( $value = $this->vMovil ) === null || !isset($this->vMovil) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'bActiva=' . ( ( ( $value = $this->bActiva ) === null || !isset($this->bActiva) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'dAlta=' . ( ( ( $value = $this->dAlta ) === null || !isset($this->dAlta) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'dNacimiento=' . ( ( ( $value = $this->dNacimiento ) === null || !isset($this->dNacimiento) ) ? 'null' :  "'".addslashes($value)."'" );
+        $sets[] = 'bDiscapacidad=' . ( ( ( $value = $this->bDiscapacidad ) === null || !isset($this->bDiscapacidad) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'vObservaciones=' . ( ( ( $value = $this->vObservaciones ) === null || !isset($this->vObservaciones) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'dBaja=' . ( ( ( $value = $this->dBaja ) === null || !isset($this->dBaja) ) ? 'null' :  "'".addslashes($value)."'" );
+        $sets[] = 'fkCobros=' . ( ( ( $value = $this->fkCobros ) === null || !isset($this->fkCobros) ) ? 'null' :  "'".addslashes($value)."'" );
+        $sets[] = 'dAntiguedadParo=' . ( ( ( $value = $this->dAntiguedadParo ) === null || !isset($this->dAntiguedadParo) ) ? 'null' :  "'".addslashes($value)."'" );
+        $sets[] = 'vTrabajoParo=' . ( ( ( $value = $this->vTrabajoParo ) === null || !isset($this->vTrabajoParo) ) ? 'null' :  "'".addslashes($value)."'" );
+        $sets[] = 'vSectorEmpresaActual=' . ( ( ( $value = $this->vSectorEmpresaActual ) === null || !isset($this->vSectorEmpresaActual) ) ? 'null' :  "'".addslashes($value)."'" );
+        $sets[] = 'fkCategoriaEmpleo=' . ( ( ( $value = $this->fkCategoriaEmpleo ) === null || !isset($this->fkCategoriaEmpleo) ) ? 'null' :  "'".addslashes($value)."'" );
+        $sets[] = 'bMas250Trabajadores=' . ( ( ( $value = $this->bMas250Trabajadores ) === null || !isset($this->bMas250Trabajadores) ) ? 'null' :  "'".addslashes($value)."'" );
+        $sets[] = 'vRazonSocialEmpresaActual=' . ( ( ( $value = $this->vRazonSocialEmpresaActual ) === null || !isset($this->vRazonSocialEmpresaActual) ) ? 'null' :  "'".addslashes($value)."'" );
+        $sets[] = 'vCifEmpresaActual=' . ( ( ( $value = $this->vCifEmpresaActual ) === null || !isset($this->vCifEmpresaActual) ) ? 'null' :  "'".addslashes($value)."'" );
+        $sets[] = 'vDomicilioCentroTrabajo=' . ( ( ( $value = $this->vDomicilioCentroTrabajo ) === null || !isset($this->vDomicilioCentroTrabajo) ) ? 'null' :  "'".addslashes($value)."'" );
+        $sets[] = 'vLocalidadCentroTrabajo=' . ( ( ( $value = $this->vLocalidadCentroTrabajo ) === null || !isset($this->vLocalidadCentroTrabajo) ) ? 'null' :  "'".addslashes($value)."'" );
+        $sets[] = 'vCpCentroTrabajo=' . ( ( ( $value = $this->vCpCentroTrabajo ) === null || !isset($this->vCpCentroTrabajo) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'mod_user=' . ( ( ( $value = $this->modUser ) === null || !isset($this->modUser) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'last_modified=' . ( ( ( $value = $this->lastModified ) === null || !isset($this->lastModified) ) ? 'null' :  "'".addslashes($value)."'" );
         $setStr = implode(',', $sets);
@@ -515,17 +701,31 @@ class TblPersona extends OwlGenericDO{
         $attributes[] = 'vNombre';
         $attributes[] = 'vPrimerApellido';
         $attributes[] = 'vSegundoApellido';
+        $attributes[] = 'vSexo';
         $attributes[] = 'vPoblacion';
         $attributes[] = 'vCp';
         $attributes[] = 'vNumeroIdentificacion';
+        $attributes[] = 'vNumeroSS';
         $attributes[] = 'vDireccion';
         $attributes[] = 'vTelefono';
         $attributes[] = 'vMovil';
         $attributes[] = 'bActiva';
         $attributes[] = 'dAlta';
         $attributes[] = 'dNacimiento';
+        $attributes[] = 'bDiscapacidad';
         $attributes[] = 'vObservaciones';
         $attributes[] = 'dBaja';
+        $attributes[] = 'fkCobros';
+        $attributes[] = 'dAntiguedadParo';
+        $attributes[] = 'vTrabajoParo';
+        $attributes[] = 'vSectorEmpresaActual';
+        $attributes[] = 'fkCategoriaEmpleo';
+        $attributes[] = 'bMas250Trabajadores';
+        $attributes[] = 'vRazonSocialEmpresaActual';
+        $attributes[] = 'vCifEmpresaActual';
+        $attributes[] = 'vDomicilioCentroTrabajo';
+        $attributes[] = 'vLocalidadCentroTrabajo';
+        $attributes[] = 'vCpCentroTrabajo';
         $attributes[] = 'mod_user';
         $attributes[] = 'last_modified';
         $attributes = implode(',', $attributes);
@@ -540,17 +740,31 @@ class TblPersona extends OwlGenericDO{
         $values[] = (( $value = $this->vNombre ) === null || !isset($this->vNombre) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->vPrimerApellido ) === null || !isset($this->vPrimerApellido) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->vSegundoApellido ) === null || !isset($this->vSegundoApellido) ) ? 'null' : "'".addslashes($value)."'";
+        $values[] = (( $value = $this->vSexo ) === null || !isset($this->vSexo) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->vPoblacion ) === null || !isset($this->vPoblacion) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->vCp ) === null || !isset($this->vCp) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->vNumeroIdentificacion ) === null || !isset($this->vNumeroIdentificacion) ) ? 'null' : "'".addslashes($value)."'";
+        $values[] = (( $value = $this->vNumeroSS ) === null || !isset($this->vNumeroSS) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->vDireccion ) === null || !isset($this->vDireccion) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->vTelefono ) === null || !isset($this->vTelefono) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->vMovil ) === null || !isset($this->vMovil) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->bActiva ) === null || !isset($this->bActiva) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->dAlta ) === null || !isset($this->dAlta) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->dNacimiento ) === null || !isset($this->dNacimiento) ) ? 'null' : "'".addslashes($value)."'";
+        $values[] = (( $value = $this->bDiscapacidad ) === null || !isset($this->bDiscapacidad) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->vObservaciones ) === null || !isset($this->vObservaciones) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->dBaja ) === null || !isset($this->dBaja) ) ? 'null' : "'".addslashes($value)."'";
+        $values[] = (( $value = $this->fkCobros ) === null || !isset($this->fkCobros) ) ? 'null' : "'".addslashes($value)."'";
+        $values[] = (( $value = $this->dAntiguedadParo ) === null || !isset($this->dAntiguedadParo) ) ? 'null' : "'".addslashes($value)."'";
+        $values[] = (( $value = $this->vTrabajoParo ) === null || !isset($this->vTrabajoParo) ) ? 'null' : "'".addslashes($value)."'";
+        $values[] = (( $value = $this->vSectorEmpresaActual ) === null || !isset($this->vSectorEmpresaActual) ) ? 'null' : "'".addslashes($value)."'";
+        $values[] = (( $value = $this->fkCategoriaEmpleo ) === null || !isset($this->fkCategoriaEmpleo) ) ? 'null' : "'".addslashes($value)."'";
+        $values[] = (( $value = $this->bMas250Trabajadores ) === null || !isset($this->bMas250Trabajadores) ) ? 'null' : "'".addslashes($value)."'";
+        $values[] = (( $value = $this->vRazonSocialEmpresaActual ) === null || !isset($this->vRazonSocialEmpresaActual) ) ? 'null' : "'".addslashes($value)."'";
+        $values[] = (( $value = $this->vCifEmpresaActual ) === null || !isset($this->vCifEmpresaActual) ) ? 'null' : "'".addslashes($value)."'";
+        $values[] = (( $value = $this->vDomicilioCentroTrabajo ) === null || !isset($this->vDomicilioCentroTrabajo) ) ? 'null' : "'".addslashes($value)."'";
+        $values[] = (( $value = $this->vLocalidadCentroTrabajo ) === null || !isset($this->vLocalidadCentroTrabajo) ) ? 'null' : "'".addslashes($value)."'";
+        $values[] = (( $value = $this->vCpCentroTrabajo ) === null || !isset($this->vCpCentroTrabajo) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->modUser ) === null || !isset($this->modUser) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->lastModified ) === null || !isset($this->lastModified) ) ? 'null' : "'".addslashes($value)."'";
         $values = implode(',', $values);
@@ -782,6 +996,26 @@ class TblPersona extends OwlGenericDO{
     }
 
     /**
+      * Obtiene el valor del atributo 'vSexo'.
+      *
+      * @return string
+      */
+    public function getVSexo(){
+        return $this->vSexo;
+    }
+
+    /**
+      * Establece el valor del atributo 'vSexo'.
+      *
+      * @param string Valor.
+      */
+    public function setVSexo( $value ){
+
+        $this->vSexo = $value;
+
+    }
+
+    /**
       * Obtiene el valor del atributo 'vPoblacion'.
       *
       * @return string
@@ -838,6 +1072,26 @@ class TblPersona extends OwlGenericDO{
     public function setVNumeroIdentificacion( $value ){
 
         $this->vNumeroIdentificacion = $value;
+
+    }
+
+    /**
+      * Obtiene el valor del atributo 'vNumeroSS'.
+      *
+      * @return string
+      */
+    public function getVNumeroSS(){
+        return $this->vNumeroSS;
+    }
+
+    /**
+      * Establece el valor del atributo 'vNumeroSS'.
+      *
+      * @param string Valor.
+      */
+    public function setVNumeroSS( $value ){
+
+        $this->vNumeroSS = $value;
 
     }
 
@@ -962,6 +1216,26 @@ class TblPersona extends OwlGenericDO{
     }
 
     /**
+      * Obtiene el valor del atributo 'bDiscapacidad'.
+      *
+      * @return integer
+      */
+    public function getBDiscapacidad(){
+        return $this->bDiscapacidad;
+    }
+
+    /**
+      * Establece el valor del atributo 'bDiscapacidad'.
+      *
+      * @param integer Valor.
+      */
+    public function setBDiscapacidad( $value ){
+
+        $this->bDiscapacidad = $value;
+
+    }
+
+    /**
       * Obtiene el valor del atributo 'vObservaciones'.
       *
       * @return string
@@ -998,6 +1272,226 @@ class TblPersona extends OwlGenericDO{
     public function setDBaja( $value ){
 
         $this->dBaja = $value;
+
+    }
+
+    /**
+      * Obtiene el valor del atributo 'fkCobros'.
+      *
+      * @return integer
+      */
+    public function getFkCobros(){
+        return $this->fkCobros;
+    }
+
+    /**
+      * Establece el valor del atributo 'fkCobros'.
+      *
+      * @param integer Valor.
+      */
+    public function setFkCobros( $value ){
+
+        $this->fkCobros = $value;
+
+    }
+
+    /**
+      * Obtiene el valor del atributo 'dAntiguedadParo'.
+      *
+      * @return string
+      */
+    public function getDAntiguedadParo(){
+        return $this->dAntiguedadParo;
+    }
+
+    /**
+      * Establece el valor del atributo 'dAntiguedadParo'.
+      *
+      * @param string Valor.
+      */
+    public function setDAntiguedadParo( $value ){
+
+        $this->dAntiguedadParo = $value;
+
+    }
+
+    /**
+      * Obtiene el valor del atributo 'vTrabajoParo'.
+      *
+      * @return string
+      */
+    public function getVTrabajoParo(){
+        return $this->vTrabajoParo;
+    }
+
+    /**
+      * Establece el valor del atributo 'vTrabajoParo'.
+      *
+      * @param string Valor.
+      */
+    public function setVTrabajoParo( $value ){
+
+        $this->vTrabajoParo = $value;
+
+    }
+
+    /**
+      * Obtiene el valor del atributo 'vSectorEmpresaActual'.
+      *
+      * @return string
+      */
+    public function getVSectorEmpresaActual(){
+        return $this->vSectorEmpresaActual;
+    }
+
+    /**
+      * Establece el valor del atributo 'vSectorEmpresaActual'.
+      *
+      * @param string Valor.
+      */
+    public function setVSectorEmpresaActual( $value ){
+
+        $this->vSectorEmpresaActual = $value;
+
+    }
+
+    /**
+      * Obtiene el valor del atributo 'fkCategoriaEmpleo'.
+      *
+      * @return integer
+      */
+    public function getFkCategoriaEmpleo(){
+        return $this->fkCategoriaEmpleo;
+    }
+
+    /**
+      * Establece el valor del atributo 'fkCategoriaEmpleo'.
+      *
+      * @param integer Valor.
+      */
+    public function setFkCategoriaEmpleo( $value ){
+
+        $this->fkCategoriaEmpleo = $value;
+
+    }
+
+    /**
+      * Obtiene el valor del atributo 'bMas250Trabajadores'.
+      *
+      * @return integer
+      */
+    public function getBMas250Trabajadores(){
+        return $this->bMas250Trabajadores;
+    }
+
+    /**
+      * Establece el valor del atributo 'bMas250Trabajadores'.
+      *
+      * @param integer Valor.
+      */
+    public function setBMas250Trabajadores( $value ){
+
+        $this->bMas250Trabajadores = $value;
+
+    }
+
+    /**
+      * Obtiene el valor del atributo 'vRazonSocialEmpresaActual'.
+      *
+      * @return string
+      */
+    public function getVRazonSocialEmpresaActual(){
+        return $this->vRazonSocialEmpresaActual;
+    }
+
+    /**
+      * Establece el valor del atributo 'vRazonSocialEmpresaActual'.
+      *
+      * @param string Valor.
+      */
+    public function setVRazonSocialEmpresaActual( $value ){
+
+        $this->vRazonSocialEmpresaActual = $value;
+
+    }
+
+    /**
+      * Obtiene el valor del atributo 'vCifEmpresaActual'.
+      *
+      * @return string
+      */
+    public function getVCifEmpresaActual(){
+        return $this->vCifEmpresaActual;
+    }
+
+    /**
+      * Establece el valor del atributo 'vCifEmpresaActual'.
+      *
+      * @param string Valor.
+      */
+    public function setVCifEmpresaActual( $value ){
+
+        $this->vCifEmpresaActual = $value;
+
+    }
+
+    /**
+      * Obtiene el valor del atributo 'vDomicilioCentroTrabajo'.
+      *
+      * @return string
+      */
+    public function getVDomicilioCentroTrabajo(){
+        return $this->vDomicilioCentroTrabajo;
+    }
+
+    /**
+      * Establece el valor del atributo 'vDomicilioCentroTrabajo'.
+      *
+      * @param string Valor.
+      */
+    public function setVDomicilioCentroTrabajo( $value ){
+
+        $this->vDomicilioCentroTrabajo = $value;
+
+    }
+
+    /**
+      * Obtiene el valor del atributo 'vLocalidadCentroTrabajo'.
+      *
+      * @return string
+      */
+    public function getVLocalidadCentroTrabajo(){
+        return $this->vLocalidadCentroTrabajo;
+    }
+
+    /**
+      * Establece el valor del atributo 'vLocalidadCentroTrabajo'.
+      *
+      * @param string Valor.
+      */
+    public function setVLocalidadCentroTrabajo( $value ){
+
+        $this->vLocalidadCentroTrabajo = $value;
+
+    }
+
+    /**
+      * Obtiene el valor del atributo 'vCpCentroTrabajo'.
+      *
+      * @return string
+      */
+    public function getVCpCentroTrabajo(){
+        return $this->vCpCentroTrabajo;
+    }
+
+    /**
+      * Establece el valor del atributo 'vCpCentroTrabajo'.
+      *
+      * @param string Valor.
+      */
+    public function setVCpCentroTrabajo( $value ){
+
+        $this->vCpCentroTrabajo = $value;
 
     }
 
@@ -1146,6 +1640,46 @@ class TblPersona extends OwlGenericDO{
     }
 
     // Relaciones
+
+    /**
+     * Obtiene el objeto 'TblCategoriaEmpleo' relacionado.
+     *
+     * @return TblCategoriaEmpleo
+     */
+    public function getTblCategoriaEmpleo(){
+        require_once('TblCategoriaEmpleo.inc');
+        return TblCategoriaEmpleo::findByPrimaryKey( $this->_db, $this->fkCategoriaEmpleo );
+    }
+
+    /**
+     * Asigna el objeto 'TblCategoriaEmpleo' relacionado.
+     *
+     * @param TblCategoriaEmpleo $dataObject
+     */
+    public function setTblCategoriaEmpleo( $dataObject ){
+        require_once('TblCategoriaEmpleo.inc');
+        $this->setFkCategoriaEmpleo( $dataObject->getIdCategoriaEmpleo() );
+    }
+
+    /**
+     * Obtiene el objeto 'TblCobroParo' relacionado.
+     *
+     * @return TblCobroParo
+     */
+    public function getTblCobroParo(){
+        require_once('TblCobroParo.inc');
+        return TblCobroParo::findByPrimaryKey( $this->_db, $this->fkCobros );
+    }
+
+    /**
+     * Asigna el objeto 'TblCobroParo' relacionado.
+     *
+     * @param TblCobroParo $dataObject
+     */
+    public function setTblCobroParo( $dataObject ){
+        require_once('TblCobroParo.inc');
+        $this->setFkCobros( $dataObject->getIdCobroParo() );
+    }
 
     /**
      * Obtiene el objeto 'TblEstadoCivil' relacionado.

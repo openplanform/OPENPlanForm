@@ -1,6 +1,54 @@
 <?php
 	$this->addJavascriptInclude('/js/alumno.js');
 	
+	ob_start();
+	
+	?>
+	<script type="text/javascript">
+		/**
+		 * Muestra campos de formulario según el estado laboral
+		 */
+		 function formularioSituacionLaboral( opcion ){
+				switch (opcion) {
+					case '<?= $this->claveOcupado ?>':
+						$j('#empresaActual').show();
+						$j('#paro').hide();
+						$j('#fechaParo').val('');
+						$j('#trabajo option:selected').attr('selected','');
+						$j('#cobro').val('');
+						break;
+					case '<?= $this->claveDesocupado ?>':
+						$j('#paro').show();
+						$j('#empresaActual').hide();
+						//Reseteamos los campos
+						$j('#categoriaEmpleo option:selected').attr('selected','');
+						$j('#sectorEmpresaActual').val('');
+						$j('#razonEmpresaActual').val('');
+						$j('#cif').val('');
+						$j('#domicilioEmpresaActual').val('');
+						$j('#localidadEmpresaActual').val('');
+						$j('#cpEmpresaActual').val('');
+						break;
+					default:
+						$j('#empresaActual').hide();
+						$j('#paro').hide();
+						break;
+				}
+			};
+			$j(document).ready(function(){
+				// Carga inicial de los formularios de situación laboral
+				formularioSituacionLaboral($j('#estadoLaboral option:selected').val());
+				
+				$j('#estadoLaboral').change(function(val){
+					var opcion = $j('#estadoLaboral option:selected').val();
+					formularioSituacionLaboral(opcion);
+				});
+			});
+	</script>
+	<?
+	
+	$this->echoOnHead(ob_get_clean());
+	
 	if ( !is_null($this->popup) ){
     	echo '<script type="text/javascript">ventana' . ucfirst($this->popup['estado']) . '("' . $this->popup['titulo'] . '", "' . $this->popup['mensaje'] . '", "' . $this->popup['url'] . '");</script>'; 
 	}
@@ -32,7 +80,7 @@
 	            <p class="tooltip" id="password1Tooltip">La contraseña debe tener 6 caracteres como mínimo y 16 como máximo. Puede estar compuesta por cualquier caracter, pero al menos debe contener un número.<em> Ej: test1_casa</em></p>
 	            <p id="errorRepassword1" class="errorInput"><?= $this->errorPassword ?></p>
 	        </div>
-        
+	        
         	<div class="campo clear">
 	             <label for="emailUsuario">Correo electrónico*</label>
 	             <input type="text" name="emailUsuario" id="emailUsuario" class="campoTexto" />
@@ -41,7 +89,7 @@
 	        
         	<h3>Datos del Alumno</h3>
         	
-            <div class="campo controlado">
+            <div class="campo multi controlado">
                 <label for="nombre">Nombre*</label>
                 <input type="text" name="nombre" id="nombre" class="campoTexto" />
                 <p id="errorNombre" class="errorInput"><?= $this->errorNombre ?></p>
@@ -52,7 +100,7 @@
                 <input type="text" name="apellido1" id="apellido1" class="campoTexto" />
                 <p id="errorApellido1" class="errorInput"><?= $this->errorApellido ?></p>
             </div>
-    
+            
             <div class="campo multi controlado">
                 <label for="apellido2">Segundo Apellido</label>
                 <input type="text" name="apellido2" id="apellido2" class="campoTexto"  />
@@ -60,6 +108,18 @@
             </div>
             
             <div class="separadorH"></div>
+            
+            <div class="campo multi controlado">
+                <label>Sexo</label>
+                <label class="alter" for="f">Hombre</label><input id="f" class="radioOpt" type="radio" name="sexo" value="Hombre"/>
+                <label class="alter" for="m">Mujer</label><input id="m" class="radioOpt" type="radio" name="sexo" value="Mujer"/>
+            </div>
+            
+            <div class="campo multi controlado">
+                <label>Discapacidad</label>
+                <label class="alter" for="si">Si</label><input id="si" class="radioOpt" type="radio" name="discapacidad" value="1" />
+                <label class="alter" for="no">No</label><input id="no" class="radioOpt" type="radio" name="discapacidad" value="0" checked="checked"/>
+            </div>
             
             <div class="campo multi controlado">
                 <label for="nacimiento">Fecha de nacimiento*</label>
@@ -93,12 +153,17 @@
             <div class="separadorH"></div>
             
             <div class="campo multi">
+                <label for="numeroSS">Número Seguridad Social</label>
+                <input type="text" name="numeroSS" id="numeroSS" class="campoTexto mediano" />
+            </div>
+            
+            <div class="campo multi">
                 <label for="tel">Teléfono</label>
                 <input type="text" name="tel" id="tel" class="campoTexto mediano" />
             </div>
     
             <div class="campo multi">
-                <label for="movil">Teléfono movil</label>
+                <label for="movil">Teléfono móvil</label>
                 <input type="text" name="movil" id="movil" class="campoTexto mediano" />
             </div>
     
@@ -123,7 +188,6 @@
     
             <div class="campo multi">
                 <label for="provincia">Provincia</label><?
-                
                 ?><select name="provinciasUsuario" id="provincia" class="campoTexto desplegable mediano">
                     <option value=""></option><?
                     
@@ -138,79 +202,171 @@
             </div>
             
             <div class="campo multi controlado">
-                
                 <label for="pais">País*</label>
-                    <select name="pais" id="pais" class="campoTexto desplegable mediano">
-                        <option value=""></option><?
+                <select name="pais" id="pais" class="campoTexto desplegable mediano">
+                	<option value=""></option><?
                         
-                        foreach ($this->paisesCOL as $paisDO){
+                    foreach ($this->paisesCOL as $paisDO){
     
-                            $clavePais = $paisDO->getVIso();
-                            echo '<option value="' . $clavePais . '" >' . $paisDO->getVNombreEs() . '</option>' . "\n"; 
+                    	$clavePais = $paisDO->getVIso();
+                        echo '<option value="' . $clavePais . '" >' . $paisDO->getVNombreEs() . '</option>' . "\n"; 
                             
-                        }
+                    }
                         
-                    ?></select>
-                    <p id="errorPais" class="errorInput"><?= $this->errorPais ?></p>
+				?></select>
+                <p id="errorPais" class="errorInput"><?= $this->errorPais ?></p>
             </div>
             
             <div class="separadorH"></div>
             
             <div class="campo multi controlado">
                 
-                <label for="estadoCivil">Estado Civil*</label>
-                    <select name="estadoCivil" id="estadoCivil" class="campoTexto desplegable mediano">
-                        <option value=""></option><?
-                        
-                        foreach ($this->estadosCivilesCOL as $estadoCivilDO){
-                            
-                            $claveEstadoCivil = $estadoCivilDO->getIdEstadoCivil();
-                            echo '<option value="' . $claveEstadoCivil . '" >' . $estadoCivilDO->getVNombre() . '</option>' . "\n";
-                            
-                        }
-                        
-                    ?></select>
-                    <p id="errorEstadoCivil" class="errorInput"><?= $this->errorEstadoCivil ?></p>
-            </div>
-            
-                    
-            <div class="campo multi controlado">
-                
-                <label for="estadoLaboral">Estado Laboral*</label>
-                    <select name="estadoLaboral" id="estadoLaboral" class="campoTexto desplegable mediano">
-                        <option value=""></option><?
-                        
-                        foreach ($this->estadosLaboralesCOL as $estadoLaboralDO){
-                            
-                            $claveEstadoLaboral = $estadoLaboralDO->getIdEstadoLaboral();
-                            echo '<option value="' . $claveEstadoLaboral . '" >' . $estadoLaboralDO->getVNombre() . '</option>' . "\n";
-                            
-                        }
-                        
-                    ?></select>
-                    <p id="errorEstadoLaboral" class="errorInput"><?= $this->errorEstadoLaboral ?></p>
-            </div>
-            
-                            
-            <div class="campo multi controlado">
-                
                 <label for="nivelEstudios">Nivel de estudios*</label>
-                    <select name="nivelEstudios" id="nivelEstudios" class="campoTexto desplegable mediano">
-                        <option value=""></option><?
-                        
-                        foreach ($this->nivelEstudiosCOL as $nivelEstudiosDO){
+                <select name="nivelEstudios" id="nivelEstudios" class="campoTexto desplegable mediano">
+                	<option value=""></option><?
+                    
+                    foreach ($this->nivelEstudiosCOL as $nivelEstudiosDO){
                             
-                            $claveNivelEstudios = $nivelEstudiosDO->getIdNivelEstudios();
-                            echo '<option value="' . $claveNivelEstudios . '" >' . $nivelEstudiosDO->getVNombre() . '</option>' . "\n";
+                    	$claveNivelEstudios = $nivelEstudiosDO->getIdNivelEstudios();
+                        echo '<option value="' . $claveNivelEstudios . '" >' . $nivelEstudiosDO->getVNombre() . '</option>' . "\n";
                             
-                        }
+                    }
                         
-                    ?></select>
-                    <p id="errorNivelEstudios" class="errorInput"><?= $this->errorNivelEstudios ?></p>
+				?></select>
+                <p id="errorNivelEstudios" class="errorInput"><?= $this->errorNivelEstudios ?></p>
             </div>
-			
+            
+            <div class="campo multi controlado">
+                <label for="estadoCivil">Estado Civil*</label>
+                <select name="estadoCivil" id="estadoCivil" class="campoTexto desplegable mediano">
+                	<option value=""></option><?
+                        
+                    foreach ($this->estadosCivilesCOL as $estadoCivilDO){
+                            
+                    	$claveEstadoCivil = $estadoCivilDO->getIdEstadoCivil();
+                        echo '<option value="' . $claveEstadoCivil . '" >' . $estadoCivilDO->getVNombre() . '</option>' . "\n";
+                            
+                    }
+                        
+				?></select>
+                <p id="errorEstadoCivil" class="errorInput"><?= $this->errorEstadoCivil ?></p>
+            </div>
+            
+            <div class="campo multi controlado">
+                <label for="estadoLaboral">Estado Laboral*</label>
+                <select name="estadoLaboral" id="estadoLaboral" class="campoTexto desplegable mediano">
+                	<option value=""></option><?
+                        
+                    foreach ($this->estadosLaboralesCOL as $estadoLaboralDO){
+                            
+                    	$claveEstadoLaboral = $estadoLaboralDO->getIdEstadoLaboral();
+                        echo '<option value="' . $claveEstadoLaboral . '" >' . $estadoLaboralDO->getVNombre() . '</option>' . "\n";
+                            
+                    }
+                        
+				?></select>
+                <p id="errorEstadoLaboral" class="errorInput"><?= $this->errorEstadoLaboral ?></p>
+            </div>
+            
 			<div class="separadorH"></div>
-    
+			
+            <div id="empresaActual"  class="alterForm">
+            	<h3>Entidad donde trabaja actualmente</h3>
+            	
+            	<div class="campo multi">
+            		<label for="categoriaEmpleo">Categoría</label>
+            		<select id="categoriaEmpleo" name="categoriaEmpleo">
+    					<option></option>
+    					<?php 
+    					foreach ( $this->categoriasEmpleoIDX as $clave => $categoriaEmpleoDO ){
+    						?><option value="<?= $clave ?>"><?= $categoriaEmpleoDO->getVNombre() ?></option><?
+    					}
+    					?>
+    				</select>
+            	</div>
+            	
+            	<div class="separadorH"></div>
+            	
+            	<div class="campo multi">
+            		<label>Empresa con más de 250 trabajadores</label>
+            		<label for="si250" class="alter">Si</label><input class="radioOpt" id="si250" type="radio" name="trabajadores250" value="1"/>
+            		<label for="no250" class="alter">No</label><input class="radioOpt" id="no250" type="radio" name="trabajadores250" value="0" checked="checked"/>
+            	</div>
+            	
+            	<div class="campo multi">
+            		<label for="sectorEmpresaActual">Sector/Convenio</label>
+            		<input class="campoTexto" type="text" name="sectorEmpresaActual" id="sectorEmpresaActual" />
+            	</div>
+            	
+            	<div class="separadorH"></div>
+            	
+            	<div class="campo multi">
+            		<label for="razonEmpresaActual">Razón social</label>
+            		<input class="campoTexto enorme" type="text" name="razonEmpresaActual" id="razonEmpresaActual" />
+            	</div>
+            	
+            	<div class="campo multi">
+            		<label for="cif">C.I.F.</label>
+            		<input class="campoTexto mediano" type="text" name="cif" id="cif" />
+            	</div>
+            	
+            	<div class="separadorH"></div>
+            	
+            	<div class="campo multi">
+            		<label for="domicilioEmpresaActual">Domicilio del centro de trabajo</label>
+            		<input class="campoTexto enorme" type="text" name="domicilioEmpresaActual" id="domicilioEmpresaActual" />
+            	</div>
+            	
+            	<div class="separadorH"></div>
+            	
+            	<div class="campo multi">
+            		<label for="localidadEmpresaActual">Localidad</label>
+            		<input class="campoTexto" type="text" name="localidadEmpresaActual" id="localidadEmpresaActual" />
+            	</div>
+
+            	<div class="campo multi">
+            		<label for="cpEmpresaActual">CP</label>
+            		<input class="campoTexto pequeno" type="text" name="cpEmpresaActual" id="cpEmpresaActual" />
+            	</div>
+            </div>
+            
+            <div class="separadorH"></div>
+            
+    		<div id="paro" class="alterForm">
+    			
+    			<h3>Datos del paro</h3>
+    			
+    			<div class="campo multi">
+            		<label for="fechaParo">Fecha de antigüedad</label>
+            		<input class="campoTexto pequeno" type="text" name="fechaParo" id="fechaParo" />
+            	</div>
+    			
+    			<div class="campo multi">
+    				<label for="trabajo">Trabajo</label>
+    				<select class="campoTexto desplegable grande" id="trabajo" name="trabajo">
+    					<option></option>
+    					<option value="0">He trabajado anteriormente y finalizó la contratación</option>
+    					<option value="1">No he trabajado nunca</option>
+    				</select>
+            	</div>
+    			
+    			<div class="separadorH"></div>
+    			
+    			<div class="campo multi">
+    				<label for="cobro">Cobros</label>
+    				<select id="cobro" name="cobro">
+    					<option></option>
+    					<?php 
+    					foreach ( $this->cobrosParoIDX as $clave => $cobroParoDO ){
+    						?><option value="<?= $clave ?>"><?= $cobroParoDO->getVNombre() ?></option><?
+    					}
+    					?>
+    				</select>
+            	</div>
+    		</div>
+    		
+    		<div class="separadorH"></div>
+    		
            	<h3>Carnet de conducir</h3>
             <div class="campo">
 	            <?
@@ -267,7 +423,6 @@
 			    <thead>
 					<tr>
 						<th>Nombre</th>
-						<th>Sector</th>
 						<th>Categoria</th>
 						<th>Inicio</th>
 						<th>Fin</th>
@@ -287,10 +442,6 @@
 							?>
 							<tr	<?= $clase ?> >
 								<td><a href="/curso/ficha.html/<?= $cursoDO->getIdCurso() ?>"><?= $cursoDO->getVNombre() ?></a></td>
-								<!-- td><a href="/plan/ficha.html/<?= $cursoDO->getFkPlan() ?>"><?= $this->planesIDX[$cursoDO->getFkPlan()] ?></a></td>
-								<td><?= $this->sectoresIDX[$cursoDO->getFkSector()] ?></td>
-								<td><?= $this->categoriasIDX[$cursoDO->getFkCategoria()] ?></td-->
-								<td><?= $this->sectoresIDX[$cursoDO->getFkSector()] ?></td>
 								<td><?= $this->categoriasIDX[$cursoDO->getFkCategoria()] ?></td>
 								<?php
 					 

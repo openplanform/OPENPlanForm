@@ -1,7 +1,7 @@
 <?php
 /**
  * Este archivo ha sido generado con Owl DoGen v.0.6
- * el 03 de December de 2010 a las 09:06:28
+ * el 17 de December de 2010 a las 09:57:03
  * @package dataAccess
  */
 
@@ -134,6 +134,12 @@ class TblEmpresa extends OwlGenericDO{
      */
     public $lastModified;
 
+    /**
+     * Atributo que representa el campo "vPersonaContacto"
+     * @var string
+     */
+    public $vPersonaContacto;
+
     // Constructor
 
     /**
@@ -175,6 +181,7 @@ class TblEmpresa extends OwlGenericDO{
         $this->dBaja = $data['dBaja'];
         $this->modUser = $data['mod_user'];
         $this->lastModified = $data['last_modified'];
+        $this->vPersonaContacto = $data['vPersonaContacto'];
 
     }
 
@@ -247,6 +254,9 @@ class TblEmpresa extends OwlGenericDO{
         }
         if( $tmp = $searchItem->lastModified ){
             $where[] = "last_modified='$tmp'";
+        }
+        if( $tmp = $searchItem->vPersonaContacto ){
+            $where[] = "vPersonaContacto='$tmp'";
         }
         if( count($where) > 0 ){
             $where = implode( ' and ', $where );
@@ -377,6 +387,7 @@ class TblEmpresa extends OwlGenericDO{
         $sets[] = 'dBaja=' . ( ( ( $value = $this->dBaja ) === null || !isset($this->dBaja) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'mod_user=' . ( ( ( $value = $this->modUser ) === null || !isset($this->modUser) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'last_modified=' . ( ( ( $value = $this->lastModified ) === null || !isset($this->lastModified) ) ? 'null' :  "'".addslashes($value)."'" );
+        $sets[] = 'vPersonaContacto=' . ( ( ( $value = $this->vPersonaContacto ) === null || !isset($this->vPersonaContacto) ) ? 'null' :  "'".addslashes($value)."'" );
         $setStr = implode(',', $sets);
         return $this->_db->executeQuery("UPDATE tblEmpresa SET $setStr WHERE idEmpresa='".addslashes($this->_data['idEmpresa'])."'");
     }
@@ -404,6 +415,7 @@ class TblEmpresa extends OwlGenericDO{
         $attributes[] = 'dBaja';
         $attributes[] = 'mod_user';
         $attributes[] = 'last_modified';
+        $attributes[] = 'vPersonaContacto';
         $attributes = implode(',', $attributes);
         $values = array();
         $values[] = (( $value = $this->fkPais ) === null || !isset($this->fkPais) ) ? 'null' : "'".addslashes($value)."'";
@@ -424,6 +436,7 @@ class TblEmpresa extends OwlGenericDO{
         $values[] = (( $value = $this->dBaja ) === null || !isset($this->dBaja) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->modUser ) === null || !isset($this->modUser) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->lastModified ) === null || !isset($this->lastModified) ) ? 'null' : "'".addslashes($value)."'";
+        $values[] = (( $value = $this->vPersonaContacto ) === null || !isset($this->vPersonaContacto) ) ? 'null' : "'".addslashes($value)."'";
         $values = implode(',', $values);
         if( $this->_db->executeQuery("INSERT INTO tblEmpresa($attributes) VALUES($values)") ){
             $eleDO = $this->findByPrimaryKey( $this->_db, $this->_db->getLastInsertId() );
@@ -809,6 +822,26 @@ class TblEmpresa extends OwlGenericDO{
     public function setLastModified( $value ){
 
         $this->lastModified = $value;
+
+    }
+
+    /**
+      * Obtiene el valor del atributo 'vPersonaContacto'.
+      *
+      * @return string
+      */
+    public function getVPersonaContacto(){
+        return $this->vPersonaContacto;
+    }
+
+    /**
+      * Establece el valor del atributo 'vPersonaContacto'.
+      *
+      * @param string Valor.
+      */
+    public function setVPersonaContacto( $value ){
+
+        $this->vPersonaContacto = $value;
 
     }
 

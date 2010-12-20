@@ -62,6 +62,31 @@
 			<div class="separadorH"></div>
 			
 			<div class="campo controlado multi">
+            	<label for="sector">Sector*</label>
+	            <select class="grande desplegable" name="sector" id="sector">
+	            	<option value=""></option>
+					<?
+					
+					// Estado del Plan
+					foreach ( $this->sectoresIDX as $clave => $nombre) {
+						
+						?><option value="<?= $clave ?>" <?= ( ($this->planDO->getFkSector() == $clave)?'selected="selected"':'' ) ?>><?= $nombre ?></option><?
+						
+					}
+					
+					?>
+				</select>
+				<p id="errorSector" class="errorInput"><?= $this->errorSector ?></p>
+			</div>
+			
+			<div class="campo controlado multi">
+                <label for="expediente">Número de expediente*</label>
+                <input type="text" name="expediente" id="expediente" class="campoTexto" value="<?= $this->planDO->getVNumeroExpediente() ?>"/>
+                <p id="errorExpediente" class="errorInput"><?= $this->errorExpediente ?></p>
+            </div>
+			
+			
+			<div class="campo controlado multi">
             	<label for="estado">Estado del Plan*</label>
 	            <select class="grande desplegable" name="estado" id="estado">
 	            	<option value=""></option>
@@ -78,6 +103,8 @@
 				</select>
 				<p id="errorEstado" class="errorInput"><?= $this->errorEstado ?></p>
 			</div>
+			
+			<div class="separadorH"></div>
 			
 			<div class="campo controlado multi">
             	<label for="propietario">Propietario*</label>
@@ -114,8 +141,6 @@
 				</select>
 				<p id="errorConsultora" class="errorInput"><?= $this->errorConsultora ?></p>
 			</div>
-			
-			<div class="separadorH"></div>
 			
 			<div class="campo controlado">
                 <label for="presupuesto">Presupuesto*</label>

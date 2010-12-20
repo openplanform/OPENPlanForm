@@ -8,18 +8,16 @@
 			<p><strong>Nombre:</strong><span> <?= $this->cursoDO->getVNombre() ?></span></p>
 			<p><strong>Plan:</strong><span> <?= $this->cursoDO->getTblPlan()->getVNombre() ?></span></p>
 			<p><strong>Categoría:</strong><span> <?= $this->categoriaDO->getVNombre() ?></span></p>
-			<p><strong>Sector:</strong><span> <?= $this->cursoDO->getTblSector()->getVNombre() ?></span></p>
 			<p><strong>Colectivo:</strong><span> <?= $this->cursoDO->getTblColectivo()->getVNombre() ?></span></p>
-			<p><strong>Modalidad:</strong><span> <?= $this->cursoDO->getTblModalidad()->getVNombre() ?></span></p>
+			<p><strong>Modalidad:</strong><span> <?= $this->modalidadesIDX[$this->cursoDO->getFkModalidad()] ?></span></p>
 			<p><strong>Centro:</strong><span> <?= $this->cursoDO->getTblCentro()->getVNombre() ?></span></p><?
 			
 			$alumnos = $this->cursoDO->getINumeroAlumnos();
             ?><p><strong>Número de alumnos:</strong><span class="min"> <?= $alumnos ?></span></p>
-            <p class="separator"><strong>Número de acción:</strong><span class="min"> <?= $this->cursoDO->getIAccion() ?></span></p>
+            <p><strong>Número de acción:</strong><span class="min"> <?= $this->cursoDO->getIAccion() ?></span></p>
                 
 			<div class="multi">
-                <!-- p><strong>Grupo:</strong><span class="min"> <?= $this->cursoDO->getIGrupo() ?></span></p-->
-                <!-- p><strong>Sesión:</strong><span class="min"> <?= $this->cursoDO->getISesion() ?></span></p -->
+                <p><strong>Grupo:</strong><span class="min"> <?= $this->cursoDO->getIGrupo() ?></span></p>
 			</div>
 			
             <div class="multi"><?
@@ -30,12 +28,39 @@
                 $horasD = $this->cursoDO->getIHorasDistancia();
                 ?><p><strong>Horas a distancia:</strong><span class="min"> <?= $horasD ?></span></p><?
             
-                $horasT = $this->cursoDO->getIHorasTutoria();
-                ?><p class="separator"><strong>Horas tutoría:</strong><span class="min"> <?= $horasT ?></span></p><?				
-    			
-    	    ?></div>
+    	    ?></div><?
     	    
-    	    <div class="multi"><?
+    	    $horasT = $this->cursoDO->getIHorasTutoria();
+    	    
+    	    if (intval($horasT) != 0){
+    	    
+	    	    ?><div class="alterForm ficha">
+	    	    
+	    	    	<h3>Tutoría a distancia</h3>
+	    	    	
+    	    		<p><strong>Horas tutoría:</strong><span class="min"> <?= $horasT ?></span></p><?
+    	    		
+    	    		$tutorDistancia = 'Aún no asignado';
+    	    		if ($idTutorDistancia = $this->cursoDO->getFkTutorDistancia()){
+    	    			
+    	    			$tutorDistancia = $this->profesoresIDX[$idTutorDistancia];
+    	    			
+    	    		}
+	    	    	
+	    	    	?><p><strong>Tutor formación a distancia:</strong><span> <?= $tutorDistancia ?></span></p><?
+	    	    	
+	    	    	$tipoTutoria = 'Aún no asignada';
+	    	    	if ($idTipoTutoria = $this->cursoDO->getFkModalidadTutoria()){
+	    	    		$tipoTutoria = $this->modalidadesIDX[$idTipoTutoria];
+	    	    	}
+	    	    	
+	    	    	?><p><strong>Tipo de tutoría:</strong><span> <?= $tipoTutoria ?></span></p>
+	    	    	
+	    	    </div><?
+	    	    
+    	    }
+    	    
+    	    ?><div class="multi"><?
 			
     			$fechaIni = OwlDate::getDiaMesAno($this->cursoDO->getDInicio());
     			?><p><strong>Fecha de inicio:</strong><span class="med"><?= $fechaIni ?></span></p><?
@@ -44,30 +69,6 @@
     			?><p><strong>Fecha de finalización:</strong><span class="med"><?= $fechaFin ?></span></p>
     			
 			</div><?
-			
-            // Horas mañana
-            $horasManana = $this->cursoDO->getIHorasManana();
-            if ($horasManana != 0){
-            
-                ?><div class="multi">
-                    <p><strong>Horas Mañana:</strong><span class="min"><?= $horasManana ?></span></p>
-                    <p><strong class="min">De:</strong><span class="min"><?= date('G:i', strtotime($this->cursoDO->getIDeManana())) ?></span></p>
-                    <p><strong class="min">A:</strong><span class="min"><?= date('G:i', strtotime($this->cursoDO->getIAManana())) ?></span></p>
-                </div><?
-            
-            }
-            
-            // Horas tarde
-            $horasTarde = $this->cursoDO->getIHorasTarde();
-            if ($horasTarde != 0){
-            
-                ?><div class="multi">
-                    <p><strong>Horas Tarde:</strong><span class="min"><?= $horasTarde ?></span></p>
-                    <p><strong class="min">De:</strong><span class="min"><?= date('G:i', strtotime($this->cursoDO->getIDeTarde())) ?></span></p>
-                    <p class="separator"><strong class="min">A:</strong><span class="min"><?= date('G:i', strtotime($this->cursoDO->getIATarde())) ?></span></p>
-                </div><?
-                
-            }			
 			
 			$desc = $this->cursoDO->getVdescripcion();
 			if (!empty($desc)){
@@ -91,6 +92,11 @@
 				?></span></p><?
 				
 			}
+			
+		?>
+		</div>
+		<div class="ficha">
+		<?
 			
 			// Preinscritos
 			if ( count($this->precandidatosCursoCOL) > 0 ){
@@ -150,6 +156,41 @@
 							
 		            		<tr <?= $alter ? 'class="alter"' : '' ?>>
 		            			<td><a href="/alumno/ficha.html/<?= $candidatoCursoDO->getFkPersona() ?>"><?= $this->personasIDX[$candidatoCursoDO->getFkPersona()]->getVNombre() . ' ' . $this->personasIDX[$candidatoCursoDO->getFkPersona()]->getVPrimerApellido() . ' ' . $this->personasIDX[$candidatoCursoDO->getFkPersona()]->getVSegundoApellido() ?></a></td>
+		            		</tr>
+		            		
+		            		<?
+						}
+					
+					?></tbody>
+					</table>
+				</div>
+				<div class="separadorH"></div><?
+				
+			}
+			
+			// Alumnos
+			if ( count($this->alumnosCursoCOL) > 0 ){
+	
+				?><h3>Alumnos</h3>
+				
+				<div class="scroll">
+					<table class="listado">
+						<thead>
+							<tr>
+								<th>Nombre</th>
+							</tr>
+						</thead>
+						<tbody>
+						<?
+					
+						$alter = true;
+						foreach ( $this->alumnosCursoCOL as $alumnoCursoDO ){
+							
+							$alter = !$alter;
+							?>
+							
+		            		<tr <?= $alter ? 'class="alter"' : '' ?>>
+		            			<td><a href="/alumno/ficha.html/<?= $alumnoCursoDO->getIPersona() ?>"><?= $this->personasIDX[$alumnoCursoDO->getIPersona()]->getVNombre() . ' ' . $this->personasIDX[$alumnoCursoDO->getIPersona()]->getVPrimerApellido() . ' ' . $this->personasIDX[$alumnoCursoDO->getIPersona()]->getVSegundoApellido() ?></a></td>
 		            		</tr>
 		            		
 		            		<?

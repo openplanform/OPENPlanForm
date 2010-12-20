@@ -28,7 +28,7 @@
 				<tr	<?= $clase ?> >
 					<td><?= $carnetDO->getVNombre() ?></td>
 					<td><?= $carnetDO->getVDescripcion() ?></td>
-					<td class="accion"><a href="javascript:ventanaConfirmacion('Confirmar','¿Está seguro que desea eliminar el carnet <strong><?= $carnetDO->getVNombre() ?></strong>?','/datos/eliminarCarnet.html/<?= $carnetDO->getIdCarnetConducir() ?>')" class="btnEliminar" title="Eliminar carnet"><span>eliminar</span></a></td>
+					<td class="accion"><a href="javascript:ventanaConfirmacion('Confirmar','¿Está seguro que desea eliminar el carnet <strong><?= $carnetDO->getVNombre() ?></strong>?','/datos/eliminar.html/carnet/<?= $carnetDO->getIdCarnetConducir() ?>')" class="btnEliminar" title="Eliminar carnet"><span>eliminar</span></a></td>
 					<td class="accion"><a href="/datos/carnet.html/<?= $carnetDO->getIdCarnetConducir() ?>" class="btnEditar" title="Editar carnet"><span>editar</span></a></td>
 				</tr>
 				<?

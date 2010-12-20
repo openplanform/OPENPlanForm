@@ -893,6 +893,7 @@ class profesorController extends PplController{
             }
             
             // CATEGORÍAS
+            // Pueden venir como un array o como un string
             if (is_array($categorias) || !empty($categorias)){
                 if ( is_array($categorias) ){
                 	$catsStr = implode(',', $categorias);	
@@ -901,11 +902,11 @@ class profesorController extends PplController{
                 	// Si hay más de una categoría, no se marca en el selector si no se le pasa un array
                 	$categorias = explode(',', $categorias);
                 }
-//                $where[] = " EXISTS (SELECT null FROM trelPersonaCategoria WHERE tblPersona.idPersona = trelPersonaCategoria.fkPersona AND trelPersonaCategoria.fkCategoria IN($catsStr))";
                 $where[] = " EXISTS (SELECT null FROM trelPersonaCategoria WHERE p.idPersona = trelPersonaCategoria.fkPersona AND trelPersonaCategoria.fkCategoria IN($catsStr))";
-                $this->view->categorias = $categorias;
-//                $queryString .= '&amp;categorias=' . $catsStr;
+                $this->view->htmlSelectCategorias = $this->_getSelectHtml($arbolDS, 0, $categorias);
                 $queryARR['categorias'] = $catsStr;
+//                $where[] = " EXISTS (SELECT null FROM trelPersonaCategoria WHERE tblPersona.idPersona = trelPersonaCategoria.fkPersona AND trelPersonaCategoria.fkCategoria IN($catsStr))";
+//                $queryString .= '&amp;categorias=' . $catsStr;
             }
             
             // Se instancia y configura el paginador

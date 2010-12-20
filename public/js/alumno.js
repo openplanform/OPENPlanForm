@@ -161,15 +161,15 @@ function comprobarCampos() {
 		return false;
 	}
 	
+	if ( !comprobarVacio('nivelEstudios', 'Seleccionar un nivel') ){
+		return false;
+	}
+	
 	if ( !comprobarVacio('estadoCivil', 'Seleccionar un estado') ){
 		return false;
 	}
 	
 	if ( !comprobarVacio('estadoLaboral', 'Seleccionar un estado') ){
-		return false;
-	}
-
-	if ( !comprobarVacio('nivelEstudios', 'Seleccionar un nivel') ){
 		return false;
 	}
 	
@@ -197,8 +197,7 @@ $j(document).ready(function(){
 		
 	});
 	
-    $(function() {
-        $("#nacimiento" ).datepicker();
-    });	
+	$("#nacimiento" ).datepicker();
+	$("#fechaParo" ).datepicker();
 	
 });

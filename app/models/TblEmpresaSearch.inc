@@ -1,7 +1,7 @@
 <?php
 /**
  * Este archivo ha sido generado con Owl Dogen v.0.6
- * el 03 de December de 2010 a las 09:06:28
+ * el 17 de December de 2010 a las 09:57:03
  * @package dataAccess
  */
 
@@ -144,5 +144,12 @@ class TblEmpresaSearch{
      * @var string
      */
     public $lastModified;
+
+    /**
+     * Representa el atributo vPersonaContacto.
+     *
+     * @var string
+     */
+    public $vPersonaContacto;
 }
 ?>

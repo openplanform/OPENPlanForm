@@ -6,9 +6,7 @@
         echo '<script type="text/javascript">ventana' . ucfirst($this->popup['estado']) . '("' . $this->popup['titulo'] . '", "' . $this->popup['mensaje'] . '", "' . $this->popup['url'] . '");</script>'; 
     }    
 
-?><h2>Administrar roles de acceso</h2>
-
-<table class="listado">
+?><table class="listado">
     <thead>
         <tr>
             <th><a href="/administrador/roles.html/?ob=id&o=<?=$this->order?>" <?=( ($this->orderBy == 'id')?'class="ordenado ' . $this->order . '"':'' )?> >Id</a></th>

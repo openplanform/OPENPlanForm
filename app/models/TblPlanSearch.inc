@@ -1,7 +1,7 @@
 <?php
 /**
  * Este archivo ha sido generado con Owl Dogen v.0.6
- * el 24 de November de 2010 a las 08:55:33
+ * el 15 de December de 2010 a las 04:49:58
  * @package dataAccess
  */
 
@@ -53,6 +53,20 @@ class TblPlanSearch{
      * @var integer
      */
     public $fkEstadoPlan;
+
+    /**
+     * Representa el atributo fkSector.
+     *
+     * @var integer
+     */
+    public $fkSector;
+
+    /**
+     * Representa el atributo vNumeroExpediente.
+     *
+     * @var string
+     */
+    public $vNumeroExpediente;
 
     /**
      * Representa el atributo vNombre.

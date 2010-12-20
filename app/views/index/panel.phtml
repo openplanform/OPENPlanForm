@@ -31,7 +31,7 @@ $this->addCssInclude('/css/panel.css');
         </li>
         <li class="profesores bloque">
             <strong><?= $this->totalProfesores ?></strong>
-            <div><a href="/consultora/index.html"><?= ($this->totalProfesores == 1) ?  'Profesor' : 'Profesores' ?></a></div>
+            <div><a href="/profesor/index.html"><?= ($this->totalProfesores == 1) ?  'Profesor' : 'Profesores' ?></a></div>
             <p>último añadido: <a href="/profesor/ficha/<?= $this->ultimoProfesor['idPersona'] ?>"><?= OwlString::limitaTexto($this->ultimoProfesor['vNombre'], 20) ?></a></p>
         </li>
         <li class="academias bloque">

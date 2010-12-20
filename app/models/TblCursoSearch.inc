@@ -1,7 +1,7 @@
 <?php
 /**
  * Este archivo ha sido generado con Owl Dogen v.0.6
- * el 13 de December de 2010 a las 05:32:46
+ * el 16 de December de 2010 a las 06:37:11
  * @package dataAccess
  */
 
@@ -41,13 +41,6 @@ class TblCursoSearch{
     public $fkColectivo;
 
     /**
-     * Representa el atributo fkSector.
-     *
-     * @var integer
-     */
-    public $fkSector;
-
-    /**
      * Representa el atributo fkModalidad.
      *
      * @var integer
@@ -60,6 +53,20 @@ class TblCursoSearch{
      * @var integer
      */
     public $fkCentro;
+
+    /**
+     * Representa el atributo fkTutorDistancia.
+     *
+     * @var integer
+     */
+    public $fkTutorDistancia;
+
+    /**
+     * Representa el atributo fkModalidadTutoria.
+     *
+     * @var integer
+     */
+    public $fkModalidadTutoria;
 
     /**
      * Representa el atributo vNombre.
@@ -132,48 +139,6 @@ class TblCursoSearch{
     public $lastModified;
 
     /**
-     * Representa el atributo iHorasManana.
-     *
-     * @var integer
-     */
-    public $iHorasManana;
-
-    /**
-     * Representa el atributo iHorasTarde.
-     *
-     * @var integer
-     */
-    public $iHorasTarde;
-
-    /**
-     * Representa el atributo iDeManana.
-     *
-     * @var string
-     */
-    public $iDeManana;
-
-    /**
-     * Representa el atributo iAManana.
-     *
-     * @var string
-     */
-    public $iAManana;
-
-    /**
-     * Representa el atributo iDeTarde.
-     *
-     * @var string
-     */
-    public $iDeTarde;
-
-    /**
-     * Representa el atributo iATarde.
-     *
-     * @var string
-     */
-    public $iATarde;
-
-    /**
      * Representa el atributo iGrupo.
      *
      * @var integer
@@ -188,10 +153,10 @@ class TblCursoSearch{
     public $iAccion;
 
     /**
-     * Representa el atributo iSesion.
+     * Representa el atributo vObservaciones.
      *
-     * @var integer
+     * @var string
      */
-    public $iSesion;
+    public $vObservaciones;
 }
 ?>

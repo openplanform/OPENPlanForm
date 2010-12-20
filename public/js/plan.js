@@ -13,7 +13,15 @@ function comprobarCampos() {
 	if ( !comprobarVacio('convocatoria', 'La convocatoria no puede estar vacío') ){
 		return false;
 	}
-
+	
+	if ( !comprobarVacio('sector', 'El sector no puede estar vacío') ){
+		return false;
+	}
+	
+	if ( !comprobarVacio('expediente', 'El número no puede estar vacío') ){
+		return false;
+	}
+	
 	if ( !comprobarVacio('estado', 'El estado no puede estar vacío') ){
 		return false;
 	}

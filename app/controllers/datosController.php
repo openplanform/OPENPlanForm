@@ -7,6 +7,11 @@ require_once MODELDIR . 'TblCarnetConducir.inc';
 
 class datosController extends PplController{
 	
+	
+	public function indexAction(){
+		
+	}
+	
 	/**
      * Init
      * @see extranet.planespime.es/owl/lib/OwlController::initController()
@@ -136,19 +141,34 @@ class datosController extends PplController{
 	}
 	
 	/**
-	 * Elimina un carnet de conducir
+	 * Elimina un elemento pasado por la url
 	 */
-	public function eliminarCarnetAction(){
+	public function eliminarAction(){
 		
-		$idCarnet = $this->getParam(0);
-		if ( !is_null($idCarnet) ){
-			$carnetDO = TblCarnetConducir::findByPrimaryKey($this->db, $idCarnet);
-			if ( !empty($carnetDO) ){
-				$carnetDO->delete();
+		// Item a eliminar
+		$item = $this->getParam(0);
+		
+		// Id del item a eliminar
+		$id = $this->getParam(1);
+		
+		if ( !is_null($id) ){
+			
+			// Buscamos el item
+			switch ( $item ){
+				
+				case 'carnet':
+					$itemDO = TblCarnetConducir::findByPrimaryKey($this->db, $id);
+					break;
+				
+			}
+			
+			// Eliminamos el item
+			if ( !empty($itemDO) ){
+				$itemDO->delete();
 			}
 		}
 		
-		$this->redirectTo('datos', 'carnet');
+		$this->redirectTo('datos', $item);
 		
 	}
 	

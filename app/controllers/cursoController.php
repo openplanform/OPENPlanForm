@@ -7,14 +7,16 @@ require_once 'helper/OwlLanguage.inc';
 require_once 'OwlPaginator.inc';
 
 require_once CLASSESDIR . 'PplController.inc';
-//require_once CLASSESDIR . 'Ppl.inc';
+require_once CLASSESDIR . 'PplDocumentacion.inc';
 
+require_once MODELDIR . '/TblAlumno.inc';
 require_once MODELDIR . '/TblCentro.inc';
 require_once MODELDIR . '/TblCategoria.inc';
 require_once MODELDIR . '/TblCategoria.inc';
 require_once MODELDIR . '/TblCategoriaExtendida.inc';
 require_once MODELDIR . '/TblColectivo.inc';
 require_once MODELDIR . '/TblCurso.inc';
+require_once MODELDIR . '/TblEstadoCivil.inc';
 require_once MODELDIR . '/TblHorario.inc';
 require_once MODELDIR . '/TblModalidad.inc';
 require_once MODELDIR . '/TblSector.inc';
@@ -57,7 +59,6 @@ class cursoController extends PplController{
     		'ini'	=> 'dInicio',
     		'nom' 	=> 'vNombre',
     		'plan'	=> 'fkPlan',
-    		'sec'	=> 'fkSector'
     	);
     	
         if ( !empty($_REQUEST) && array_key_exists('o', $_GET) & array_key_exists('ob', $_GET) ){
@@ -99,9 +100,6 @@ class cursoController extends PplController{
          // Planes
         $this->view->planesIDX = $this->cacheBO->getPlanes();
         
-        // Sectores
-        $this->view->sectoresIDX = $this->cacheBO->getSectores();
-        
         // Categorías
         $this->view->categoriasIDX = $this->cacheBO->getCategorias();
         
@@ -129,9 +127,6 @@ class cursoController extends PplController{
         
         // Colectivos
         $this->view->colectivosIDX = $this->cacheBO->getColectivos();
-        
-        // Sectores
-        $this->view->sectoresIDX = $this->cacheBO->getSectores();
         
         // Modalidades
         $this->view->modalidadesIDX = $this->cacheBO->getModalidades();
@@ -247,9 +242,6 @@ class cursoController extends PplController{
 	        // Colectivos
 	        $this->view->colectivosIDX = $this->cacheBO->getColectivos();
 	        
-	        // Sectores
-	        $this->view->sectoresIDX = $this->cacheBO->getSectores();
-	        
 	        // Modalidades
 	        $this->view->modalidadesIDX = $this->cacheBO->getModalidades();
 	        
@@ -274,6 +266,9 @@ class cursoController extends PplController{
 	        // Candidatos
 		    $this->view->candidatosCursoCOL = TrelCandidato::findByTblCurso($this->db, $cursoDO->getIdCurso());
 	        
+		    // Alumnos
+		    $this->view->alumnosCursoCOL = TblAlumno::findByTblCurso($this->db, $cursoDO->getIdCurso());
+		    
 	        // Personas
 	        $this->view->personasIDX = $this->cacheBO->getPersonas();
 	        
@@ -314,6 +309,12 @@ class cursoController extends PplController{
 		        
 		        // Candidatos
 		    	$this->view->candidatosCursoCOL = TrelCandidato::findByTblCurso($this->db, $cursoDO->getIdCurso());
+		    	
+		    	// Alumnos
+		    	$this->view->alumnosCursoCOL = TblAlumno::findByTblCurso($this->db, $cursoDO->getIdCurso());
+		    	
+		    	// Modalidades
+		    	$this->view->modalidadesIDX = $this->cacheBO->getModalidades();
 
         	}
         	
@@ -452,13 +453,6 @@ class cursoController extends PplController{
 	    	$this->view->errorCategoria = 'La categoria no puede estar vacía';
 	    }
 	    
-	    // Sector
-    	$sector = $this->helper->escapeInjection($this->helper->get('sector'));
-	    if ( is_null($sector) || empty($sector) ){
-	    	$correcto = false;
-	    	$this->view->errorSector = 'El sector no puede estar vacío';
-	    }
-
 	    // Colectivo
     	$colectivo = $this->helper->escapeInjection($this->helper->get('colectivo'));
 	    if ( is_null($colectivo) || empty($colectivo) ){
@@ -559,13 +553,20 @@ class cursoController extends PplController{
             }
         }
         
+        // Tutoría a distancia
+        $fkTutorDistancia = $this->helper->getAndEscape('tutorDistancia');
+        $fkModalidadTutoria = $this->helper->getAndEscape('modalidadTutoria');
+        
 		/**
 		 * Insertamos o actualizamos un curso
 		 */
 	    if ( $correcto ){
-
+	    	
 	    	// Empieza la transacción
 		    $this->db->begin();
+		    
+		    // Desactivaremos la comprobación de claves foráneas
+		    $this->db->disableForeignChecks();
 	    	
 	    	// Insertamos o actualizamos un curso
 	    	if ( $correcto ){
@@ -580,7 +581,6 @@ class cursoController extends PplController{
 		    	$cursoDO->setFkPlan($plan);
 		    	$cursoDO->setFkCategoria($categoria);
 		    	$cursoDO->setFkColectivo($colectivo);
-		    	$cursoDO->setFkSector($sector);
 		    	$cursoDO->setFkModalidad($modalidad);
 		    	$cursoDO->setFkCentro($centro);
 		    	$cursoDO->setIHorasPresenciales($horasP);
@@ -591,6 +591,8 @@ class cursoController extends PplController{
 		    	$cursoDO->setVDescripcion($descripcion);
 		    	$cursoDO->setINumeroAlumnos($alumnos);
 		    	$cursoDO->setIAccion($accion);
+		    	$cursoDO->setFkTutorDistancia($fkTutorDistancia);
+		    	$cursoDO->setFkModalidadTutoria($fkModalidadTutoria);
 		    	$cursoDO->setLastModified(date('Y-m-d'));
                 $cursoDO->setModUser($this->usuario->getNombre());
 		    	
@@ -601,6 +603,9 @@ class cursoController extends PplController{
 		    	}
 		    	
 	    	}
+	    	
+	    	// Se vuelve a activar la comprobación de claves foráneas
+	    	$this->db->enableForeignChecks();
 	    	
 	    	// Profesores del curso. Si estoy editando, borro todos los profesores para insertar los nuevos
 	    	if ( $correcto ){
@@ -636,12 +641,15 @@ class cursoController extends PplController{
 	    		}
 	    		
 	    		if ( $correcto ){
+	    			$sql = "INSERT INTO trelPrecandidato VALUES ";
+	    			$valuesARR = array();
 	    			foreach ( $precandidatosARR as $idPrecandidato ){
-		    			$sql = 'INSERT INTO trelPrecandidato VALUES (' . $idPrecandidato . ',' . $idCurso . ',\'' . date('Y-m-d') . '\')';
-		    			if ( !$this->db->executeQuery($sql) ){
-		    				$correcto = false;
-		    			}
+		    			$valuesARR[] = '(' . $idPrecandidato . ',' . $idCurso . ',\'' . date('Y-m-d') . '\')';
 			    	}
+			    	$sql .= implode(',', $valuesARR);
+	    			if ( !$this->db->executeQuery($sql) ){
+	    				$correcto = false;
+	    			}
 	    		}
 	    		
 	    	}
@@ -657,12 +665,73 @@ class cursoController extends PplController{
 	    		}
 	    		
 	    		if ( $correcto ){
+	    			$sql = "INSERT INTO trelCandidato VALUES ";
+	    			$valuesARR = array();
 	    			foreach ( $candidatosARR as $idCandidato ){
-		    			$sql = 'INSERT INTO trelCandidato VALUES (' . $idCandidato . ',' . $idCurso . ',\'' . date('Y-m-d') . '\')';
-		    			if ( !$this->db->executeQuery($sql) ){
-		    				$correcto = false;
-		    			}
+		    			$valuesARR[] = '(' . $idCandidato . ',' . $idCurso . ',\'' . date('Y-m-d') . '\')';
 			    	}
+			    	$sql .= implode(',', $valuesARR);
+	    			if ( !$this->db->executeQuery($sql) ){
+	    				$correcto = false;
+	    			}
+	    		}
+	    		
+	    	}
+	    	
+	    	// Alumnos
+	    	if ( $correcto ){
+	    		
+	    		if ( $editar ){
+	    			$sql = 'DELETE FROM tblAlumno WHERE fkCurso = ' . $idCurso;
+	    			if ( !$this->db->executeQuery($sql) ){
+	    				$correcto = false;
+	    			}
+	    		}
+	    		
+	    		if ( $correcto ){
+	    			
+	    			if ( !empty($alumnosARR) ){
+	    				
+			    		// Obtenemos las personas para copiar como alumnos
+			    		$sql = "SELECT * FROM tblPersona WHERE idPersona IN (" . implode(', ', $alumnosARR) . ")";
+			    		
+			    		$personasCOL = OwlGenericDO::createCollection($this->db, $sql, 'tblPersona');
+			    		$estadosCivilesIDX = $this->cacheBO->getEstadosCiviles();
+			    		$estadosLaboralesIDX = $this->cacheBO->getEstadosLaborales();
+			    		$nivelesEstudioIDX = $this->cacheBO->getNivelesEstudio();
+			    		$paisesIDX = $this->cacheBO->getPaises();
+			    		$provinciasIDX = $this->cacheBO->getProvincias();
+			    		$tiposIdentificacionIDX = $this->cacheBO->getTiposIdentificacion();
+			    		
+			    		foreach ( $personasCOL as $personaDO ){
+			    			
+			    			$alumnoDO = new TblAlumno($this->db);
+			    			$alumnoDO->setDAlta(date('Y-m-d'));
+			    			$alumnoDO->setDNacimiento($personaDO->getDNacimiento());
+			    			$alumnoDO->setFkCurso($cursoDO->getIdCurso());
+			    			$alumnoDO->setIPersona($personaDO->getIdPersona());
+			    			$alumnoDO->setIUsuario($personaDO->getFkUsuario());
+			    			$alumnoDO->setVDireccion($personaDO->getVDireccion());
+			    			$alumnoDO->setVEmail($personaDO->getTblUsuario()->getVEmail());
+			    			$alumnoDO->setVEstadoCivil($estadosCivilesIDX[$personaDO->getFkEstadoCivil()]->getVNombre());
+			    			$alumnoDO->setVEstadoLaboral($estadosLaboralesIDX[$personaDO->getFkEstadoLaboral()]->getVNombre());
+							$alumnoDO->setVNivelEstudios($nivelesEstudioIDX[$personaDO->getFkNivelEstudios()]->getVNombre());
+							$alumnoDO->setVNombre($personaDO->getVNombre());
+							$alumnoDO->setVNumeroIdentificacion($personaDO->getVNumeroIdentificacion());
+							$alumnoDO->setVPais($paisesIDX[$personaDO->getFkPais()]->getVIso());
+							$alumnoDO->setVPoblacion($personaDO->getVPoblacion());
+							$alumnoDO->setVPrimerApellido($personaDO->getVPrimerApellido());
+							$alumnoDO->setVProvincia( ( is_null($personaDO->getFkProvincia()) || $personaDO->getFkProvincia() == 0 ) ? null : $provinciasIDX[$personaDO->getFkProvincia()]->getVNombre());
+							$alumnoDO->setVSegundoApellido($personaDO->getVSegundoApellido());
+							$alumnoDO->setVNumeroSS($personaDO->getVNumeroSS());
+							$alumnoDO->setVTipoIdentificacion($tiposIdentificacionIDX[$personaDO->getFkTipoIdentificacion()]->getVNombre());
+							
+							if ( !$alumnoDO->insert() ){
+								$correcto = false;
+							}
+							
+			    		}
+	    			}
 	    		}
 	    		
 	    	}
@@ -698,9 +767,6 @@ class cursoController extends PplController{
         // Colectivos
         $this->view->colectivosIDX = $this->cacheBO->getColectivos();
         
-        // Sectores
-        $this->view->sectoresIDX = $this->cacheBO->getSectores();
-        
         // Modalidades
         $this->view->modalidadesIDX = $this->cacheBO->getModalidades();
         
@@ -720,7 +786,6 @@ class cursoController extends PplController{
                 'ini'   => 'dInicio',
                 'nom'   => 'vNombre',
                 'plan'  => 'fkPlan',
-                'sec'   => 'fkSector'
             );
             
 
@@ -747,7 +812,6 @@ class cursoController extends PplController{
             $plan = $this->helper->getAndEscape('idPlan');
             $cat = $this->helper->getAndEscape('cat');
             $colectivo = $this->helper->getAndEscape('colectivoCurso');
-            $sector = $this->helper->getAndEscape('sector');
             $modalidad = $this->helper->getAndEscape('mod');
             $kw = $this->helper->getAndEscape('keyword');
             
@@ -786,14 +850,6 @@ class cursoController extends PplController{
                 $this->view->colectivo = $colectivo;
 //                $queryString .= "&amp;colectivoCurso=$colectivo";
                 $queryARR['colectivoCurso'] = $colectivo;
-            }
-
-            // SECTOR
-            if (!empty($sector)){
-                $where[] = " fkSector = $sector";
-                $this->view->sector = $sector;
-//                $queryString .= "&amp;sector=$sector";
-                $queryARR['sector'] = $sector;
             }
 
             // MODALIDAD
@@ -883,7 +939,7 @@ class cursoController extends PplController{
 	        			
 	        			$lunes = $this->helper->escapeInjection($this->helper->get('lunes'));
 	        			$martes = $this->helper->escapeInjection($this->helper->get('martes'));
-	        			$miercoles = $this->helper->escapeInjection($this->helper->get('miercoes'));
+	        			$miercoles = $this->helper->escapeInjection($this->helper->get('miercoles'));
 	        			$jueves = $this->helper->escapeInjection($this->helper->get('jueves'));
 	        			$viernes = $this->helper->escapeInjection($this->helper->get('viernes'));
 	        			$sabado = $this->helper->escapeInjection($this->helper->get('sabado'));
@@ -937,6 +993,8 @@ class cursoController extends PplController{
 	        				$duracionCursoTime = $fechaFinTime - $fechaIniTime;
 	        				$duracionCurso = $duracionCursoTime/86400; // Número de días
 	        				
+	        				$duracionCurso++;
+	        				
 	        				// Compruebo qué días ha seleccionado el usuario, y creo las tuplas
 	        				for ( $i=0; $i<=$duracionCurso; $i++ ){
 	        					
@@ -949,10 +1007,6 @@ class cursoController extends PplController{
 	        					$fechaIniTime += 86400;
 	        					
 	        				}
-	        				
-//	        				echo '<pre>';
-//	        				print_r($fechasARR);
-//	        				echo '</pre>';
 	        				
 	        				// Obtenemos las sesiones
 	        				$fechasARR = $this->actualizarSesiones($fechasARR, $cursoDO->getIdCurso(), $fechaInicioCurso, $fechaFinCurso);
@@ -1057,7 +1111,7 @@ class cursoController extends PplController{
 		        $paginaActual = $this->helper->escapeInjection($this->helper->get('p'));
 		        $paginaActual = empty($paginaActual) ? 1 : $paginaActual;
 		        $paginador->setPaginaActual($paginaActual);
-		        $paginador->setOrderBy('dDia');
+		        $paginador->setOrderBy('iSesion ASC');
 		        
 		        // Datos para la vista
 		    	// Envío el horario
@@ -1220,23 +1274,101 @@ class cursoController extends PplController{
     		return;    		
     	}
     	
-    	// Se obtienen los documentos seleccionados para convocatoria del curso
     	$idPlan = $cursoDO->getFkPlan();
-    	$documentosCOL = $this->cacheBO->getDocumentacionCurso($idPlan);
+    	$this->view->cursoDO = $cursoDO;
+    	$mensajesDocumentacionARR = array();
+    	$modalidadesIDX = $this->cacheBO->getModalidades();
     	
-  
-    	foreach ($documentosCOL as $documentacionDO){
+    	// Se obtienen los documentos seleccionados para convocatoria del curso
+    	$documentosCOL = $this->cacheBO->getDocumentacionCurso($idPlan);
+    	$planDO = TblPlan::findByPrimaryKey($this->db, $idPlan);
+    	
+    	// Profesores del curso
+    	$profesoresCOL = $this->cacheBO->getProfesoresCurso($idCurso);
+    	$profesorDO = array_shift($profesoresCOL);
+    	
+    	// Alumnos del curso
+    	$alumnosCOL = TblAlumno::findByTblCurso($this->db, $idCurso);
+
+    	// Horarios del curso
+    	$horariosCOL = TblHorario::findByTblCurso($this->db, $idCurso);
+    	
+    	
+    	/////////////////////////////////////////////////////////////
+    	//														   //
+    	// 					SE GENERA LA DOCUMENTACIÓN             //
+    	//														   //
+    	/////////////////////////////////////////////////////////////
+    	
+   	
+  		// Se iteran todos los documentos asocidadsos a la convocatoria
+    	foreach ($documentosCOL as $documentoDO){
     		
+    		$docMan = new PplDocumentacion($this->db, $documentoDO->getVIdentificador());
+    		$error = false;
     		
+    		switch ($documentoDO->getVIdentificador()){
+    			
+    			//
+    			// S-30 Control de asistencia
+    			//
+    			case 'S-30':
+    				
+    				// Verificaremos que contamos con los datos necesarios para el curso
+    				if (!$profesorDO instanceof TblPersona){
+    					$mensajesDocumentacionARR[] = 'S-30: El curso actual aún no tiene un profesor asignado.';
+    					$error = true;
+    				}
+    				
+    				if (count($horariosCOL) == 0){
+    					$mensajesDocumentacionARR[] = 'S-30: No se ha definido ningún horario.';
+    					$error = true;
+    				}
+    				
+    				if ($error){
+    					break;
+    				}
+    				
+    				// De acuerdo a la cantidad de alumnos, tendremos que generar un pdf con 1 o 2 páginas
+    				if (count($alumnosCOL) > 15) {
+    					$this->view->controlAsistenciaARR = $docMan->docControlAsistencia2p($cursoDO, $planDO, $profesorDO, $alumnosCOL, $horariosCOL);
+    				} else {
+    					$this->view->controlAsistenciaARR = $docMan->docControlAsistencia($cursoDO, $planDO, $profesorDO, $alumnosCOL, $horariosCOL);
+    				}
+    				
+    			break;
+    			
+    			
+    			//
+    			// S-20 Listado inicial de asistentes
+    			//
+    			case 'S-20':
+    				
+    				if (!$tutorDO = TblPersona::findByPrimaryKey($this->db, $cursoDO->getFkTutorDistancia())){
+    					$mensajesDocumentacionARR[] = 'S-20: El curso actual aún no tiene un tutor a distancia asignado.';
+    					break;
+    				}
+    				
+    				$this->view->listadoInicial = $docMan->docListadoInicialAsistentes($cursoDO, $alumnosCOL, $tutorDO, $planDO, $modalidadesIDX);
+    				
+    			break;
+    			
+    			
+    			//
+    			// S-10 Inicio grupo/acción formativa
+    			//
+    			case 'S-10':
+    				
+    				$this->view->inicioAccion = $docMan->docInicioAccionFormativa($planDO);
+    				
+    			break;
+    			
+    		}
     		
     	}
     	
-    	
-    	
-    	
-    	
-    	
-    	
+    	// Se envian los mensajes a la vista
+    	$this->view->mensajes = $mensajesDocumentacionARR;
     	
     }
     

@@ -1,7 +1,7 @@
 <?php
 /**
  * Este archivo ha sido generado con Owl DoGen v.0.6
- * el 09 de December de 2010 a las 08:48:53
+ * el 16 de December de 2010 a las 10:23:35
  * @package dataAccess
  */
 
@@ -27,34 +27,58 @@ class TblAlumno extends OwlGenericDO{
     public $idAlumno;
 
     /**
-     * Atributo que representa el campo "fkEstadoCivil"
-     * @var integer
-     */
-    public $fkEstadoCivil;
-
-    /**
-     * Atributo que representa el campo "fkEstadoLaboral"
-     * @var integer
-     */
-    public $fkEstadoLaboral;
-
-    /**
      * Atributo que representa el campo "fkCurso"
      * @var integer
      */
     public $fkCurso;
 
     /**
-     * Atributo que representa el campo "fkPais"
-     * @var string
-     */
-    public $fkPais;
-
-    /**
-     * Atributo que representa el campo "fkTipoIdentificacion"
+     * Atributo que representa el campo "iPersona"
      * @var integer
      */
-    public $fkTipoIdentificacion;
+    public $iPersona;
+
+    /**
+     * Atributo que representa el campo "iUsuario"
+     * @var integer
+     */
+    public $iUsuario;
+
+    /**
+     * Atributo que representa el campo "vPais"
+     * @var string
+     */
+    public $vPais;
+
+    /**
+     * Atributo que representa el campo "vProvincia"
+     * @var string
+     */
+    public $vProvincia;
+
+    /**
+     * Atributo que representa el campo "vTipoIdentificacion"
+     * @var string
+     */
+    public $vTipoIdentificacion;
+
+    /**
+     * Atributo que representa el campo "vEstadoCivil"
+     * @var string
+     */
+    public $vEstadoCivil;
+
+    /**
+     * Atributo que representa el campo "vEstadoLaboral"
+     * @var string
+     */
+    public $vEstadoLaboral;
+
+    /**
+     * Atributo que representa el campo "vNivelEstudios"
+     * @var string
+     */
+    public $vNivelEstudios;
 
     /**
      * Atributo que representa el campo "vNombre"
@@ -79,12 +103,6 @@ class TblAlumno extends OwlGenericDO{
      * @var string
      */
     public $vPoblacion;
-
-    /**
-     * Atributo que representa el campo "iUsuario"
-     * @var integer
-     */
-    public $iUsuario;
 
     /**
      * Atributo que representa el campo "vNumeroIdentificacion"
@@ -128,6 +146,12 @@ class TblAlumno extends OwlGenericDO{
      */
     public $dBaja;
 
+    /**
+     * Atributo que representa el campo "vNumeroSS"
+     * @var string
+     */
+    public $vNumeroSS;
+
     // Constructor
 
     /**
@@ -151,16 +175,19 @@ class TblAlumno extends OwlGenericDO{
 
         $this->_data = $data;
         $this->idAlumno = $data['idAlumno'];
-        $this->fkEstadoCivil = $data['fkEstadoCivil'];
-        $this->fkEstadoLaboral = $data['fkEstadoLaboral'];
         $this->fkCurso = $data['fkCurso'];
-        $this->fkPais = $data['fkPais'];
-        $this->fkTipoIdentificacion = $data['fkTipoIdentificacion'];
+        $this->iPersona = $data['iPersona'];
+        $this->iUsuario = $data['iUsuario'];
+        $this->vPais = $data['vPais'];
+        $this->vProvincia = $data['vProvincia'];
+        $this->vTipoIdentificacion = $data['vTipoIdentificacion'];
+        $this->vEstadoCivil = $data['vEstadoCivil'];
+        $this->vEstadoLaboral = $data['vEstadoLaboral'];
+        $this->vNivelEstudios = $data['vNivelEstudios'];
         $this->vNombre = $data['vNombre'];
         $this->vPrimerApellido = $data['vPrimerApellido'];
         $this->vSegundoApellido = $data['vSegundoApellido'];
         $this->vPoblacion = $data['vPoblacion'];
-        $this->iUsuario = $data['iUsuario'];
         $this->vNumeroIdentificacion = $data['vNumeroIdentificacion'];
         $this->vEmail = $data['vEmail'];
         $this->vDireccion = $data['vDireccion'];
@@ -168,6 +195,7 @@ class TblAlumno extends OwlGenericDO{
         $this->dAlta = $data['dAlta'];
         $this->dNacimiento = $data['dNacimiento'];
         $this->dBaja = $data['dBaja'];
+        $this->vNumeroSS = $data['vNumeroSS'];
 
     }
 
@@ -187,20 +215,32 @@ class TblAlumno extends OwlGenericDO{
         if( $tmp = $searchItem->idAlumno ){
             $where[] = "idAlumno='$tmp'";
         }
-        if( $tmp = $searchItem->fkEstadoCivil ){
-            $where[] = "fkEstadoCivil='$tmp'";
-        }
-        if( $tmp = $searchItem->fkEstadoLaboral ){
-            $where[] = "fkEstadoLaboral='$tmp'";
-        }
         if( $tmp = $searchItem->fkCurso ){
             $where[] = "fkCurso='$tmp'";
         }
-        if( $tmp = $searchItem->fkPais ){
-            $where[] = "fkPais='$tmp'";
+        if( $tmp = $searchItem->iPersona ){
+            $where[] = "iPersona='$tmp'";
         }
-        if( $tmp = $searchItem->fkTipoIdentificacion ){
-            $where[] = "fkTipoIdentificacion='$tmp'";
+        if( $tmp = $searchItem->iUsuario ){
+            $where[] = "iUsuario='$tmp'";
+        }
+        if( $tmp = $searchItem->vPais ){
+            $where[] = "vPais='$tmp'";
+        }
+        if( $tmp = $searchItem->vProvincia ){
+            $where[] = "vProvincia='$tmp'";
+        }
+        if( $tmp = $searchItem->vTipoIdentificacion ){
+            $where[] = "vTipoIdentificacion='$tmp'";
+        }
+        if( $tmp = $searchItem->vEstadoCivil ){
+            $where[] = "vEstadoCivil='$tmp'";
+        }
+        if( $tmp = $searchItem->vEstadoLaboral ){
+            $where[] = "vEstadoLaboral='$tmp'";
+        }
+        if( $tmp = $searchItem->vNivelEstudios ){
+            $where[] = "vNivelEstudios='$tmp'";
         }
         if( $tmp = $searchItem->vNombre ){
             $where[] = "vNombre='$tmp'";
@@ -213,9 +253,6 @@ class TblAlumno extends OwlGenericDO{
         }
         if( $tmp = $searchItem->vPoblacion ){
             $where[] = "vPoblacion='$tmp'";
-        }
-        if( $tmp = $searchItem->iUsuario ){
-            $where[] = "iUsuario='$tmp'";
         }
         if( $tmp = $searchItem->vNumeroIdentificacion ){
             $where[] = "vNumeroIdentificacion='$tmp'";
@@ -237,6 +274,9 @@ class TblAlumno extends OwlGenericDO{
         }
         if( $tmp = $searchItem->dBaja ){
             $where[] = "dBaja='$tmp'";
+        }
+        if( $tmp = $searchItem->vNumeroSS ){
+            $where[] = "vNumeroSS='$tmp'";
         }
         if( count($where) > 0 ){
             $where = implode( ' and ', $where );
@@ -313,84 +353,23 @@ class TblAlumno extends OwlGenericDO{
      }
 
     /**
-     * Obtiene todas las filas de la tabla tblAlumno que coinciden con el criterio fkEstadoCivil='$fkEstadoCivil'.
-     *
-     * @param Connection $db Conexión con la base de datos.
-     * @param integer fkEstadoCivil string Valor del campo fkEstadoCivil.
-     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
-     * @return array
-     */
-     public static function findByTblEstadoCivil( $db, $fkEstadoCivil, $orderBy='' ){
-         $sql = "SELECT * FROM tblAlumno WHERE fkEstadoCivil='$fkEstadoCivil'";
-         if( $orderBy != '' ){
-             $sql .= " ORDER BY $orderBy";
-         }
-         return OwlGenericDO::createCollection( $db, $sql, 'TblAlumno' );
-     }
-
-    /**
-     * Obtiene todas las filas de la tabla tblAlumno que coinciden con el criterio fkEstadoLaboral='$fkEstadoLaboral'.
-     *
-     * @param Connection $db Conexión con la base de datos.
-     * @param integer fkEstadoLaboral string Valor del campo fkEstadoLaboral.
-     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
-     * @return array
-     */
-     public static function findByTblEstadoLaboral( $db, $fkEstadoLaboral, $orderBy='' ){
-         $sql = "SELECT * FROM tblAlumno WHERE fkEstadoLaboral='$fkEstadoLaboral'";
-         if( $orderBy != '' ){
-             $sql .= " ORDER BY $orderBy";
-         }
-         return OwlGenericDO::createCollection( $db, $sql, 'TblAlumno' );
-     }
-
-    /**
-     * Obtiene todas las filas de la tabla tblAlumno que coinciden con el criterio fkPais='$fkPais'.
-     *
-     * @param Connection $db Conexión con la base de datos.
-     * @param string fkPais string Valor del campo fkPais.
-     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
-     * @return array
-     */
-     public static function findByTblPais( $db, $fkPais, $orderBy='' ){
-         $sql = "SELECT * FROM tblAlumno WHERE fkPais='$fkPais'";
-         if( $orderBy != '' ){
-             $sql .= " ORDER BY $orderBy";
-         }
-         return OwlGenericDO::createCollection( $db, $sql, 'TblAlumno' );
-     }
-
-    /**
-     * Obtiene todas las filas de la tabla tblAlumno que coinciden con el criterio fkTipoIdentificacion='$fkTipoIdentificacion'.
-     *
-     * @param Connection $db Conexión con la base de datos.
-     * @param integer fkTipoIdentificacion string Valor del campo fkTipoIdentificacion.
-     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
-     * @return array
-     */
-     public static function findByTblTipoIdentificacion( $db, $fkTipoIdentificacion, $orderBy='' ){
-         $sql = "SELECT * FROM tblAlumno WHERE fkTipoIdentificacion='$fkTipoIdentificacion'";
-         if( $orderBy != '' ){
-             $sql .= " ORDER BY $orderBy";
-         }
-         return OwlGenericDO::createCollection( $db, $sql, 'TblAlumno' );
-     }
-
-    /**
      * Actualiza una fila de la tabla tblAlumno.
      */
     public function update(){
         $sets = array();
-        $sets[] = 'fkEstadoCivil=' . ( ( ( $value = $this->fkEstadoCivil ) === null || !isset($this->fkEstadoCivil) ) ? 'null' :  "'".addslashes($value)."'" );
-        $sets[] = 'fkEstadoLaboral=' . ( ( ( $value = $this->fkEstadoLaboral ) === null || !isset($this->fkEstadoLaboral) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'fkCurso=' . ( ( ( $value = $this->fkCurso ) === null || !isset($this->fkCurso) ) ? 'null' :  "'".addslashes($value)."'" );
-        $sets[] = 'fkPais=' . ( ( ( $value = $this->fkPais ) === null || !isset($this->fkPais) ) ? 'null' :  "'".addslashes($value)."'" );
-        $sets[] = 'fkTipoIdentificacion=' . ( ( ( $value = $this->fkTipoIdentificacion ) === null || !isset($this->fkTipoIdentificacion) ) ? 'null' :  "'".addslashes($value)."'" );
+        $sets[] = 'iPersona=' . ( ( ( $value = $this->iPersona ) === null || !isset($this->iPersona) ) ? 'null' :  "'".addslashes($value)."'" );
+        $sets[] = 'iUsuario=' . ( ( ( $value = $this->iUsuario ) === null || !isset($this->iUsuario) ) ? 'null' :  "'".addslashes($value)."'" );
+        $sets[] = 'vPais=' . ( ( ( $value = $this->vPais ) === null || !isset($this->vPais) ) ? 'null' :  "'".addslashes($value)."'" );
+        $sets[] = 'vProvincia=' . ( ( ( $value = $this->vProvincia ) === null || !isset($this->vProvincia) ) ? 'null' :  "'".addslashes($value)."'" );
+        $sets[] = 'vTipoIdentificacion=' . ( ( ( $value = $this->vTipoIdentificacion ) === null || !isset($this->vTipoIdentificacion) ) ? 'null' :  "'".addslashes($value)."'" );
+        $sets[] = 'vEstadoCivil=' . ( ( ( $value = $this->vEstadoCivil ) === null || !isset($this->vEstadoCivil) ) ? 'null' :  "'".addslashes($value)."'" );
+        $sets[] = 'vEstadoLaboral=' . ( ( ( $value = $this->vEstadoLaboral ) === null || !isset($this->vEstadoLaboral) ) ? 'null' :  "'".addslashes($value)."'" );
+        $sets[] = 'vNivelEstudios=' . ( ( ( $value = $this->vNivelEstudios ) === null || !isset($this->vNivelEstudios) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'vNombre=' . ( ( ( $value = $this->vNombre ) === null || !isset($this->vNombre) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'vPrimerApellido=' . ( ( ( $value = $this->vPrimerApellido ) === null || !isset($this->vPrimerApellido) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'vSegundoApellido=' . ( ( ( $value = $this->vSegundoApellido ) === null || !isset($this->vSegundoApellido) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'vPoblacion=' . ( ( ( $value = $this->vPoblacion ) === null || !isset($this->vPoblacion) ) ? 'null' :  "'".addslashes($value)."'" );
-        $sets[] = 'iUsuario=' . ( ( ( $value = $this->iUsuario ) === null || !isset($this->iUsuario) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'vNumeroIdentificacion=' . ( ( ( $value = $this->vNumeroIdentificacion ) === null || !isset($this->vNumeroIdentificacion) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'vEmail=' . ( ( ( $value = $this->vEmail ) === null || !isset($this->vEmail) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'vDireccion=' . ( ( ( $value = $this->vDireccion ) === null || !isset($this->vDireccion) ) ? 'null' :  "'".addslashes($value)."'" );
@@ -398,6 +377,7 @@ class TblAlumno extends OwlGenericDO{
         $sets[] = 'dAlta=' . ( ( ( $value = $this->dAlta ) === null || !isset($this->dAlta) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'dNacimiento=' . ( ( ( $value = $this->dNacimiento ) === null || !isset($this->dNacimiento) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'dBaja=' . ( ( ( $value = $this->dBaja ) === null || !isset($this->dBaja) ) ? 'null' :  "'".addslashes($value)."'" );
+        $sets[] = 'vNumeroSS=' . ( ( ( $value = $this->vNumeroSS ) === null || !isset($this->vNumeroSS) ) ? 'null' :  "'".addslashes($value)."'" );
         $setStr = implode(',', $sets);
         return $this->_db->executeQuery("UPDATE tblAlumno SET $setStr WHERE idAlumno='".addslashes($this->_data['idAlumno'])."'");
     }
@@ -407,16 +387,19 @@ class TblAlumno extends OwlGenericDO{
       */
     public function insert(){
         $attributes = array();
-        $attributes[] = 'fkEstadoCivil';
-        $attributes[] = 'fkEstadoLaboral';
         $attributes[] = 'fkCurso';
-        $attributes[] = 'fkPais';
-        $attributes[] = 'fkTipoIdentificacion';
+        $attributes[] = 'iPersona';
+        $attributes[] = 'iUsuario';
+        $attributes[] = 'vPais';
+        $attributes[] = 'vProvincia';
+        $attributes[] = 'vTipoIdentificacion';
+        $attributes[] = 'vEstadoCivil';
+        $attributes[] = 'vEstadoLaboral';
+        $attributes[] = 'vNivelEstudios';
         $attributes[] = 'vNombre';
         $attributes[] = 'vPrimerApellido';
         $attributes[] = 'vSegundoApellido';
         $attributes[] = 'vPoblacion';
-        $attributes[] = 'iUsuario';
         $attributes[] = 'vNumeroIdentificacion';
         $attributes[] = 'vEmail';
         $attributes[] = 'vDireccion';
@@ -424,18 +407,22 @@ class TblAlumno extends OwlGenericDO{
         $attributes[] = 'dAlta';
         $attributes[] = 'dNacimiento';
         $attributes[] = 'dBaja';
+        $attributes[] = 'vNumeroSS';
         $attributes = implode(',', $attributes);
         $values = array();
-        $values[] = (( $value = $this->fkEstadoCivil ) === null || !isset($this->fkEstadoCivil) ) ? 'null' : "'".addslashes($value)."'";
-        $values[] = (( $value = $this->fkEstadoLaboral ) === null || !isset($this->fkEstadoLaboral) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->fkCurso ) === null || !isset($this->fkCurso) ) ? 'null' : "'".addslashes($value)."'";
-        $values[] = (( $value = $this->fkPais ) === null || !isset($this->fkPais) ) ? 'null' : "'".addslashes($value)."'";
-        $values[] = (( $value = $this->fkTipoIdentificacion ) === null || !isset($this->fkTipoIdentificacion) ) ? 'null' : "'".addslashes($value)."'";
+        $values[] = (( $value = $this->iPersona ) === null || !isset($this->iPersona) ) ? 'null' : "'".addslashes($value)."'";
+        $values[] = (( $value = $this->iUsuario ) === null || !isset($this->iUsuario) ) ? 'null' : "'".addslashes($value)."'";
+        $values[] = (( $value = $this->vPais ) === null || !isset($this->vPais) ) ? 'null' : "'".addslashes($value)."'";
+        $values[] = (( $value = $this->vProvincia ) === null || !isset($this->vProvincia) ) ? 'null' : "'".addslashes($value)."'";
+        $values[] = (( $value = $this->vTipoIdentificacion ) === null || !isset($this->vTipoIdentificacion) ) ? 'null' : "'".addslashes($value)."'";
+        $values[] = (( $value = $this->vEstadoCivil ) === null || !isset($this->vEstadoCivil) ) ? 'null' : "'".addslashes($value)."'";
+        $values[] = (( $value = $this->vEstadoLaboral ) === null || !isset($this->vEstadoLaboral) ) ? 'null' : "'".addslashes($value)."'";
+        $values[] = (( $value = $this->vNivelEstudios ) === null || !isset($this->vNivelEstudios) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->vNombre ) === null || !isset($this->vNombre) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->vPrimerApellido ) === null || !isset($this->vPrimerApellido) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->vSegundoApellido ) === null || !isset($this->vSegundoApellido) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->vPoblacion ) === null || !isset($this->vPoblacion) ) ? 'null' : "'".addslashes($value)."'";
-        $values[] = (( $value = $this->iUsuario ) === null || !isset($this->iUsuario) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->vNumeroIdentificacion ) === null || !isset($this->vNumeroIdentificacion) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->vEmail ) === null || !isset($this->vEmail) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->vDireccion ) === null || !isset($this->vDireccion) ) ? 'null' : "'".addslashes($value)."'";
@@ -443,6 +430,7 @@ class TblAlumno extends OwlGenericDO{
         $values[] = (( $value = $this->dAlta ) === null || !isset($this->dAlta) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->dNacimiento ) === null || !isset($this->dNacimiento) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->dBaja ) === null || !isset($this->dBaja) ) ? 'null' : "'".addslashes($value)."'";
+        $values[] = (( $value = $this->vNumeroSS ) === null || !isset($this->vNumeroSS) ) ? 'null' : "'".addslashes($value)."'";
         $values = implode(',', $values);
         if( $this->_db->executeQuery("INSERT INTO tblAlumno($attributes) VALUES($values)") ){
             $eleDO = $this->findByPrimaryKey( $this->_db, $this->_db->getLastInsertId() );
@@ -472,46 +460,6 @@ class TblAlumno extends OwlGenericDO{
     }
 
     /**
-      * Obtiene el valor del atributo 'fkEstadoCivil'.
-      *
-      * @return integer
-      */
-    public function getFkEstadoCivil(){
-        return $this->fkEstadoCivil;
-    }
-
-    /**
-      * Establece el valor del atributo 'fkEstadoCivil'.
-      *
-      * @param integer Valor.
-      */
-    public function setFkEstadoCivil( $value ){
-
-        $this->fkEstadoCivil = $value;
-
-    }
-
-    /**
-      * Obtiene el valor del atributo 'fkEstadoLaboral'.
-      *
-      * @return integer
-      */
-    public function getFkEstadoLaboral(){
-        return $this->fkEstadoLaboral;
-    }
-
-    /**
-      * Establece el valor del atributo 'fkEstadoLaboral'.
-      *
-      * @param integer Valor.
-      */
-    public function setFkEstadoLaboral( $value ){
-
-        $this->fkEstadoLaboral = $value;
-
-    }
-
-    /**
       * Obtiene el valor del atributo 'fkCurso'.
       *
       * @return integer
@@ -532,42 +480,162 @@ class TblAlumno extends OwlGenericDO{
     }
 
     /**
-      * Obtiene el valor del atributo 'fkPais'.
-      *
-      * @return string
-      */
-    public function getFkPais(){
-        return $this->fkPais;
-    }
-
-    /**
-      * Establece el valor del atributo 'fkPais'.
-      *
-      * @param string Valor.
-      */
-    public function setFkPais( $value ){
-
-        $this->fkPais = $value;
-
-    }
-
-    /**
-      * Obtiene el valor del atributo 'fkTipoIdentificacion'.
+      * Obtiene el valor del atributo 'iPersona'.
       *
       * @return integer
       */
-    public function getFkTipoIdentificacion(){
-        return $this->fkTipoIdentificacion;
+    public function getIPersona(){
+        return $this->iPersona;
     }
 
     /**
-      * Establece el valor del atributo 'fkTipoIdentificacion'.
+      * Establece el valor del atributo 'iPersona'.
       *
       * @param integer Valor.
       */
-    public function setFkTipoIdentificacion( $value ){
+    public function setIPersona( $value ){
 
-        $this->fkTipoIdentificacion = $value;
+        $this->iPersona = $value;
+
+    }
+
+    /**
+      * Obtiene el valor del atributo 'iUsuario'.
+      *
+      * @return integer
+      */
+    public function getIUsuario(){
+        return $this->iUsuario;
+    }
+
+    /**
+      * Establece el valor del atributo 'iUsuario'.
+      *
+      * @param integer Valor.
+      */
+    public function setIUsuario( $value ){
+
+        $this->iUsuario = $value;
+
+    }
+
+    /**
+      * Obtiene el valor del atributo 'vPais'.
+      *
+      * @return string
+      */
+    public function getVPais(){
+        return $this->vPais;
+    }
+
+    /**
+      * Establece el valor del atributo 'vPais'.
+      *
+      * @param string Valor.
+      */
+    public function setVPais( $value ){
+
+        $this->vPais = $value;
+
+    }
+
+    /**
+      * Obtiene el valor del atributo 'vProvincia'.
+      *
+      * @return string
+      */
+    public function getVProvincia(){
+        return $this->vProvincia;
+    }
+
+    /**
+      * Establece el valor del atributo 'vProvincia'.
+      *
+      * @param string Valor.
+      */
+    public function setVProvincia( $value ){
+
+        $this->vProvincia = $value;
+
+    }
+
+    /**
+      * Obtiene el valor del atributo 'vTipoIdentificacion'.
+      *
+      * @return string
+      */
+    public function getVTipoIdentificacion(){
+        return $this->vTipoIdentificacion;
+    }
+
+    /**
+      * Establece el valor del atributo 'vTipoIdentificacion'.
+      *
+      * @param string Valor.
+      */
+    public function setVTipoIdentificacion( $value ){
+
+        $this->vTipoIdentificacion = $value;
+
+    }
+
+    /**
+      * Obtiene el valor del atributo 'vEstadoCivil'.
+      *
+      * @return string
+      */
+    public function getVEstadoCivil(){
+        return $this->vEstadoCivil;
+    }
+
+    /**
+      * Establece el valor del atributo 'vEstadoCivil'.
+      *
+      * @param string Valor.
+      */
+    public function setVEstadoCivil( $value ){
+
+        $this->vEstadoCivil = $value;
+
+    }
+
+    /**
+      * Obtiene el valor del atributo 'vEstadoLaboral'.
+      *
+      * @return string
+      */
+    public function getVEstadoLaboral(){
+        return $this->vEstadoLaboral;
+    }
+
+    /**
+      * Establece el valor del atributo 'vEstadoLaboral'.
+      *
+      * @param string Valor.
+      */
+    public function setVEstadoLaboral( $value ){
+
+        $this->vEstadoLaboral = $value;
+
+    }
+
+    /**
+      * Obtiene el valor del atributo 'vNivelEstudios'.
+      *
+      * @return string
+      */
+    public function getVNivelEstudios(){
+        return $this->vNivelEstudios;
+    }
+
+    /**
+      * Establece el valor del atributo 'vNivelEstudios'.
+      *
+      * @param string Valor.
+      */
+    public function setVNivelEstudios( $value ){
+
+        $this->vNivelEstudios = $value;
 
     }
 
@@ -648,26 +716,6 @@ class TblAlumno extends OwlGenericDO{
     public function setVPoblacion( $value ){
 
         $this->vPoblacion = $value;
-
-    }
-
-    /**
-      * Obtiene el valor del atributo 'iUsuario'.
-      *
-      * @return integer
-      */
-    public function getIUsuario(){
-        return $this->iUsuario;
-    }
-
-    /**
-      * Establece el valor del atributo 'iUsuario'.
-      *
-      * @param integer Valor.
-      */
-    public function setIUsuario( $value ){
-
-        $this->iUsuario = $value;
 
     }
 
@@ -811,6 +859,26 @@ class TblAlumno extends OwlGenericDO{
 
     }
 
+    /**
+      * Obtiene el valor del atributo 'vNumeroSS'.
+      *
+      * @return string
+      */
+    public function getVNumeroSS(){
+        return $this->vNumeroSS;
+    }
+
+    /**
+      * Establece el valor del atributo 'vNumeroSS'.
+      *
+      * @param string Valor.
+      */
+    public function setVNumeroSS( $value ){
+
+        $this->vNumeroSS = $value;
+
+    }
+
     // Relaciones
 
     /**
@@ -831,86 +899,6 @@ class TblAlumno extends OwlGenericDO{
     public function setTblCurso( $dataObject ){
         require_once('TblCurso.inc');
         $this->setFkCurso( $dataObject->getIdCurso() );
-    }
-
-    /**
-     * Obtiene el objeto 'TblEstadoCivil' relacionado.
-     *
-     * @return TblEstadoCivil
-     */
-    public function getTblEstadoCivil(){
-        require_once('TblEstadoCivil.inc');
-        return TblEstadoCivil::findByPrimaryKey( $this->_db, $this->fkEstadoCivil );
-    }
-
-    /**
-     * Asigna el objeto 'TblEstadoCivil' relacionado.
-     *
-     * @param TblEstadoCivil $dataObject
-     */
-    public function setTblEstadoCivil( $dataObject ){
-        require_once('TblEstadoCivil.inc');
-        $this->setFkEstadoCivil( $dataObject->getIdEstadoCivil() );
-    }
-
-    /**
-     * Obtiene el objeto 'TblEstadoLaboral' relacionado.
-     *
-     * @return TblEstadoLaboral
-     */
-    public function getTblEstadoLaboral(){
-        require_once('TblEstadoLaboral.inc');
-        return TblEstadoLaboral::findByPrimaryKey( $this->_db, $this->fkEstadoLaboral );
-    }
-
-    /**
-     * Asigna el objeto 'TblEstadoLaboral' relacionado.
-     *
-     * @param TblEstadoLaboral $dataObject
-     */
-    public function setTblEstadoLaboral( $dataObject ){
-        require_once('TblEstadoLaboral.inc');
-        $this->setFkEstadoLaboral( $dataObject->getIdEstadoLaboral() );
-    }
-
-    /**
-     * Obtiene el objeto 'TblPais' relacionado.
-     *
-     * @return TblPais
-     */
-    public function getTblPais(){
-        require_once('TblPais.inc');
-        return TblPais::findByPrimaryKey( $this->_db, $this->fkPais );
-    }
-
-    /**
-     * Asigna el objeto 'TblPais' relacionado.
-     *
-     * @param TblPais $dataObject
-     */
-    public function setTblPais( $dataObject ){
-        require_once('TblPais.inc');
-        $this->setFkPais( $dataObject->getVIso() );
-    }
-
-    /**
-     * Obtiene el objeto 'TblTipoIdentificacion' relacionado.
-     *
-     * @return TblTipoIdentificacion
-     */
-    public function getTblTipoIdentificacion(){
-        require_once('TblTipoIdentificacion.inc');
-        return TblTipoIdentificacion::findByPrimaryKey( $this->_db, $this->fkTipoIdentificacion );
-    }
-
-    /**
-     * Asigna el objeto 'TblTipoIdentificacion' relacionado.
-     *
-     * @param TblTipoIdentificacion $dataObject
-     */
-    public function setTblTipoIdentificacion( $dataObject ){
-        require_once('TblTipoIdentificacion.inc');
-        $this->setFkTipoIdentificacion( $dataObject->getIdTipoIdentificacion() );
     }
 }
 ?>

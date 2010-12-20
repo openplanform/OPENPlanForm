@@ -17,6 +17,21 @@
 			
 			<?
 			
+			$numeroSS = $this->alumnoDO->getVNumeroSS();
+			if ( !empty($numeroSS) ){
+				?><p><strong>Número Seguridad Social:</strong><span> <?= $numeroSS ?></span></p><?
+			}
+
+			$sexo = $this->alumnoDO->getVSexo();
+			if ( !empty($sexo) ){
+				?><p><strong>Sexo:</strong><span> <?= $sexo ?></span></p><?
+			}
+
+			$discapacidad = $this->alumnoDO->getBDiscapacidad();
+			if ( !is_null($discapacidad) ){
+				?><p><strong>Discapacidad:</strong><span> <?= ($discapacidad)? 'Si' : 'No' ?></span></p><?
+			}
+			
 			$telefono = $this->alumnoDO->getVTelefono();
 			if ( !empty($telefono) ){
 				?><p><strong>Teléfono:</strong><span> <?= $telefono ?></span></p><?

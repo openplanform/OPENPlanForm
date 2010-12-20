@@ -33,7 +33,7 @@ h2, h3, h4, h5{
 	color: #4A95EF;
 	margin: 0 0 10px 0;
 }
-h2{
+/*h2{
 	background-color: #D1DFEF;
 	border-bottom: 1px solid #A0C4EF;
 	color: #444444;
@@ -43,11 +43,12 @@ h2{
 	margin-bottom: 25px;
 	padding-left: 5px;
 	text-transform: uppercase;
-}
+}*/
 h3{
 	color: #000;
-	margin-bottom: 15px;
-	margin-top: 25px;
+	margin-bottom: 10px;
+	/*margin-bottom: 15px; aa: menos margin bottom*/
+	/*margin-top: 25px; np: NO MARGIN TOP */ 
 	font-weight: bold;
 }
 h3.conSubtitulo{
@@ -108,6 +109,7 @@ a:hover{
 	max-height: 200px;
 	overflow: auto;
 	border: 1px solid #808080;
+	margin: 0 0 20px 0;
 }
 .ficha .scroll{
 	float: left;
@@ -222,6 +224,21 @@ input.campoTexto{
 textarea{
 	width: 450px;
 	height: 120px;
+}
+.alterForm{
+    background-color: #C3D0DF;
+    border: 1px solid #819DCF;
+    padding: 10px 0 0 24px;
+    margin: 0 0 24px 0;
+    float: left;
+}
+.alterForm.ficha span,
+.alterForm.ficha strong{
+	border: 1px solid #819DCF;
+}
+.alterForm.ficha{
+	padding: 10px 10px 5px 10px;
+	margin-top: 15px;
 }
 .campo{
 	margin-bottom: 18px;
@@ -522,7 +539,7 @@ table.listado tbody tr.alter{
     right: 20px;
 }
 .botonesMultiselect{
-	margin: 45px 0 0 0;
+	margin: 85px 0 0 0;
 }
 .botonesMultiselect li{
 	margin: 0 0 10px 0;
@@ -551,7 +568,7 @@ table.listado tbody tr.alter{
 .ficha p strong{
     font: normal 12px Verdana, Arial, Helvetica, sans-serif;
     color: #000;
-    width: 170px;
+    width: 180px;
     display: block;
     float: left;
     height: 20px;
@@ -591,7 +608,7 @@ table.listado tbody tr.alter{
 	margin-top: 25px;
 }
 .ficha .listado{
-	width: 527px;
+	width: 520px;
 }
 
 /* Paginador */
@@ -642,6 +659,7 @@ div.ficha{
 	cursor: pointer;
 	border: none;
 	padding-bottom: 3px;
+	margin-bottom: 15px;
 }
 .btnDelete{
 	background: url(/img/boton/btnKo.png) top center no-repeat;
@@ -699,7 +717,7 @@ div.ficha{
 	padding-left: 20px;
 }
 .multiple{
-	height: 115px;
+	height: 200px;
 }
 .adminOpts{
     background-color: #C3D0DF;
@@ -750,10 +768,12 @@ a.doc.pdf{
 	overflow: hidden;
 }
 #convocatoriaDoc li{
-	width: 250px;
+	/*width: 250px;*/
 	float: left;
-	background: url(/img/iconos/pdf16.png) left center no-repeat;
+	background: url(/img/iconos/pdf16.png) left top no-repeat;
 	padding-left: 20px;
+	height: 25px;
+	margin-right: 20px;
 }
 #convocatoriaDoc li label,
 #convocatoriaDoc li input{
@@ -766,4 +786,7 @@ a.doc.pdf{
 #documentacion p{
     margin-bottom: 15px;	
 }
-	
+div.documentacion,
+p.desc{
+	margin-bottom: 20px;
+}

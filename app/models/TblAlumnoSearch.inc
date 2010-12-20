@@ -1,7 +1,7 @@
 <?php
 /**
  * Este archivo ha sido generado con Owl Dogen v.0.6
- * el 09 de December de 2010 a las 08:48:53
+ * el 16 de December de 2010 a las 10:23:35
  * @package dataAccess
  */
 
@@ -20,20 +20,6 @@ class TblAlumnoSearch{
     public $idAlumno;
 
     /**
-     * Representa el atributo fkEstadoCivil.
-     *
-     * @var integer
-     */
-    public $fkEstadoCivil;
-
-    /**
-     * Representa el atributo fkEstadoLaboral.
-     *
-     * @var integer
-     */
-    public $fkEstadoLaboral;
-
-    /**
      * Representa el atributo fkCurso.
      *
      * @var integer
@@ -41,18 +27,60 @@ class TblAlumnoSearch{
     public $fkCurso;
 
     /**
-     * Representa el atributo fkPais.
-     *
-     * @var string
-     */
-    public $fkPais;
-
-    /**
-     * Representa el atributo fkTipoIdentificacion.
+     * Representa el atributo iPersona.
      *
      * @var integer
      */
-    public $fkTipoIdentificacion;
+    public $iPersona;
+
+    /**
+     * Representa el atributo iUsuario.
+     *
+     * @var integer
+     */
+    public $iUsuario;
+
+    /**
+     * Representa el atributo vPais.
+     *
+     * @var string
+     */
+    public $vPais;
+
+    /**
+     * Representa el atributo vProvincia.
+     *
+     * @var string
+     */
+    public $vProvincia;
+
+    /**
+     * Representa el atributo vTipoIdentificacion.
+     *
+     * @var string
+     */
+    public $vTipoIdentificacion;
+
+    /**
+     * Representa el atributo vEstadoCivil.
+     *
+     * @var string
+     */
+    public $vEstadoCivil;
+
+    /**
+     * Representa el atributo vEstadoLaboral.
+     *
+     * @var string
+     */
+    public $vEstadoLaboral;
+
+    /**
+     * Representa el atributo vNivelEstudios.
+     *
+     * @var string
+     */
+    public $vNivelEstudios;
 
     /**
      * Representa el atributo vNombre.
@@ -81,13 +109,6 @@ class TblAlumnoSearch{
      * @var string
      */
     public $vPoblacion;
-
-    /**
-     * Representa el atributo iUsuario.
-     *
-     * @var integer
-     */
-    public $iUsuario;
 
     /**
      * Representa el atributo vNumeroIdentificacion.
@@ -137,5 +158,12 @@ class TblAlumnoSearch{
      * @var string
      */
     public $dBaja;
+
+    /**
+     * Representa el atributo vNumeroSS.
+     *
+     * @var string
+     */
+    public $vNumeroSS;
 }
 ?>

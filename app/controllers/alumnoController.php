@@ -5,7 +5,9 @@ require_once 'helper/OwlDate.inc';
 require_once CLASSESDIR . 'PplController.inc';
 
 require_once MODELDIR . 'TblCategoria.inc';
+require_once MODELDIR . 'TblCategoriaEmpleo.inc';
 require_once MODELDIR . 'TblCarnetConducir.inc';
+require_once MODELDIR . 'TblCobroParo.inc';
 require_once MODELDIR . 'TblCurso.inc';
 require_once MODELDIR . 'TblEstadoCivil.inc';
 require_once MODELDIR . 'TblEstadoLaboral.inc';
@@ -132,6 +134,16 @@ class alumnoController extends PplController{
 	    // Carnets de conducir
 	    $this->view->carnetsCOL = TblCarnetConducir::findAll($this->db,'vNombre');
 	    
+	    // Cobro de paro
+	    $this->view->cobrosParoIDX = $this->cacheBO->getCobrosParo();
+	    
+	    // Categorías de empleo
+	    $this->view->categoriasEmpleoIDX = $this->cacheBO->getCategoriasEmpleo();
+	    
+	    // Claves para los campos de situación laboral
+	    $this->view->claveOcupado = PplCacheBO::CLAVE_OCUPADO;
+	    $this->view->claveDesocupado = PplCacheBO::CLAVE_DESOCUPADO;
+	    
    		// Doy de alta la persona
     	if ( $this->helper->get('send') ){
     		
@@ -173,7 +185,6 @@ class alumnoController extends PplController{
                 return;
             }
             
-        	$this->view->alumnoDO = $alumnoDO;
         	$this->view->duplicar = $duplicar = false;
         	
         	// Usuario del alumno
@@ -184,7 +195,6 @@ class alumnoController extends PplController{
         	if ( OwlSession::getValue('alumnoDuplicado') instanceof TblPersona ){
         		
         		$alumnoDO = OwlSession::getValue('alumnoDuplicado');
-        		$this->view->alumnoDO = $alumnoDO;
         		$this->view->duplicar = $duplicar = true;
         		
         	}
@@ -220,6 +230,8 @@ class alumnoController extends PplController{
     	// Datos para la vista
     	if ( isset($alumnoDO) ){
         	
+    		$this->view->alumnoDO = $alumnoDO;
+    		
 	        // Paises
 	        $this->view->paisesCOL = TblPais::findAll($this->db, 'vIso');
 		        
@@ -256,6 +268,15 @@ class alumnoController extends PplController{
 	    	// Carnets del alumno
 	    	$this->view->carnetsAlumnoCOL = TrelPersonaCarnet::findByTblPersona($this->db, $alumnoDO->getIdPersona());
 		    
+	    	// Cobro de paro
+	    	$this->view->cobrosParoIDX = $this->cacheBO->getCobrosParo();
+	    	
+	    	// Categorías de empleo
+	    	$this->view->categoriasEmpleoIDX = $this->cacheBO->getCategoriasEmpleo();
+	    	
+	    	// Claves para los campos de situación laboral
+	    	$this->view->claveOcupado = PplCacheBO::CLAVE_OCUPADO;
+	    	$this->view->claveDesocupado = PplCacheBO::CLAVE_DESOCUPADO;
         }
         
     }
@@ -463,21 +484,23 @@ class alumnoController extends PplController{
         }
 	   	
         // Datos del alumno
-
     	$nombre = $this->helper->getAndEscape('nombre');
         $apellido = $this->helper->getAndEscape('apellido1'); 
-        $apellido2 = $this->helper->getAndEscape('apellido2'); 
+        $apellido2 = $this->helper->getAndEscape('apellido2');
+        $sexo = $this->helper->getAndEscape('sexo');
+        $discapacidad = $this->helper->getAndEscape('discapacidad');
         $nacimiento = $this->helper->getAndEscape('nacimiento');
         $tipoIdentificacion = $this->helper->getAndEscape('tipoIdentificacion'); 
         $dni = $this->helper->getAndEscape('dni');
+        $numeroSS = $this->helper->getAndEscape('numeroSS');
         $oldDni = $this->helper->getAndEscape('dniOculto');
         $direccion = $this->helper->getAndEscape('direccion');
         $poblacion = $this->helper->getAndEscape('poblacion'); 
         $cp = $this->helper->getAndEscape('cp'); 
         $provincia = $this->helper->getAndEscape('provinciasUsuario'); 
-        $pais = $this->helper->getAndEscape('pais'); 
-        $estadoCivil = $this->helper->getAndEscape('estadoCivil'); 
-        $estadoLaboral = $this->helper->getAndEscape('estadoLaboral'); 
+        $pais = $this->helper->getAndEscape('pais');
+        $estadoCivil = $this->helper->getAndEscape('estadoCivil');
+        $estadoLaboral = $this->helper->getAndEscape('estadoLaboral');
         $nivelEstudios = $this->helper->getAndEscape('nivelEstudios');
         $telefono = $this->helper->getAndEscape('tel');
         $movil = $this->helper->getAndEscape('movil');
@@ -499,6 +522,21 @@ class alumnoController extends PplController{
 				array_push($arrIdsCarnets,$clave[1]);
 			}
 		}
+		
+		// Campos para el caso de estar en situación laboral "Desocupado"
+		$fechaParo = $this->helper->getAndEscape('fechaParo');
+		$trabajo = $this->helper->getAndEscape('trabajo');
+		$cobro = $this->helper->getAndEscape('cobro');
+		
+		// Campos para el caso de estar en situación laboral "Ocupado"
+		$categoriaEmpleo = $this->helper->getAndEscape('categoriaEmpleo');
+		$trabajadores250 = $this->helper->getAndEscape('trabajadores250');
+		$sectorEmpresaActual = $this->helper->getAndEscape('sectorEmpresaActual');
+		$razonEmpresaActual = $this->helper->getAndEscape('razonEmpresaActual');
+		$cif = $this->helper->getAndEscape('cif');
+		$domicilioEmpresaActual = $this->helper->getAndEscape('domicilioEmpresaActual');
+		$localidadEmpresaActual = $this->helper->getAndEscape('localidadEmpresaActual');
+		$cpEmpresaActual = $this->helper->getAndEscape('cpEmpresaActual');
 		
         // Nombre 
         if (empty($nombre)){
@@ -619,7 +657,7 @@ class alumnoController extends PplController{
 	    		
 	    	}
 	    	
-	    	// 3. Insertamos o actualizamos una alumno
+	    	// 3. Insertamos o actualizamos un alumno
 	    	if ( $correcto ){
 	    	
 		    	// Datos de la alumno
@@ -634,9 +672,12 @@ class alumnoController extends PplController{
 		    	$alumnoDO->setVNombre($nombre);
 		    	$alumnoDO->setVPrimerApellido($apellido);
 		    	$alumnoDO->setVSegundoApellido($apellido2);
+		    	$alumnoDO->setVSexo($sexo);		    	
+		    	$alumnoDO->setBDiscapacidad($discapacidad);		    	
 		    	$alumnoDO->setDNacimiento(OwlDate::europeoAmericano($nacimiento));
 		    	$alumnoDO->setFkTipoIdentificacion($tipoIdentificacion);
 		    	$alumnoDO->setVNumeroIdentificacion($dni);
+		    	$alumnoDO->setVNumeroSS($numeroSS);
 		    	$alumnoDO->setFkPais($pais);
 		    	$alumnoDO->setVTelefono($telefono);
 		    	$alumnoDO->setVMovil($movil);
@@ -654,6 +695,21 @@ class alumnoController extends PplController{
 		    	$alumnoDO->setLastModified(date('Y-m-d'));
                 $alumnoDO->setModUser($this->usuario->getNombre());
 		    	
+                // Situación laboral "Desocupado"
+                $alumnoDO->setDAntiguedadParo(OwlDate::europeoAmericano($fechaParo));
+                $alumnoDO->setVTrabajoParo($trabajo);
+                $alumnoDO->setFkCobros($cobro);
+                
+                // Situación laboral "Ocupado"
+                $alumnoDO->setFkCategoriaEmpleo($categoriaEmpleo);
+                $alumnoDO->setVSectorEmpresaActual($sectorEmpresaActual);
+                $alumnoDO->setBMas250Trabajadores($trabajadores250);
+                $alumnoDO->setVRazonSocialEmpresaActual($razonEmpresaActual);
+                $alumnoDO->setVCifEmpresaActual($cif);
+                $alumnoDO->setVDomicilioCentroTrabajo($domicilioEmpresaActual);
+                $alumnoDO->setVLocalidadCentroTrabajo($localidadEmpresaActual);
+                $alumnoDO->setVCpCentroTrabajo($cpEmpresaActual);
+                
 		    	if ( $editar ){
 		    		$correcto = $alumnoDO->update();
 		    	} else {

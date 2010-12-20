@@ -52,24 +52,6 @@
 			<div class="separadorH"></div>
 			
 			<div class="campo controlado multi">
-            	<label for="sector">Sector*</label>
-	            <select class="grande desplegable" name="sector" id="sector">
-	            	<option value=""></option>
-					<?
-					
-					// Sector
-					foreach ( $this->sectoresIDX as $clave => $nombre) {
-						
-						?><option value="<?= $clave ?>" ><?= $nombre ?></option><?
-						
-					}
-					
-					?>
-				</select>
-				<p id="errorSector" class="errorInput"><?= $this->errorSector ?></p>
-			</div>
-			
-			<div class="campo controlado multi">
             	<label for="colectivo">Colectivo*</label>
 	            <select class="grande desplegable" name="colectivo" id="colectivo">
 	            	<option value=""></option>
@@ -170,6 +152,42 @@
             	<label for="descripcion">Descripción</label>
             	<textarea name="descripcion" id="descripcion"></textarea>
             </div>
+            
+ 			<div class="alterForm">
+            	<h3>Tutoría a distancia</h3>
+            	<div class="campo multi">
+            		<label for="tutorDistancia">Tutor a distancia</label>
+            		<select name="tutorDistancia" name="tutorDistancia" id="tutorDistancia" class="desplegable grande">
+            			<option value=""></option><?
+            			
+            			foreach ($this->profesoresIDX as $clave => $profesor){
+            				
+            				echo '<option value="' . $clave . '">' . $profesor . '</option>' . "\n";
+            				
+            			}
+            			
+            		?></select>
+            	</div>
+				<div class="campo multi">
+	                <label for="horasT">Horas de tutoría</label>
+	                <input type="text" name="horasT" id="horasT" class="campoTexto mediano numerico" />
+	            </div>            	
+	            <div class="campo multi">
+					<label for="modalidadTutoria">Tipo de tutoría</label>
+            		<select name="modalidadTutoria" name="modalidadTutoria" id="modalidadTutoria" class="desplegable mediano">
+            			<option value=""></option><?
+            			
+            			foreach ($this->modalidadesIDX as $clave=>$modalidad){
+            				
+            				echo '<option value="' . $clave . '">' . $modalidad . '</option>' . "\n";
+            				
+            			}
+            			
+            		?></select>	            		
+	            </div>
+            </div>            
+            
+            <div class="separadorH"></div>
             
             <div class="campo multi">
 	            <label for="profesoresSeleccionados">Profesores del curso</label>

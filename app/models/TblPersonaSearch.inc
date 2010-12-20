@@ -1,7 +1,7 @@
 <?php
 /**
  * Este archivo ha sido generado con Owl Dogen v.0.6
- * el 09 de December de 2010 a las 08:48:53
+ * el 16 de December de 2010 a las 04:06:51
  * @package dataAccess
  */
 
@@ -90,6 +90,13 @@ class TblPersonaSearch{
     public $vSegundoApellido;
 
     /**
+     * Representa el atributo vSexo.
+     *
+     * @var string
+     */
+    public $vSexo;
+
+    /**
      * Representa el atributo vPoblacion.
      *
      * @var string
@@ -109,6 +116,13 @@ class TblPersonaSearch{
      * @var string
      */
     public $vNumeroIdentificacion;
+
+    /**
+     * Representa el atributo vNumeroSS.
+     *
+     * @var string
+     */
+    public $vNumeroSS;
 
     /**
      * Representa el atributo vDireccion.
@@ -153,6 +167,13 @@ class TblPersonaSearch{
     public $dNacimiento;
 
     /**
+     * Representa el atributo bDiscapacidad.
+     *
+     * @var integer
+     */
+    public $bDiscapacidad;
+
+    /**
      * Representa el atributo vObservaciones.
      *
      * @var string
@@ -165,6 +186,83 @@ class TblPersonaSearch{
      * @var string
      */
     public $dBaja;
+
+    /**
+     * Representa el atributo fkCobros.
+     *
+     * @var integer
+     */
+    public $fkCobros;
+
+    /**
+     * Representa el atributo dAntiguedadParo.
+     *
+     * @var string
+     */
+    public $dAntiguedadParo;
+
+    /**
+     * Representa el atributo vTrabajoParo.
+     *
+     * @var string
+     */
+    public $vTrabajoParo;
+
+    /**
+     * Representa el atributo vSectorEmpresaActual.
+     *
+     * @var string
+     */
+    public $vSectorEmpresaActual;
+
+    /**
+     * Representa el atributo fkCategoriaEmpleo.
+     *
+     * @var integer
+     */
+    public $fkCategoriaEmpleo;
+
+    /**
+     * Representa el atributo bMas250Trabajadores.
+     *
+     * @var integer
+     */
+    public $bMas250Trabajadores;
+
+    /**
+     * Representa el atributo vRazonSocialEmpresaActual.
+     *
+     * @var string
+     */
+    public $vRazonSocialEmpresaActual;
+
+    /**
+     * Representa el atributo vCifEmpresaActual.
+     *
+     * @var string
+     */
+    public $vCifEmpresaActual;
+
+    /**
+     * Representa el atributo vDomicilioCentroTrabajo.
+     *
+     * @var string
+     */
+    public $vDomicilioCentroTrabajo;
+
+    /**
+     * Representa el atributo vLocalidadCentroTrabajo.
+     *
+     * @var string
+     */
+    public $vLocalidadCentroTrabajo;
+
+    /**
+     * Representa el atributo vCpCentroTrabajo.
+     *
+     * @var string
+     */
+    public $vCpCentroTrabajo;
 
     /**
      * Representa el atributo mod_user.

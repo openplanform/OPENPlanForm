@@ -43,7 +43,7 @@
 	                        }
                         
                         ?><td class="accion"><a href="/documento/eliminar/<?= $id ?>" onclick="ventanaConfirmacion('Eliminar Documento', '¿Está seguro que desea eliminar el documento <strong><?= $documentoDO->getVNombre() ?></strong>?', this.href);return false;" class="btnEliminar" title="Eliminar Documento"><span>eliminar</span></a></td>
-                        <td><a href="/documento/ver/<?= $id ?>" class="doc pdf"><span>ver</span></a></td>
+                        <td><a href="/documento/ver/<?= $id ?>" class="doc pdf" rel="external"><span>ver</span></a></td>
                     </tr><?
                     
                 }  

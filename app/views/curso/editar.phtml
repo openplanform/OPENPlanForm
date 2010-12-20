@@ -65,24 +65,6 @@
 			<div class="separadorH"></div>
 			
 			<div class="campo controlado multi">
-            	<label for="sector">Sector*</label>
-	            <select class="grande" name="sector" id="sector">
-	            	<option value=""></option>
-					<?
-					
-					// Sector
-					foreach ( $this->sectoresIDX as $clave => $nombre) {
-						
-						?><option value="<?= $clave ?>" <?= ( ($this->cursoDO->getFkSector() == $clave)?'selected="selected"':'' ) ?>><?= $nombre ?></option><?
-						
-					}
-					
-					?>
-				</select>
-				<p id="errorSector" class="errorInput"><?= $this->errorSector ?></p>
-			</div>
-			
-			<div class="campo controlado multi">
             	<label for="colectivo">Colectivo*</label>
 	            <select class="grande" name="colectivo" id="colectivo">
 	            	<option value=""></option>
@@ -151,11 +133,6 @@
             </div>
 			
 			<div class="campo multi">
-                <label for="horasT">Horas de tutoría</label>
-                <input type="text" name="horasT" id="horasT" class="campoTexto mediano numerico" value="<?= $this->cursoDO->getIHorasTutoria() ?>"/>
-            </div>
-			
-			<div class="campo multi">
                 <label for="numAlumnos">Número de alumnos</label>
                 <input type="text" name="numAlumnos" id="numAlumnos" class="campoTexto mediano numerico" value="<?= $this->cursoDO->getINumeroAlumnos() ?>"/>
             </div>
@@ -183,6 +160,48 @@
 					( $fechaFin == '01/01/1970' ) ? $fechaFin = '' : '';
                 ?>
                 <input type="text" name="fin" id="fin" class="campoTexto pequeno" onkeypress="return false;" value="<?= $fechaFin ?>"/>
+            </div>
+            
+            <div class="separadorH"></div>
+            
+            <div class="alterForm">
+            	<h3>Tutoría a distancia</h3>
+            	<div class="campo multi">
+            		<label for="tutorDistancia">Tutor a distancia</label>
+            		<select name="tutorDistancia" name="tutorDistancia" id="tutorDistancia" class="desplegable grande">
+            			<option value=""></option><?
+            			
+            			$idTutor = $this->cursoDO->getFkTutorDistancia(); 
+            			
+            			foreach ($this->profesoresIDX as $clave => $profesor){
+            				
+            				$sel = $idTutor == $clave ? 'selected="selected"' : '';
+            				echo '<option value="' . $clave . '" ' . $sel .'>' . $profesor . '</option>' . "\n";
+            				
+            			}
+            			
+            		?></select>
+            	</div>
+				<div class="campo multi">
+	                <label for="horasT">Horas de tutoría</label>
+	                <input type="text" name="horasT" id="horasT" class="campoTexto mediano numerico" value="<?= $this->cursoDO->getIHorasTutoria() ?>"/>
+	            </div>            	
+	            <div class="campo multi">
+					<label for="modalidadTutoria">Tipo de tutoría</label>
+            		<select name="modalidadTutoria" name="modalidadTutoria" id="modalidadTutoria" class="desplegable mediano">
+            			<option value=""></option><?
+            			
+            			$idModalidadTutoria = $this->cursoDO->getFkModalidadTutoria();
+            			
+            			foreach ($this->modalidadesIDX as $clave=>$modalidad){
+            				
+            				$sel = $idModalidadTutoria == $clave ? 'selected="selected"' : '';
+            				echo '<option value="' . $clave . '" ' . $sel . '>' . $modalidad . '</option>' . "\n";
+            				
+            			}
+            			
+            		?></select>	            		
+	            </div>
             </div>
             
             <div class="separadorH"></div>
@@ -232,8 +251,10 @@
 								<?
 								
 								// Profesores
+								$alter = true;
 								foreach ( $this->profesoresIDX as $clave => $nombre) {
 									
+									$alter = !$alter;
 									// Categorías de los profesores
 									$categoriasProfesor = '';
 									$idsCategoriasARR = $this->categoriasProfesoresIDX[$clave];
@@ -248,7 +269,7 @@
 									}
 									
 									?>
-									<tr>
+									<tr <?= $alter ? 'class="alter"' : '' ?>>
 										<td><a href="/profesor/ficha.html/<?= $clave ?>"><?= $nombre ?></a></td>
 										<td><?= $categoriasProfesor ?></td>
 										<td><a href="javascript:addProfCurso('<?= $clave ?>', '<?= $nombre ?>')" class="btnAnadir" title="Asignar al curso"><span>añadir</span></a></td>
@@ -338,7 +359,7 @@
 		            	if ( count($this->alumnosCursoCOL) > 0 ){
 			            	foreach ( $this->alumnosCursoCOL as $alumnoCursoDO ){
 			            		
-			            		?><option value="<?= $alumnoCursoDO->getFkPersona() ?>"><?= $this->personasIDX[$alumnoCursoDO->getFkPersona()]->getVNombre() . ' ' . $this->personasIDX[$alumnoCursoDO->getFkPersona()]->getVPrimerApellido() . ' ' . $this->personasIDX[$alumnoCursoDO->getFkPersona()]->getVSegundoApellido() ?></option><?
+			            		?><option value="<?= $alumnoCursoDO->getIPersona() ?>"><?= $this->personasIDX[$alumnoCursoDO->getIPersona()]->getVNombre() . ' ' . $this->personasIDX[$alumnoCursoDO->getIPersona()]->getVPrimerApellido() . ' ' . $this->personasIDX[$alumnoCursoDO->getIPersona()]->getVSegundoApellido() ?></option><?
 			            		
 			            	}
 		            	}

@@ -4,16 +4,31 @@ require_once 'OwlController.inc';
 require_once 'dbase/OwlDatabase.inc';
 
 require_once MODELDIR . 'TblEmpresa.inc';
+require_once MODELDIR . 'TblEstadoLaboral.inc';
 require_once MODELDIR . 'TblEstadoPlan.inc';
+require_once MODELDIR . 'TblNivelEstudios.inc';
 require_once MODELDIR . 'TblPais.inc';
 require_once MODELDIR . 'TblPersona.inc';
 require_once MODELDIR . 'TblProvincia.inc';
 require_once MODELDIR . 'TblTipoConvocatoria.inc';
+require_once MODELDIR . 'TblTipoIdentificacion.inc';
 require_once MODELDIR . 'TblTipoPlan.inc';
 require_once MODELDIR . 'TblDocumento.inc';
 
 
 class PplCacheBO {
+	
+	/**
+	 * Valor del estado laboral "Ocupado" en la bbdd
+	 * @var intenger
+	 */
+	const CLAVE_OCUPADO = 1;
+	
+	/**
+	 * Valor del estado laboral "Desocupado" en la bbdd
+	 * @var intenger
+	 */
+	const CLAVE_DESOCUPADO = 2;
 	
 	/**
      * Referencia a la base de datos
@@ -238,6 +253,49 @@ class PplCacheBO {
     private $personas_fetched = false;
     
     /**
+     * estados civiles indexados por su clave
+     * @var array
+     */
+    private $estadosCivilesIDX;
+    
+    /**
+     * Flag que indica que los estados civiles han sido cargados
+     * @var boolean
+     */
+    private $estadosCiviles_fetched = false;
+    
+    /**
+     * Estados laborales, indexados por su clave
+     * @var array
+     */
+    private $estadosLaboralesIDX = null;
+    
+    /**
+     * Niveles de estudios, indexados por su clave
+     * @var array
+     */
+    private $nivelesEstudioIDX = null;
+    
+    /**
+     * Tipos de identificación, indexados por su clave
+     * @var array
+     */
+    private $tiposIdentificacionIDX = null;
+    
+    /**
+     * Cobros de parto indexados por su clave
+     * @var array
+     */
+    private $cobrosParoIDX = null;
+    
+    /**
+     * Categorías de empleo indexadas por su clave
+     * @var array
+     */
+    private $categoriasEmpleoIDX = null;
+    
+    
+    /**
      * Constructora, propaga la referencia a la base de datos 
      * @param OwlConnection $db
      */
@@ -246,6 +304,7 @@ class PplCacheBO {
         $this->db = $db;
         
     }
+    
     
 	/**
 	 * Obtiene las convocatorias
@@ -274,6 +333,7 @@ class PplCacheBO {
 		
 	}
     
+	
 	/**
 	 * Obtiene los tipos de convocatoria
 	 * @return array
@@ -300,6 +360,7 @@ class PplCacheBO {
 		return $this->tiposConvocatoriaIDX;
 		
 	}
+	
 	
 	/**
 	 * Obtiene los planes
@@ -328,6 +389,7 @@ class PplCacheBO {
 		
 	}
 	
+	
 	/**
 	 * Obtiene los tipos de plan
 	 * @return array
@@ -354,6 +416,7 @@ class PplCacheBO {
 		return $this->tiposPlanIDX;
 		
 	}
+	
 	
 	/**
 	 * Obtiene los estados de plan
@@ -382,6 +445,7 @@ class PplCacheBO {
 		
 	}
 	
+	
 	/**
 	 * Obtiene los requisitos
 	 * @return array
@@ -409,6 +473,7 @@ class PplCacheBO {
 		
 	}
 	
+	
 	/**
 	 * Obtiene las empresas
 	 * @return array
@@ -435,6 +500,7 @@ class PplCacheBO {
 		return $this->empresasIDX;
 		
 	}
+	
 	
 	/**
 	 * Obtiene las academias
@@ -465,6 +531,7 @@ class PplCacheBO {
 		
 	}
 	
+	
 	/**
 	 * Obtiene las consultoras
 	 * @return array
@@ -493,6 +560,7 @@ class PplCacheBO {
 		return $this->consultorasIDX;
 		
 	}
+	
 	
 	/**
 	 * Obtiene los centros
@@ -551,7 +619,7 @@ class PplCacheBO {
 	
 	
 	/**
-	 * Obtiene la modalidad
+	 * Devuelve todos los nombres de modalidades indexadas por su clave
 	 * @return array
 	 */
 	public function getModalidades() {
@@ -579,7 +647,7 @@ class PplCacheBO {
 	
 	
 	/**
-	 * Obtiene los sectores
+	 * Devuelve todos los nombres de sectores indexados por su clave
 	 * @return array
 	 */
 	public function getSectores() {
@@ -884,7 +952,143 @@ class PplCacheBO {
 	}
 	
 	
+	/**
+	 * Obtiene los estados civiles
+	 * @return array
+	 */
+	public function getEstadosCiviles() {
+		
+		if ( $this->estadosCiviles_fetched ){
+			return $this->estadosCivilesIDX;
+		}
+		
+		$estadosCivilesCOL = TblEstadoCivil::findAll($this->db, 'vNombre');
+		$estadosCivilesIDX = OwlDatabase::indexFor('idEstadoCivil', $estadosCivilesCOL);
+		
+		
+		$this->estadosCivilesIDX = $estadosCivilesIDX;
+		$this->estadosCiviles_fetched = true;
+		
+		return $this->estadosCivilesIDX;
+		
+	}
+
 	
+	/**
+	 * Obtiene los estados laborales
+	 * @return array
+	 */
+	public function getEstadosLaborales() {
+		
+		if (is_null($this->estadosLaboralesIDX) ){
+
+			$estadosLaboralesCOL = TblEstadoLaboral::findAll($this->db, 'vNombre');
+			$estadosLaboralesIDX = OwlDatabase::indexFor('idEstadoLaboral', $estadosLaboralesCOL);
+			
+			$this->estadosLaboralesIDX = $estadosLaboralesIDX;
+			$this->estadosLaborales_fetched = true;
+			
+		}
+		
+		return $this->estadosLaboralesIDX;
+		
+	}
+	
+	
+	/**
+	 * Devuelve todos los niveles de estudios indexados por su clave
+	 * @return array
+	 */
+	public function getNivelesEstudio(){
+		
+		if (is_null($this->nivelesEstudioIDX)){
+
+			$nivelesEstudioCOL = TblNivelEstudios::findAll($this->db, 'vNombre ASC');
+			$nivelesEstudioIDX = OwlDatabase::indexFor('idNivelEstudios', $nivelesEstudioCOL);
+			
+			$this->nivelesEstudioIDX = $nivelesEstudioIDX;
+			
+		}
+		
+		return $this->nivelesEstudioIDX;
+		
+	}
+	
+	
+	/**
+	 * Devuelve todos los tipos de identificacion indexados por su clave
+	 * @return array
+	 */
+	public function getTiposIdentificacion(){
+		
+		if (is_null($this->tiposIdentificacionIDX)){
+			
+			$tiposIdentificacionCOL = TblTipoIdentificacion::findAll($this->db, 'vNombre ASC');
+			$tiposIdentificacionIDX = OwlDatabase::indexFor('idTipoIdentificacion', $tiposIdentificacionCOL);
+			
+			$this->tiposIdentificacionIDX = $tiposIdentificacionIDX;
+			
+		}
+		
+		return $this->tiposIdentificacionIDX;
+		
+	}
+	
+	
+	/**
+	 * Devuelve una colección con el/los profesores asignados a un curso en particular
+	 * @param integer $idCurso
+	 */
+	public function getProfesoresCurso($idCurso){
+		
+		$sql = "SELECT *
+				FROM   tblPersona per
+				WHERE  EXISTS (SELECT NULL
+				               FROM   trelProfesor pro
+				               WHERE  per.idPersona = pro.fkPersona
+				                      AND pro.fkCurso = $idCurso)
+				ORDER  BY per.vNombre ASC;";
+		
+		
+		return OwlGenericDO::createCollection( $this->db, $sql, 'TblPersona' );
+		
+	}
+	
+	/**
+	 * Devuelve los cobros de paro indexados por su clave
+	 * @return array
+	 */
+	public function getCobrosParo(){
+		
+		if ( is_null($this->cobrosParoIDX) ){
+			
+			$cobrosParoCOL = TblCobroParo::findAll($this->db, 'idCobroParo');
+			$cobrosParoIDX = OwlDatabase::indexFor('idCobroParo', $cobrosParoCOL);
+			$this->cobrosParoIDX = $cobrosParoIDX;
+			
+		}
+		
+		return $this->cobrosParoIDX;
+		
+	}
+	
+	/**
+	 * Devuelve las categorías de empleo indexadas por su clave
+	 * @return array
+	 */
+	public function getCategoriasEmpleo(){
+		
+		if ( is_null($this->categoriasEmpleoIDX) ){
+			
+			$categoriasEmpleoCOL = TblCategoriaEmpleo::findAll($this->db, 'idCategoriaEmpleo');
+			$categoriasEmpleoIDX = OwlDatabase::indexFor('idCategoriaEmpleo', $categoriasEmpleoCOL);
+			$this->categoriasEmpleoIDX = $categoriasEmpleoIDX;
+			
+		}
+		
+		return $this->categoriasEmpleoIDX;
+		
+	}
 	
 }
 

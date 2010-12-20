@@ -1,5 +1,72 @@
+<ul class="pestanyas">
+	<li><a href="/curso/editar.html/<?= $this->cursoDO->getIdCurso() ?>">Datos generales</a></li>
+	<li><a href="/curso/horario.html/<?= $this->cursoDO->getIdCurso() ?>">Horario</a></li>
+	<li class="actual"><strong>Documentación</strong></li>
+</ul>
+
+<div class="separadorH"></div>
+
+<h3 class="conSubtitulo">Documentación</h3>
+<p class="desc">A continuación se listan los documentos generados para el curso actual.</p>
+
 <?php
 
+// S-30
+if ($this->controlAsistenciaARR){
+	
+	?><div id="controlAsistencia" class="documentacion">
+		
+		<h3 class="conSubtitulo">S-30 - Control de asistencia</h3>
+		<p class="desc">Puede consultar cada documento individualmente, o bien, descargar un archivo ZIP con todos los documentos que encontrará al final del listado.</p>
+		
+		<ul id="convocatoriaDoc"><?
+	
+		foreach ($this->controlAsistenciaARR as $documento){
+			
+			?><li><a href="/tmp/<?= $documento['file'] ?>" rel="external"><?= $documento['label'] ?></a></li><?
+			
+		}
+	
+		?></ul>
+	</div><?
+	
+}
+
+// S-20
+if ($this->listadoInicial){
+	
+	?><div id="controlAsistencia" class="documentacion">
+		
+		<h3>S-20 - Listado inicial de asistentes</h3>
+		
+		<ul id="convocatoriaDoc">
+			<li><a href="/tmp/<?= $this->listadoInicial['file'] ?>" rel="external"><?= $this->listadoInicial['label'] ?></a></li>
+		</ul>
+		
+	</div><?
+	
+}
 
 
-?>
+
+// Mensajes de error
+if ($this->mensajes && count($this->mensajes) > 0){
+	
+	?><div class="documentacion">
+		
+		<h3>Requisitos de documentación</h3>
+	
+		<ul class="erroresDocumentacion"><?
+	
+		foreach ($this->mensajes as $mensaje){
+			
+			echo '<li>' . $mensaje . '</li>';
+			
+		}
+	
+	?></ul>
+	</div><?
+	
+}
+
+?> 

@@ -10,6 +10,7 @@ require_once MODULEDIR . 'barraHerramientasModule.php';
 
 require_once MODELDIR . '/TblConvocatoria.inc';
 require_once MODELDIR . '/TblPlan.inc';
+require_once MODELDIR . '/TblSector.inc';
 
 class planController extends PplController{
     
@@ -88,6 +89,9 @@ class planController extends PplController{
     	// Empresas
     	$this->view->consultorasIDX = $this->cacheBO->getConsultoras();
         
+    	// Sector
+    	$this->view->sectoresIDX = $this->cacheBO->getSectores();
+    	
     	if ( $this->aclManager->hasPerms('convocatoria', 'editar') ){
     		$this->view->editar = true;
     	}
@@ -112,6 +116,9 @@ class planController extends PplController{
     	
     	// Consultoras
     	$this->view->consultorasIDX = $this->cacheBO->getConsultoras();
+    	
+    	// Sector
+    	$this->view->sectoresIDX = $this->cacheBO->getSectores();
     	
     	// Doy de alta el plan
     	if ( $this->helper->get('send') ){
@@ -160,6 +167,8 @@ class planController extends PplController{
 	    	// Empresas
 	    	$this->view->empresasIDX = $this->cacheBO->getEmpresas();
     		
+	    	// Sector
+    		$this->view->sectoresIDX = $this->cacheBO->getSectores();
         }
         
     }
@@ -240,6 +249,9 @@ class planController extends PplController{
 	    	// Consultoras
     		$this->view->consultorasIDX = $this->cacheBO->getConsultoras();
 	    	
+    		// Sector
+    		$this->view->sectoresIDX = $this->cacheBO->getSectores();
+    		
         }
         
     }
@@ -309,14 +321,28 @@ class planController extends PplController{
 	    
 	    // Convocatoria
 		$convocatoria = $this->helper->escapeInjection($this->helper->get('convocatoria'));
-	    if ( is_null($tipo) || empty($tipo) ){
+	    if ( is_null($convocatoria) || empty($convocatoria) ){
 	    	$correcto = false;
 	    	$this->view->errorConvocatoria = 'La convocatoria no puede estar vacía';
 	    }
 	    
+	    // Sector
+		$sector = $this->helper->escapeInjection($this->helper->get('sector'));
+	    if ( is_null($sector) || empty($sector) ){
+	    	$correcto = false;
+	    	$this->view->errorSector = 'El sector no puede estar vacío';
+	    }
+	    
+	    // Número de expediente
+		$expediente = $this->helper->escapeInjection($this->helper->get('expediente'));
+	    if ( is_null($expediente) || empty($expediente) ){
+	    	$correcto = false;
+	    	$this->view->errorExpediente = 'El expediente no puede estar vacío';
+	    }
+	    
     	// Estado
 		$estado = $this->helper->escapeInjection($this->helper->get('estado'));
-	    if ( is_null($tipo) || empty($tipo) ){
+	    if ( is_null($estado) || empty($estado) ){
 	    	$correcto = false;
 	    	$this->view->errorEstado = 'El estado no puede estar vacío';
 	    }
@@ -333,14 +359,14 @@ class planController extends PplController{
 	    
     	// Propietario
 		$propietario = $this->helper->escapeInjection($this->helper->get('propietario'));
-	    if ( is_null($tipo) || empty($tipo) ){
+	    if ( is_null($propietario) || empty($propietario) ){
 	    	$correcto = false;
 	    	$this->view->errorPropietario = 'El propietario no puede estar vacío';
 	    }
 	    
 	    // Consultora
 		$consultora = $this->helper->escapeInjection($this->helper->get('consultora'));
-	    if ( is_null($tipo) || empty($tipo) ){
+	    if ( is_null($consultora) || empty($consultora) ){
 	    	$correcto = false;
 	    	$this->view->errorConsultora = 'La consultora no puede estar vacía';
 	    }
@@ -363,6 +389,8 @@ class planController extends PplController{
 	    	$planDO->setVNombre($nombre);
 	    	$planDO->setFkTipoPlan($tipo);
 	    	$planDO->setFkConvocatoria($convocatoria);
+	    	$planDO->setFkSector($sector);
+	    	$planDO->setVNumeroExpediente($expediente);
 	    	$planDO->setFkEstadoPlan($estado);
 	    	$planDO->setFkEmpresaPropietaria($propietario);
 	    	$planDO->setFkEmpresaConsultora($consultora);

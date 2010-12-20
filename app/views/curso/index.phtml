@@ -9,7 +9,6 @@
 		<tr>
 			<th><a href="/curso/index.html/?ob=nom&o=<?=$this->order?>" <?=( ($this->orderBy == 'nom')?'class="ordenado ' . $this->order . '"':'' )?> >Nombre</a></th>
 			<th><a href="/curso/index.html/?ob=plan&o=<?=$this->order?>" <?=( ($this->orderBy == 'plan')?'class="ordenado ' . $this->order . '"':'' )?> >Plan</a></th>
-			<th><a href="/curso/index.html/?ob=sec&o=<?=$this->order?>" <?=( ($this->orderBy == 'sec')?'class="ordenado ' . $this->order . '"':'' )?> >Sector</a></th>
 			<th><a href="/curso/index.html/?ob=cat&o=<?=$this->order?>" <?=( ($this->orderBy == 'cat')?'class="ordenado ' . $this->order . '"':'' )?> >Categoria</a></th>
 			<th><a href="/curso/index.html/?ob=ini&o=<?=$this->order?>" <?=( ($this->orderBy == 'ini')?'class="ordenado ' . $this->order . '"':'' )?> >Inicio</a></th>
 			<th><a href="/curso/index.html/?ob=fin&o=<?=$this->order?>" <?=( ($this->orderBy == 'fin')?'class="ordenado ' . $this->order . '"':'' )?> >Fin</a></th>
@@ -40,7 +39,6 @@
 				<tr	<?= $clase ?> >
 					<td><a href="/curso/ficha.html/<?= $cursoDO->getIdCurso() ?>"><?= $cursoDO->getVNombre() ?></a></td>
 					<td><a href="/plan/ficha.html/<?= $cursoDO->getFkPlan() ?>"><?= $this->planesIDX[$cursoDO->getFkPlan()] ?></a></td>
-					<td><?= $this->sectoresIDX[$cursoDO->getFkSector()] ?></td>
 					<td><?= $this->categoriasIDX[$cursoDO->getFkCategoria()] ?></td>
 					<?php
 					 

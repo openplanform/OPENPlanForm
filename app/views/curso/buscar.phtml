@@ -54,21 +54,6 @@
             <div class="separadorH"></div>
             
             <div class="campo multi">
-                <label for="sector">Sector</label>
-                <select class="desplegable campoTexto grande" id="sector" name="sector">
-                    <option value=""></option><?
-                    
-                    foreach ($this->sectoresIDX as $clave=>$tipo){
-                        
-                        $sel = $clave == $this->sector ? ' selected="selected" ' : '';
-                        echo '<option value="' . $clave . '" ' . $sel . '>' . $tipo . '</option>' . "\n";
-                        
-                    }
-                    
-                ?></select>
-            </div>
-            
-            <div class="campo multi">
                 <label for="mod">Modalidad</label>
                 <select class="desplegable campoTexto mediano" id="mod" name="mod">
                     <option value=""></option><?
@@ -110,7 +95,6 @@
                     <tr>
                         <th><a href="/curso/buscar.html/?ob=nom&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'nom')?'class="ordenado ' . $this->order . '"':'' )?> >Nombre</a></th>
                         <th><a href="/curso/buscar.html/?ob=plan&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'plan')?'class="ordenado ' . $this->order . '"':'' )?> >Plan</a></th>
-                        <th><a href="/curso/buscar.html/?ob=sec&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'sec')?'class="ordenado ' . $this->order . '"':'' )?> >Sector</a></th>
                         <th><a href="/curso/buscar.html/?ob=cat&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'cat')?'class="ordenado ' . $this->order . '"':'' )?> >Categoria</a></th>
                         <th><a href="/curso/buscar.html/?ob=ini&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'ini')?'class="ordenado ' . $this->order . '"':'' )?> >Inicio</a></th>
                         <th><a href="/curso/buscar.html/?ob=fin&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'fin')?'class="ordenado ' . $this->order . '"':'' )?> >Fin</a></th>
@@ -139,7 +123,6 @@
                             <tr <?= $clase ?> >
                                 <td><a href="/curso/ficha.html/<?= $cursoDO->getIdCurso() ?>"><?= $cursoDO->getVNombre() ?></a></td>
                                 <td><a href="/plan/ficha.html/<?= $cursoDO->getFkPlan() ?>"><?= $this->planesIDX[$cursoDO->getFkPlan()] ?></a></td>
-                                <td><?= $this->sectoresIDX[$cursoDO->getFkSector()] ?></td>
                                 <td><?= $this->categoriasIDX[$cursoDO->getFkCategoria()] ?></td>
                                 <?php
                                 

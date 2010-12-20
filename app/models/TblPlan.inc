@@ -1,7 +1,7 @@
 <?php
 /**
  * Este archivo ha sido generado con Owl DoGen v.0.6
- * el 24 de November de 2010 a las 08:55:33
+ * el 15 de December de 2010 a las 04:49:58
  * @package dataAccess
  */
 
@@ -55,6 +55,18 @@ class TblPlan extends OwlGenericDO{
      * @var integer
      */
     public $fkEstadoPlan;
+
+    /**
+     * Atributo que representa el campo "fkSector"
+     * @var integer
+     */
+    public $fkSector;
+
+    /**
+     * Atributo que representa el campo "vNumeroExpediente"
+     * @var string
+     */
+    public $vNumeroExpediente;
 
     /**
      * Atributo que representa el campo "vNombre"
@@ -114,6 +126,8 @@ class TblPlan extends OwlGenericDO{
         $this->fkEmpresaConsultora = $data['fkEmpresaConsultora'];
         $this->fkEmpresaPropietaria = $data['fkEmpresaPropietaria'];
         $this->fkEstadoPlan = $data['fkEstadoPlan'];
+        $this->fkSector = $data['fkSector'];
+        $this->vNumeroExpediente = $data['vNumeroExpediente'];
         $this->vNombre = $data['vNombre'];
         $this->vDescripcion = $data['vDescripcion'];
         $this->ePresupuestoAsignado = $data['ePresupuestoAsignado'];
@@ -152,6 +166,12 @@ class TblPlan extends OwlGenericDO{
         }
         if( $tmp = $searchItem->fkEstadoPlan ){
             $where[] = "fkEstadoPlan='$tmp'";
+        }
+        if( $tmp = $searchItem->fkSector ){
+            $where[] = "fkSector='$tmp'";
+        }
+        if( $tmp = $searchItem->vNumeroExpediente ){
+            $where[] = "vNumeroExpediente='$tmp'";
         }
         if( $tmp = $searchItem->vNombre ){
             $where[] = "vNombre='$tmp'";
@@ -227,6 +247,22 @@ class TblPlan extends OwlGenericDO{
     }
 
     /**
+     * Obtiene todas las filas de la tabla tblPlan que coinciden con el criterio fkSector='$fkSector'.
+     *
+     * @param Connection $db Conexión con la base de datos.
+     * @param integer fkSector string Valor del campo fkSector.
+     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
+     * @return array
+     */
+     public static function findByTblSector( $db, $fkSector, $orderBy='' ){
+         $sql = "SELECT * FROM tblPlan WHERE fkSector='$fkSector'";
+         if( $orderBy != '' ){
+             $sql .= " ORDER BY $orderBy";
+         }
+         return OwlGenericDO::createCollection( $db, $sql, 'TblPlan' );
+     }
+
+    /**
      * Obtiene todas las filas de la tabla tblPlan que coinciden con el criterio fkConvocatoria='$fkConvocatoria'.
      *
      * @param Connection $db Conexión con la base de datos.
@@ -242,7 +278,7 @@ class TblPlan extends OwlGenericDO{
          return OwlGenericDO::createCollection( $db, $sql, 'TblPlan' );
      }
 
-/**
+    /**
      * Obtiene todas las filas de la tabla tblPlan que coinciden con el criterio fkEmpresaConsultora='$fkEmpresaConsultora'.
      *
      * @param Connection $db Conexión con la base de datos.
@@ -255,7 +291,7 @@ class TblPlan extends OwlGenericDO{
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
-         return NingenGenericDO::createCollection( $db, $sql, 'TblPlan' );
+         return OwlGenericDO::createCollection( $db, $sql, 'TblPlan' );
      }
 
     /**
@@ -271,7 +307,7 @@ class TblPlan extends OwlGenericDO{
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
-         return NingenGenericDO::createCollection( $db, $sql, 'TblPlan' );
+         return OwlGenericDO::createCollection( $db, $sql, 'TblPlan' );
      }
 
     /**
@@ -316,6 +352,8 @@ class TblPlan extends OwlGenericDO{
         $sets[] = 'fkEmpresaConsultora=' . ( ( ( $value = $this->fkEmpresaConsultora ) === null || !isset($this->fkEmpresaConsultora) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'fkEmpresaPropietaria=' . ( ( ( $value = $this->fkEmpresaPropietaria ) === null || !isset($this->fkEmpresaPropietaria) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'fkEstadoPlan=' . ( ( ( $value = $this->fkEstadoPlan ) === null || !isset($this->fkEstadoPlan) ) ? 'null' :  "'".addslashes($value)."'" );
+        $sets[] = 'fkSector=' . ( ( ( $value = $this->fkSector ) === null || !isset($this->fkSector) ) ? 'null' :  "'".addslashes($value)."'" );
+        $sets[] = 'vNumeroExpediente=' . ( ( ( $value = $this->vNumeroExpediente ) === null || !isset($this->vNumeroExpediente) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'vNombre=' . ( ( ( $value = $this->vNombre ) === null || !isset($this->vNombre) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'vDescripcion=' . ( ( ( $value = $this->vDescripcion ) === null || !isset($this->vDescripcion) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'ePresupuestoAsignado=' . ( ( ( $value = $this->ePresupuestoAsignado ) === null || !isset($this->ePresupuestoAsignado) ) ? 'null' :  "'".addslashes($value)."'" );
@@ -335,6 +373,8 @@ class TblPlan extends OwlGenericDO{
         $attributes[] = 'fkEmpresaConsultora';
         $attributes[] = 'fkEmpresaPropietaria';
         $attributes[] = 'fkEstadoPlan';
+        $attributes[] = 'fkSector';
+        $attributes[] = 'vNumeroExpediente';
         $attributes[] = 'vNombre';
         $attributes[] = 'vDescripcion';
         $attributes[] = 'ePresupuestoAsignado';
@@ -347,6 +387,8 @@ class TblPlan extends OwlGenericDO{
         $values[] = (( $value = $this->fkEmpresaConsultora ) === null || !isset($this->fkEmpresaConsultora) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->fkEmpresaPropietaria ) === null || !isset($this->fkEmpresaPropietaria) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->fkEstadoPlan ) === null || !isset($this->fkEstadoPlan) ) ? 'null' : "'".addslashes($value)."'";
+        $values[] = (( $value = $this->fkSector ) === null || !isset($this->fkSector) ) ? 'null' : "'".addslashes($value)."'";
+        $values[] = (( $value = $this->vNumeroExpediente ) === null || !isset($this->vNumeroExpediente) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->vNombre ) === null || !isset($this->vNombre) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->vDescripcion ) === null || !isset($this->vDescripcion) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->ePresupuestoAsignado ) === null || !isset($this->ePresupuestoAsignado) ) ? 'null' : "'".addslashes($value)."'";
@@ -481,6 +523,46 @@ class TblPlan extends OwlGenericDO{
     }
 
     /**
+      * Obtiene el valor del atributo 'fkSector'.
+      *
+      * @return integer
+      */
+    public function getFkSector(){
+        return $this->fkSector;
+    }
+
+    /**
+      * Establece el valor del atributo 'fkSector'.
+      *
+      * @param integer Valor.
+      */
+    public function setFkSector( $value ){
+
+        $this->fkSector = $value;
+
+    }
+
+    /**
+      * Obtiene el valor del atributo 'vNumeroExpediente'.
+      *
+      * @return string
+      */
+    public function getVNumeroExpediente(){
+        return $this->vNumeroExpediente;
+    }
+
+    /**
+      * Establece el valor del atributo 'vNumeroExpediente'.
+      *
+      * @param string Valor.
+      */
+    public function setVNumeroExpediente( $value ){
+
+        $this->vNumeroExpediente = $value;
+
+    }
+
+    /**
       * Obtiene el valor del atributo 'vNombre'.
       *
       * @return string
@@ -594,6 +676,26 @@ class TblPlan extends OwlGenericDO{
     }
 
     // Relaciones
+
+    /**
+     * Obtiene el objeto 'TblSector' relacionado.
+     *
+     * @return TblSector
+     */
+    public function getTblSector(){
+        require_once('TblSector.inc');
+        return TblSector::findByPrimaryKey( $this->_db, $this->fkSector );
+    }
+
+    /**
+     * Asigna el objeto 'TblSector' relacionado.
+     *
+     * @param TblSector $dataObject
+     */
+    public function setTblSector( $dataObject ){
+        require_once('TblSector.inc');
+        $this->setFkSector( $dataObject->getIdSector() );
+    }
 
     /**
      * Obtiene el objeto 'TblConvocatoria' relacionado.
