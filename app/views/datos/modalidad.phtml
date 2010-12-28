@@ -1,0 +1,100 @@
+<?php
+	$this->addJavascriptInclude('/js/datos.js');
+	
+	if ( count($this->modalidadesCOL) > 0 ){
+
+?>
+
+
+<table class="listado">
+    <thead>
+		<tr>
+			<th><a href="/datos/modalidad.html/?ob=nom&amp;o=<?=$this->order?>" <?=( ($this->orderBy == 'nom')?'class="ordenado ' . $this->order . '"':'' )?> >Nombre</a></th>
+			<th><a href="/datos/modalidad.html/?ob=desc&amp;o=<?=$this->order?>" <?=( ($this->orderBy == 'desc')?'class="ordenado ' . $this->order . '"':'' )?> >Descripción</a></th>
+			<th>Eliminar</th>
+			<th>Editar</th>
+		</tr>
+	</thead>
+	<tbody>
+		<?php
+		
+			$contador = 0;
+			foreach ( $this->modalidadesCOL as $modalidadDO ){
+				
+				$clase = ( ($contador%2)==0 )?'':'class="alter"';
+				$contador++;
+				
+				?>
+				<tr	<?= $clase ?> >
+					<td><?= $modalidadDO->getVNombre() ?></td>
+					<td><?= $modalidadDO->getVDescripcion() ?></td>
+					<td class="accion"><a href="javascript:ventanaConfirmacion('Confirmar','¿Está seguro que desea eliminar el modalidad <strong><?= $modalidadDO->getVNombre() ?></strong>?','/datos/eliminar.html/modalidad/<?= $modalidadDO->getIdModalidad() ?>')" class="btnEliminar" title="Eliminar modalidad"><span>eliminar</span></a></td>
+					<td class="accion"><a href="/datos/modalidad.html/<?= $modalidadDO->getIdModalidad() ?>" class="btnEditar" title="Editar modalidad"><span>editar</span></a></td>
+				</tr>
+				<?
+				
+			}
+			
+		?>
+	</tbody>
+</table>
+<div id="paginadorContainer"><?= $this->paginador ?></div>
+
+<?php 
+
+	} else {
+	
+?>
+
+<h3>No hay ningún modalidad</h3>
+
+<?
+
+	}
+
+?>
+
+<form id="formModalidad" method="post">
+	<fieldset>
+	
+		<?
+		if ( !is_null($this->modalidadDO) ){
+		?>
+			<input type="hidden" name="<?= md5('send') ?>" value="<?= md5('editar') ?>" />
+			<div class="campo">
+				<input type="button" onclick="window.location='/datos/modalidad.html'" value="Nuevo" class="btnSubmit">
+			</div>
+		<?
+		} else {
+		?>
+			<input type="hidden" name="<?= md5('send') ?>" value="<?= md5('alta') ?>" />
+		<?
+		}
+		?>
+		
+		<div class="campo controlado">
+			<label for="nombre">Nombre</label>
+			<input class="campoTexto" type="text" id="nombre" name="nombre" value="<?= (!is_null($this->modalidadDO)) ? $this->modalidadDO->getVNombre() : '' ?>"/>
+			<p id="errorNombre" class="errorInput"><?=$this->errorNombre?></p>
+		</div>
+		
+		<div class="campo controlado">
+			<label for="descripcion">Descripción</label>
+			<input class="campoTexto" type="text" id="descripcion" name="descripcion" value="<?= (!is_null($this->modalidadDO)) ? $this->modalidadDO->getVDescripcion() : '' ?>"/>
+			<p id="errorDescripcion" class="errorInput"><?=$this->errorDescripcion?></p>
+		</div>
+		<div class="campo">
+			<?
+			if ( !is_null($this->modalidadDO) ){
+			?>
+				<input type="submit" value="Editar" class="btnSubmit" />
+			<?
+			} else {
+			?>
+				<input type="submit" value="Añadir" class="btnSubmit" />
+			<?
+			}
+			?>
+		</div>
+	</fieldset>
+</form>

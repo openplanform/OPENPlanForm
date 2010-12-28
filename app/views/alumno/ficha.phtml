@@ -104,7 +104,7 @@
 		if ( count($this->cursosPreinscritosCOL) > 0){
 			
 			?><div class="ficha">
-				<h3>Preinscripciones del alumno</h3>
+				<h3>Preinscripciones</h3>
 				
 				<div class="scroll">
 					<table class="listado">
@@ -131,6 +131,84 @@
 		            				
 		            		}
 						
+						}
+						
+					?></tbody>
+					</table>
+				</div>
+				<div class="separadorH"></div>
+			</div><?
+			
+		}
+		?>
+		
+		<?
+		// Cursos candidato
+		if ( count($this->cursosCandidatoCOL) > 0){
+			
+			?><div class="ficha">
+				<h3>Candidato</h3>
+				
+				<div class="scroll">
+					<table class="listado">
+						<thead>
+							<tr>
+								<th>Curso</th>
+							</tr>
+						</thead>
+						<tbody>
+						<?
+						$alter = true;
+						foreach ( $this->cursosCandidatoCOL as $cursoCandidatoDO ){
+						
+							foreach ( $this->cursosCOL as $cursoDO ){
+				            				
+		            			if ( $cursoDO->getIdCurso() == $cursoCandidatoDO->getFkCurso() ){
+		            				$alter = !$alter;
+		            				?>
+		            				<tr <?= $alter ? 'class="alter"' : '' ?>>
+		            					<td><a href="/curso/ficha.html/<?= $cursoDO->getIdCurso() ?>"><?= $cursoDO->getVNombre() ?></a></td>
+		            				</tr>
+		            				<?
+		            			}
+		            				
+		            		}
+						
+						}
+						
+					?></tbody>
+					</table>
+				</div>
+				<div class="separadorH"></div>
+			</div><?
+			
+		}
+		?>
+		
+		<?
+		// Cursos alumno
+		if ( count($this->alumnoCursosCOL) > 0){
+			
+			?><div class="ficha">
+				<h3>Alumno</h3>
+				
+				<div class="scroll">
+					<table class="listado">
+						<thead>
+							<tr>
+								<th>Curso</th>
+							</tr>
+						</thead>
+						<tbody>
+						<?
+						$alter = true;
+						foreach ( $this->alumnoCursosCOL as $cursoDO ){
+            				$alter = !$alter;
+            				?>
+            				<tr <?= $alter ? 'class="alter"' : '' ?>>
+            					<td><a href="/curso/ficha.html/<?= $cursoDO->getIdCurso() ?>"><?= $cursoDO->getVNombre() ?></a></td>
+            				</tr>
+            				<?
 						}
 						
 					?></tbody>

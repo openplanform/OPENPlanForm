@@ -17,6 +17,7 @@ require_once MODELDIR . 'TblPersona.inc';
 require_once MODELDIR . 'TblProvincia.inc';
 require_once MODELDIR . 'TblSector.inc';
 require_once MODELDIR . 'TblTipoIdentificacion.inc';
+require_once MODELDIR . 'TrelCandidato.inc';
 require_once MODELDIR . 'TrelPersonaCategoria.inc';
 require_once MODELDIR . 'TrelPersonaCarnet.inc';
 require_once MODELDIR . 'TrelPrecandidato.inc';
@@ -256,6 +257,9 @@ class alumnoController extends PplController{
 	        // Cursos precandidato alumno
 	        $this->view->cursosAlumnoCOL = TrelPrecandidato::findByTblPersona($this->db, $alumnoDO->getIdPersona() , 'dAlta');
 	        
+	        // Cursos a los que se puede preinscribir el alumno
+	        $this->view->cursosPreinscribiblesCOL = $this->cacheBO->getCursosPreinscribibles($alumnoDO->getIdPersona());
+	        
 	        // Sectores
 		    $this->view->sectoresIDX = $this->cacheBO->getSectores();
 		    
@@ -301,6 +305,12 @@ class alumnoController extends PplController{
         		
         		// Cursos preinscritos
         		$this->view->cursosPreinscritosCOL = TrelPrecandidato::findByTblPersona($this->db, $alumnoDO->getIdPersona());
+        		
+        		// Cursos precandidato
+        		$this->view->cursosCandidatoCOL = TrelCandidato::findByTblPersona($this->db, $alumnoDO->getIdPersona());
+        		
+        		// Cursos alumno
+        		$this->view->alumnoCursosCOL = $this->cacheBO->getAlumnosPersona($alumnoDO->getIdPersona());
         		
         		// Cursos
         		$this->view->cursosCOL = TblCurso::findAll($this->db, 'vNombre');

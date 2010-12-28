@@ -31,6 +31,12 @@ class PplCacheBO {
 	const CLAVE_DESOCUPADO = 2;
 	
 	/**
+	 * Valor de la clave de modalidad presencial 
+	 * @var integer
+	 */
+	const CLAVE_MODALIDAD_PRESENCIAL = 1;
+	
+	/**
      * Referencia a la base de datos
      * @var OwlConnection
      */
@@ -513,7 +519,11 @@ class PplCacheBO {
 		}
         
 		$academiasCOL = TblEmpresa::findAll($this->db, 'vNombre');
-		$sql = 'SELECT * FROM tblEmpresa e WHERE EXISTS ( SELECT NULL FROM trelRolUsuario ru WHERE e.fkUsuario = ru.fkUsuario AND ru.fkRol = ' . PplAclManager::ROL_ACADEMIA . ')';
+		$sql = 'SELECT * 
+				FROM tblEmpresa e 
+				WHERE EXISTS ( SELECT NULL 
+								FROM trelRolUsuario ru 
+								WHERE e.fkUsuario = ru.fkUsuario AND ru.fkRol = ' . PplAclManager::ROL_ACADEMIA . ')';
 		$this->db->executeQuery($sql);
         
         
@@ -543,7 +553,11 @@ class PplCacheBO {
 		}
         
 		//$consultorasCOL = TblEmpresa::findAll($this->db, 'vNombre');
-		$sql = 'SELECT * FROM tblEmpresa e WHERE EXISTS ( SELECT NULL FROM trelRolUsuario ru WHERE e.fkUsuario = ru.fkUsuario AND ru.fkRol IN (' . PplAclManager::ROL_CONSULTORA . ', ' . PplAclManager::ROL_PROPIETARIO . ') )';
+		$sql = 'SELECT * 
+				FROM tblEmpresa e 
+				WHERE EXISTS ( SELECT NULL 
+								FROM trelRolUsuario ru 
+								WHERE e.fkUsuario = ru.fkUsuario AND ru.fkRol IN (' . PplAclManager::ROL_CONSULTORA . ', ' . PplAclManager::ROL_PROPIETARIO . ') )';
 		$this->db->executeQuery($sql);
         
         
@@ -767,7 +781,12 @@ class PplCacheBO {
 			return $this->profesoresIDX;
 		}
         
-		$sql = 'SELECT * FROM tblPersona e WHERE EXISTS ( SELECT NULL FROM trelRolUsuario ru WHERE e.fkUsuario = ru.fkUsuario AND ru.fkRol = ' . PplAclManager::ROL_PROFESOR . ') ORDER BY vNombre';
+		$sql = 'SELECT * 
+				FROM tblPersona e 
+				WHERE EXISTS ( SELECT NULL 
+								FROM trelRolUsuario ru 
+								WHERE e.fkUsuario = ru.fkUsuario AND ru.fkRol = ' . PplAclManager::ROL_PROFESOR . ') 
+				ORDER BY vNombre';
 		$this->db->executeQuery($sql);
         
         
@@ -861,12 +880,12 @@ class PplCacheBO {
 	
 	
 	/**
-	 * Devuelve todos los documentos dinámicos
+	 * Devuelve todos los documentos dinámicos (Menos el S-30 a dos páginas)
 	 * @return array
 	 */
 	public function getDocumentosDinamicos(){
 		
-		$sql = "SELECT * FROM tblDocumento WHERE bDinamico = 1";
+		$sql = "SELECT * FROM tblDocumento WHERE bDinamico = 1 AND vIdentificador != 'S-30-2'";
 		$this->db->executeQuery($sql);
 		
 		$returnARR = array();
@@ -1054,6 +1073,7 @@ class PplCacheBO {
 		
 	}
 	
+	
 	/**
 	 * Devuelve los cobros de paro indexados por su clave
 	 * @return array
@@ -1072,6 +1092,7 @@ class PplCacheBO {
 		
 	}
 	
+	
 	/**
 	 * Devuelve las categorías de empleo indexadas por su clave
 	 * @return array
@@ -1087,6 +1108,101 @@ class PplCacheBO {
 		}
 		
 		return $this->categoriasEmpleoIDX;
+		
+	}
+	
+	
+	/**
+	 * Devuelve un array con los cursos en los que una persona es alumna
+	 * @param integer $idPersona
+	 * @return array $precandidatoCursosDO
+	 */
+	public function getAlumnosPersona($idPersona){
+		
+		$sql = "SELECT *
+				FROM tblCurso c 
+				WHERE EXISTS( 
+					SELECT null 
+					FROM tblAlumno a
+					WHERE c.idCurso = a.fkCurso and a.iPersona = " . $idPersona . " )";
+		
+		$this->db->executeQuery($sql);
+		
+		$alumnoCursosCOL = OwlGenericDO::createCollection( $this->db, $sql, 'TblCurso' );
+		
+		return $alumnoCursosCOL;
+		
+	}
+	
+	
+	/**
+	 * Obtiene un listado de cursos a los que una persona se puede preinscribir.
+	 * Filtra los cursos en los que es alumno, candidato y los cursos que ya han empezado.
+	 * @param integer $idPersona
+	 */
+	public function getCursosPreinscribibles($idPersona){
+		
+		$sql = "SELECT * 
+				FROM tblCurso c 
+				WHERE NOT EXISTS(
+				
+				            SELECT NULL 
+				            FROM trelCandidato ca 
+				            WHERE ca.fkPersona = " . $idPersona . " AND ca.fkCurso = c.idCurso
+				            
+				) AND NOT EXISTS (
+				                
+				            SELECT NULL
+				            FROM tblAlumno a 
+				            WHERE a.iPersona = " . $idPersona . " AND a.fkCurso = c.idCurso
+				                
+				) AND c.dInicio < NOW()";
+		
+		$this->db->executeQuery($sql);
+		
+		$cursosPreinscribiblesCOL = OwlGenericDO::createCollection( $this->db, $sql, 'TblCurso' );
+		
+		return $cursosPreinscribiblesCOL;
+	}
+	
+	
+	/**
+	 * Devuelve la academia vinculada al curso indicado
+	 * @param integer $idCurso
+	 * @return TblEmpresa
+	 */
+	public function getAcademiaCurso($idCurso){
+		
+		$sql = "SELECT *
+				FROM   tblEmpresa em
+				WHERE  em.idEmpresa = (SELECT cen.fkEmpresa
+				                       FROM   tblCentro cen
+				                       WHERE  EXISTS(SELECT NULL
+				                                     FROM   tblCurso cur
+				                                     WHERE  cen.idCentro = cur.fkCentro
+				                                            AND cur.idCurso = $idCurso));  ";
+		
+		$this->db->executeQuery($sql);
+		$academiaDO = OwlGenericDO::createDO($this->db, $this->db->fetchRow(), 'TblEmpresa');
+		
+		return $academiaDO;
+		
+	}
+	
+
+	/**
+	 * Devuelve la tutoría de un curso
+	 * @param integer $idCurso
+	 * @return TblTutoria
+	 */
+	public function getTutoriaCurso($idCurso){
+
+		$sql = "SELECT * FROM tblTutoria WHERE fkCurso = $idCurso";
+		
+		$this->db->executeQuery($sql);
+		$tutoriaDO = OwlGenericDO::createDO($this->db, $this->db->fetchRow(), 'TblTutoria');
+		
+		return $tutoriaDO;
 		
 	}
 	

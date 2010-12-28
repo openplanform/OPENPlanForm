@@ -6,6 +6,7 @@
 		<div class="ficha">
 		
 			<p><strong>Nombre:</strong><span> <?= $this->cursoDO->getVNombre() ?></span></p>
+			<p><strong>Expediente:</strong><span> <?= $this->cursoDO->getVExpediente() ?></span></p>
 			<p><strong>Plan:</strong><span> <?= $this->cursoDO->getTblPlan()->getVNombre() ?></span></p>
 			<p><strong>Categoría:</strong><span> <?= $this->categoriaDO->getVNombre() ?></span></p>
 			<p><strong>Colectivo:</strong><span> <?= $this->cursoDO->getTblColectivo()->getVNombre() ?></span></p>
@@ -30,7 +31,7 @@
             
     	    ?></div><?
     	    
-    	    $horasT = $this->cursoDO->getIHorasTutoria();
+    	    /*$horasT = $this->cursoDO->getIHorasTutoria();
     	    
     	    if (intval($horasT) != 0){
     	    
@@ -58,7 +59,7 @@
 	    	    	
 	    	    </div><?
 	    	    
-    	    }
+    	    }*/
     	    
     	    ?><div class="multi"><?
 			
@@ -70,10 +71,17 @@
     			
 			</div><?
 			
-			$desc = $this->cursoDO->getVdescripcion();
+			$desc = $this->cursoDO->getVDescripcion();
 			if (!empty($desc)){
 			
-                ?><p class="extended separator"><strong>Observaciones:</strong><span><?= $this->cursoDO->getVdescripcion() ?></span></p><?
+                ?><p class="extended separator"><strong>Descripción:</strong><span><?= $this->cursoDO->getVDescripcion() ?></span></p><?
+                
+			}
+
+			$obs = $this->cursoDO->getVObservaciones();
+			if (!empty($obs)){
+			
+                ?><p class="extended separator"><strong>Observaciones:</strong><span><?= $this->cursoDO->getVObservaciones() ?></span></p><?
                 
 			}
 			

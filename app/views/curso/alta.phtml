@@ -16,6 +16,12 @@
                 <input type="text" name="nombre" id="nombre" class="campoTexto" />
                 <p id="errorNombre" class="errorInput"><?=$this->errorNombre?></p>
             </div>
+            
+        
+            <div class="campo multi">
+                <label for="expediente">Expediente</label>
+                <input type="text" name="expediente" id="expediente" class="campoTexto" value=""/>
+            </div>            
 			
 			<div class="campo controlado multi">
             	<label for="plan">Plan*</label>
@@ -35,6 +41,8 @@
 				<p id="errorPlan" class="errorInput"><?= $this->errorPlan ?></p>
 			</div>
 			
+			<div class="separadorH"></div>			
+			
 			<div class="campo controlado multi">
             	<label for="categoria">Categoría*</label>
 	            <select class="grande desplegable" name="categoria" id="categoria">
@@ -48,8 +56,6 @@
 				</select>
 				<p id="errorCategoria" class="errorInput"><?= $this->errorCategoria ?></p>
 			</div>
-			
-			<div class="separadorH"></div>
 			
 			<div class="campo controlado multi">
             	<label for="colectivo">Colectivo*</label>
@@ -120,16 +126,9 @@
             </div>
 			
 			<div class="campo multi">
-                <label for="horasT">Horas de tutoría</label>
-                <input type="text" name="horasT" id="horasT" class="campoTexto mediano numerico" />
-            </div>
-			
-			<div class="campo multi">
                 <label for="numAlumnos">Número de alumnos</label>
                 <input type="text" name="numAlumnos" id="numAlumnos" class="campoTexto mediano numerico" />
             </div>
-            
-            <div class="separadorH"></div>
             
             <div class="campo multi">
                 <label for="accion">Número de acción</label>
@@ -148,16 +147,23 @@
             
             <div class="separadorH"></div>
             
-            <div class="campo">
+            <div class="campo multi">
             	<label for="descripcion">Descripción</label>
             	<textarea name="descripcion" id="descripcion"></textarea>
             </div>
             
+            <div class="campo multi">
+            	<label for="observaciones">Observaciones</label>
+            	<textarea name="observaciones" id="observaciones"></textarea>
+            </div>
+            
+            <div class="separadorH"></div>
+            
  			<div class="alterForm">
-            	<h3>Tutoría a distancia</h3>
+            	<h3>Tutoría</h3>
             	<div class="campo multi">
-            		<label for="tutorDistancia">Tutor a distancia</label>
-            		<select name="tutorDistancia" name="tutorDistancia" id="tutorDistancia" class="desplegable grande">
+            		<label for="tutor">Tutor asignado</label>
+            		<select name="tutor" name="tutor" id="tutor" class="desplegable grande">
             			<option value=""></option><?
             			
             			foreach ($this->profesoresIDX as $clave => $profesor){
@@ -169,8 +175,8 @@
             		?></select>
             	</div>
 				<div class="campo multi">
-	                <label for="horasT">Horas de tutoría</label>
-	                <input type="text" name="horasT" id="horasT" class="campoTexto mediano numerico" />
+	                <label for="horasT">Horas</label>
+	                <input type="text" name="horasT" id="horasT" class="campoTexto mini numerico" />
 	            </div>            	
 	            <div class="campo multi">
 					<label for="modalidadTutoria">Tipo de tutoría</label>
@@ -185,7 +191,75 @@
             			
             		?></select>	            		
 	            </div>
-            </div>            
+	            
+	            <div class="separadorH"></div>
+
+				<p class="subtitulo">Días en los que se efectuará la tutoría:</p>
+
+				<div class="campo multi">
+					<label for="lunes" class="alter">Lunes</label>
+					<input type="checkbox" id="lunes" name="lunes" class="checkbox">
+				</div>
+				<div class="campo multi">
+					<label for="martes" class="alter">Martes</label>
+					<input type="checkbox" id="martes" name="martes" class="checkbox">
+				</div>
+				<div class="campo multi">
+					<label for="miercoles" class="alter">Miércoles</label>
+					<input type="checkbox" id="miercoles" name="miercoles" class="checkbox">
+				</div>
+				<div class="campo multi">				
+					<label for="jueves" class="alter">Jueves</label>
+					<input type="checkbox" id="jueves" name="jueves" class="checkbox">
+				</div>
+				<div class="campo multi">
+					<label for="viernes" class="alter">Viernes</label>
+					<input type="checkbox" id="viernes" name="viernes" class="checkbox">
+				</div>
+				<div class="campo multi">
+					<label for="sabado" class="alter">Sábado</label>
+					<input type="checkbox" id="sabado" name="sabado" class="checkbox">
+				</div>
+				<div class="campo multi">
+					<label for="domingo" class="alter">Domingo</label>
+					<input type="checkbox" id="domingo" name="domingo" class="checkbox">
+				</div>			
+				
+				<div class="separadorH"></div>
+				
+				<div class="campo multi">
+				
+					<p class="subtitulo">Horarios (Mañana):</p>
+					
+					<div class="campo multi">
+						<label for="de_man">De</label>
+		                <input type="text" name="de_man" id="de_man" class="campoTexto mini" />					
+					</div>					
+					
+					<div class="campo multi">
+						<label for="a_man">A</label>
+		                <input type="text" name="a_man" id="a_man" class="campoTexto mini" />					
+					</div>					
+					
+				</div>
+				
+				<div class="campo multi">
+				
+					<p class="subtitulo">Horarios (Tarde):</p>
+					
+					<div class="campo multi">
+						<label for="de_tar">De</label>
+		                <input type="text" name="de_tar" id="de_tar" class="campoTexto mini" />					
+					</div>					
+					
+					<div class="campo multi">
+						<label for="a_tar">A</label>
+		                <input type="text" name="a_tar" id="a_tar" class="campoTexto mini" />					
+					</div>					
+					
+				</div>
+	            
+            </div>
             
             <div class="separadorH"></div>
             

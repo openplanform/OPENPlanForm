@@ -20,10 +20,12 @@ require_once MODELDIR . '/TblEstadoCivil.inc';
 require_once MODELDIR . '/TblHorario.inc';
 require_once MODELDIR . '/TblModalidad.inc';
 require_once MODELDIR . '/TblSector.inc';
+require_once MODELDIR . '/TblTutoria.inc';
 require_once MODELDIR . '/TblPlan.inc';
 require_once MODELDIR . '/TrelCandidato.inc';
 require_once MODELDIR . '/TrelPrecandidato.inc';
 require_once MODELDIR . '/TrelProfesor.inc';
+require_once MODELDIR . '/TblTutoria.inc';
 
 
 class cursoController extends PplController{
@@ -272,6 +274,9 @@ class cursoController extends PplController{
 	        // Personas
 	        $this->view->personasIDX = $this->cacheBO->getPersonas();
 	        
+	        // Tutoría
+	        $this->view->tutoriaDO = $this->cacheBO->getTutoriaCurso($idCurso);
+	        
         }
 
     }
@@ -446,6 +451,9 @@ class cursoController extends PplController{
 	    	$this->view->errorPlan = 'El plan no puede estar vacío';
 	    }
 	    
+	    // Expediente
+	    $expediente = $this->helper->getAndEscape('expediente');
+	    
 	    // Categoría
     	$categoria = $this->helper->escapeInjection($this->helper->get('categoria'));
 	    if ( is_null($categoria) || empty($categoria) ){
@@ -485,12 +493,6 @@ class cursoController extends PplController{
 	    	$horasD = "";
 	    }
 	    
-	     // Horas de tutoría
-    	$horasT = $this->helper->escapeInjection($this->helper->get('horasT'));
-	    if ( is_null($horasT) || empty($horasT) ){
-	    	$horasT = "";
-	    }
-	    
     	// alumnos
     	$alumnos = $this->helper->escapeInjection($this->helper->get('numAlumnos'));
 	    if ( is_null($alumnos) || empty($alumnos) ){
@@ -519,6 +521,12 @@ class cursoController extends PplController{
     	$descripcion = $this->helper->escapeInjection($this->helper->get('descripcion'));
 	    if ( is_null($descripcion) || empty($descripcion) ){
 	    	$descripcion = "";
+	    }
+	    
+    	// Observaciones
+    	$observaciones = $this->helper->escapeInjection($this->helper->get('observaciones'));
+	    if ( is_null($observaciones) || empty($observaciones) ){
+	    	$observaciones = "";
 	    }
 	    
 	    // Profesores
@@ -553,10 +561,23 @@ class cursoController extends PplController{
             }
         }
         
-        // Tutoría a distancia
-        $fkTutorDistancia = $this->helper->getAndEscape('tutorDistancia');
+        // Datos de tutoría
+        $idTutoria = $this->helper->getAndEscape('tutoria');
+        $fkTutor = $this->helper->getAndEscape('tutor');
+        $horasTutoria = $this->helper->getAndEscape('horasT');
         $fkModalidadTutoria = $this->helper->getAndEscape('modalidadTutoria');
-        
+        $lunes = $this->helper->getAndEscape('lunes') == 'on';
+        $martes = $this->helper->getAndEscape('martes') == 'on';
+        $miercoles = $this->helper->getAndEscape('miercoles') == 'on';
+        $jueves = $this->helper->getAndEscape('jueves') == 'on';
+        $viernes = $this->helper->getAndEscape('viernes') == 'on';
+        $sabado = $this->helper->getAndEscape('sabado') == 'on';
+        $domingo = $this->helper->getAndEscape('domingo') == 'on';
+        $deMan = $this->helper->getAndEscape('de_man');
+        $aMan = $this->helper->getAndEscape('a_man');
+        $deTar = $this->helper->getAndEscape('de_tar');
+        $aTar = $this->helper->getAndEscape('a_tar');
+       
 		/**
 		 * Insertamos o actualizamos un curso
 		 */
@@ -585,27 +606,65 @@ class cursoController extends PplController{
 		    	$cursoDO->setFkCentro($centro);
 		    	$cursoDO->setIHorasPresenciales($horasP);
 		    	$cursoDO->setIHorasDistancia($horasD);
-		    	$cursoDO->setIHorasTutoria($horasT);
 		    	$cursoDO->setDInicio(OwlDate::europeoAmericano($inicio));
 		    	$cursoDO->setDFin(OwlDate::europeoAmericano($fin));
 		    	$cursoDO->setVDescripcion($descripcion);
+		    	$cursoDO->setVObservaciones($observaciones);
 		    	$cursoDO->setINumeroAlumnos($alumnos);
 		    	$cursoDO->setIAccion($accion);
-		    	$cursoDO->setFkTutorDistancia($fkTutorDistancia);
-		    	$cursoDO->setFkModalidadTutoria($fkModalidadTutoria);
 		    	$cursoDO->setLastModified(date('Y-m-d'));
+		    	$cursoDO->setVExpediente($expediente);
                 $cursoDO->setModUser($this->usuario->getNombre());
 		    	
 		    	if ( $editar ){
 		    		$correcto = $cursoDO->update();
 		    	} else {
 		    		$correcto = $cursoDO->insert();
+		    		$idCurso = $this->db->getLastInsertId();
 		    	}
 		    	
 	    	}
 	    	
 	    	// Se vuelve a activar la comprobación de claves foráneas
 	    	$this->db->enableForeignChecks();
+	    	
+	    	// Tutorías
+	    	if ( $correcto ){
+	    		
+	    	    if (!empty($fkTutor) && !empty($horasTutoria) && !empty($fkModalidadTutoria)){
+        	
+	    	    	if (!empty($idTutoria)){
+	    	    		// El curso ya tiene asignada una turoría
+	    	    		$tutoriaDO = TblTutoria::findByPrimaryKey($this->db, $idTutoria);
+	    	    	} else {
+	    	    		$tutoriaDO = new TblTutoria($this->db);
+	    	    	}
+        			
+        			$tutoriaDO->setFkCurso($cursoDO->getIdCurso());
+        			$tutoriaDO->setFkModalidad($fkModalidadTutoria);
+        			$tutoriaDO->setFkTutor($fkTutor);
+        			$tutoriaDO->setIHoras($horasTutoria);
+        			$tutoriaDO->setBLunes($lunes);
+        			$tutoriaDO->setBMartes($martes);
+        			$tutoriaDO->setBMiercoles($miercoles);
+        			$tutoriaDO->setBJueves($jueves);
+        			$tutoriaDO->setBViernes($viernes);
+        			$tutoriaDO->setBSabado($sabado);
+        			$tutoriaDO->setBDomingo($domingo);
+        			$tutoriaDO->setIDesdeManana($deMan);
+        			$tutoriaDO->setIDesdeTarde($deTar);
+        			$tutoriaDO->setIHastaManana($aMan);
+        			$tutoriaDO->setIHastaTarde($aTar);
+        			
+        			if ( !empty($idTutoria) ){
+        				$correcto = $tutoriaDO->update();
+        			} else {
+        				$correcto = $tutoriaDO->insert();
+        			}
+        			
+	    	    }
+	    	    
+	    	}
 	    	
 	    	// Profesores del curso. Si estoy editando, borro todos los profesores para insertar los nuevos
 	    	if ( $correcto ){
@@ -615,8 +674,6 @@ class cursoController extends PplController{
 	    			if ( !$this->db->executeQuery($sql) ){
 	    				$correcto = false;
 	    			}
-	    		} else {
-	    			$idCurso = $this->db->getLastInsertId();
 	    		}
 	    		
 	    		if ( $correcto ){
@@ -640,7 +697,7 @@ class cursoController extends PplController{
 	    			}
 	    		}
 	    		
-	    		if ( $correcto ){
+	    		if ( $correcto && !empty($precandidatosARR) ){
 	    			$sql = "INSERT INTO trelPrecandidato VALUES ";
 	    			$valuesARR = array();
 	    			foreach ( $precandidatosARR as $idPrecandidato ){
@@ -664,7 +721,7 @@ class cursoController extends PplController{
 	    			}
 	    		}
 	    		
-	    		if ( $correcto ){
+	    		if ( $correcto && !empty($candidatosARR) ){
 	    			$sql = "INSERT INTO trelCandidato VALUES ";
 	    			$valuesARR = array();
 	    			foreach ( $candidatosARR as $idCandidato ){
@@ -789,7 +846,7 @@ class cursoController extends PplController{
             );
             
 
-            if ( !empty($_REQUEST) && array_key_exists('o', $_GET) & array_key_exists('ob', $_GET) ){
+            if ( !empty($_REQUEST) && array_key_exists('o', $_GET) && array_key_exists('ob', $_GET) ){
                 $order = $this->helper->escapeInjection($_GET['o']);
                 $orderBy = $aliasCampos[$_GET['ob']];
                 $aliasOrderBy = $_GET['ob'];
@@ -1290,7 +1347,7 @@ class cursoController extends PplController{
     	// Alumnos del curso
     	$alumnosCOL = TblAlumno::findByTblCurso($this->db, $idCurso);
 
-    	// Horarios del curso
+    	// Horarios de formación del curso
     	$horariosCOL = TblHorario::findByTblCurso($this->db, $idCurso);
     	
     	
@@ -1300,7 +1357,6 @@ class cursoController extends PplController{
     	//														   //
     	/////////////////////////////////////////////////////////////
     	
-   	
   		// Se iteran todos los documentos asocidadsos a la convocatoria
     	foreach ($documentosCOL as $documentoDO){
     		
@@ -1313,6 +1369,8 @@ class cursoController extends PplController{
     			// S-30 Control de asistencia
     			//
     			case 'S-30':
+    				
+    				//break;
     				
     				// Verificaremos que contamos con los datos necesarios para el curso
     				if (!$profesorDO instanceof TblPersona){
@@ -1344,12 +1402,12 @@ class cursoController extends PplController{
     			//
     			case 'S-20':
     				
-    				if (!$tutorDO = TblPersona::findByPrimaryKey($this->db, $cursoDO->getFkTutorDistancia())){
+    				$tutoriaDO = $this->cacheBO->getTutoriaCurso($idCurso);
+    				if ($tutoriaDO instanceof TblTutoria && $tutorDO = $tutoriaDO->getTblPersona()){
+	    				$this->view->listadoInicial = $docMan->docListadoInicialAsistentes($cursoDO, $alumnosCOL, $tutorDO, $planDO, $modalidadesIDX, $tutoriaDO);
+    				} else {
     					$mensajesDocumentacionARR[] = 'S-20: El curso actual aún no tiene un tutor a distancia asignado.';
-    					break;
     				}
-    				
-    				$this->view->listadoInicial = $docMan->docListadoInicialAsistentes($cursoDO, $alumnosCOL, $tutorDO, $planDO, $modalidadesIDX);
     				
     			break;
     			
@@ -1359,7 +1417,10 @@ class cursoController extends PplController{
     			//
     			case 'S-10':
     				
-    				$this->view->inicioAccion = $docMan->docInicioAccionFormativa($planDO);
+    				$academiaDO = $this->cacheBO->getAcademiaCurso($idCurso);
+    				$tutoriaDO = $this->cacheBO->getTutoriaCurso($idCurso);
+    				
+    				$this->view->inicioAccion = $docMan->docInicioAccionFormativa($planDO, $cursoDO, $modalidadesIDX, $academiaDO, $horariosCOL, $tutoriaDO);
     				
     			break;
     			

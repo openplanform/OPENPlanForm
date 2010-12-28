@@ -107,7 +107,8 @@ a:hover{
 }
 .scroll{
 	max-height: 200px;
-	overflow: auto;
+	overflow-y: scroll;
+	overflow-x: hidden;
 	border: 1px solid #808080;
 	margin: 0 0 20px 0;
 }
@@ -216,7 +217,7 @@ select{
 }
 select.desplegable{
 	padding: 0px;
-	height: 20px;
+	height: 22px;
 }
 input.campoTexto{
 	width: 300px;
@@ -613,7 +614,7 @@ table.listado tbody tr.alter{
 
 /* Paginador */
 #paginadorContainer{
-	
+    margin-bottom: 20px; 	
 }
 #paginadorContainer .paginador{
     clear: both;
@@ -789,4 +790,9 @@ a.doc.pdf{
 div.documentacion,
 p.desc{
 	margin-bottom: 20px;
+}
+div.documentacion a.zipFile{
+    padding-left: 20px;
+    height: 25px;
+    background: url(/img/iconos/zip16.png) left top no-repeat;    	
 }

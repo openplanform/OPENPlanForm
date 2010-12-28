@@ -467,9 +467,10 @@
     </form>
     
     <?
-    	if ( count($this->cursosCOL) > 0 ){
+    	if ( count($this->cursosPreinscribiblesCOL) > 0 ){
     ?>
-    <h3>Listado de cursos</h3>
+    <h3>Listado de cursos a los que se puede preinscribir</h3>
+    <p class="subtitulo">Se han filtrado los cursos de los que es alumno o candidato. Para ver esta información visita la <a href="/alumno/ficha.html/<?= $this->alumnoDO->getIdPersona() ?>">ficha</a> del alumno.</p>
     <div class="campo multi">
     	<div class="scroll">
 	    	<table class="listado">
@@ -486,7 +487,7 @@
 		<?php
 		
 			$contador = 0;
-			foreach ( $this->cursosCOL as $cursoDO ){
+			foreach ( $this->cursosPreinscribiblesCOL as $cursoDO ){
 				
 			    //$cursoDO = new TblCurso($db);
 				$clase = ( ($contador%2)==0 )?'':'class="alter"';

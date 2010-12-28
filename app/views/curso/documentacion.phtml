@@ -28,6 +28,7 @@ if ($this->controlAsistenciaARR){
 		}
 	
 		?></ul>
+		<p>Descargar todos los documentos: <a class="zipFile" href="/tmp/S30-<?= $this->cursoDO->getIdCurso() ?>.zip">S30.zip</a></p>
 	</div><?
 	
 }
@@ -47,7 +48,20 @@ if ($this->listadoInicial){
 	
 }
 
-
+// S-10
+if ($this->inicioAccion){
+	
+	?><div id="inicioAccion" class="documentacion">
+		
+		<h3>S-10 - Inicio de la acción formativa</h3>
+		
+		<ul id="convocatoriaDoc">
+			<li><a href="/tmp/<?= $this->inicioAccion['file'] ?>" rel="external"><?= $this->inicioAccion['label'] ?></a></li>
+		</ul>
+		
+	</div><?	
+	
+}
 
 // Mensajes de error
 if ($this->mensajes && count($this->mensajes) > 0){

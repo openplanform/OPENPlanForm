@@ -1,7 +1,7 @@
 <?php
 /**
  * Este archivo ha sido generado con Owl DoGen v.0.6
- * el 16 de December de 2010 a las 06:37:11
+ * el 28 de December de 2010 a las 09:18:17
  * @package dataAccess
  */
 
@@ -57,18 +57,6 @@ class TblCurso extends OwlGenericDO{
     public $fkCentro;
 
     /**
-     * Atributo que representa el campo "fkTutorDistancia"
-     * @var integer
-     */
-    public $fkTutorDistancia;
-
-    /**
-     * Atributo que representa el campo "fkModalidadTutoria"
-     * @var integer
-     */
-    public $fkModalidadTutoria;
-
-    /**
      * Atributo que representa el campo "vNombre"
      * @var string
      */
@@ -91,12 +79,6 @@ class TblCurso extends OwlGenericDO{
      * @var integer
      */
     public $iHorasDistancia;
-
-    /**
-     * Atributo que representa el campo "iHorasTutoria"
-     * @var integer
-     */
-    public $iHorasTutoria;
 
     /**
      * Atributo que representa el campo "dInicio"
@@ -146,6 +128,12 @@ class TblCurso extends OwlGenericDO{
      */
     public $vObservaciones;
 
+    /**
+     * Atributo que representa el campo "vExpediente"
+     * @var string
+     */
+    public $vExpediente;
+
     // Constructor
 
     /**
@@ -174,13 +162,10 @@ class TblCurso extends OwlGenericDO{
         $this->fkColectivo = $data['fkColectivo'];
         $this->fkModalidad = $data['fkModalidad'];
         $this->fkCentro = $data['fkCentro'];
-        $this->fkTutorDistancia = $data['fkTutorDistancia'];
-        $this->fkModalidadTutoria = $data['fkModalidadTutoria'];
         $this->vNombre = $data['vNombre'];
         $this->vDescripcion = $data['vDescripcion'];
         $this->iHorasPresenciales = $data['iHorasPresenciales'];
         $this->iHorasDistancia = $data['iHorasDistancia'];
-        $this->iHorasTutoria = $data['iHorasTutoria'];
         $this->dInicio = $data['dInicio'];
         $this->dFin = $data['dFin'];
         $this->iNumeroAlumnos = $data['iNumeroAlumnos'];
@@ -189,6 +174,7 @@ class TblCurso extends OwlGenericDO{
         $this->iGrupo = $data['iGrupo'];
         $this->iAccion = $data['iAccion'];
         $this->vObservaciones = $data['vObservaciones'];
+        $this->vExpediente = $data['vExpediente'];
 
     }
 
@@ -223,12 +209,6 @@ class TblCurso extends OwlGenericDO{
         if( $tmp = $searchItem->fkCentro ){
             $where[] = "fkCentro='$tmp'";
         }
-        if( $tmp = $searchItem->fkTutorDistancia ){
-            $where[] = "fkTutorDistancia='$tmp'";
-        }
-        if( $tmp = $searchItem->fkModalidadTutoria ){
-            $where[] = "fkModalidadTutoria='$tmp'";
-        }
         if( $tmp = $searchItem->vNombre ){
             $where[] = "vNombre='$tmp'";
         }
@@ -240,9 +220,6 @@ class TblCurso extends OwlGenericDO{
         }
         if( $tmp = $searchItem->iHorasDistancia ){
             $where[] = "iHorasDistancia='$tmp'";
-        }
-        if( $tmp = $searchItem->iHorasTutoria ){
-            $where[] = "iHorasTutoria='$tmp'";
         }
         if( $tmp = $searchItem->dInicio ){
             $where[] = "dInicio='$tmp'";
@@ -267,6 +244,9 @@ class TblCurso extends OwlGenericDO{
         }
         if( $tmp = $searchItem->vObservaciones ){
             $where[] = "vObservaciones='$tmp'";
+        }
+        if( $tmp = $searchItem->vExpediente ){
+            $where[] = "vExpediente='$tmp'";
         }
         if( count($where) > 0 ){
             $where = implode( ' and ', $where );
@@ -325,38 +305,6 @@ class TblCurso extends OwlGenericDO{
         return OwlGenericDO::createDO( $db, $data, 'TblCurso');
 
     }
-
-    /**
-     * Obtiene todas las filas de la tabla tblCurso que coinciden con el criterio fkModalidadTutoria='$fkModalidadTutoria'.
-     *
-     * @param Connection $db Conexión con la base de datos.
-     * @param integer fkModalidadTutoria string Valor del campo fkModalidadTutoria.
-     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
-     * @return array
-     */
-     public static function findByTblModalidadTutoria( $db, $fkModalidadTutoria, $orderBy='' ){
-         $sql = "SELECT * FROM tblCurso WHERE fkModalidadTutoria='$fkModalidadTutoria'";
-         if( $orderBy != '' ){
-             $sql .= " ORDER BY $orderBy";
-         }
-         return OwlGenericDO::createCollection( $db, $sql, 'TblCurso' );
-     }
-
-    /**
-     * Obtiene todas las filas de la tabla tblCurso que coinciden con el criterio fkTutorDistancia='$fkTutorDistancia'.
-     *
-     * @param Connection $db Conexión con la base de datos.
-     * @param integer fkTutorDistancia string Valor del campo fkTutorDistancia.
-     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
-     * @return array
-     */
-     public static function findByTblPersona( $db, $fkTutorDistancia, $orderBy='' ){
-         $sql = "SELECT * FROM tblCurso WHERE fkTutorDistancia='$fkTutorDistancia'";
-         if( $orderBy != '' ){
-             $sql .= " ORDER BY $orderBy";
-         }
-         return OwlGenericDO::createCollection( $db, $sql, 'TblCurso' );
-     }
 
     /**
      * Obtiene todas las filas de la tabla tblCurso que coinciden con el criterio fkCategoria='$fkCategoria'.
@@ -448,13 +396,10 @@ class TblCurso extends OwlGenericDO{
         $sets[] = 'fkColectivo=' . ( ( ( $value = $this->fkColectivo ) === null || !isset($this->fkColectivo) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'fkModalidad=' . ( ( ( $value = $this->fkModalidad ) === null || !isset($this->fkModalidad) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'fkCentro=' . ( ( ( $value = $this->fkCentro ) === null || !isset($this->fkCentro) ) ? 'null' :  "'".addslashes($value)."'" );
-        $sets[] = 'fkTutorDistancia=' . ( ( ( $value = $this->fkTutorDistancia ) === null || !isset($this->fkTutorDistancia) ) ? 'null' :  "'".addslashes($value)."'" );
-        $sets[] = 'fkModalidadTutoria=' . ( ( ( $value = $this->fkModalidadTutoria ) === null || !isset($this->fkModalidadTutoria) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'vNombre=' . ( ( ( $value = $this->vNombre ) === null || !isset($this->vNombre) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'vDescripcion=' . ( ( ( $value = $this->vDescripcion ) === null || !isset($this->vDescripcion) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'iHorasPresenciales=' . ( ( ( $value = $this->iHorasPresenciales ) === null || !isset($this->iHorasPresenciales) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'iHorasDistancia=' . ( ( ( $value = $this->iHorasDistancia ) === null || !isset($this->iHorasDistancia) ) ? 'null' :  "'".addslashes($value)."'" );
-        $sets[] = 'iHorasTutoria=' . ( ( ( $value = $this->iHorasTutoria ) === null || !isset($this->iHorasTutoria) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'dInicio=' . ( ( ( $value = $this->dInicio ) === null || !isset($this->dInicio) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'dFin=' . ( ( ( $value = $this->dFin ) === null || !isset($this->dFin) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'iNumeroAlumnos=' . ( ( ( $value = $this->iNumeroAlumnos ) === null || !isset($this->iNumeroAlumnos) ) ? 'null' :  "'".addslashes($value)."'" );
@@ -463,6 +408,7 @@ class TblCurso extends OwlGenericDO{
         $sets[] = 'iGrupo=' . ( ( ( $value = $this->iGrupo ) === null || !isset($this->iGrupo) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'iAccion=' . ( ( ( $value = $this->iAccion ) === null || !isset($this->iAccion) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'vObservaciones=' . ( ( ( $value = $this->vObservaciones ) === null || !isset($this->vObservaciones) ) ? 'null' :  "'".addslashes($value)."'" );
+        $sets[] = 'vExpediente=' . ( ( ( $value = $this->vExpediente ) === null || !isset($this->vExpediente) ) ? 'null' :  "'".addslashes($value)."'" );
         $setStr = implode(',', $sets);
         return $this->_db->executeQuery("UPDATE tblCurso SET $setStr WHERE idCurso='".addslashes($this->_data['idCurso'])."'");
     }
@@ -477,13 +423,10 @@ class TblCurso extends OwlGenericDO{
         $attributes[] = 'fkColectivo';
         $attributes[] = 'fkModalidad';
         $attributes[] = 'fkCentro';
-        $attributes[] = 'fkTutorDistancia';
-        $attributes[] = 'fkModalidadTutoria';
         $attributes[] = 'vNombre';
         $attributes[] = 'vDescripcion';
         $attributes[] = 'iHorasPresenciales';
         $attributes[] = 'iHorasDistancia';
-        $attributes[] = 'iHorasTutoria';
         $attributes[] = 'dInicio';
         $attributes[] = 'dFin';
         $attributes[] = 'iNumeroAlumnos';
@@ -492,6 +435,7 @@ class TblCurso extends OwlGenericDO{
         $attributes[] = 'iGrupo';
         $attributes[] = 'iAccion';
         $attributes[] = 'vObservaciones';
+        $attributes[] = 'vExpediente';
         $attributes = implode(',', $attributes);
         $values = array();
         $values[] = (( $value = $this->fkPlan ) === null || !isset($this->fkPlan) ) ? 'null' : "'".addslashes($value)."'";
@@ -499,13 +443,10 @@ class TblCurso extends OwlGenericDO{
         $values[] = (( $value = $this->fkColectivo ) === null || !isset($this->fkColectivo) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->fkModalidad ) === null || !isset($this->fkModalidad) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->fkCentro ) === null || !isset($this->fkCentro) ) ? 'null' : "'".addslashes($value)."'";
-        $values[] = (( $value = $this->fkTutorDistancia ) === null || !isset($this->fkTutorDistancia) ) ? 'null' : "'".addslashes($value)."'";
-        $values[] = (( $value = $this->fkModalidadTutoria ) === null || !isset($this->fkModalidadTutoria) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->vNombre ) === null || !isset($this->vNombre) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->vDescripcion ) === null || !isset($this->vDescripcion) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->iHorasPresenciales ) === null || !isset($this->iHorasPresenciales) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->iHorasDistancia ) === null || !isset($this->iHorasDistancia) ) ? 'null' : "'".addslashes($value)."'";
-        $values[] = (( $value = $this->iHorasTutoria ) === null || !isset($this->iHorasTutoria) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->dInicio ) === null || !isset($this->dInicio) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->dFin ) === null || !isset($this->dFin) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->iNumeroAlumnos ) === null || !isset($this->iNumeroAlumnos) ) ? 'null' : "'".addslashes($value)."'";
@@ -514,6 +455,7 @@ class TblCurso extends OwlGenericDO{
         $values[] = (( $value = $this->iGrupo ) === null || !isset($this->iGrupo) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->iAccion ) === null || !isset($this->iAccion) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->vObservaciones ) === null || !isset($this->vObservaciones) ) ? 'null' : "'".addslashes($value)."'";
+        $values[] = (( $value = $this->vExpediente ) === null || !isset($this->vExpediente) ) ? 'null' : "'".addslashes($value)."'";
         $values = implode(',', $values);
         if( $this->_db->executeQuery("INSERT INTO tblCurso($attributes) VALUES($values)") ){
             $eleDO = $this->findByPrimaryKey( $this->_db, $this->_db->getLastInsertId() );
@@ -643,46 +585,6 @@ class TblCurso extends OwlGenericDO{
     }
 
     /**
-      * Obtiene el valor del atributo 'fkTutorDistancia'.
-      *
-      * @return integer
-      */
-    public function getFkTutorDistancia(){
-        return $this->fkTutorDistancia;
-    }
-
-    /**
-      * Establece el valor del atributo 'fkTutorDistancia'.
-      *
-      * @param integer Valor.
-      */
-    public function setFkTutorDistancia( $value ){
-
-        $this->fkTutorDistancia = $value;
-
-    }
-
-    /**
-      * Obtiene el valor del atributo 'fkModalidadTutoria'.
-      *
-      * @return integer
-      */
-    public function getFkModalidadTutoria(){
-        return $this->fkModalidadTutoria;
-    }
-
-    /**
-      * Establece el valor del atributo 'fkModalidadTutoria'.
-      *
-      * @param integer Valor.
-      */
-    public function setFkModalidadTutoria( $value ){
-
-        $this->fkModalidadTutoria = $value;
-
-    }
-
-    /**
       * Obtiene el valor del atributo 'vNombre'.
       *
       * @return string
@@ -759,26 +661,6 @@ class TblCurso extends OwlGenericDO{
     public function setIHorasDistancia( $value ){
 
         $this->iHorasDistancia = $value;
-
-    }
-
-    /**
-      * Obtiene el valor del atributo 'iHorasTutoria'.
-      *
-      * @return integer
-      */
-    public function getIHorasTutoria(){
-        return $this->iHorasTutoria;
-    }
-
-    /**
-      * Establece el valor del atributo 'iHorasTutoria'.
-      *
-      * @param integer Valor.
-      */
-    public function setIHorasTutoria( $value ){
-
-        $this->iHorasTutoria = $value;
 
     }
 
@@ -943,6 +825,26 @@ class TblCurso extends OwlGenericDO{
     }
 
     /**
+      * Obtiene el valor del atributo 'vExpediente'.
+      *
+      * @return string
+      */
+    public function getVExpediente(){
+        return $this->vExpediente;
+    }
+
+    /**
+      * Establece el valor del atributo 'vExpediente'.
+      *
+      * @param string Valor.
+      */
+    public function setVExpediente( $value ){
+
+        $this->vExpediente = $value;
+
+    }
+
+    /**
      * Obtiene todos los elementos relacionados de la tabla 'tblAlumno'
      *
      * @param Connection $db Conexión con la base de datos.
@@ -978,6 +880,19 @@ class TblCurso extends OwlGenericDO{
 
         include_once('TblMaterialCurso.inc');
         return TblMaterialCurso::findByTblCurso( $this->_db, $this->idCurso, $orderBy );
+
+    }
+
+    /**
+     * Obtiene todos los elementos relacionados de la tabla 'tblTutoria'
+     *
+     * @param Connection $db Conexión con la base de datos.
+     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
+     */
+    public function getTblTutorias( $orderBy='' ){
+
+        include_once('TblTutoria.inc');
+        return TblTutoria::findByTblCurso( $this->_db, $this->idCurso, $orderBy );
 
     }
 
@@ -1047,46 +962,6 @@ class TblCurso extends OwlGenericDO{
     }
 
     // Relaciones
-
-    /**
-     * Obtiene el objeto 'TblModalidad' relacionado.
-     *
-     * @return TblModalidad
-     */
-    public function getTblModalidadTutoria(){
-        require_once('TblModalidad.inc');
-        return TblModalidad::findByPrimaryKey( $this->_db, $this->fkModalidadTutoria );
-    }
-
-    /**
-     * Asigna el objeto 'TblModalidad' relacionado.
-     *
-     * @param TblModalidad $dataObject
-     */
-    public function setTblModalidadTutoria( $dataObject ){
-        require_once('TblModalidad.inc');
-        $this->setFkModalidadTutoria( $dataObject->getIdModalidad() );
-    }
-
-    /**
-     * Obtiene el objeto 'TblPersona' relacionado.
-     *
-     * @return TblPersona
-     */
-    public function getTblPersona(){
-        require_once('TblPersona.inc');
-        return TblPersona::findByPrimaryKey( $this->_db, $this->fkTutorDistancia );
-    }
-
-    /**
-     * Asigna el objeto 'TblPersona' relacionado.
-     *
-     * @param TblPersona $dataObject
-     */
-    public function setTblPersona( $dataObject ){
-        require_once('TblPersona.inc');
-        $this->setFkTutorDistancia( $dataObject->getIdPersona() );
-    }
 
     /**
      * Obtiene el objeto 'TblCategoria' relacionado.

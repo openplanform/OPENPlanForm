@@ -29,6 +29,11 @@
                 <input type="text" name="nombre" id="nombre" class="campoTexto" value="<?= $this->cursoDO->getVNombre() ?>"/>
                 <p id="errorNombre" class="errorInput"><?=$this->errorNombre?></p>
             </div>
+        
+            <div class="campo multi">
+                <label for="expediente">Expediente</label>
+                <input type="text" name="expediente" id="expediente" class="campoTexto" value="<?= $this->cursoDO->getVExpediente() ?>"/>
+            </div>
 			
 			<div class="campo controlado multi">
             	<label for="plan">Plan*</label>
@@ -48,6 +53,8 @@
 				<p id="errorPlan" class="errorInput"><?= $this->errorPlan ?></p>
 			</div>
 			
+			<div class="separadorH"></div>			
+			
 			<div class="campo controlado multi">
             	<label for="categoria">Categoría*</label>
 	            <select class="grande" name="categoria" id="categoria">
@@ -61,8 +68,6 @@
 				</select>
 				<p id="errorCategoria" class="errorInput"><?= $this->errorCategoria ?></p>
 			</div>
-			
-			<div class="separadorH"></div>
 			
 			<div class="campo controlado multi">
             	<label for="colectivo">Colectivo*</label>
@@ -164,13 +169,13 @@
             
             <div class="separadorH"></div>
             
-            <div class="alterForm">
+            <!-- div class="alterForm">
             	<h3>Tutoría a distancia</h3>
             	<div class="campo multi">
             		<label for="tutorDistancia">Tutor a distancia</label>
             		<select name="tutorDistancia" name="tutorDistancia" id="tutorDistancia" class="desplegable grande">
             			<option value=""></option><?
-            			
+            			/*
             			$idTutor = $this->cursoDO->getFkTutorDistancia(); 
             			
             			foreach ($this->profesoresIDX as $clave => $profesor){
@@ -179,18 +184,18 @@
             				echo '<option value="' . $clave . '" ' . $sel .'>' . $profesor . '</option>' . "\n";
             				
             			}
-            			
+            			*/
             		?></select>
             	</div>
 				<div class="campo multi">
 	                <label for="horasT">Horas de tutoría</label>
-	                <input type="text" name="horasT" id="horasT" class="campoTexto mediano numerico" value="<?= $this->cursoDO->getIHorasTutoria() ?>"/>
+	                <input type="text" name="horasT" id="horasT" class="campoTexto mediano numerico" value="<? //$this->cursoDO->getIHorasTutoria() ?>"/>
 	            </div>            	
 	            <div class="campo multi">
 					<label for="modalidadTutoria">Tipo de tutoría</label>
             		<select name="modalidadTutoria" name="modalidadTutoria" id="modalidadTutoria" class="desplegable mediano">
             			<option value=""></option><?
-            			
+            			/*
             			$idModalidadTutoria = $this->cursoDO->getFkModalidadTutoria();
             			
             			foreach ($this->modalidadesIDX as $clave=>$modalidad){
@@ -199,19 +204,142 @@
             				echo '<option value="' . $clave . '" ' . $sel . '>' . $modalidad . '</option>' . "\n";
             				
             			}
-            			
+            			*/
             		?></select>	            		
 	            </div>
-            </div>
+            </div-->
             
             <div class="separadorH"></div>
             
-            <div class="campo">
+            <div class="campo multi">
             	<label for="descripcion">Descripción</label>
             	<textarea name="descripcion" id="descripcion"><?= $this->cursoDO->getVDescripcion() ?></textarea>
             </div>
             
-            <h3>Profesores</h3>
+            <div class="campo multi">
+            	<label for="observaciones">Observaciones</label>
+            	<textarea name="observaciones" id="observaciones"><?= $this->cursoDO->getVObservaciones() ?></textarea>
+            </div>
+            
+            <div class="separadorH"></div>
+            
+            <div class="alterForm">
+            	<h3>Tutoría</h3>
+            	<?
+            	
+            	if ( $this->tutoriaDO ){
+            		$tutoria=true;
+            		?><input type="hidden" name="tutoria" value="<?= $this->tutoriaDO->getIdTutoria() ?>" /><?
+            	} else {
+            		$tutoria=false;
+            	}
+            	
+            	?>
+            	<div class="campo multi">
+            		<label for="tutor">Tutor asignado</label>
+            		<select name="tutor" name="tutor" id="tutor" class="desplegable grande">
+            			<option value=""></option><?
+            			
+            			foreach ($this->profesoresIDX as $clave => $profesor){
+            				
+            				if ( $tutoria ) ( $this->tutoriaDO->getFkTutor() == $clave ) ? $sel = 'selected = "selected"' : $sel = "";
+            				echo '<option value="' . $clave . '" ' . $sel . '>' . $profesor . '</option>' . "\n";
+            				
+            			}
+            			
+            		?></select>
+            	</div>
+				<div class="campo multi">
+	                <label for="horasT">Horas</label>
+	                <input type="text" name="horasT" id="horasT" class="campoTexto mini numerico" value="<? if ( $tutoria ) echo $this->tutoriaDO->getIHoras() ?>" />
+	            </div>            	
+	            <div class="campo multi">
+					<label for="modalidadTutoria">Tipo de tutoría</label>
+            		<select name="modalidadTutoria" name="modalidadTutoria" id="modalidadTutoria" class="desplegable mediano">
+            			<option value=""></option><?
+            			
+            			foreach ($this->modalidadesIDX as $clave=>$modalidad){
+            				
+            				if ( $tutoria ) ( $this->tutoriaDO->getFkModalidad() == $clave ) ? $sel = 'selected = "selected"' : $sel = "";
+            				echo '<option value="' . $clave . '" ' . $sel . ' >' . $modalidad . '</option>' . "\n";
+            				
+            			}
+            			
+            		?></select>	            		
+	            </div>
+	            
+	            <div class="separadorH"></div>
+
+				<p class="subtitulo">Días en los que se efectuará la tutoría:</p>
+
+				<div class="campo multi">
+					<label for="lunes" class="alter">Lunes</label>
+					<input type="checkbox" id="lunes" name="lunes" class="checkbox" <? if ( $tutoria ) echo ($this->tutoriaDO->isBLunes())? 'checked="checked"' : '' ?> />
+				</div>
+				<div class="campo multi">
+					<label for="martes" class="alter">Martes</label>
+					<input type="checkbox" id="martes" name="martes" class="checkbox" <? if ( $tutoria ) echo ($this->tutoriaDO->isBMartes())? 'checked="checked"' : '' ?> />
+				</div>
+				<div class="campo multi">
+					<label for="miercoles" class="alter">Miércoles</label>
+					<input type="checkbox" id="miercoles" name="miercoles" class="checkbox" <? if ( $tutoria ) echo ($this->tutoriaDO->isBMiercoles())? 'checked="checked"' : '' ?> />
+				</div>
+				<div class="campo multi">				
+					<label for="jueves" class="alter">Jueves</label>
+					<input type="checkbox" id="jueves" name="jueves" class="checkbox" <? if ( $tutoria ) echo ($this->tutoriaDO->isBJueves())? 'checked="checked"' : '' ?> />
+				</div>
+				<div class="campo multi">
+					<label for="viernes" class="alter">Viernes</label>
+					<input type="checkbox" id="viernes" name="viernes" class="checkbox" <? if ( $tutoria ) echo ($this->tutoriaDO->isBViernes())? 'checked="checked"' : '' ?> />
+				</div>
+				<div class="campo multi">
+					<label for="sabado" class="alter">Sábado</label>
+					<input type="checkbox" id="sabado" name="sabado" class="checkbox" <? if ( $tutoria ) echo ($this->tutoriaDO->isBSabado())? 'checked="checked"' : '' ?> />
+				</div>
+				<div class="campo multi">
+					<label for="domingo" class="alter">Domingo</label>
+					<input type="checkbox" id="domingo" name="domingo" class="checkbox" <? if ( $tutoria ) echo ($this->tutoriaDO->isBDomingo())? 'checked="checked"' : '' ?> />
+				</div>			
+				
+				<div class="separadorH"></div>
+				
+				<div class="campo multi">
+				
+					<p class="subtitulo">Horarios (Mañana):</p>
+					
+					<div class="campo multi">
+						<label for="de_man">De</label>
+		                <input type="text" name="de_man" id="de_man" class="campoTexto mini" value="<? if ( $tutoria ) echo substr($this->tutoriaDO->getIDesdeManana(), 0, 5) ?>" />					
+					</div>					
+					
+					<div class="campo multi">
+						<label for="a_man">A</label>
+		                <input type="text" name="a_man" id="a_man" class="campoTexto mini" value="<? if ( $tutoria ) echo substr($this->tutoriaDO->getIHastaManana(), 0, 5) ?>" />
+					</div>					
+					
+				</div>
+				
+				<div class="campo multi">
+				
+					<p class="subtitulo">Horarios (Tarde):</p>
+					
+					<div class="campo multi">
+						<label for="de_tar">De</label>
+		                <input type="text" name="de_tar" id="de_tar" class="campoTexto mini" value="<? if ( $tutoria ) echo substr($this->tutoriaDO->getIDesdeTarde(), 0, 5) ?>" />					
+					</div>					
+					
+					<div class="campo multi">
+						<label for="a_tar">A</label>
+		                <input type="text" name="a_tar" id="a_tar" class="campoTexto mini" value="<? if ( $tutoria ) echo substr($this->tutoriaDO->getIHastaTarde(), 0, 5) ?>" />
+					</div>					
+					
+				</div>
+	            
+            </div>
+            
+            <div class="separadorH"></div>
+            
+            <h3>Profesores del curso</h3>
             
             <div class="campo multi">
 	            <label for="profesoresSeleccionados">Profesores del curso</label>

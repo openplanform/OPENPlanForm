@@ -1,0 +1,100 @@
+<?php
+	$this->addJavascriptInclude('/js/datos.js');
+	
+	if ( count($this->colectivosCOL) > 0 ){
+
+?>
+
+
+<table class="listado">
+    <thead>
+		<tr>
+			<th><a href="/datos/colectivo.html/?ob=nom&amp;o=<?=$this->order?>" <?=( ($this->orderBy == 'nom')?'class="ordenado ' . $this->order . '"':'' )?> >Nombre</a></th>
+			<th><a href="/datos/colectivo.html/?ob=desc&amp;o=<?=$this->order?>" <?=( ($this->orderBy == 'desc')?'class="ordenado ' . $this->order . '"':'' )?> >Descripción</a></th>
+			<th>Eliminar</th>
+			<th>Editar</th>
+		</tr>
+	</thead>
+	<tbody>
+		<?php
+		
+			$contador = 0;
+			foreach ( $this->colectivosCOL as $colectivoDO ){
+				
+				$clase = ( ($contador%2)==0 )?'':'class="alter"';
+				$contador++;
+				
+				?>
+				<tr	<?= $clase ?> >
+					<td><?= $colectivoDO->getVNombre() ?></td>
+					<td><?= $colectivoDO->getVDescripcion() ?></td>
+					<td class="accion"><a href="javascript:ventanaConfirmacion('Confirmar','¿Está seguro que desea eliminar el colectivo <strong><?= $colectivoDO->getVNombre() ?></strong>?','/datos/eliminar.html/colectivo/<?= $colectivoDO->getIdColectivo() ?>')" class="btnEliminar" title="Eliminar colectivo"><span>eliminar</span></a></td>
+					<td class="accion"><a href="/datos/colectivo.html/<?= $colectivoDO->getIdColectivo() ?>" class="btnEditar" title="Editar colectivo"><span>editar</span></a></td>
+				</tr>
+				<?
+				
+			}
+			
+		?>
+	</tbody>
+</table>
+<div id="paginadorContainer"><?= $this->paginador ?></div>
+
+<?php 
+
+	} else {
+	
+?>
+
+<h3>No hay ningún colectivo</h3>
+
+<?
+
+	}
+
+?>
+
+<form id="formColectivo" method="post">
+	<fieldset>
+	
+		<?
+		if ( !is_null($this->colectivoDO) ){
+		?>
+			<input type="hidden" name="<?= md5('send') ?>" value="<?= md5('editar') ?>" />
+			<div class="campo">
+				<input type="button" onclick="window.location='/datos/colectivo.html'" value="Nuevo" class="btnSubmit">
+			</div>
+		<?
+		} else {
+		?>
+			<input type="hidden" name="<?= md5('send') ?>" value="<?= md5('alta') ?>" />
+		<?
+		}
+		?>
+		
+		<div class="campo controlado">
+			<label for="nombre">Nombre</label>
+			<input class="campoTexto" type="text" id="nombre" name="nombre" value="<?= (!is_null($this->colectivoDO)) ? $this->colectivoDO->getVNombre() : '' ?>"/>
+			<p id="errorNombre" class="errorInput"><?=$this->errorNombre?></p>
+		</div>
+		
+		<div class="campo controlado">
+			<label for="descripcion">Descripción</label>
+			<input class="campoTexto" type="text" id="descripcion" name="descripcion" value="<?= (!is_null($this->colectivoDO)) ? $this->colectivoDO->getVDescripcion() : '' ?>"/>
+			<p id="errorDescripcion" class="errorInput"><?=$this->errorDescripcion?></p>
+		</div>
+		<div class="campo">
+			<?
+			if ( !is_null($this->colectivoDO) ){
+			?>
+				<input type="submit" value="Editar" class="btnSubmit" />
+			<?
+			} else {
+			?>
+				<input type="submit" value="Añadir" class="btnSubmit" />
+			<?
+			}
+			?>
+		</div>
+	</fieldset>
+</form>
