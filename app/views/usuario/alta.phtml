@@ -10,6 +10,8 @@
 <form id="altaUsuario" action="/usuario/alta.html" method="post">
     <fieldset>
 
+		<legend>Alta de nuevo usuario</legend>
+
         <input type="hidden" value="1" name="send" />
         
         <div class="campo controlado">
@@ -34,7 +36,7 @@
         
         <div class="separadorH"></div>
         
-        <div class="campo multi">
+        <div class="campo controlado multi">
              <label for="emailUsuario">Correo electrónico*</label>
              <input type="text" name="emailUsuario" id="emailUsuario" class="campoTexto" />
              <p id="errorEmailUsuario" class="errorInput"><?= $this->errorEmail ?></p>

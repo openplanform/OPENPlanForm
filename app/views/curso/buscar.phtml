@@ -4,6 +4,8 @@
     
         <fieldset>
         
+        	<legend>Buscar un curso</legend>
+        
             <input type="hidden" name="sent" value="<?= md5(date('is')) ?>" />
         
             <div class="campo multi">
@@ -51,8 +53,6 @@
                 ?></select>
             </div>
 
-            <div class="separadorH"></div>
-            
             <div class="campo multi">
                 <label for="mod">Modalidad</label>
                 <select class="desplegable campoTexto mediano" id="mod" name="mod">
@@ -68,9 +68,11 @@
                 ?></select>
             </div>
         
+			<div class="separadorH"></div>        
+        
             <div class="campo multi">
                 <label for="keyword">Palabra clave</label>
-                <input type="text" class="campoTexto" id="keyword" name="keyword" value="<?= $this->kw ?>" />
+                <input type="text" class="campoTexto grande" id="keyword" name="keyword" value="<?= $this->kw ?>" />
             </div>            
             
             <div class="campo multi">
@@ -88,9 +90,9 @@
     
         if ($this->cursosCOL){
     
-            ?><h3>Resultados de búsqueda:</h3>
+            ?><h3 class="buscar alter">Resultados de búsqueda:</h3>
             
-            <table class="listado">
+            <table class="listado fijo">
                 <thead>
                     <tr>
                         <th><a href="/curso/buscar.html/?ob=nom&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'nom')?'class="ordenado ' . $this->order . '"':'' )?> >Nombre</a></th>
@@ -156,7 +158,7 @@
     
     } else if ($this->querystring){
 
-    	?><h3>No hay resultados</h3><?
+    	?><h3 class="noResult">No hay resultados</h3><?
     	
     }
     

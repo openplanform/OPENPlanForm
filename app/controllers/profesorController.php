@@ -78,7 +78,7 @@ class profesorController extends PplController{
         // Se instancia y configura el paginador
         $rolProfesor = PplAclManager::ROL_PROFESOR;
         $paginador = new OwlPaginator($this->db, 'p WHERE EXISTS (SELECT null FROM trelRolUsuario ru WHERE ru.fkUsuario = p.fkUsuario AND ru.fkRol = ' . $rolProfesor . ')', 'tblPersona', $this->helper);
-        $paginador->setItemsPorPagina(10);
+        $paginador->setItemsPorPagina(20);
         $paginador->setOrderBy($orderBy);
         $paginador->setOrder($order);
         $paginaActual = $this->helper->escapeInjection($this->helper->get('p'));

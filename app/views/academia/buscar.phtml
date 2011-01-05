@@ -1,82 +1,88 @@
 <div id="buscadorAcademia" class="buscador">
     
-    <form id="buscarAcademia" action="/academia/buscar.html" method="post">
+	<div class="bloque">
     
-        <fieldset>
-        
-            <input type="hidden" name="sent" value="<?= md5(date('is')) ?>" />
-        
-            <div class="campo multi">
-                <label for="idAcademia">Id</label>
-                <input type="text" class="campoTexto mini" id="idAcademia" name="idAcademia" value="<?= $this->id ?>" />
-            </div>
-
-            <div class="campo multi">
-                <label for="pais">País</label>
-                <select class="desplegable campoTexto mediano" id="pais" name="pais">
-                    <option value=""></option><?
-                    
-                    foreach ($this->paisesIDX as $clave=>$paisDO){
-                        
-                        $sel = $clave == $this->pais ? ' selected="selected" ' : '';
-                        echo '<option value="' . $clave . '"' . $sel . '>' . $paisDO->getVNombre() . '</option>' . "\n";
-                        
-                    }
-                    
-                ?></select>
-            </div>
-
-            <div class="campo multi">
-                <label for="provincia">Provincia</label>
-                <select class="desplegable campoTexto mediano" id="provincia" name="provincia">
-                    <option value=""></option><?
-                    
-                    foreach ($this->provinciasIDX as $clave=>$provinciaDO){
-                        
-                        $sel = $clave == $this->provincia ? ' selected="selected" ' : '';
-                        echo '<option value="' . $clave . '"' . $sel . '>' . $provinciaDO->getVNombre() . '</option>' . "\n";
-                        
-                    }
-                    
-                ?></select>
-            </div>
-
-            <div class="campo multi">
-                <label for="cif">Cif</label>
-                <input type="text" class="campoTexto mediano" id="cif" name="cif" value="<?= $this->cif ?>" />
-            </div>
-            
-            <div class="separadorH"></div>
-        
-            <div class="campo multi">
-                <label for="cp">Código Postal</label>
-                <input type="text" class="campoTexto mediano" id="cp" name="cp" value="<?= $this->cp ?>" />
-            </div>
-            
-                        
-            <div class="campo multi">
-                <label for="keyword">Palabra clave</label>
-                <input type="text" class="campoTexto" id="keyword" name="keyword" value="<?= $this->kw ?>" />
-            </div>            
-            
-            <div class="campo multi">
-                <input type="submit" value="Buscar" class="btnSubmit" />
-            </div>
-            
-            <div class="separadorH"></div>
-            
-        
-        </fieldset>
-    
-    </form>
+	    <form id="buscarAcademia" action="/academia/buscar.html" method="post">
+	    
+	        <fieldset>
+	        
+	        	<legend>Buscar academias</legend>
+	        
+	            <input type="hidden" name="sent" value="<?= md5(date('is')) ?>" />
+	        
+	            <div class="campo multi">
+	                <label for="idAcademia">Id</label>
+	                <input type="text" class="campoTexto mini" id="idAcademia" name="idAcademia" value="<?= $this->id ?>" />
+	            </div>
+	
+	            <div class="campo multi">
+	                <label for="pais">País</label>
+	                <select class="desplegable campoTexto mediano" id="pais" name="pais">
+	                    <option value=""></option><?
+	                    
+	                    foreach ($this->paisesIDX as $clave=>$paisDO){
+	                        
+	                        $sel = $clave == $this->pais ? ' selected="selected" ' : '';
+	                        echo '<option value="' . $clave . '"' . $sel . '>' . $paisDO->getVNombre() . '</option>' . "\n";
+	                        
+	                    }
+	                    
+	                ?></select>
+	            </div>
+	
+	            <div class="campo multi">
+	                <label for="provincia">Provincia</label>
+	                <select class="desplegable campoTexto mediano" id="provincia" name="provincia">
+	                    <option value=""></option><?
+	                    
+	                    foreach ($this->provinciasIDX as $clave=>$provinciaDO){
+	                        
+	                        $sel = $clave == $this->provincia ? ' selected="selected" ' : '';
+	                        echo '<option value="' . $clave . '"' . $sel . '>' . $provinciaDO->getVNombre() . '</option>' . "\n";
+	                        
+	                    }
+	                    
+	                ?></select>
+	            </div>
+	
+	            <div class="campo multi">
+	                <label for="cif">Cif</label>
+	                <input type="text" class="campoTexto mediano" id="cif" name="cif" value="<?= $this->cif ?>" />
+	            </div>
+	            
+	            <div class="separadorH"></div>
+	        
+	            <div class="campo multi">
+	                <label for="cp">Código Postal</label>
+	                <input type="text" class="campoTexto mediano" id="cp" name="cp" value="<?= $this->cp ?>" />
+	            </div>
+	            
+	                        
+	            <div class="campo multi">
+	                <label for="keyword">Palabra clave</label>
+	                <input type="text" class="campoTexto" id="keyword" name="keyword" value="<?= $this->kw ?>" />
+	            </div>            
+	            
+	            <div class="campo multi">
+	                <input type="submit" value="Buscar" class="btnSubmit" />
+	            </div>
+	            
+	            <div class="separadorH"></div>
+	            
+	        
+	        </fieldset>
+	    
+	    </form>
+	    
+	</div>
     
     <div class="resultadosBusqueda"><?
     
         if ($this->academiasCOL){
     
-            ?><h3>Resultados de búsqueda:</h3>
+            ?><h3 class="buscar">Resultados de búsqueda:</h3>
             
-            <table class="listado">
+            <table class="listado fijo">
             <thead>
                 <tr>
                     <th><a href="/academia/buscar.html/?ob=nom&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'nom')?'class="ordenado ' . $this->order . '"':'' )?> >Nombre</a></th>
@@ -132,7 +138,7 @@
     
     } else if ($this->querystring){
 
-    	?><h3>No hay resultados</h3><?
+    	?><h3 class="noResult">No hay resultados</h3><?
     	
     }
     

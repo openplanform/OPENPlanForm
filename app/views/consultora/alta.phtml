@@ -10,6 +10,8 @@
     <form id="altaConsultora" action="/consultora/alta.html" method="post">
         <fieldset>
         
+        	<legend>Alta de nueva gestora</legend>
+        
             <input type="hidden" value="1" name="send" />
             
             <h3>Datos del Usuario</h3>
@@ -44,7 +46,7 @@
             
             <div class="campo controlado multi">
                 <label for="nombre">Nombre*</label>
-                <input type="text" name="nombre" id="nombre" class="campoTexto" />
+                <input type="text" name="nombre" id="nombre" class="campoTexto grande" />
                 <p id="errorNombre" class="errorInput"><?= $this->errorNombre ?></p>
             </div>
             
@@ -106,23 +108,25 @@
             
             <div class="campo clear">
                 <label for="cp">C.P.</label>
-                <input type="text" name="cp" id="cp" class="campoTexto" />
+                <input type="text" name="cp" id="cp" class="campoTexto mediano" />
             </div>
             
             <div class="campo multi">
                 <label for="telefono1">Teléfono 1</label>
-                <input type="text" name="telefono1" id="telefono1" class="campoTexto" />
+                <input type="text" name="telefono1" id="telefono1" class="campoTexto mediano" />
             </div>
             
             <div class="campo multi">
                 <label for="telefono1">Teléfono 2</label>
-                <input type="text" name="telefono1" id="telefono1" class="campoTexto" />
+                <input type="text" name="telefono1" id="telefono1" class="campoTexto mediano" />
             </div>
             
-            <div class="campo clear">
+            <div class="campo multi">
                 <label for="fax">Fax</label>
-                <input type="text" name="fax" id="fax" class="campoTexto" />
+                <input type="text" name="fax" id="fax" class="campoTexto mediano" />
             </div>
+            
+            <div class="separadorH"></div>
             
             <input class="oculto" type="submit" value="Guardar" />
             
@@ -134,4 +138,3 @@
             
         </fieldset>
     </form>
-    <p>* Campos obligatorios</p>

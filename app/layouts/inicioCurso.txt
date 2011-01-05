@@ -1,0 +1,13 @@
+Estimado usuario:
+
+    Este correo es para recordarle que el curso %%CURSO%% comienza
+    el día %%FECHA%%. Contamos con su presencia.
+    
+    Para más información lo invitamos a que visite el siguiente enlace:
+    
+    %%ENLACE%%
+        
+--
+Fin del mensaje.
+Un cordial saludo.
+    

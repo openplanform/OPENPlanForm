@@ -1,0 +1,100 @@
+<?php
+	$this->addJavascriptInclude('/js/datos.js');
+	
+	if ( count($this->provinciasCOL) > 0 ){
+
+?>
+
+
+<table class="listado">
+    <thead>
+		<tr>
+			<th><a href="/datos/provincia.html/?ob=id&amp;o=<?=$this->order?>" <?=( ($this->orderBy == 'iso')?'class="ordenado ' . $this->order . '"':'' )?> >Id</a></th>
+			<th><a href="/datos/provincia.html/?ob=nom&amp;o=<?=$this->order?>" <?=( ($this->orderBy == 'nom')?'class="ordenado ' . $this->order . '"':'' )?> >Nombre</a></th>
+			<th>Eliminar</th>
+			<th>Editar</th>
+		</tr>
+	</thead>
+	<tbody>
+		<?php
+		
+			$contador = 0;
+			foreach ( $this->provinciasCOL as $provinciaDO ){
+				
+				$clase = ( ($contador%2)==0 )?'':'class="alter"';
+				$contador++;
+				
+				?>
+				<tr	<?= $clase ?> >
+					<td><?= $provinciaDO->getIdProvincia() ?></td>
+					<td><?= $provinciaDO->getVNombreEs() ?></td>
+					<td class="accion"><a href="javascript:ventanaConfirmacion('Confirmar','¿Está seguro que desea eliminar el país <strong><?= $provinciaDO->getVNombre() ?></strong>?','/datos/eliminar.html/provincia/<?= $provinciaDO->getIdProvincia() ?>')" class="btnEliminar" title="Eliminar provincia"><span>eliminar</span></a></td>
+					<td class="accion"><a href="/datos/provincia.html/<?= $provinciaDO->getIdProvincia() ?>" class="btnEditar" title="Editar pais"><span>editar</span></a></td>
+				</tr>
+				<?
+				
+			}
+			
+		?>
+	</tbody>
+</table>
+<div id="paginadorContainer"><?= $this->paginador ?></div>
+
+<?php 
+
+	} else {
+	
+?>
+
+<h3>No hay ningún país</h3>
+
+<?
+
+	}
+
+?>
+
+<form id="formCarnet" method="post">
+	<fieldset>
+	
+		<?
+		if ( !is_null($this->provinciaDO) ){
+		?>
+			<input type="hidden" name="<?= md5('send') ?>" value="<?= md5('editar') ?>" />
+			<div class="campo">
+				<input type="button" onclick="window.location='/datos/provincia.html'" value="Nuevo" class="btnSubmit">
+			</div>
+		<?
+		} else {
+		?>
+			<input type="hidden" name="<?= md5('send') ?>" value="<?= md5('alta') ?>" />
+		<?
+		}
+		?>
+		
+		<div class="campo controlado">
+			<label for="iso">Iso</label>
+			<input class="campoTexto" type="text" id="iso" name="iso" value="<?= (!is_null($this->provinciaDO)) ? $this->provinciaDO->getIdProvincia() : '' ?>"/>
+			<p id="errorIso" class="errorInput"><?=$this->errorIso?></p>
+		</div>
+		
+		<div class="campo controlado">
+			<label for="nombre">Nombre</label>
+			<input class="campoTexto" type="text" id="nombre" name="nombre" value="<?= (!is_null($this->provinciaDO)) ? $this->provinciaDO->getVNombreEs() : '' ?>"/>
+			<p id="errorNombre" class="errorInput"><?=$this->errorNombre?></p>
+		</div>
+		<div class="campo">
+			<?
+			if ( !is_null($this->provinciaDO) ){
+			?>
+				<input type="submit" value="Editar" class="btnSubmit" />
+			<?
+			} else {
+			?>
+				<input type="submit" value="Añadir" class="btnSubmit" />
+			<?
+			}
+			?>
+		</div>
+	</fieldset>
+</form>

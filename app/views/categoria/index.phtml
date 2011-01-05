@@ -1,0 +1,65 @@
+<?php
+
+$this->addCssInclude('/css/admin.css');
+$this->addJavascriptInclude('/js/admin.js');
+
+if ( !is_null($this->popup) ){
+	echo '<script type="text/javascript">ventana' . ucfirst($this->popup['estado']) . '("' . $this->popup['titulo'] . '", "' . $this->popup['mensaje'] . '", "' . $this->popup['url'] . '");</script>'; 
+}  
+
+?><div id="menuAdmin"><?
+	echo $this->htmltree;
+?></div>
+<div id="altaEdicion"><?
+	
+	if (!$this->editar){
+		
+		echo '<h2>Alta de nueva categoría</h2>';
+		
+	} else {
+		
+		echo '<h2>Edición de categoría</h2>';
+		
+	}
+
+?>
+
+	<div id="altaEdicionCategoria">
+		<form action="<?= $_SERVER['REQUEST_URI'] ?>" method="post">
+			<input type="hidden" name="sent" value="1" />
+			<div class="campo">
+				<label for="padre">Padre:</label>
+				<select id="padre" name="padre" class="desplegable grande">
+					<option value="0">Ninguno</option><?
+					
+					foreach ($this->categoriasPatriarcaCOL as $catDO){
+						
+						$clave = $catDO->getIdCategoria();
+						$sel = $clave == $this->padre ? 'selected="selected"' : '';
+						?><option value="<?= $catDO->getIdCategoria() ?>" <?= $sel ?>><?= $catDO->getVNombre() ?></option><?
+						
+					}
+					
+				?></select>
+			</div>
+			<div class="campo">
+				<label for="nombre">Nombre</label>
+				<input type="text" name="nombre" class="campoTexto grande" value="<?= $this->nombre ?>" />
+			</div>
+			<div class="campo">
+				<label for="descripcion">Descripción</label>
+				<textarea name="descripcion" class="campoTexto grande"><?= $this->desc ?></textarea>
+			</div>
+			<div class="campo botonesForm">
+				<input type="submit" class="btnSubmit" value="<?= $this->editar ? 'Guardar' : 'Añadir' ?>" /><?
+				
+				if ($this->editar){
+					?><input type="button" class="btnDelete" value="Eliminar" name="modo" id="eliminaMenuItem" onclick="ventanaConfirmacion('Eliminar categoría', '¿Está seguro que desea eliminar esta categoría?', '/categoria/index.html?edel=<?= $this->claveItem ?>');" /><?
+				}
+				
+			?></div>
+		</form>
+	</div>
+	
+</div>
+<div class="separadorH"></div>

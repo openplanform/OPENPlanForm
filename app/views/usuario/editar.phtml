@@ -10,62 +10,67 @@
         echo '<script type="text/javascript">ventana' . ucfirst($this->popup['estado']) . '("' . $this->popup['titulo'] . '", "' . $this->popup['mensaje'] . '", "' . $this->popup['url'] . '");</script>'; 
     }
 
-?><h3>Datos de acceso:</h3>
-
-<form id="editarUsuario" method="post" action="<?= $_SERVER['REQUEST_URI'] ?>">
+?><form id="editarUsuario" method="post" action="<?= $_SERVER['REQUEST_URI'] ?>">
     
     <fieldset>
-    
-        <input type="hidden" value="1" name="send" />
-        <input type="hidden" name="<?= md5('tipo') ?>" value="<?= md5($this->tipo) ?>" />
-        
-        <div class="campo controlado">
-             <label for="nombreUsuario">Nombre de usuario*</label>
-             <input type="text" name="nombreUsuario" id="nombreUsuario" class="campoTexto mediano" value="<?= $this->usuarioBO->getNombre() ?>" onblur="comprobarUsuario(this.id, true)" />
-             <input type="hidden" id="nombreUsuarioOculto"  name="nombreUsuarioOculto" value="<?= $this->usuarioBO->getNombre() ?>" />
-             <p id="errorNombreUsuario" class="errorInput"><?= $this->errorNombre ?></p>
-             <p class="tooltip" id="nombreUsuarioTooltip">El nombre de usuario debe tener 5 caracteres como mínimo y 16 como máximo. Debe estar compuesto de sólo letras y/o números. <em>Ej: usuario12</em></p>
-        </div>
-        
-        <div class="campo controlado multi">
-             <label for="password1">Contraseña*</label>
-             <input type="password" name="password1" id="password1" class="campoTexto" />
-             <p id="errorPassword1" class="errorInput"><?= $this->errorPassword ?></p>
-        </div>
-        
-        <div class="campo controlado multi">
-             <label for="repassword1">Repetir Contraseña*</label>
-             <input type="password" name="repassword1" id="repassword1" class="campoTexto" />
-             <p id="errorRepassword1" class="errorInput"><?= $this->errorRepassword ?></p>
-        </div>    
-        
-        <div class="campo controlado clear">
-             <label for="emailUsuario">Correo electrónico*</label>
-             <input type="text" name="emailUsuario" id="emailUsuario" class="campoTexto" value="<?= $this->usuarioBO->getEmail() ?>" />
-             <p id="errorEmailUsuario" class="errorInput"><?= $this->errorEmail ?></p>
-        </div>                
-        
-        <div class="campo controlado">
-            <label for="selectorRol">Roles que desempeñará*</label>
-            <select name="roles[]" multiple="multiple" id="selectorRol" class="campoTexto grande"><?
-            
-                $rolesUsuario = $this->usuarioBO->getRoles();
-                foreach ($this->rolesIDX as $idRol => $rol){
-                    
-                    $sel = '';
-                    if (in_array($idRol, $rolesUsuario)){
-                        $sel = ' selected="selected" ';
-                    }
-            
-                    ?><option value="<?= $idRol ?>"<?= $sel ?>><?= $rol ?></option>
-                    <?
-                
-                }
-                
-            ?></select>
-            <p class="tooltip" id="selectorRolTooltip">Se pueden seleccionar varios roles manteniendo pulsada la tecla CTRL</p>
-            <p id="errorSelectorRol" class="errorInput"><?= $this->errorRol ?></p>
-        </div><?     
+  
+  		<legend>Edición de usuario</legend>
+  
+  		<div class="bloque">
+  
+	  		<h3>Datos de acceso:</h3>
+	    
+	        <input type="hidden" value="1" name="send" />
+	        <input type="hidden" name="<?= md5('tipo') ?>" value="<?= md5($this->tipo) ?>" />
+	        
+	        <div class="campo controlado">
+	             <label for="nombreUsuario">Nombre de usuario*</label>
+	             <input type="text" name="nombreUsuario" id="nombreUsuario" class="campoTexto mediano" value="<?= $this->usuarioBO->getNombre() ?>" onblur="comprobarUsuario(this.id, true)" />
+	             <input type="hidden" id="nombreUsuarioOculto"  name="nombreUsuarioOculto" value="<?= $this->usuarioBO->getNombre() ?>" />
+	             <p id="errorNombreUsuario" class="errorInput"><?= $this->errorNombre ?></p>
+	             <p class="tooltip" id="nombreUsuarioTooltip">El nombre de usuario debe tener 5 caracteres como mínimo y 16 como máximo. Debe estar compuesto de sólo letras y/o números. <em>Ej: usuario12</em></p>
+	        </div>
+	        
+	        <div class="campo controlado multi">
+	             <label for="password1">Contraseña*</label>
+	             <input type="password" name="password1" id="password1" class="campoTexto" />
+	             <p id="errorPassword1" class="errorInput"><?= $this->errorPassword ?></p>
+	        </div>
+	        
+	        <div class="campo controlado multi">
+	             <label for="repassword1">Repetir Contraseña*</label>
+	             <input type="password" name="repassword1" id="repassword1" class="campoTexto" />
+	             <p id="errorRepassword1" class="errorInput"><?= $this->errorRepassword ?></p>
+	        </div>    
+	        
+	        <div class="campo controlado clear">
+	             <label for="emailUsuario">Correo electrónico*</label>
+	             <input type="text" name="emailUsuario" id="emailUsuario" class="campoTexto" value="<?= $this->usuarioBO->getEmail() ?>" />
+	             <p id="errorEmailUsuario" class="errorInput"><?= $this->errorEmail ?></p>
+	        </div>                
+	        
+	        <div class="campo controlado">
+	            <label for="selectorRol">Roles que desempeñará*</label>
+	            <select name="roles[]" multiple="multiple" id="selectorRol" class="campoTexto grande"><?
+	            
+	                $rolesUsuario = $this->usuarioBO->getRoles();
+	                foreach ($this->rolesIDX as $idRol => $rol){
+	                    
+	                    $sel = '';
+	                    if (in_array($idRol, $rolesUsuario)){
+	                        $sel = ' selected="selected" ';
+	                    }
+	            
+	                    ?><option value="<?= $idRol ?>"<?= $sel ?>><?= $rol ?></option>
+	                    <?
+	                
+	                }
+	                
+	            ?></select>
+	            <p class="tooltip" id="selectorRolTooltip">Se pueden seleccionar varios roles manteniendo pulsada la tecla CTRL</p>
+	            <p id="errorSelectorRol" class="errorInput"><?= $this->errorRol ?></p>
+	        </div>
+	    </div><?     
         
         if ($this->tipo == 'empresa'){
             
@@ -85,7 +90,7 @@
             
             <div class="campo controlado clear">
                 <label for="pais">País*</label>
-                <select class="grande" name="pais" id="pais">
+                <select class="grande desplegable" name="pais" id="pais">
                     <option value=""></option>
                     <?
                     
@@ -104,7 +109,7 @@
             
             <div class="campo controlado">
                 <label for="provincia">Provincia*</label>
-                <select class="grande" name="provincia" id="provincia">
+                <select class="grande desplegable" name="provincia" id="provincia">
                     <option value=""></option>
                     <?
                     
@@ -222,7 +227,7 @@
             <div class="campo multi">
                 <label for="provinciaPersona">Provincia</label><?
                 
-                ?><select name="provinciasUsuario" id="provinciaPersona" class="campoTexto mediano">
+                ?><select name="provinciasUsuario" id="provinciaPersona" class="campoTexto desplegable mediano">
                     <option value=""></option><?
                     
                     $provinciaPersona = $this->personaDO->getFkProvincia();
@@ -245,7 +250,7 @@
             <div class="campo multi controlado">
                 
                 <label for="paisPersona">País*</label>
-                    <select name="paisPersona" id="paisPersona" class="campoTexto mediano">
+                    <select name="paisPersona" id="paisPersona" class="campoTexto desplegable mediano">
                         <option value=""></option><?
                         
                         $paisPersona = $this->personaDO->getFkPais();
@@ -271,7 +276,7 @@
             <div class="campo multi">
                 
                 <label for="estadoCivil">Estado Civil*</label>
-                    <select name="estadoCivil" id="estadoCivil" class="campoTexto mediano">
+                    <select name="estadoCivil" id="estadoCivil" class="campoTexto mediano desplegable">
                         <option value=""></option><?
                         
                         $estadoCivilPersona = $this->personaDO->getFkEstadoCivil();
@@ -296,7 +301,7 @@
             <div class="campo multi">
                 
                 <label for="estadoLaboral">Estado Laboral*</label>
-                    <select name="estadoLaboral" id="estadoLaboral" class="campoTexto mediano">
+                    <select name="estadoLaboral" id="estadoLaboral" class="campoTexto mediano desplegable">
                         <option value=""></option><?
                         
                         $estadoLaboralPersona = $this->personaDO->getFkEstadoLaboral();
@@ -321,7 +326,7 @@
             <div class="campo multi">
                 
                 <label for="nivelEstudios">Nivel de estudios*</label>
-                    <select name="nivelEstudios" id="nivelEstudios" class="campoTexto mediano">
+                    <select name="nivelEstudios" id="nivelEstudios" class="campoTexto mediano desplegable">
                         <option value=""></option><?
                         
                         $nivelEstudiosPersona = $this->personaDO->getFkNivelEstudios();

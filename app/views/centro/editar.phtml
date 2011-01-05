@@ -17,15 +17,17 @@
     <form id="editarCentro" action="<?= $_SERVER['REQUEST_URI'] ?>" method="post">
         <fieldset>
         
+        	<legend>Editar centro de formación</legend>
+        	
         	<input type="hidden" value="1" name="send" />
         
-            <div class="campo controlado">
+            <div class="campo controlado multi">
                 <label for="nombre">Nombre*</label>
                 <input type="text" name="nombre" id="nombre" class="campoTexto" value="<?= $this->centroDO->getVNombre() ?>"/>
                 <p id="errorNombre" class="errorInput"><?=$this->errorNombre?></p>
             </div>
 			
-			<div class="campo controlado">
+			<div class="campo controlado multi">
             	<label for="academia">Academia*</label>
 	            <select class="grande" name="academia" id="academia">
 	            	<option value=""></option>
@@ -43,7 +45,9 @@
 				<p id="errorAcademia" class="errorInput"><?= $this->errorAcademia ?></p>
 			</div>
 			
-			<div class="campo controlado clear">
+			<div class="separadorH"></div>
+			
+			<div class="campo controlado multi">
             	<label for="pais">País*</label>
 	            <select class="grande" name="pais" id="pais">
 	            	<option value=""></option>
@@ -78,41 +82,49 @@
 				<p id="errorProvincia" class="errorInput"><?= $this->errorProvincia ?></p>
 			</div>
 			
-			<div class="campo">
+			<div class="campo multi">
             	<label for="direccion">Dirección</label>
 	            <input type="text" name="direccion" id="direccion" class="campoTexto" value="<?= $this->centroDO->getVDireccion() ?>"/>
 			</div>
 
-			<div class="campo">
+			<div class="campo multi">
             	<label for="poblacion">Población</label>
 	            <input type="text" name="poblacion" id="poblacion" class="campoTexto" value="<?= $this->centroDO->getVPoblacion() ?>"/>
 			</div>
 			
-			<div class="campo">
+			<div class="campo multi">
             	<label for="telefono">Teléfono</label>
-	            <input type="text" name="telefono" id="telefono" class="campoTexto" value="<?= $this->centroDO->getVTelefono() ?>"/>
+	            <input type="text" name="telefono" id="telefono" class="campoTexto mediano" value="<?= $this->centroDO->getVTelefono() ?>"/>
 			</div>
 			
 			<div class="separadorH"></div>
 			
-			<div class="campo multi">
-            	<label for="latitud">Latitud</label>
-	            <input type="text" name="latitud" id="latitud" class="campoTexto" value="<?= $this->centroDO->getVLatitud() ?>"/>
+			<div class="bloque">
+			
+				<h3>Ubicación principal</h3>
+			
+				<div class="campo multi">
+	            	<label for="latitud">Latitud</label>
+		            <input type="text" name="latitud" id="latitud" class="campoTexto" value="<?= $this->centroDO->getVLatitud() ?>"/>
+				</div>
+				
+				<div class="campo multi">
+	            	<label for="longitud">Longitud</label>
+		            <input type="text" name="longitud" id="longitud" class="campoTexto" value="<?= $this->centroDO->getVLongitud() ?>"/>
+				</div>
+				
+				<div class="separadorH"></div>
+				
+				<div class="campo">
+					<p>Marca en el mapa el emplazamiento del centro</p>
+					<div id="mapa"></div>
+				</div>
+				
+				<div class="separadorH"></div>
+				
 			</div>
 			
-			<div class="campo multi">
-            	<label for="longitud">Longitud</label>
-	            <input type="text" name="longitud" id="longitud" class="campoTexto" value="<?= $this->centroDO->getVLongitud() ?>"/>
-			</div>
-			
-			<div class="separadorH"></div>
-			
-			<div class="campo">
-				<p>Marca en el mapa el emplazamiento del centro</p>
-				<div id="mapa"></div>
-			</div>
-			
-			<div class="separadorH"></div>
+			<h3>Datos adicionales</h3>
 			
             <div class="campo">
                 <label for="descripcion">Descripción</label>
@@ -128,9 +140,7 @@
             </noscript>
             
         </fieldset>
-    </form>
-    <p>* Campos obligatorios</p>
-<?
+    </form><?
 	
 	} else {
 	

@@ -33,29 +33,40 @@ h2, h3, h4, h5{
 	color: #4A95EF;
 	margin: 0 0 10px 0;
 }
-/*h2{
-	background-color: #D1DFEF;
-	border-bottom: 1px solid #A0C4EF;
-	color: #444444;
-	font: bolder 17px/34px Verdana,Helvetica,sans-serif;
-	height: 34px;
-	letter-spacing: 3px;
-	margin-bottom: 25px;
-	padding-left: 5px;
-	text-transform: uppercase;
-}*/
 h3{
-	color: #000;
-	margin-bottom: 10px;
-	/*margin-bottom: 15px; aa: menos margin bottom*/
-	/*margin-top: 25px; np: NO MARGIN TOP */ 
+	color: #0E75EF;
+	margin-bottom: 10px; 
 	font-weight: bold;
+	font-size: 12px;
+	padding-bottom: 4px;
+	border-bottom: 1px solid #AFAFAF;
+	max-width: 1000px;
+}
+h3.alter{
+	margin-bottom: 20px;
 }
 h3.conSubtitulo{
-    margin-bottom: 2px;	
+    margin-bottom: 5px;	
+}
+h3.buscar{
+	background: url(/img/iconos/buscar16.png) 0 0 no-repeat;
+	padding-left: 20px;
+	width: 980px;
+}
+h3.noResult{
+	border: none;
+	background: url(/img/iconos/stop16.png) 4px 5px no-repeat;
+	font-weight: normal;
+	color: #1F1D1D;
+	padding: 2px 2px 5px 25px;
+	background-color: #EFC2C2;
+	border: 1px solid #EF8686;
+	width: 973px;
+	height: 20px;
+	line-height: 20px;
 }
 .subtitulo{
-    margin-bottom: 13px;
+    margin-bottom: 15px;
 }
 a{
 	text-decoration: underline;
@@ -75,7 +86,6 @@ a:hover{
 }
 #mapa{
 	width: 615px;
-
 	height: 300px;
 	border: 1px solid #A6A6A6;
 }
@@ -106,7 +116,7 @@ a:hover{
 	background: url(/img/iconos/flechaIzq.png) left center no-repeat;
 }
 .scroll{
-	max-height: 200px;
+	max-height: 198px;
 	overflow-y: scroll;
 	overflow-x: hidden;
 	border: 1px solid #808080;
@@ -114,6 +124,9 @@ a:hover{
 }
 .ficha .scroll{
 	float: left;
+}
+.ficha .scroll .fijo{
+	width: 980px;
 }
 .pestanyas{
 	float: left;
@@ -187,12 +200,6 @@ a:hover{
 	vertical-align: bottom;
 }
 /* Componentes Formulario */
-legend{
-	color: #4A95EF;
-	display: block;
-	font: bold 26px Arial,Helvetica,sans-serif;
-	margin-bottom: 20px;
-}
 label{
 	display: block;
 	font-family: Verdana, "BitStream vera Sans", Tahoma, Helvetica, Sans-serif;
@@ -223,13 +230,13 @@ input.campoTexto{
 	width: 300px;
 }
 textarea{
-	width: 450px;
-	height: 120px;
+	width: 600px;
+	height: 150px;
 }
 .alterForm{
     background-color: #C3D0DF;
     border: 1px solid #819DCF;
-    padding: 10px 0 0 24px;
+    padding: 10px 24px 0 24px;
     margin: 0 0 24px 0;
     float: left;
 }
@@ -259,14 +266,14 @@ textarea{
 }
 .checkbox,
 .radioOpt{
-	margin: 0 5px 0 0;
+	margin: 0 15px 0 0;
 	position: relative;
 	left: 0;
 	bottom: -3px;
 }
 select.mini,
 input.mini{
-	width: 40px;
+	width: 50px;
 }
 select.pequeno,
 input.pequeno{
@@ -278,7 +285,7 @@ input.mediano{
 }
 select.fecha,
 input.fecha{
-    width:80px;
+    width:100px;
 }
 .grande{
     width: 300px;
@@ -441,7 +448,11 @@ table.listado{
 	background-color: #fff;
 	border: 1px solid #808080;
 	border-collapse: collapse;
-	margin-bottom: 40px;
+	margin-bottom: 20px;
+	/*max-width: 1000px;*/
+}
+table.listado.fijo{
+	width: 1000px;
 }
 table.listado thead th,
 table.listado tbody td{
@@ -466,6 +477,12 @@ table.listado thead{
 .scroll .listado{
     margin-bottom: 0;
     border: none;
+}
+.scroll .listado.selector{
+	width: 620px;
+}
+.campo.multi .scroll{
+	margin-top: 17px;
 }
 a.ordenado.asc{
 	padding: 0 12px 0 0;
@@ -577,11 +594,13 @@ table.listado tbody tr.alter{
     background-color: #D1DFEF;
     margin-right: 5px;
     padding-left: 5px;
-    border: 1px solid #C3D0DF;    
+    border: 1px solid #C3D0DF;
+    text-align: right;
+    padding-right: 5px;    
 }
 .ficha p span{
     font: normal 12px Verdana, Arial, Helvetica, sans-serif;
-    color: #000;
+    color: #2F2F2F;
     width: 340px;
     padding-left: 5px;
     display: block;
@@ -638,11 +657,13 @@ table.listado tbody tr.alter{
 	display: none;
 }
 #paginadorContainer .paginador .siguiente{
-	background: url(/img/iconos/siguiente16.png) center right no-repeat;
+	/*background: url(/img/iconos/siguiente16.png) center right no-repeat;*/
+	background: url(/img/iconos/next16.png) center right no-repeat;
 	padding-right: 20px;
 }
 #paginadorContainer .paginador .anterior{
-	background: url(/img/iconos/anterior16.png) center left no-repeat;
+	/*background: url(/img/iconos/anterior16.png) center left no-repeat;*/
+	background: url(/img/iconos/prev16.png) center left no-repeat;
 	padding-left: 20px;
 }
 div.ficha{
@@ -676,7 +697,7 @@ div.ficha{
 	padding-bottom: 3px;
 }
 .buscador .campo .btnSubmit{
-	margin-top: 16px;
+	margin-top: 18px;
 }
 .resultadosBusqueda{
 	margin-top: 30px;
@@ -767,9 +788,10 @@ a.doc.pdf{
 	width: 1000px;
 	clear: both;
 	overflow: hidden;
+	margin-bottom: 5px;
 }
 #convocatoriaDoc li{
-	/*width: 250px;*/
+	width: 240px;
 	float: left;
 	background: url(/img/iconos/pdf16.png) left top no-repeat;
 	padding-left: 20px;
@@ -780,10 +802,10 @@ a.doc.pdf{
 #convocatoriaDoc li input{
 	float: left;
 }
-#convocatoriaDoc li label{
+/*#convocatoriaDoc li label{
 	font-weight: normal;
 	color: #000;
-}
+}*/
 #documentacion p{
     margin-bottom: 15px;	
 }
@@ -792,7 +814,89 @@ p.desc{
 	margin-bottom: 20px;
 }
 div.documentacion a.zipFile{
-    padding-left: 20px;
+    padding-left: 25px;
     height: 25px;
     background: url(/img/iconos/zip16.png) left top no-repeat;    	
+}
+#altaEdicionCategoria{
+	float: left;
+}
+.erroresDocumentacion li{
+    padding-left: 25px;
+    height: 25px;
+    background: url(/img/iconos/rojo16.png) left top no-repeat;
+}
+#layout fieldset{
+	border: 1px solid #AFAFAF;
+	max-width: 960px;
+	padding: 20px;
+}
+legend{
+    color: #0E75EF;
+    display: block;
+    font: bold 12px Verdana, Arial, Helvetica, sans-serif;
+    padding: 0 5px;
+}
+div.bloque{
+    margin-bottom: 30px;	
+}
+label a{
+	font-weight: normal;
+}
+.inlineForm .campo{
+	margin-bottom: 0px;
+}
+#login fieldset{
+	border: none;
+	padding: 0;
+}
+.listaFicha{
+	background-color: #fff;
+	border: 1px solid #CFCFCF;
+	width: 690px;
+	float: left;
+	padding: 0 5px;
+	min-height: 20px;
+	line-height: 20px;
+}
+.listaFicha li{
+	float: left;
+	margin-right: 6px;
+	background: url(/img/iconos/item16.png) 5px 3px no-repeat;
+	padding-left: 20px;
+}
+p.lista{
+	float: left;
+}
+/*tr:hover {
+    background-color: #DFEBFF !important;
+}*/
+.nombreTd{
+	width: 30%;
+}
+.pestanyas .datos{
+	background: url(/img/iconos/file16.png) 5px 5px no-repeat;
+	padding-left: 30px;
+}
+.pestanyas .documentacion{
+    background: url(/img/iconos/pdf16.png) 5px 5px no-repeat;
+    padding-left: 30px;	
+}
+.pestanyas .horarios{
+    background: url(/img/iconos/horario16.png) 5px 5px no-repeat;
+    padding-left: 30px;	
+}
+.pestanyas .alumnos{
+    background: url(/img/iconos/alumnos16.png) 5px 5px no-repeat;
+    padding-left: 30px;	
+}
+.contenedorMultiselect select.grande{
+	width: 270px;
+}
+#diaCurso .btnSubmit,
+#horarioCurso .btnSubmit{
+	margin-bottom: 0;
+}
+#cursosEdicion{
+	margin-top: 17px;
 }

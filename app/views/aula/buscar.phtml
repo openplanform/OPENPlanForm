@@ -1,8 +1,12 @@
 <div id="buscadorAcademia" class="buscador">
+
+<div class="bloque">
     
-    <form id="buscarAcademia" action="<?= $_SERVER['REQUEST_URI'] ?>" method="post">
+    <form id="buscarAcademia" action="<?= $_SERVER['REQUEST_URI'] ?>" method="post" class="inlineForm">
     
         <fieldset>
+        
+        	<legend>Buscar aulas</legend>
         
             <input type="hidden" name="sent" value="<?= md5(date('is')) ?>" />
         
@@ -41,8 +45,6 @@
                 ?></select>
             </div>
             
-            <div class="separadorH"></div>
-        
             <div class="campo multi">
                 <label for="capacidad">Cap.</label>
                 <input type="text" class="campoTexto mini" id="capacidad" name="capacidad" value="<?= $this->capacidad ?>" />
@@ -65,14 +67,17 @@
     
     </form>
     
-    <div class="resultadosBusqueda"><?php 
+</div>
+    
+<div class="resultadosBusqueda"><? 
 
     if ( count($this->aulasCOL) > 0 ){
 
 ?>
 
+<h3 class="buscar">Resultado de búsqueda</h3>
 
-<table class="listado">
+<table class="listado fijo">
     <thead>
         <tr>
             <th><a href="/aula/buscar.html/?ob=nom&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'nom')?'class="ordenado ' . $this->order . '"':'' )?> >Nombre</a></th>
@@ -91,7 +96,7 @@
         </tr>
     </thead>
     <tbody>
-        <?php
+        <?
         
             $contador = 0;
             foreach ( $this->aulasCOL as $aulaDO ){

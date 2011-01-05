@@ -14,17 +14,19 @@
     <form id="editarAula" action="<?= $_SERVER['REQUEST_URI'] ?>" method="post">
         <fieldset>
         
+        	<legend>Edición de aula</legend>
+        
         	<input type="hidden" value="1" name="send" />
         
-            <div class="campo controlado">
+            <div class="campo controlado multi">
                 <label for="nombre">Nombre*</label>
                 <input type="text" name="nombre" id="nombre" class="campoTexto" value="<?= $this->aulaDO->getVNombre() ?>"/>
                 <p id="errorNombre" class="errorInput"><?=$this->errorNombre?></p>
             </div>
 			
-			<div class="campo controlado">
+			<div class="campo controlado multi">
             	<label for="centro">Centro*</label>
-	            <select class="grande" name="centro" id="centro">
+	            <select class="grande desplegable" name="centro" id="centro">
 	            	<option value=""></option>
 					<?
 					
@@ -39,16 +41,18 @@
 				<p id="errorCentro" class="errorInput"><?= $this->errorCentro ?></p>
 			</div>
 			
-			<div class="campo controlado">
+			<div class="campo controlado multi">
                 <label for="capacidad">Capacidad*</label>
-                <input type="text" name="capacidad" id="capacidad" class="campoTexto numerico" value="<?= $this->aulaDO->getICapacidad() ?>"/>
+                <input type="text" name="capacidad" id="capacidad" class="campoTexto mediano numerico" value="<?= $this->aulaDO->getICapacidad() ?>"/>
                 <p id="errorCapacidad" class="errorInput"><?=$this->errorCapacidad?></p>
                 <p class="tooltip" id="capacidadTooltip">Nº de personas</p>
             </div>
+            
+            <div class="separadorH"></div>
 			
-			<div class="campo">
+			<div class="campo multi">
             	<label for="pais">País</label>
-	            <select class="grande" name="pais" id="pais">
+	            <select class="grande desplegable" name="pais" id="pais">
 	            	<option value=""></option>
 					<?
 					
@@ -62,9 +66,9 @@
 				</select>
 			</div>
 			
-			<div class="campo">
+			<div class="campo multi">
             	<label for="provincia">Provincia</label>
-	            <select class="grande" name="provincia" id="provincia">
+	            <select class="grande desplegable" name="provincia" id="provincia">
 	            	<option value=""></option>
 					<?
 					
@@ -104,8 +108,7 @@
             
         </fieldset>
     </form>
-    <p>* Campos obligatorios</p>
-<?
+	<?
 	
 	} else {
 	

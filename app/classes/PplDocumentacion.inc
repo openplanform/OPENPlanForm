@@ -340,9 +340,6 @@ class PplDocumentacion{
 		$consultoraDO = $planDO->getTblEmpresaConsultora();
 		$diasFormacionARR = $this->_getDiasFormacion($horariosCOL);
 		$horariosGeneralesARR = $this->_getHorariosGenerales($horariosCOL);
-		$tutorDO = $tutoriaDO->getTblPersona();
-		
-		//$tutorDO = $tutoriaDO->get
 		
 		// Se carga el documento original
 		$this->pdf = new OwlPdf(PUBDIR . 'docs/doc_' . $this->docId);
@@ -382,18 +379,31 @@ class PplDocumentacion{
 			$this->pdf->addFieldValue('fp_Cp', $academiaDO->getVCp());
 			$this->pdf->addFieldValue('fp_Direccion', $academiaDO->getVDireccion());
 			$this->pdf->addFieldValue('fp_NumHoras', $horasPresenciales);
-			$this->pdf->addFieldValue('fp_lunes', $tutoriaDO->isBLunes(), 'checkbox');
-			$this->pdf->addFieldValue('fp_martes', $tutoriaDO->isBMartes(), 'checkbox');
-			$this->pdf->addFieldValue('fp_miercoles', $tutoriaDO->isBMiercoles(), 'checkbox');
-			$this->pdf->addFieldValue('fp_jueves', $tutoriaDO->isBJueves(), 'checkbox');
-			$this->pdf->addFieldValue('fp_viernes', $tutoriaDO->isBViernes(), 'checkbox');
-			$this->pdf->addFieldValue('fp_sabado', $tutoriaDO->isBSabado(), 'checkbox');
-			$this->pdf->addFieldValue('fp_domingo', $tutoriaDO->isBDomingo(), 'checkbox');
 			
-			$this->pdf->addFieldValue('fp_horario_man_de', date('H:i', strtotime($tutoriaDO->getIDesdeManana())));
-			$this->pdf->addFieldValue('fp_horario_man_a', date('H:i', strtotime($tutoriaDO->getIHastaManana())));
-			$this->pdf->addFieldValue('fp_horario_tar_de', date('H:i', strtotime($tutoriaDO->getIDesdeTarde())));
-			$this->pdf->addFieldValue('fp_horario_tar_a', date('H:i', strtotime($tutoriaDO->getIHastaTarde())));
+			$this->pdf->addFieldValue('fd_lunes', in_array('Monday', $diasFormacionARR), 'checkbox');
+			$this->pdf->addFieldValue('fd_martes', in_array('Tuesday', $diasFormacionARR), 'checkbox');
+			$this->pdf->addFieldValue('fd_miercoles', in_array('Wednesday', $diasFormacionARR), 'checkbox');
+			$this->pdf->addFieldValue('fd_jueves', in_array('Thursday', $diasFormacionARR), 'checkbox');
+			$this->pdf->addFieldValue('fd_viernes', in_array('Friday', $diasFormacionARR), 'checkbox');
+			$this->pdf->addFieldValue('fd_sabado', in_array('Saturday', $diasFormacionARR), 'checkbox');
+			$this->pdf->addFieldValue('fd_domingo', in_array('Sunday', $diasFormacionARR), 'checkbox');
+
+
+			// Horarios
+			$deMan = $aMan = $deTar = $aTar = null;
+			if (array_key_exists('man', $horariosGeneralesARR) && is_array($horariosGeneralesARR['man'])){
+				$deMan = $horariosGeneralesARR['man']['de'];
+				$aMan = $horariosGeneralesARR['man']['hasta'];
+			}
+			if (array_key_exists('tar', $horariosGeneralesARR) && is_array($horariosGeneralesARR['tar'])){
+				$deTar = $horariosGeneralesARR['tar']['de'];
+				$aTar = $horariosGeneralesARR['tar']['hasta'];
+			}
+			
+			$this->pdf->addFieldValue('fp_horario_man_de', date('H:i', strtotime($deMan)));
+			$this->pdf->addFieldValue('fp_horario_man_a', date('H:i', strtotime($aMan)));
+			$this->pdf->addFieldValue('fp_horario_tar_de', date('H:i', strtotime($deTar)));
+			$this->pdf->addFieldValue('fp_horario_tar_a', date('H:i', strtotime($aTar)));			
 			
 			$this->pdf->addFieldValue('fp_nombre_contacto', $academiaDO->getVPersonaContacto());
 			$this->pdf->addFieldValue('fp_nif_contacto', $academiaDO->getVTelefono());
@@ -441,6 +451,7 @@ class PplDocumentacion{
 		// TUTORIA
 		if ($tutoriaDO instanceof TblTutoria){
 			
+			$tutorDO = $tutoriaDO->getTblPersona();
 			$pref = 'td_';
 			
 			// Modalidad de la tutoría
@@ -454,13 +465,14 @@ class PplDocumentacion{
 			$this->pdf->addFieldValue($pref . 'Cp', $consultoraDO->getVCp());
 			$this->pdf->addFieldValue($pref . 'Direccion', $consultoraDO->getVDireccion());
 			$this->pdf->addFieldValue($pref . 'NumHoras', $horasPresenciales);
-			$this->pdf->addFieldValue($pref . 'lunes', in_array('Monday', $diasFormacionARR), 'checkbox');
-			$this->pdf->addFieldValue($pref . 'martes', in_array('Tuesday', $diasFormacionARR), 'checkbox');
-			$this->pdf->addFieldValue($pref . 'miercoles', in_array('Wednesday', $diasFormacionARR), 'checkbox');
-			$this->pdf->addFieldValue($pref . 'jueves', in_array('Thursday', $diasFormacionARR), 'checkbox');
-			$this->pdf->addFieldValue($pref . 'viernes', in_array('Friday', $diasFormacionARR), 'checkbox');
-			$this->pdf->addFieldValue($pref . 'sabado', in_array('Saturday', $diasFormacionARR), 'checkbox');
-			$this->pdf->addFieldValue($pref . 'domingo', in_array('Sunday', $diasFormacionARR), 'checkbox');
+			
+			$this->pdf->addFieldValue($pref . 'lunes', $tutoriaDO->isBLunes(), 'checkbox');
+			$this->pdf->addFieldValue($pref . 'martes', $tutoriaDO->isBMartes(), 'checkbox');
+			$this->pdf->addFieldValue($pref . 'miercoles', $tutoriaDO->isBMiercoles(), 'checkbox');
+			$this->pdf->addFieldValue($pref . 'jueves', $tutoriaDO->isBJueves(), 'checkbox');
+			$this->pdf->addFieldValue($pref . 'viernes', $tutoriaDO->isBViernes(), 'checkbox');
+			$this->pdf->addFieldValue($pref . 'sabado', $tutoriaDO->isBSabado(), 'checkbox');
+			$this->pdf->addFieldValue($pref . 'domingo', $tutoriaDO->isBDomingo(), 'checkbox');
 			
 			// Horarios
 			$deMan = $aMan = $deTar = $aTar = null;
@@ -473,10 +485,10 @@ class PplDocumentacion{
 				$aTar = $horariosGeneralesARR['tar']['hasta'];
 			}
 			
-			$this->pdf->addFieldValue($pref . 'horario_man_de', date('H:i', strtotime($deMan)));
-			$this->pdf->addFieldValue($pref . 'horario_man_a', date('H:i', strtotime($aMan)));
-			$this->pdf->addFieldValue($pref . 'horario_tar_de', date('H:i', strtotime($deTar)));
-			$this->pdf->addFieldValue($pref . 'horario_tar_a', date('H:i', strtotime($aTar)));
+			$this->pdf->addFieldValue($pref . 'horario_man_de', date('H:i', strtotime($tutoriaDO->getIDesdeManana())));
+			$this->pdf->addFieldValue($pref . 'horario_man_a', date('H:i', strtotime($tutoriaDO->getIHastaManana())));
+			$this->pdf->addFieldValue($pref . 'horario_tar_de', date('H:i', strtotime($tutoriaDO->getIDesdeTarde())));
+			$this->pdf->addFieldValue($pref . 'horario_tar_a', date('H:i', strtotime($tutoriaDO->getIHastaTarde())));
 			
 			$this->pdf->addFieldValue($pref . 'nombre_contacto', $consultoraDO->getVPersonaContacto());
 			$this->pdf->addFieldValue($pref . 'nif_contacto', $consultoraDO->getVTelefono());						

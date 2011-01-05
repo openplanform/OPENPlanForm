@@ -62,7 +62,7 @@ class convocatoriaController extends PplController{
         
     	// Se instancia y configura el paginador
         $paginador = new OwlPaginator($this->db, null, 'tblConvocatoria', $this->helper);
-        $paginador->setItemsPorPagina(10);
+        $paginador->setItemsPorPagina(20);
         $paginaActual = $this->helper->escapeInjection($this->helper->get('p'));
         $paginaActual = empty($paginaActual) ? 1 : $paginaActual;
         $paginador->setPaginaActual($paginaActual);

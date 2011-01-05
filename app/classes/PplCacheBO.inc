@@ -1206,6 +1206,77 @@ class PplCacheBO {
 		
 	}
 	
+	
+	/**
+	 * Devuelve todas las categorias patriarca
+	 * @return array
+	 */
+	public function getCategoriasPatriarca(){
+		
+		$sql = "SELECT * FROM tblCategoria WHERE fkPadre = 0;";
+		return OwlGenericDO::createCollection($this->db, $sql, 'TblCategoria');
+		
+	}
+	
+	
+	/**
+	 * Devuelve una colección con todos los alumnos de un curso
+	 * @param integer $idCurso
+	 */
+	public function getAlumnosCurso($idCurso){
+		
+		$sql = "SELECT * FROM tblAlumno WHERE fkCurso = $idCurso;";
+		$aux = OwlGenericDO::createCollection($this->db, $sql, 'TblAlumno');
+		
+		return $aux;
+		
+	}
+	
+	
+	/**
+	 * Retorna una colección de todos los precandidatos de un curso 
+	 * @param integer $idCurso
+	 */
+	public function getPrecandidatosCurso($idCurso){
+		
+		$sql = "SELECT *
+				FROM   tblPersona p
+				WHERE  EXISTS(SELECT null
+				              FROM   trelPrecandidato pre
+				              WHERE  pre.fkPersona = p.idPersona
+				                     AND pre.fkCurso = $idCurso)";
+		
+		return OwlGenericDO::createCollection($this->db, $sql, 'TblPersona');
+		
+	}
+	
+	
+	/**
+	 * Devuelve un array con los datos de usuario y persona de los precandidatos de un curso
+	 * @param array $idCurso
+	 */
+	public function getDatosUsuarioPrecandidatosCurso($idCurso){
+		
+		$sql = "SELECT *
+				FROM   tblPersona p
+				       LEFT JOIN tblUsuario us
+				         ON p.fkUsuario = us.idUsuario
+				WHERE  EXISTS(SELECT null
+				              FROM   trelPrecandidato pre
+				              WHERE  pre.fkPersona = p.idPersona
+				                     AND pre.fkCurso = $idCurso)";
+		
+		$this->db->executeQuery($sql);
+		$returnARR = array();
+		
+		while ($row = $this->db->fetchRow()){
+			$returnARR[] = $row;
+		}
+		
+		return $returnARR;
+		
+	}
+	
 }
 
 ?>

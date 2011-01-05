@@ -546,7 +546,7 @@ class planController extends PplController{
             
             // Se ejecuta la búsqueda
             $paginador = new OwlPaginator($this->db, $where, 'tblPlan', $this->helper);
-            $paginador->setItemsPorPagina(1);
+            $paginador->setItemsPorPagina(10);
             $paginaActual = $this->helper->escapeInjection($this->helper->get('p'));
             $paginaActual = empty($paginaActual) ? 1 : $paginaActual;
             $paginador->setPaginaActual($paginaActual);

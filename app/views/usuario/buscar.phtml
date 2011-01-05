@@ -1,60 +1,66 @@
-<form id="buscarUsuario" action="/usuario/buscar.html" method="post">
-    
-        <fieldset>
-        
-            <input type="hidden" name="sent" value="<?= md5(date('is')) ?>" />
-        
-            <div class="campo multi">
-                <label for="idUsuario">Id</label>
-                <input type="text" class="campoTexto mini" id="idUsuario" name="idUsuario" value="<?= $this->id ?>" />
-            </div>
-        
-            <div class="campo multi">
-                <label for="username">Nombre de usuario</label>
-                <input type="text" class="campoTexto mediano" id="username" name="username" value="<?= $this->username ?>" />
-            </div>
-        
-            <div class="campo multi">
-                <label for="email">Email</label>
-                <input type="text" class="campoTexto" id="email" name="email" value="<?= $this->email ?>" />
-            </div>
-            
-            <div class="separadorH"></div>
-            
-            <div class="campo">
-                <label for="roles">Roles</label>
-                <select name="roles[]" multiple="multiple" id="roles" class="campoTexto grande"><?
-            
-                    foreach ($this->rolesIDX as $idRol => $rol){
-                
-                        $sel = '';
-                        if (count($this->roles) > 0){
-                            
-                            if ( (is_array($this->roles) && in_array($idRol, $this->roles)) || ( $this->roles == $idRol ) ) {
-                                $sel = 'selected="selected"';
-                            }
-                            
-                        }
-                        
-                        ?><option value="<?= $idRol ?> " <?= $sel ?>><?= $rol ?></option>
-                        <?
-                    
-                    }
-                
-                ?></select>
-           </div>            
-           
-           <div class="campo">
-                <input type="submit" class="btnSubmit" value="Buscar" />
-           </div>
-            
-        </fieldset>
-        
-</form><?
+<div class="bloque">
+	<form id="buscarUsuario" action="/usuario/buscar.html" method="post">
+	    
+	        <fieldset>
+	        
+	        	<legend>Buscar usuarios</legend>
+	        
+	            <input type="hidden" name="sent" value="<?= md5(date('is')) ?>" />
+	        
+	            <div class="campo multi">
+	                <label for="idUsuario">Id</label>
+	                <input type="text" class="campoTexto mini" id="idUsuario" name="idUsuario" value="<?= $this->id ?>" />
+	            </div>
+	        
+	            <div class="campo multi">
+	                <label for="username">Nombre de usuario</label>
+	                <input type="text" class="campoTexto mediano" id="username" name="username" value="<?= $this->username ?>" />
+	            </div>
+	        
+	            <div class="campo multi">
+	                <label for="email">Email</label>
+	                <input type="text" class="campoTexto" id="email" name="email" value="<?= $this->email ?>" />
+	            </div>
+	            
+	            <div class="separadorH"></div>
+	            
+	            <div class="campo">
+	                <label for="roles">Roles</label>
+	                <select name="roles[]" multiple="multiple" id="roles" class="campoTexto grande"><?
+	            
+	                    foreach ($this->rolesIDX as $idRol => $rol){
+	                
+	                        $sel = '';
+	                        if (count($this->roles) > 0){
+	                            
+	                            if ( (is_array($this->roles) && in_array($idRol, $this->roles)) || ( $this->roles == $idRol ) ) {
+	                                $sel = 'selected="selected"';
+	                            }
+	                            
+	                        }
+	                        
+	                        ?><option value="<?= $idRol ?> " <?= $sel ?>><?= $rol ?></option>
+	                        <?
+	                    
+	                    }
+	                
+	                ?></select>
+	           </div>            
+	           
+	           <div class="campo">
+	                <input type="submit" class="btnSubmit" value="Buscar" />
+	           </div>
+	            
+	        </fieldset>
+	        
+	</form>
+</div><?
 
 if ($this->result){
 
-    ?><table class="listado">
+    ?><h3 class="buscar">Resultados de búsqueda</h3>
+    
+    <table class="listado fijo">
         <thead>
             <tr>
                 <th><a href="/usuario/buscar.html/?ob=id&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'id')?'class="ordenado ' . $this->order . '"':'' )?> >Id</a></th>
@@ -102,7 +108,7 @@ if ($this->result){
 
 } else if ($this->querystring){
 	
-	?><h3>No hay resultados</h3><?
+	?><h3 class="noResult">No hay resultados</h3><?
 	
 }
 

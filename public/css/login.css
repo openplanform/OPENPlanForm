@@ -15,8 +15,10 @@
 	-moz-box-shadow: 3px 4px 6px 0 #BBBBBB;
 }
 #login.recordatorio{
-	height: 275px;
+	height: 300px;
 	width: 300px;
+    margin-left: -150px;
+    margin-top: -150px;	
 }
 #login p{
 	margin: 0 0 10px 0;
@@ -40,7 +42,6 @@
 #login .campo .campoTexto{
 	width: 195px;
 }
-
 #login.recordatorio .campo .campoTexto{
     width: 245px;
 }

@@ -53,7 +53,7 @@ class cursoController extends PplController{
      * @see extranet.planespime.es/owl/lib/OwlController::indexAction()
      */
     public function indexAction(){
-        
+    	
     	// Parámetros de ordenación para el paginador
     	$aliasCampos = array(
     		'cat'	=> 'fkCategoria',
@@ -83,7 +83,7 @@ class cursoController extends PplController{
         
     	// Se instancia y configura el paginador
         $paginador = new OwlPaginator($this->db, null, 'tblCurso', $this->helper);
-        $paginador->setItemsPorPagina(10);
+        $paginador->setItemsPorPagina(20);
         $paginaActual = $this->helper->escapeInjection($this->helper->get('p'));
         $paginaActual = empty($paginaActual) ? 1 : $paginaActual;
         $paginador->setPaginaActual($paginaActual);
@@ -262,15 +262,6 @@ class cursoController extends PplController{
 	        // Categorías de profesores
 	        $this->view->categoriasProfesoresIDX = $this->cacheBO->getProfesoresCategorias();
 	        
-	        // Precandidatos
-	        $this->view->precandidatosCursoCOL = TrelPrecandidato::findByTblCurso($this->db, $cursoDO->getIdCurso());
-	        
-	        // Candidatos
-		    $this->view->candidatosCursoCOL = TrelCandidato::findByTblCurso($this->db, $cursoDO->getIdCurso());
-	        
-		    // Alumnos
-		    $this->view->alumnosCursoCOL = TblAlumno::findByTblCurso($this->db, $cursoDO->getIdCurso());
-		    
 	        // Personas
 	        $this->view->personasIDX = $this->cacheBO->getPersonas();
 	        
@@ -537,30 +528,6 @@ class cursoController extends PplController{
             }
         }
         
-	    // Precandidatos
-    	$precandidatosARR = array();
-        if ( array_key_exists('precandidatos', $_POST) ){
-        	foreach ($_POST['precandidatos'] as $precandidato) {
-            	$precandidatosARR[] = $this->helper->escapeInjection($precandidato);
-            }
-        }
-        
-	    // Candidatos
-    	$candidatosARR = array();
-        if ( array_key_exists('candidatos', $_POST) ){
-        	foreach ($_POST['candidatos'] as $candidato) {
-            	$candidatosARR[] = $this->helper->escapeInjection($candidato);
-            }
-        }
-
-        // Alumnos
-    	$alumnosARR = array();
-        if ( array_key_exists('alumnos', $_POST) ){
-        	foreach ($_POST['alumnos'] as $alumno) {
-            	$alumnosARR[] = $this->helper->escapeInjection($alumno);
-            }
-        }
-        
         // Datos de tutoría
         $idTutoria = $this->helper->getAndEscape('tutoria');
         $fkTutor = $this->helper->getAndEscape('tutor');
@@ -683,112 +650,6 @@ class cursoController extends PplController{
 		    				$correcto = false;
 		    			}
 		    		}
-	    		}
-	    		
-	    	}
-	    	
-		    // Precandidatos
-	    	if ( $correcto ){
-	    		
-	    		if ( $editar ){
-	    			$sql = 'DELETE FROM trelPrecandidato WHERE fkCurso = ' . $idCurso;
-	    			if ( !$this->db->executeQuery($sql) ){
-	    				$correcto = false;
-	    			}
-	    		}
-	    		
-	    		if ( $correcto && !empty($precandidatosARR) ){
-	    			$sql = "INSERT INTO trelPrecandidato VALUES ";
-	    			$valuesARR = array();
-	    			foreach ( $precandidatosARR as $idPrecandidato ){
-		    			$valuesARR[] = '(' . $idPrecandidato . ',' . $idCurso . ',\'' . date('Y-m-d') . '\')';
-			    	}
-			    	$sql .= implode(',', $valuesARR);
-	    			if ( !$this->db->executeQuery($sql) ){
-	    				$correcto = false;
-	    			}
-	    		}
-	    		
-	    	}
-
-	    	// Candidatos
-	    	if ( $correcto ){
-	    		
-	    		if ( $editar ){
-	    			$sql = 'DELETE FROM trelCandidato WHERE fkCurso = ' . $idCurso;
-	    			if ( !$this->db->executeQuery($sql) ){
-	    				$correcto = false;
-	    			}
-	    		}
-	    		
-	    		if ( $correcto && !empty($candidatosARR) ){
-	    			$sql = "INSERT INTO trelCandidato VALUES ";
-	    			$valuesARR = array();
-	    			foreach ( $candidatosARR as $idCandidato ){
-		    			$valuesARR[] = '(' . $idCandidato . ',' . $idCurso . ',\'' . date('Y-m-d') . '\')';
-			    	}
-			    	$sql .= implode(',', $valuesARR);
-	    			if ( !$this->db->executeQuery($sql) ){
-	    				$correcto = false;
-	    			}
-	    		}
-	    		
-	    	}
-	    	
-	    	// Alumnos
-	    	if ( $correcto ){
-	    		
-	    		if ( $editar ){
-	    			$sql = 'DELETE FROM tblAlumno WHERE fkCurso = ' . $idCurso;
-	    			if ( !$this->db->executeQuery($sql) ){
-	    				$correcto = false;
-	    			}
-	    		}
-	    		
-	    		if ( $correcto ){
-	    			
-	    			if ( !empty($alumnosARR) ){
-	    				
-			    		// Obtenemos las personas para copiar como alumnos
-			    		$sql = "SELECT * FROM tblPersona WHERE idPersona IN (" . implode(', ', $alumnosARR) . ")";
-			    		
-			    		$personasCOL = OwlGenericDO::createCollection($this->db, $sql, 'tblPersona');
-			    		$estadosCivilesIDX = $this->cacheBO->getEstadosCiviles();
-			    		$estadosLaboralesIDX = $this->cacheBO->getEstadosLaborales();
-			    		$nivelesEstudioIDX = $this->cacheBO->getNivelesEstudio();
-			    		$paisesIDX = $this->cacheBO->getPaises();
-			    		$provinciasIDX = $this->cacheBO->getProvincias();
-			    		$tiposIdentificacionIDX = $this->cacheBO->getTiposIdentificacion();
-			    		
-			    		foreach ( $personasCOL as $personaDO ){
-			    			
-			    			$alumnoDO = new TblAlumno($this->db);
-			    			$alumnoDO->setDAlta(date('Y-m-d'));
-			    			$alumnoDO->setDNacimiento($personaDO->getDNacimiento());
-			    			$alumnoDO->setFkCurso($cursoDO->getIdCurso());
-			    			$alumnoDO->setIPersona($personaDO->getIdPersona());
-			    			$alumnoDO->setIUsuario($personaDO->getFkUsuario());
-			    			$alumnoDO->setVDireccion($personaDO->getVDireccion());
-			    			$alumnoDO->setVEmail($personaDO->getTblUsuario()->getVEmail());
-			    			$alumnoDO->setVEstadoCivil($estadosCivilesIDX[$personaDO->getFkEstadoCivil()]->getVNombre());
-			    			$alumnoDO->setVEstadoLaboral($estadosLaboralesIDX[$personaDO->getFkEstadoLaboral()]->getVNombre());
-							$alumnoDO->setVNivelEstudios($nivelesEstudioIDX[$personaDO->getFkNivelEstudios()]->getVNombre());
-							$alumnoDO->setVNombre($personaDO->getVNombre());
-							$alumnoDO->setVNumeroIdentificacion($personaDO->getVNumeroIdentificacion());
-							$alumnoDO->setVPais($paisesIDX[$personaDO->getFkPais()]->getVIso());
-							$alumnoDO->setVPoblacion($personaDO->getVPoblacion());
-							$alumnoDO->setVPrimerApellido($personaDO->getVPrimerApellido());
-							$alumnoDO->setVProvincia( ( is_null($personaDO->getFkProvincia()) || $personaDO->getFkProvincia() == 0 ) ? null : $provinciasIDX[$personaDO->getFkProvincia()]->getVNombre());
-							$alumnoDO->setVSegundoApellido($personaDO->getVSegundoApellido());
-							$alumnoDO->setVNumeroSS($personaDO->getVNumeroSS());
-							$alumnoDO->setVTipoIdentificacion($tiposIdentificacionIDX[$personaDO->getFkTipoIdentificacion()]->getVNombre());
-							
-							if ( !$alumnoDO->insert() ){
-								$correcto = false;
-							}
-							
-			    		}
-	    			}
 	    		}
 	    		
 	    	}
@@ -1430,6 +1291,201 @@ class cursoController extends PplController{
     	
     	// Se envian los mensajes a la vista
     	$this->view->mensajes = $mensajesDocumentacionARR;
+    	
+    }
+    
+    
+    /**
+     * Alumnos del curso a editar
+     */
+    public function alumnosAction(){
+    	
+    	
+    	// Obtengo el curso que voy a editar
+    	$idCurso = $this->getParam(0);
+    	
+    	$sent = $this->helper->getAndEscape('sent');
+    	
+    	if ( !is_null($idCurso) ){
+        	
+        	// Curso
+            if (!$cursoDO = TblCurso::findByPrimaryKey($this->db, $idCurso)){
+                $this->redirectTo('curso', 'index');
+                return;
+            }
+            
+		    // Actualización de datos
+		    if (!empty($sent)){
+		    	
+	    	    // Precandidatos
+		    	$precandidatosARR = array();
+		        if ( array_key_exists('precandidatos', $_POST) ){
+		        	foreach ($_POST['precandidatos'] as $precandidato) {
+		            	$precandidatosARR[] = $this->helper->escapeInjection($precandidato);
+		            }
+		        }
+		        
+			    // Candidatos
+		    	$candidatosARR = array();
+		        if ( array_key_exists('candidatos', $_POST) ){
+		        	foreach ($_POST['candidatos'] as $candidato) {
+		            	$candidatosARR[] = $this->helper->escapeInjection($candidato);
+		            }
+		        }
+		
+		        // Alumnos
+		    	$alumnosARR = array();
+		        if ( array_key_exists('alumnos', $_POST) ){
+		        	foreach ($_POST['alumnos'] as $alumno) {
+		            	$alumnosARR[] = $this->helper->escapeInjection($alumno);
+		            }
+		        }
+		        
+		        $correcto = count($precandidatosARR) || count($candidatosARR) || count($alumnosARR);
+		        
+	    		// Se inicia la transacción
+	    		$this->db->begin();
+	    		
+			    // Precandidatos
+		    	if ( $correcto ){
+
+	    			$sql = 'DELETE FROM trelPrecandidato WHERE fkCurso = ' . $idCurso;
+	    			if ( !$this->db->executeQuery($sql) ){
+	    				$correcto = false;
+	    			}
+		    		
+		    		if ( $correcto && !empty($precandidatosARR) ){
+		    			$sql = "INSERT INTO trelPrecandidato VALUES ";
+		    			$valuesARR = array();
+		    			foreach ( $precandidatosARR as $idPrecandidato ){
+			    			$valuesARR[] = '(' . $idPrecandidato . ',' . $idCurso . ',\'' . date('Y-m-d') . '\')';
+				    	}
+				    	$sql .= implode(',', $valuesARR);
+		    			if ( !$this->db->executeQuery($sql) ){
+		    				$correcto = false;
+		    			}
+		    		}
+		    		
+		    	}
+	
+		    	// Candidatos
+		    	if ( $correcto ){
+		    		
+	    			$sql = 'DELETE FROM trelCandidato WHERE fkCurso = ' . $idCurso;
+	    			if ( !$this->db->executeQuery($sql) ){
+	    				$correcto = false;
+	    			}
+		    		
+		    		if ( $correcto && !empty($candidatosARR) ){
+		    			$sql = "INSERT INTO trelCandidato VALUES ";
+		    			$valuesARR = array();
+		    			foreach ( $candidatosARR as $idCandidato ){
+			    			$valuesARR[] = '(' . $idCandidato . ',' . $idCurso . ',\'' . date('Y-m-d') . '\')';
+				    	}
+				    	$sql .= implode(',', $valuesARR);
+		    			if ( !$this->db->executeQuery($sql) ){
+		    				$correcto = false;
+		    			}
+		    		}
+		    		
+		    	}
+		    	
+		    	// Alumnos
+		    	if ( $correcto ){
+		    		
+	    			$sql = 'DELETE FROM tblAlumno WHERE fkCurso = ' . $idCurso;
+	    			if ( !$this->db->executeQuery($sql) ){
+	    				$correcto = false;
+	    			}
+		    		
+		    		if ( $correcto ){
+		    			
+		    			if ( !empty($alumnosARR) ){
+		    				
+				    		// Obtenemos las personas para copiar como alumnos
+				    		$sql = "SELECT * FROM tblPersona WHERE idPersona IN (" . implode(', ', $alumnosARR) . ")";
+				    		
+				    		$personasCOL = OwlGenericDO::createCollection($this->db, $sql, 'tblPersona');
+				    		$estadosCivilesIDX = $this->cacheBO->getEstadosCiviles();
+				    		$estadosLaboralesIDX = $this->cacheBO->getEstadosLaborales();
+				    		$nivelesEstudioIDX = $this->cacheBO->getNivelesEstudio();
+				    		$paisesIDX = $this->cacheBO->getPaises();
+				    		$provinciasIDX = $this->cacheBO->getProvincias();
+				    		$tiposIdentificacionIDX = $this->cacheBO->getTiposIdentificacion();
+				    		
+				    		foreach ( $personasCOL as $personaDO ){
+				    			
+				    			$alumnoDO = new TblAlumno($this->db);
+				    			$alumnoDO->setDAlta(date('Y-m-d'));
+				    			$alumnoDO->setDNacimiento($personaDO->getDNacimiento());
+				    			$alumnoDO->setFkCurso($cursoDO->getIdCurso());
+				    			$alumnoDO->setIPersona($personaDO->getIdPersona());
+				    			$alumnoDO->setIUsuario($personaDO->getFkUsuario());
+				    			$alumnoDO->setVDireccion($personaDO->getVDireccion());
+				    			$alumnoDO->setVEmail($personaDO->getTblUsuario()->getVEmail());
+				    			$alumnoDO->setVEstadoCivil($estadosCivilesIDX[$personaDO->getFkEstadoCivil()]->getVNombre());
+				    			$alumnoDO->setVEstadoLaboral($estadosLaboralesIDX[$personaDO->getFkEstadoLaboral()]->getVNombre());
+								$alumnoDO->setVNivelEstudios($nivelesEstudioIDX[$personaDO->getFkNivelEstudios()]->getVNombre());
+								$alumnoDO->setVNombre($personaDO->getVNombre());
+								$alumnoDO->setVNumeroIdentificacion($personaDO->getVNumeroIdentificacion());
+								$alumnoDO->setVPais($paisesIDX[$personaDO->getFkPais()]->getVIso());
+								$alumnoDO->setVPoblacion($personaDO->getVPoblacion());
+								$alumnoDO->setVPrimerApellido($personaDO->getVPrimerApellido());
+								$alumnoDO->setVProvincia( ( is_null($personaDO->getFkProvincia()) || $personaDO->getFkProvincia() == 0 ) ? null : $provinciasIDX[$personaDO->getFkProvincia()]->getVNombre());
+								$alumnoDO->setVSegundoApellido($personaDO->getVSegundoApellido());
+								$alumnoDO->setVNumeroSS($personaDO->getVNumeroSS());
+								$alumnoDO->setVTipoIdentificacion($tiposIdentificacionIDX[$personaDO->getFkTipoIdentificacion()]->getVNombre());
+								
+								if ( !$alumnoDO->insert() ){
+									$correcto = false;
+								}
+								
+				    		}
+		    			}
+		    		}
+		    		
+		    		if ($correcto){
+		    			
+		    			$this->db->commit();
+		    			
+		    		} else {
+		    			
+		    			$this->db->rollback();
+    			        $this->view->popup = array(
+		                	'estado' => 'ko',
+		                	'titulo' => 'Error',
+		                    'mensaje'=> 'Ha ocurrido un error con la edición de los alumnos del curso. Inténtelo de nuevo en unos instantes por favor.<br/>Muchas gracias.',
+		                    'url'=> '',
+		                );
+		    		}
+		    		
+		    	}		        
+		    	
+		    }
+		    
+			// Curso
+            $this->view->cursoDO = $cursoDO;
+            
+	    	// Precandidatos
+        	$this->view->precandidatosCursoCOL = TrelPrecandidato::findByTblCurso($this->db, $cursoDO->getIdCurso());
+        
+    	    // Alumnos
+		    $this->view->alumnosCursoCOL = $alumnosCOL = TblAlumno::findByTblCurso($this->db, $cursoDO->getIdCurso());
+
+	        // Candidatos
+		    $this->view->candidatosCursoCOL = TrelCandidato::findByTblCurso($this->db, $cursoDO->getIdCurso());
+		    
+		    // Personas
+	        $this->view->personasIDX = $this->cacheBO->getPersonas();			    
+    
+            
+        } else {
+        	
+        	$this->redirectTo('curso', 'index');
+        	return;
+        	
+        }
+    	
     	
     }
     

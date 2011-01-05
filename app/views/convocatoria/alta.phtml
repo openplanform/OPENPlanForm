@@ -8,68 +8,78 @@
     <form id="altaConvocatoria" action="/convocatoria/alta.html" method="post">
         <fieldset>
         
-        	<input type="hidden" value="1" name="send" />
-        
-            <div class="campo controlado multi">
-                <label for="nombre">Nombre*</label>
-                <input type="text" name="nombre" id="nombre" class="campoTexto" />
-                <p id="errorNombre" class="errorInput"><?= $this->errorNombre ?></p>
-            </div>
-            
-            <div class="campo controlado multi">
-                <label for="ano">Año*</label>
-                <input type="text" name="ano" id="ano" class="campoTexto mini numerico" />
-                <p id="errorAno" class="errorInput"><?= $this->errorAno ?></p>
-            </div>
-            
-            <div class="separadorH"></div>
-            
-            <div class="campo multi">
-            	<label for="tipoConvocatoria multi">Tipo de Convocatoria*</label>
-	            <select class="grande desplegable" name="tipoConvocatoria" id="tipoConvocatoria">
-	            	<option value=""></option>
-					<?
-					
-					//Tipo Convocatoria
-					foreach ( $this->tiposConvocatoriaIDX as $clave => $nombre) {
-						
-						?><option value="<?= $clave ?>" ><?= $nombre ?></option><?
-						
-					}
-					
-					?>
-				</select>
-				<p id="errorTipoConvocatoria" class="errorInput"><?= $this->errorTipo ?></p>
-			</div>
-			
-            <div class="campo controlado multi">
-                <label for="presupuesto">Fondos*</label>
-                <input class="campoTexto dinero" type="text" name="presupuesto" id="presupuesto" />
-                <p id="errorPresupuesto" class="errorInput"><?= $this->errorPresupuesto ?></p>
-                <p class="tooltip" id="presupuestoTooltip">Utilice la coma(,) para separar decimales y el punto(.) para los miles</p>
-            </div>
-            
-			<div class="separadorH"></div>            
-            
-            <div class="campo">
-                <label for="descripcion">Descripción</label>
-                <textarea rows="5" cols="40" name="descripcion" id="descripcion"></textarea>
-            </div>
-            
-            <h3>Requisitos</h3>
-            <div class="campo">
-	            <?
+        	<legend>Alta de nueva convocatoria</legend>
+        	
+        	<div class="bloque">
+        	
+	        	<input type="hidden" value="1" name="send" />
+	        
+	            <div class="campo controlado multi">
+	                <label for="nombre">Nombre*</label>
+	                <input type="text" name="nombre" id="nombre" class="campoTexto" />
+	                <p id="errorNombre" class="errorInput"><?= $this->errorNombre ?></p>
+	            </div>
 	            
-	            foreach ( $this->requisitosIDX as $clave => $nombre ){
-	            	
-	            	?>
-	            	<label class="alter" for="requisito_<?=$clave?>"><?=$nombre?></label>
-	            	<input class="checkbox" type="checkbox" name="requisito_<?=$clave?>" id="requisito_<?=$clave?>" />
-	            	<?
-	            	
-	            }
+	            <div class="campo controlado multi">
+	                <label for="ano">Año*</label>
+	                <input type="text" name="ano" id="ano" class="campoTexto mini numerico" />
+	                <p id="errorAno" class="errorInput"><?= $this->errorAno ?></p>
+	            </div>
 	            
-	            ?>
+	            <div class="separadorH"></div>
+	            
+	            <div class="campo controlado multi">
+	            	<label for="tipoConvocatoria multi">Tipo de Convocatoria*</label>
+		            <select class="grande desplegable" name="tipoConvocatoria" id="tipoConvocatoria">
+		            	<option value=""></option>
+						<?
+						
+						//Tipo Convocatoria
+						foreach ( $this->tiposConvocatoriaIDX as $clave => $nombre) {
+							
+							?><option value="<?= $clave ?>" ><?= $nombre ?></option><?
+							
+						}
+						
+						?>
+					</select>
+					<p id="errorTipoConvocatoria" class="errorInput"><?= $this->errorTipo ?></p>
+				</div>
+				
+	            <div class="campo controlado multi">
+	                <label for="presupuesto">Fondos*</label>
+	                <input class="campoTexto dinero mediano" type="text" name="presupuesto" id="presupuesto" />
+	                <p id="errorPresupuesto" class="errorInput"><?= $this->errorPresupuesto ?></p>
+	                <p class="tooltip" id="presupuestoTooltip">Utilice la coma(,) para separar decimales y el punto(.) para los miles</p>
+	            </div>
+	            
+				<div class="separadorH"></div>            
+	            
+	            <div class="campo">
+	                <label for="descripcion">Descripción</label>
+	                <textarea rows="5" cols="40" name="descripcion" id="descripcion"></textarea>
+	            </div>
+	            
+	        </div>
+	        
+	        <div class="bloque">
+	            
+	            <h3>Requisitos</h3>
+	            <div class="campo">
+		            <?
+		            
+		            foreach ( $this->requisitosIDX as $clave => $nombre ){
+		            	
+		            	?>
+		            	<label class="alter" for="requisito_<?=$clave?>"><?=$nombre?></label>
+		            	<input class="checkbox" type="checkbox" name="requisito_<?=$clave?>" id="requisito_<?=$clave?>" />
+		            	<?
+		            	
+		            }
+		            
+		            ?>
+	            </div>
+            
             </div><?
             
             if (count($this->docsDinamicosCOL)){

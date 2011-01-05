@@ -1,59 +1,65 @@
 <div id="buscadorConvocatorias" class="buscador">
     
-    <form id="buscarConvocatoria" action="/convocatoria/buscar.html" method="post">
+    <div class="bloque">
     
-        <fieldset>
-        
-            <input type="hidden" name="sent" value="<?= md5(date('is')) ?>" />
-        
-            <div class="campo multi">
-                <label for="idConvocatoria">Id</label>
-                <input type="text" class="campoTexto mini" id="idConvocatoria" name="idConvocatoria" value="<?= $this->id ?>" />
-            </div>
-
-            <div class="campo multi">
-                <label for="anoConvocatoria">Año</label>
-                <input type="text" class="campoTexto mini" id="anoConvocatoria" name="anoConvocatoria" value="<?= $this->anyo ?>" />
-            </div>
-        
-            <div class="campo multi">
-                <label for="tipoConvocatoria">Tipo de convocatoria</label>
-                <select name="tipoConvocatoria" id="tipoConvocatoria" class="campoTexto mediano desplegable">
-                    <option value=""></option><?
-                    
-                    foreach ($this->tiposConvocatoriaIDX as $clave=>$tipoConvocatoria){
-                        
-                        $sel = $clave == $this->tipo ? ' selected="selected" ' : '';
-                        echo '<option value="' . $clave . '" '.$sel.'>' . $tipoConvocatoria . '</option>' . "\n";
-                        
-                    }
-                    
-                ?></select>
-            </div>
-            
-            <div class="campo multi">
-                <label for="keyword">Palabra clave</label>
-                <input type="text" class="campoTexto" id="keyword" name="keyword" value="<?= $this->kw ?>" />
-            </div>            
-            
-            <div class="campo multi">
-                <input type="submit" value="Buscar" class="btnSubmit" />
-            </div>
-            
-            <div class="separadorH"></div>
-            
-        
-        </fieldset>
+	    <form id="buscarConvocatoria" action="/convocatoria/buscar.html" method="post" class="inlineForm">
+	    
+	        <fieldset>
+	        
+	        	<legend>Buscar convocatoria</legend>
+	        
+	            <input type="hidden" name="sent" value="<?= md5(date('is')) ?>" />
+	        
+	            <div class="campo multi">
+	                <label for="idConvocatoria">Id</label>
+	                <input type="text" class="campoTexto mini" id="idConvocatoria" name="idConvocatoria" value="<?= $this->id ?>" />
+	            </div>
+	
+	            <div class="campo multi">
+	                <label for="anoConvocatoria">Año</label>
+	                <input type="text" class="campoTexto mini" id="anoConvocatoria" name="anoConvocatoria" value="<?= $this->anyo ?>" />
+	            </div>
+	        
+	            <div class="campo multi">
+	                <label for="tipoConvocatoria">Tipo de convocatoria</label>
+	                <select name="tipoConvocatoria" id="tipoConvocatoria" class="campoTexto grande desplegable">
+	                    <option value=""></option><?
+	                    
+	                    foreach ($this->tiposConvocatoriaIDX as $clave=>$tipoConvocatoria){
+	                        
+	                        $sel = $clave == $this->tipo ? ' selected="selected" ' : '';
+	                        echo '<option value="' . $clave . '" '.$sel.'>' . $tipoConvocatoria . '</option>' . "\n";
+	                        
+	                    }
+	                    
+	                ?></select>
+	            </div>
+	            
+	            <div class="campo multi">
+	                <label for="keyword">Palabra clave</label>
+	                <input type="text" class="campoTexto" id="keyword" name="keyword" value="<?= $this->kw ?>" />
+	            </div>            
+	            
+	            <div class="campo multi">
+	                <input type="submit" value="Buscar" class="btnSubmit" />
+	            </div>
+	            
+	            <div class="separadorH"></div>
+	            
+	        
+	        </fieldset>
+	    
+	    </form>
+	    
+	</div>
     
-    </form>
-    
-    <div class="resultadosBusqueda"><?
+    <div class="bloque"><?
     
         if ($this->convocatoriasCOL){
     
-            ?><h3>Resultados de búsqueda:</h3>
+            ?><h3 class="buscar alter">Resultados de búsqueda:</h3>
             
-            <table class="listado">
+            <table class="listado fijo">
             <thead>
                 <tr>
                     <th><a href="/convocatoria/buscar.html/?ob=nom&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'nom')?'class="ordenado ' . $this->order . '"':'' )?> >Nombre</a></th>
@@ -86,7 +92,7 @@
                         <tr <?= $clase ?> >
                             <td><a href="/convocatoria/ficha.html/<?= $convocatoriaDO->getIdConvocatoria() ?>"><?= $convocatoriaDO->getVNombre() ?></a></td>
                             <td><?= $convocatoriaDO->getIAno()?></td>
-                            <td><?= OwlString::limitaTexto($convocatoriaDO->getVDescripcion(), 40) ?></td>
+                            <td><?= OwlString::limitaTexto($convocatoriaDO->getVDescripcion(), 25) ?></td>
                             <td><?= OwlNumeric::decimalFormatoEuropeo($convocatoriaDO->getEPresupuesto(), 2) ?>€</td>
                             <td><?= $this->tiposConvocatoriaIDX[$convocatoriaDO->getFkTipoConvocatoria()] ?></td>
                             <?
@@ -109,7 +115,7 @@
     
     } else if ($this->querystring){
 
-    	?><h3>No hay resultados</h3><?
+    	?><h3 class="noResult">No se han encontrado resultados</h3><?
     	
     }
     

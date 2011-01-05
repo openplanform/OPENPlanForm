@@ -4,6 +4,8 @@
     
         <fieldset>
         
+        	<legend>Buscar planes de formación</legend>
+        
             <input type="hidden" name="sent" value="<?= md5(date('is')) ?>" />
         
             <div class="campo multi">
@@ -28,7 +30,7 @@
 
             <div class="campo multi">
                 <label for="convocatoriaPlan">Convocatoria</label>
-                <select class="desplegable campoTexto mediano" id="convocatoriaPlan" name="convocatoriaPlan">
+                <select class="desplegable campoTexto grande" id="convocatoriaPlan" name="convocatoriaPlan">
                     <option value=""></option><?
                     
                     foreach ($this->convocatoriasIDX as $clave=>$tipo){
@@ -56,8 +58,6 @@
                 ?></select>
             </div>
 
-            <div class="separadorH"></div>
-            
             <div class="campo multi">
                 <label for="estadoPlan">Estado del plan</label>
                 <select class="desplegable campoTexto mediano" id="estadoPlan" name="estadoPlan">
@@ -72,10 +72,12 @@
                     
                 ?></select>
             </div>
+            
+            <div class="separadorH"></div>
         
             <div class="campo multi">
                 <label for="keyword">Palabra clave</label>
-                <input type="text" class="campoTexto" id="keyword" name="keyword" value="<?= $this->kw ?>" />
+                <input type="text" class="campoTexto enorme" id="keyword" name="keyword" value="<?= $this->kw ?>" />
             </div>            
             
             <div class="campo multi">
@@ -93,13 +95,13 @@
     
         if ($this->planesCOL){
     
-            ?><h3>Resultados de búsqueda:</h3>
+            ?><h3 class="buscar alter">Resultados de búsqueda:</h3>
             
-            <table class="listado">
+            <table class="listado fijo">
                 <thead>
                     <tr>
-                        <th><a href="/plan/buscar.html/?ob=nom&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'nom')?'class="ordenado ' . $this->order . '"':'' )?> >Nombre</a></th>
-                        <th><a href="/plan/buscar.html/?ob=con&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'con')?'class="ordenado ' . $this->order . '"':'' )?> >Convocatoria</a></th>
+                        <th width="25%"><a href="/plan/buscar.html/?ob=nom&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'nom')?'class="ordenado ' . $this->order . '"':'' )?> >Nombre</a></th>
+                        <th width="20%"><a href="/plan/buscar.html/?ob=con&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'con')?'class="ordenado ' . $this->order . '"':'' )?> >Convocatoria</a></th>
                         <th><a href="/plan/buscar.html/?ob=tipo&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'tipo')?'class="ordenado ' . $this->order . '"':'' )?> >Tipo</a></th>
                         <th><a href="/plan/buscar.html/?ob=est&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'est')?'class="ordenado ' . $this->order . '"':'' )?> >Estado</a></th>
                         <th><a href="/plan/buscar.html/?ob=prop&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'prop')?'class="ordenado ' . $this->order . '"':'' )?> >Propietaria</a></th>
@@ -155,7 +157,7 @@
     
     } else if ($this->querystring){
 
-    	?><h3>No hay resultados</h3><?
+    	?><h3 class="noResult">No se han encontrado resultados</h3><?
     	
     }
     

@@ -1,82 +1,88 @@
-<form id="buscarUsuario" action="/profesor/buscar.html" method="post">
+<div class="bloque">
+	<form id="buscarUsuario" action="/profesor/buscar.html" method="post">
     
         <fieldset>
         
-            <input type="hidden" name="sent" value="<?= md5(date('is')) ?>" />
-        
-            <div class="campo multi">
-                <label for="idPersona">Id</label>
-                <input type="text" class="campoTexto mini" id="idPersona" name="idPersona" value="<?= $this->id ?>" />
-            </div>
-        
-            <div class="campo multi">
-                <label for="kw">Nombre, Apellidos, DNI</label>
-                <input type="text" class="campoTexto" id="kw" name="kw" value="<?= $this->kw ?>" />
-            </div>
-            
-            <div class="separadorH"></div>
-        
-            <div class="campo multi">
-                <label for="pais">País</label>
-                <select class="desplegable campoTexto mediano" id="pais" name="pais">
-                    <option value=""></option><?
-                    
-                    foreach ($this->paisesIDX as $clave=>$paisDO){
-                        
-                        $sel = $clave == $this->pais ? ' selected="selected" ' : '';
-                        echo '<option value="' . $clave . '"' . $sel . '>' . $paisDO->getVNombre() . '</option>' . "\n";
-                        
-                    }
-                    
-                ?></select>
-            </div>
-
-            <div class="campo multi">
-                <label for="provincia">Provincia</label>
-                <select class="desplegable campoTexto mediano" id="provincia" name="provincia">
-                    <option value=""></option><?
-                    
-                    foreach ($this->provinciasIDX as $clave=>$provinciaDO){
-                        
-                        $sel = $clave == $this->provincia ? ' selected="selected" ' : '';
-                        echo '<option value="' . $clave . '"' . $sel . '>' . $provinciaDO->getVNombre() . '</option>' . "\n";
-                        
-                    }
-                    
-                ?></select>
-            </div>   
-            
-            <div class="campo multi">
-                <label for="poblacion">Población</label>
-                <input type="text" class="campoTexto" id="poblacion" name="poblacion" value="<?= $this->poblacion ?>" />
-            </div>                     
-            
-            <div class="separadorH"></div>
-            
-            <div class="campo">
-                <label for="selectorRol">Categorías del profesor</label>
-                <select name="categorias[]" multiple="multiple" id="selectorCategoria" class="campoTexto grande"><?
-                
-                    echo $this->htmlSelectCategorias;
-                    
-                ?></select>
-            </div>
-            
-            <div class="campo">
-                <input type="submit" class="btnSubmit" value="Buscar" />
-            </div>
+        	<legend>Buscar profesores</legend>
+	        
+	            <input type="hidden" name="sent" value="<?= md5(date('is')) ?>" />
+	        
+	            <div class="campo multi">
+	                <label for="idPersona">Id</label>
+	                <input type="text" class="campoTexto mini" id="idPersona" name="idPersona" value="<?= $this->id ?>" />
+	            </div>
+	        
+	            <div class="campo multi">
+	                <label for="kw">Nombre, Apellidos, DNI</label>
+	                <input type="text" class="campoTexto" id="kw" name="kw" value="<?= $this->kw ?>" />
+	            </div>
+	            
+	            <div class="separadorH"></div>
+	        
+	            <div class="campo multi">
+	                <label for="pais">País</label>
+	                <select class="desplegable campoTexto mediano" id="pais" name="pais">
+	                    <option value=""></option><?
+	                    
+	                    foreach ($this->paisesIDX as $clave=>$paisDO){
+	                        
+	                        $sel = $clave == $this->pais ? ' selected="selected" ' : '';
+	                        echo '<option value="' . $clave . '"' . $sel . '>' . $paisDO->getVNombre() . '</option>' . "\n";
+	                        
+	                    }
+	                    
+	                ?></select>
+	            </div>
+	
+	            <div class="campo multi">
+	                <label for="provincia">Provincia</label>
+	                <select class="desplegable campoTexto mediano" id="provincia" name="provincia">
+	                    <option value=""></option><?
+	                    
+	                    foreach ($this->provinciasIDX as $clave=>$provinciaDO){
+	                        
+	                        $sel = $clave == $this->provincia ? ' selected="selected" ' : '';
+	                        echo '<option value="' . $clave . '"' . $sel . '>' . $provinciaDO->getVNombre() . '</option>' . "\n";
+	                        
+	                    }
+	                    
+	                ?></select>
+	            </div>   
+	            
+	            <div class="campo multi">
+	                <label for="poblacion">Población</label>
+	                <input type="text" class="campoTexto" id="poblacion" name="poblacion" value="<?= $this->poblacion ?>" />
+	            </div>                     
+	            
+	            <div class="separadorH"></div>
+	            
+	            <div class="campo">
+	                <label for="selectorRol">Categorías del profesor</label>
+	                <select name="categorias[]" multiple="multiple" id="selectorCategoria" class="campoTexto grande"><?
+	                
+	                    echo $this->htmlSelectCategorias;
+	                    
+	                ?></select>
+	            </div>
+	            
+	            <div class="campo">
+	                <input type="submit" class="btnSubmit" value="Buscar" />
+	            </div>
+	            
+			
             
         </fieldset>
         
-</form>
-
+	</form>
+</div>
+<div class="bloque">
 <?
 
 if ($this->profesoresCOL){
     
-    ?><h3>Listado de resultados</h3>
+    ?><h3 class="buscar">Listado de resultados</h3>
     
-    <table class="listado">
+    <table class="listado fijo">
         <thead>
             <tr>
                 <th><a href="/profesor/buscar.html/?ob=id&o=<?=$this->order . $this->querystring?>" <?=( ($this->orderBy == 'id')?'class="ordenado ' . $this->order . '"':'' )?> >Id</a></th>
@@ -150,3 +156,4 @@ if ($this->profesoresCOL){
     }
     
 ?>    
+</div>

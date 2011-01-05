@@ -8,272 +8,346 @@
     
     <form id="altaCurso" action="/curso/alta.html" method="post">
         <fieldset>
+        	
+        	<legend>Alta de nuevo curso</legend>
         
-        	<input type="hidden" value="1" name="send" />
+        	<div class="bloque">
         
-            <div class="campo controlado multi">
-                <label for="nombre">Nombre*</label>
-                <input type="text" name="nombre" id="nombre" class="campoTexto" />
-                <p id="errorNombre" class="errorInput"><?=$this->errorNombre?></p>
-            </div>
-            
         
-            <div class="campo multi">
-                <label for="expediente">Expediente</label>
-                <input type="text" name="expediente" id="expediente" class="campoTexto" value=""/>
-            </div>            
-			
-			<div class="campo controlado multi">
-            	<label for="plan">Plan*</label>
-	            <select class="grande desplegable" name="plan" id="plan">
-	            	<option value=""></option>
-					<?
-					
-					// Plan
-					foreach ( $this->planesIDX as $clave => $nombre) {
-						
-						?><option value="<?= $clave ?>" ><?= $nombre ?></option><?
-						
-					}
-					
-					?>
-				</select>
-				<p id="errorPlan" class="errorInput"><?= $this->errorPlan ?></p>
-			</div>
-			
-			<div class="separadorH"></div>			
-			
-			<div class="campo controlado multi">
-            	<label for="categoria">Categoría*</label>
-	            <select class="grande desplegable" name="categoria" id="categoria">
-	            	<option value=""></option>
-					<?
-					
-					// Categorias
-					echo $this->htmlSelectCategorias;
-					
-					?>
-				</select>
-				<p id="errorCategoria" class="errorInput"><?= $this->errorCategoria ?></p>
-			</div>
-			
-			<div class="campo controlado multi">
-            	<label for="colectivo">Colectivo*</label>
-	            <select class="grande desplegable" name="colectivo" id="colectivo">
-	            	<option value=""></option>
-					<?
-					
-					// Colectivo
-					foreach ( $this->colectivosIDX as $clave => $nombre) {
-						
-						?><option value="<?= $clave ?>" ><?= $nombre ?></option><?
-						
-					}
-					
-					?>
-				</select>
-				<p id="errorColectivo" class="errorInput"><?= $this->errorColectivo ?></p>
-			</div>
-			
-			<div class="campo controlado multi">
-            	<label for="modalidad">Modalidad*</label>
-	            <select class="grande desplegable" name="modalidad" id="modalidad">
-	            	<option value=""></option>
-					<?
-					
-					// Modalidad
-					foreach ( $this->modalidadesIDX as $clave => $nombre) {
-						
-						?><option value="<?= $clave ?>" ><?= $nombre ?></option><?
-						
-					}
-					
-					?>
-				</select>
-				<p id="errorModalidad" class="errorInput"><?= $this->errorModalidad ?></p>
-			</div>
-			
-			<div class="separadorH"></div>
-			
-			<div class="campo controlado multi">
-            	<label for="centro">Centro*</label>
-	            <select class="grande desplegable" name="centro" id="centro">
-	            	<option value=""></option>
-					<?
-					
-					// Aula
-					foreach ( $this->centrosIDX as $clave => $nombre) {
-						
-						?><option value="<?= $clave ?>" ><?= $nombre ?></option><?
-						
-					}
-					
-					?>
-				</select>
-				<p id="errorAula" class="errorInput"><?= $this->errorAula ?></p>
-			</div>
-			
-			<div class="separadorH"></div>
-			
-			<div class="campo multi">
-                <label for="horasP">Horas presenciales</label>
-                <input type="text" name="horasP" id="horasP" class="campoTexto mediano numerico" />
-            </div>
-			
-			<div class="campo multi">
-                <label for="horasD">Horas a distancia</label>
-                <input type="text" name="horasD" id="horasD" class="campoTexto mediano numerico" />
-            </div>
-			
-			<div class="campo multi">
-                <label for="numAlumnos">Número de alumnos</label>
-                <input type="text" name="numAlumnos" id="numAlumnos" class="campoTexto mediano numerico" />
-            </div>
-            
-            <div class="campo multi">
-                <label for="accion">Número de acción</label>
-                <input type="text" name="accion" id="accion" class="campoTexto mediano decimal" />
-            </div>
-            
-            <div class="campo multi">
-                <label for="inicio">Fecha de inicio</label>
-                <input type="text" name="inicio" id="inicio" class="campoTexto pequeno" onkeypress="return false;" />
-            </div>
-            
-            <div class="campo multi">
-                <label for="fin">Fecha de fin</label>
-                <input type="text" name="fin" id="fin" class="campoTexto pequeno" onkeypress="return false;" />
-            </div>
-            
-            <div class="separadorH"></div>
-            
-            <div class="campo multi">
-            	<label for="descripcion">Descripción</label>
-            	<textarea name="descripcion" id="descripcion"></textarea>
-            </div>
-            
-            <div class="campo multi">
-            	<label for="observaciones">Observaciones</label>
-            	<textarea name="observaciones" id="observaciones"></textarea>
-            </div>
-            
-            <div class="separadorH"></div>
-            
- 			<div class="alterForm">
-            	<h3>Tutoría</h3>
-            	<div class="campo multi">
-            		<label for="tutor">Tutor asignado</label>
-            		<select name="tutor" name="tutor" id="tutor" class="desplegable grande">
-            			<option value=""></option><?
-            			
-            			foreach ($this->profesoresIDX as $clave => $profesor){
-            				
-            				echo '<option value="' . $clave . '">' . $profesor . '</option>' . "\n";
-            				
-            			}
-            			
-            		?></select>
-            	</div>
-				<div class="campo multi">
-	                <label for="horasT">Horas</label>
-	                <input type="text" name="horasT" id="horasT" class="campoTexto mini numerico" />
-	            </div>            	
-	            <div class="campo multi">
-					<label for="modalidadTutoria">Tipo de tutoría</label>
-            		<select name="modalidadTutoria" name="modalidadTutoria" id="modalidadTutoria" class="desplegable mediano">
-            			<option value=""></option><?
-            			
-            			foreach ($this->modalidadesIDX as $clave=>$modalidad){
-            				
-            				echo '<option value="' . $clave . '">' . $modalidad . '</option>' . "\n";
-            				
-            			}
-            			
-            		?></select>	            		
+	        	<input type="hidden" value="1" name="send" />
+	        
+	            <div class="campo controlado multi">
+	                <label for="nombre">Nombre*</label>
+	                <input type="text" name="nombre" id="nombre" class="campoTexto" />
+	                <p id="errorNombre" class="errorInput"><?=$this->errorNombre?></p>
 	            </div>
 	            
-	            <div class="separadorH"></div>
-
-				<p class="subtitulo">Días en los que se efectuará la tutoría:</p>
-
-				<div class="campo multi">
-					<label for="lunes" class="alter">Lunes</label>
-					<input type="checkbox" id="lunes" name="lunes" class="checkbox">
+	        
+	            <div class="campo multi">
+	                <label for="expediente">Expediente</label>
+	                <input type="text" name="expediente" id="expediente" class="campoTexto" value=""/>
+	            </div>            
+				
+				<div class="campo controlado multi">
+	            	<label for="plan">Plan*</label>
+		            <select class="grande desplegable" name="plan" id="plan">
+		            	<option value=""></option>
+						<?
+						
+						// Plan
+						foreach ( $this->planesIDX as $clave => $nombre) {
+							
+							?><option value="<?= $clave ?>" ><?= $nombre ?></option><?
+							
+						}
+						
+						?>
+					</select>
+					<p id="errorPlan" class="errorInput"><?= $this->errorPlan ?></p>
 				</div>
-				<div class="campo multi">
-					<label for="martes" class="alter">Martes</label>
-					<input type="checkbox" id="martes" name="martes" class="checkbox">
+				
+				<div class="separadorH"></div>			
+				
+				<div class="campo controlado multi">
+	            	<label for="categoria">Categoría*</label>
+		            <select class="grande desplegable" name="categoria" id="categoria">
+		            	<option value=""></option>
+						<?
+						
+						// Categorias
+						echo $this->htmlSelectCategorias;
+						
+						?>
+					</select>
+					<p id="errorCategoria" class="errorInput"><?= $this->errorCategoria ?></p>
 				</div>
-				<div class="campo multi">
-					<label for="miercoles" class="alter">Miércoles</label>
-					<input type="checkbox" id="miercoles" name="miercoles" class="checkbox">
+				
+				<div class="campo controlado multi">
+	            	<label for="colectivo">Colectivo*</label>
+		            <select class="grande desplegable" name="colectivo" id="colectivo">
+		            	<option value=""></option>
+						<?
+						
+						// Colectivo
+						foreach ( $this->colectivosIDX as $clave => $nombre) {
+							
+							?><option value="<?= $clave ?>" ><?= $nombre ?></option><?
+							
+						}
+						
+						?>
+					</select>
+					<p id="errorColectivo" class="errorInput"><?= $this->errorColectivo ?></p>
 				</div>
-				<div class="campo multi">				
-					<label for="jueves" class="alter">Jueves</label>
-					<input type="checkbox" id="jueves" name="jueves" class="checkbox">
+				
+				<div class="campo controlado multi">
+	            	<label for="modalidad">Modalidad*</label>
+		            <select class="grande desplegable" name="modalidad" id="modalidad">
+		            	<option value=""></option>
+						<?
+						
+						// Modalidad
+						foreach ( $this->modalidadesIDX as $clave => $nombre) {
+							
+							?><option value="<?= $clave ?>" ><?= $nombre ?></option><?
+							
+						}
+						
+						?>
+					</select>
+					<p id="errorModalidad" class="errorInput"><?= $this->errorModalidad ?></p>
 				</div>
-				<div class="campo multi">
-					<label for="viernes" class="alter">Viernes</label>
-					<input type="checkbox" id="viernes" name="viernes" class="checkbox">
+				
+				<div class="separadorH"></div>
+				
+				<div class="campo controlado multi">
+	            	<label for="centro">Centro*</label>
+		            <select class="grande desplegable" name="centro" id="centro">
+		            	<option value=""></option>
+						<?
+						
+						// Aula
+						foreach ( $this->centrosIDX as $clave => $nombre) {
+							
+							?><option value="<?= $clave ?>" ><?= $nombre ?></option><?
+							
+						}
+						
+						?>
+					</select>
+					<p id="errorAula" class="errorInput"><?= $this->errorAula ?></p>
 				</div>
-				<div class="campo multi">
-					<label for="sabado" class="alter">Sábado</label>
-					<input type="checkbox" id="sabado" name="sabado" class="checkbox">
-				</div>
-				<div class="campo multi">
-					<label for="domingo" class="alter">Domingo</label>
-					<input type="checkbox" id="domingo" name="domingo" class="checkbox">
-				</div>			
 				
 				<div class="separadorH"></div>
 				
 				<div class="campo multi">
-				
-					<p class="subtitulo">Horarios (Mañana):</p>
-					
-					<div class="campo multi">
-						<label for="de_man">De</label>
-		                <input type="text" name="de_man" id="de_man" class="campoTexto mini" />					
-					</div>					
-					
-					<div class="campo multi">
-						<label for="a_man">A</label>
-		                <input type="text" name="a_man" id="a_man" class="campoTexto mini" />					
-					</div>					
-					
-				</div>
+	                <label for="horasP">Horas presenciales</label>
+	                <input type="text" name="horasP" id="horasP" class="campoTexto mediano numerico" />
+	            </div>
 				
 				<div class="campo multi">
+	                <label for="horasD">Horas a distancia</label>
+	                <input type="text" name="horasD" id="horasD" class="campoTexto mediano numerico" />
+	            </div>
 				
-					<p class="subtitulo">Horarios (Tarde):</p>
-					
-					<div class="campo multi">
-						<label for="de_tar">De</label>
-		                <input type="text" name="de_tar" id="de_tar" class="campoTexto mini" />					
-					</div>					
-					
-					<div class="campo multi">
-						<label for="a_tar">A</label>
-		                <input type="text" name="a_tar" id="a_tar" class="campoTexto mini" />					
-					</div>					
-					
-				</div>
+				<div class="campo multi">
+	                <label for="numAlumnos">Número de alumnos</label>
+	                <input type="text" name="numAlumnos" id="numAlumnos" class="campoTexto mediano numerico" />
+	            </div>
 	            
+	            <div class="campo multi">
+	                <label for="accion">Número de acción</label>
+	                <input type="text" name="accion" id="accion" class="campoTexto mediano decimal" />
+	            </div>
+	            
+	            <div class="campo multi">
+	                <label for="inicio">Fecha de inicio</label>
+	                <input type="text" name="inicio" id="inicio" class="campoTexto pequeno" onkeypress="return false;" />
+	            </div>
+	            
+	            <div class="campo multi">
+	                <label for="fin">Fecha de fin</label>
+	                <input type="text" name="fin" id="fin" class="campoTexto pequeno" onkeypress="return false;" />
+	            </div>
+	            
+	            <div class="separadorH"></div>
+	            
+	            <div class="campo multi">
+	            	<label for="descripcion">Descripción</label>
+	            	<textarea rows="10" cols="40" name="descripcion" id="descripcion"></textarea>
+	            </div>
+	            
+	            <div class="campo multi">
+	            	<label for="observaciones">Observaciones</label>
+	            	<textarea rows="10" cols="40" name="observaciones" id="observaciones"></textarea>
+	            </div>
+	            
+	            <div class="separadorH"></div>
+            
             </div>
             
+            <div class="bloque">
+            
+            	<h3 class="alter">Tutoría del curso</h3>
+            
+	 			<div class="alterForm">
+	            	<div class="campo multi">
+	            		<label for="tutor">Tutor asignado</label>
+	            		<select name="tutor" id="tutor" class="desplegable grande">
+	            			<option value=""></option><?
+	            			
+	            			foreach ($this->profesoresIDX as $clave => $profesor){
+	            				
+	            				echo '<option value="' . $clave . '">' . $profesor . '</option>' . "\n";
+	            				
+	            			}
+	            			
+	            		?></select>
+	            	</div>
+					<div class="campo multi">
+		                <label for="horasT">Horas</label>
+		                <input type="text" name="horasT" id="horasT" class="campoTexto mini numerico" />
+		            </div>            	
+		            <div class="campo multi">
+						<label for="modalidadTutoria">Tipo de tutoría</label>
+	            		<select name="modalidadTutoria" id="modalidadTutoria" class="desplegable mediano">
+	            			<option value=""></option><?
+	            			
+	            			foreach ($this->modalidadesIDX as $clave=>$modalidad){
+	            				
+	            				echo '<option value="' . $clave . '">' . $modalidad . '</option>' . "\n";
+	            				
+	            			}
+	            			
+	            		?></select>	            		
+		            </div>
+		            
+		            <div class="separadorH"></div>
+	
+					<p class="subtitulo">Días en los que se efectuará la tutoría:</p>
+	
+					<div class="campo multi">
+						<label for="lunes" class="alter">Lunes</label>
+						<input type="checkbox" id="lunes" name="lunes" class="checkbox" />
+					</div>
+					<div class="campo multi">
+						<label for="martes" class="alter">Martes</label>
+						<input type="checkbox" id="martes" name="martes" class="checkbox" />
+					</div>
+					<div class="campo multi">
+						<label for="miercoles" class="alter">Miércoles</label>
+						<input type="checkbox" id="miercoles" name="miercoles" class="checkbox" />
+					</div>
+					<div class="campo multi">				
+						<label for="jueves" class="alter">Jueves</label>
+						<input type="checkbox" id="jueves" name="jueves" class="checkbox" />
+					</div>
+					<div class="campo multi">
+						<label for="viernes" class="alter">Viernes</label>
+						<input type="checkbox" id="viernes" name="viernes" class="checkbox" />
+					</div>
+					<div class="campo multi">
+						<label for="sabado" class="alter">Sábado</label>
+						<input type="checkbox" id="sabado" name="sabado" class="checkbox" />
+					</div>
+					<div class="campo multi">
+						<label for="domingo" class="alter">Domingo</label>
+						<input type="checkbox" id="domingo" name="domingo" class="checkbox" />
+					</div>			
+					
+					<div class="separadorH"></div>
+					
+					<div class="campo multi">
+					
+						<p class="subtitulo">Horarios (Mañana):</p>
+						
+						<div class="campo multi">
+							<label for="de_man">De</label>
+			                <input type="text" name="de_man" id="de_man" class="campoTexto mini" />					
+						</div>					
+						
+						<div class="campo multi">
+							<label for="a_man">A</label>
+			                <input type="text" name="a_man" id="a_man" class="campoTexto mini" />					
+						</div>					
+						
+					</div>
+					
+					<div class="campo multi">
+					
+						<p class="subtitulo">Horarios (Tarde):</p>
+						
+						<div class="campo multi">
+							<label for="de_tar">De</label>
+			                <input type="text" name="de_tar" id="de_tar" class="campoTexto mini" />					
+						</div>					
+						
+						<div class="campo multi">
+							<label for="a_tar">A</label>
+			                <input type="text" name="a_tar" id="a_tar" class="campoTexto mini" />					
+						</div>					
+						
+					</div>
+		            
+	            </div>
+	            
+	            <div class="separadorH"></div>
+	            
+	        </div>
+            
             <div class="separadorH"></div>
+            
+            <h3 class="alter">Profesores asignados</h3>
             
             <div class="campo multi">
 	            <label for="profesoresSeleccionados">Profesores del curso</label>
 	            
 	            <div class="contenedorMultiselect">
 		            <a title="Quitar profesor" class="btnEliminar" href="javascript:ventanaConfirmacion('Confirmar','¿Está seguro que desea quitar el/los profesor/es del curso?', 'javascript:quitarProfCurso();hidePopups()')"><span>eliminar</span></a>
-		            <select name="profesores[]" multiple="multiple" id="profesoresSeleccionados" class="campoTexto grande multiple"><?
-		                
-		            ?></select>
+		            <select name="profesores[]" multiple="multiple" id="profesoresSeleccionados" class="campoTexto grande multiple">
+		            	<option value="0"></option>
+		            </select>
 	            </div>
 	            <p class="tooltip" id="profesoresSeleccionadosTooltip">Se pueden seleccionar varios profesores manteniendo pulsada la tecla CTRL</p>
         	</div>
+        	
+		    <?
+		    	if ( count($this->profesoresIDX) > 0 ){
+		    ?>
+		    <div class="campo multi">
+		    	<div class="scroll">
+			    	<table class="listado selector">
+			    		<thead>
+			    			<tr>
+				    			<th>Nombre</th>
+				    			<th>Categorías</th>
+				    			<th></th>
+				    		</tr>
+			    		</thead>
+			    		<tbody>
+							<?
+							
+							// Profesores
+							$contador = 0;
+							foreach ( $this->profesoresIDX as $clave => $nombre) {
+								
+								$clase = ( ($contador%2)==0 )?'':'class="alter"';
+								$contador++;
+								
+								// Categorías de los profesores
+								$categoriasProfesor = '';
+								$idsCategoriasARR = $this->categoriasProfesoresIDX[$clave];
+								if ( !empty($idsCategoriasARR) ) {
+									
+									foreach ( $idsCategoriasARR as $idCategoria ) {
+			
+										$categoriasProfesor .= (( empty($categoriasProfesor) )?'':', ') . $this->categoriasIDX[$idCategoria];
+										
+									}
+									
+								}
+								
+								?>
+								<tr <?= $clase ?>>
+									<td class="nombreTd"><a href="/profesor/ficha.html/<?= $clave ?>"><?= $nombre ?></a></td>
+									<td><?= $categoriasProfesor ?></td>
+									<td><a href="javascript:addProfCurso('<?= $clave ?>', '<?= $nombre ?>')" class="btnAnadir" title="Asignar al curso"><span>añadir</span></a></td>
+								</tr>
+								<?
+								
+								
+							}
+							
+							?>
+						</tbody>
+					</table>
+				</div>
+		    </div>
+		    <?
+		    	}
+		    ?>
+		    
+		    <div class="separadorH"></div>
             
             <input class="oculto" type="submit" value="Guardar" />
             
@@ -285,60 +359,3 @@
             
         </fieldset>
     </form>
-    
-    <?
-    	if ( count($this->profesoresIDX) > 0 ){
-    ?>
-    <h3>Listado de profesores</h3>
-    <div class="campo multi">
-    	<div class="scroll">
-	    	<table class="listado">
-	    		<thead>
-	    			<tr>
-		    			<th>Nombre</th>
-		    			<th>Categorías</th>
-		    			<th></th>
-		    		</tr>
-	    		</thead>
-	    		<tbody>
-					<?
-					
-					// Profesores
-					foreach ( $this->profesoresIDX as $clave => $nombre) {
-						
-						// Categorías de los profesores
-						$categoriasProfesor = '';
-						$idsCategoriasARR = $this->categoriasProfesoresIDX[$clave];
-						if ( !empty($idsCategoriasARR) ) {
-							
-							foreach ( $idsCategoriasARR as $idCategoria ) {
-	
-								$categoriasProfesor .= (( empty($categoriasProfesor) )?'':', ') . $this->categoriasIDX[$idCategoria];
-								
-							}
-							
-						}
-						
-						?>
-						<tr>
-							<td><a href="/profesor/ficha.html/<?= $clave ?>"><?= $nombre ?></a></td>
-							<td><?= $categoriasProfesor ?></td>
-							<td><a href="javascript:addProfCurso('<?= $clave ?>', '<?= $nombre ?>')" class="btnAnadir" title="Asignar al curso"><span>añadir</span></a></td>
-						</tr>
-						<?
-						
-						
-					}
-					
-					?>
-				</tbody>
-			</table>
-		</div>
-    </div>
-    <?
-    	}
-    ?>
-    
-     <div class="separadorH"></div>
-    
-    <p>* Campos obligatorios</p>

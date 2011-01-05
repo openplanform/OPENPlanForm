@@ -71,7 +71,7 @@ class usuarioController extends PplController{
         
         // Se instancia y configura el paginador
         $paginador = new OwlPaginator($this->db, null, 'tblUsuario', $this->helper);
-        $paginador->setItemsPorPagina(10);
+        $paginador->setItemsPorPagina(20);
         $paginador->setOrderBy($orderBy);
         $paginador->setOrder($order);
         $paginaActual = $this->helper->escapeInjection($this->helper->get('p'));
@@ -1073,7 +1073,7 @@ class usuarioController extends PplController{
             }
             
             // Se verificará la existencia del nombre de usuario, solo en el caso que el nombre haya cambiado
-            $oldUsername = OwlCmsSession::getValue('oldUsername');
+            $oldUsername = OwlSession::getValue('oldUsername');
             
             if ($oldUsername != $nombreUsuario){
 

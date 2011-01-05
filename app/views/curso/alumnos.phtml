@@ -1,0 +1,113 @@
+<?php
+
+	$this->addJavascriptInclude('/js/curso.js');
+	
+	if ( !is_null($this->popup) ){
+    	echo '<script type="text/javascript">ventana' . ucfirst($this->popup['estado']) . '("' . $this->popup['titulo'] . '", "' . $this->popup['mensaje'] . '", "' . $this->popup['url'] . '");</script>'; 
+	}
+	
+	if ( !is_null($this->cursoDO) ){
+
+?>
+<ul class="pestanyas">
+	<li><a class="datos" href="/curso/editar.html/<?= $this->cursoDO->getIdCurso() ?>">Datos generales</a></li>
+	<li><a class="horarios" href="/curso/horario.html/<?= $this->cursoDO->getIdCurso() ?>">Horario</a></li>
+	<li><a class="documentacion" href="/curso/documentacion.html/<?= $this->cursoDO->getIdCurso() ?>">Documentación</a></li>
+	<li class="actual"><strong class="alumnos">Alumnos</strong></li>
+</ul>
+	
+<div class="separadorH"></div>
+
+<form action="<?= $_SERVER['REQUEST_URI'] ?>" method="post" id="alumnosCurso">
+<fieldset>
+
+		<legend>Alumnos del curso</legend>
+		
+		<p class="desc">Una vez realizadas las gestiones de alumnos, se deberán guardar los cambios.</p>
+		
+		<input type="hidden" name="sent" value="1" />
+            
+            <div class="campo multi">
+            	<label>Precandidatos (<?= count($this->precandidatosCursoCOL) ?>)</label>
+	            <div class="contenedorMultiselect">
+	            	<a title="Ir a la ficha de precandidato" class="btnFicha" href="javascript:fichaAlumno('precandidatos');hidePopups();"><span>ficha</span></a>
+		            <a title="Quitar precandidato" class="btnEliminar" href="javascript:ventanaConfirmacion('Confirmar','¿Está seguro que desea quitar el/los precandidato/s del curso?', 'javascript:quitarPersonaCurso(\'precandidatos\');hidePopups()')"><span>eliminar</span></a>
+		            <select name="precandidatos[]" multiple="multiple" id="precandidatos" class="campoTexto grande multiple"><?
+		                if ( count($this->precandidatosCursoCOL) > 0 ){
+			            	foreach ( $this->precandidatosCursoCOL as $precandidatoCursoDO ){
+			            		
+			            		?><option value="<?= $precandidatoCursoDO->getFkPersona() ?>"><?= $this->personasIDX[$precandidatoCursoDO->getFkPersona()]->getVNombre() . ' ' . $this->personasIDX[$precandidatoCursoDO->getFkPersona()]->getVPrimerApellido() . ' ' . $this->personasIDX[$precandidatoCursoDO->getFkPersona()]->getVSegundoApellido() ?></option><?
+			            		
+			            	}
+		                }
+		            
+		            ?></select>
+	            </div>
+        	</div>
+	        
+	        <div class="campo multi">
+	        	<ul class="botonesMultiselect">
+	        		<li>
+	        			<input type="button" value="&gt;" onclick="mueveAlumno('precandidatos','candidatos');"/>
+	        		</li>
+	        		<li>
+	        			<input type="button" value="&lt;" onclick="mueveAlumno('candidatos','precandidatos');"/>
+	        		</li>	
+	        	</ul>
+	        </div>
+	        
+            <div class="campo multi">
+            	<label>Candidatos (<?= count($this->candidatosCursoCOL) ?>)</label>
+	            <div class="contenedorMultiselect">
+	            	<a title="Ir a la ficha de precandidato" class="btnFicha" href="javascript:fichaAlumno('candidatos');hidePopups();"><span>ficha</span></a>
+		            <a title="Quitar candidato" class="btnEliminar" href="javascript:ventanaConfirmacion('Confirmar','¿Está seguro que desea quitar el/los candidato/s del curso?', 'javascript:quitarPersonaCurso(\'candidatos\');hidePopups()')"><span>eliminar</span></a>
+		            <select name="candidatos[]" multiple="multiple" id="candidatos" class="campoTexto grande multiple"><?
+		            	if ( count($this->candidatosCursoCOL) > 0 ){
+			            	foreach ( $this->candidatosCursoCOL as $candidatoCursoDO ){
+			            		
+			            		?><option value="<?= $candidatoCursoDO->getFkPersona() ?>"><?= $this->personasIDX[$candidatoCursoDO->getFkPersona()]->getVNombre() . ' ' . $this->personasIDX[$candidatoCursoDO->getFkPersona()]->getVPrimerApellido() . ' ' . $this->personasIDX[$candidatoCursoDO->getFkPersona()]->getVSegundoApellido() ?></option><?
+			            		
+			            	}
+		            	}
+		            
+		            ?></select>
+	            </div>
+        	</div>
+        	
+	        <div class="campo multi">
+	        	<ul class="botonesMultiselect">
+	        		<li>
+	        			<input type="button" value="&gt;" onclick="mueveAlumno('candidatos','alumnos');"/>
+	        		</li>
+	        		<li>
+	        			<input type="button" value="&lt;" onclick="mueveAlumno('alumnos','candidatos');"/>
+	        		</li>	
+	        	</ul>
+	        </div>
+	        
+            <div class="campo multi">
+            	<label>Alumnos (<?= count($this->alumnosCursoCOL) ?>)</label>
+	            <div class="contenedorMultiselect">
+	            	<a title="Ir a la ficha de alumno" class="btnFicha" href="javascript:fichaAlumno('alumnos');hidePopups();"><span>ficha</span></a>
+		            <a title="Quitar alumno" class="btnEliminar" href="javascript:ventanaConfirmacion('Confirmar','¿Está seguro que desea quitar el/los alumno/s del curso?', 'javascript:quitarPersonaCurso(\'alumnos\');hidePopups()')"><span>eliminar</span></a>
+		            <select name="alumnos[]" multiple="multiple" id="alumnos" class="campoTexto grande multiple"><?
+		            
+		            	if ( count($this->alumnosCursoCOL) > 0 ){
+			            	foreach ( $this->alumnosCursoCOL as $alumnoCursoDO ){
+			            		
+			            		?><option value="<?= $alumnoCursoDO->getIPersona() ?>"><?= $this->personasIDX[$alumnoCursoDO->getIPersona()]->getVNombre() . ' ' . $this->personasIDX[$alumnoCursoDO->getIPersona()]->getVPrimerApellido() . ' ' . $this->personasIDX[$alumnoCursoDO->getIPersona()]->getVSegundoApellido() ?></option><?
+			            		
+			            	}
+		            	}
+		            
+		            ?></select>
+	            </div>
+        	</div>
+            
+            <div class="separadorH"></div>
+	</fieldset>            
+</form><?
+
+	}
+	
+?>

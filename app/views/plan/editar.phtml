@@ -15,161 +15,170 @@
     <form id="editarPlan" action="<?= $_SERVER['REQUEST_URI'] ?>" method="post">
         <fieldset>
         
-        	<input type="hidden" value="1" name="send" />
+        	<legend>Alta de nuevo plan de formación</legend>
+        	
+        	<div class="bloque">
         
-            <div class="campo controlado multi">
-                <label for="nombre">Nombre*</label>
-                <input type="text" name="nombre" id="nombre" class="campoTexto" value="<?= $this->planDO->getVNombre() ?>"/>
-                <p id="errorNombre" class="errorInput"><?=$this->errorNombre?></p>
-            </div>
-			
-			<div class="campo controlado multi">
-            	<label for="tipo">Tipo de Plan*</label>
-	            <select class="grande desplegable" name="tipo" id="tipo">
-	            	<option value=""></option>
-					<?
-					
-					//Tipo Plan
-					foreach ( $this->tiposPlanIDX as $clave => $nombre) {
+	        	<input type="hidden" value="1" name="send" />
+	        
+	            <div class="campo controlado multi">
+	                <label for="nombre">Nombre*</label>
+	                <input type="text" name="nombre" id="nombre" class="campoTexto enorme" value="<?= $this->planDO->getVNombre() ?>"/>
+	                <p id="errorNombre" class="errorInput"><?=$this->errorNombre?></p>
+	            </div>
+	            
+				<div class="campo controlado multi">
+	                <label for="expediente">Número de expediente*</label>
+	                <input type="text" name="expediente" id="expediente" class="campoTexto mediano" value="<?= $this->planDO->getVNumeroExpediente() ?>"/>
+	                <p id="errorExpediente" class="errorInput"><?= $this->errorExpediente ?></p>
+	            </div>
+	            
+	            <div class="separadorH"></div>	            
+				
+				<div class="campo controlado multi">
+	            	<label for="tipo">Tipo de Plan*</label>
+		            <select class="grande desplegable" name="tipo" id="tipo">
+		            	<option value=""></option>
+						<?
 						
-						?><option value="<?= $clave ?>" <?= ( ($this->planDO->getFkTipoPlan() == $clave)?'selected="selected"':'' ) ?>><?= $nombre ?></option><?
+						//Tipo Plan
+						foreach ( $this->tiposPlanIDX as $clave => $nombre) {
+							
+							?><option value="<?= $clave ?>" <?= ( ($this->planDO->getFkTipoPlan() == $clave)?'selected="selected"':'' ) ?>><?= $nombre ?></option><?
+							
+						}
 						
-					}
-					
-					?>
-				</select>
-				<p id="errorTipo" class="errorInput"><?= $this->errorTipo ?></p>
-			</div>
-			
-			<div class="campo controlado multi">
-            	<label for="convocatoria">Convocatoria*</label>
-	            <select class="grande desplegable" name="convocatoria" id="convocatoria">
-	            	<option value=""></option>
-					<?
-					
-					//Convocatorias
-					foreach ( $this->convocatoriasIDX as $clave => $nombre) {
+						?>
+					</select>
+					<p id="errorTipo" class="errorInput"><?= $this->errorTipo ?></p>
+				</div>
+				
+				<div class="campo controlado multi">
+	            	<label for="convocatoria">Convocatoria*</label>
+		            <select class="grande desplegable" name="convocatoria" id="convocatoria">
+		            	<option value=""></option>
+						<?
 						
-						?><option value="<?= $clave ?>" <?= ( ($this->planDO->getFkConvocatoria() == $clave)?'selected="selected"':'' ) ?>><?= $nombre ?></option><?
+						//Convocatorias
+						foreach ( $this->convocatoriasIDX as $clave => $nombre) {
+							
+							?><option value="<?= $clave ?>" <?= ( ($this->planDO->getFkConvocatoria() == $clave)?'selected="selected"':'' ) ?>><?= $nombre ?></option><?
+							
+						}
 						
-					}
-					
-					?>
-				</select>
-				<p id="errorConvocatoria" class="errorInput"><?= $this->errorConvocatoria ?></p>
-			</div>
-			
-			<div class="separadorH"></div>
-			
-			<div class="campo controlado multi">
-            	<label for="sector">Sector*</label>
-	            <select class="grande desplegable" name="sector" id="sector">
-	            	<option value=""></option>
-					<?
-					
-					// Estado del Plan
-					foreach ( $this->sectoresIDX as $clave => $nombre) {
+						?>
+					</select>
+					<p id="errorConvocatoria" class="errorInput"><?= $this->errorConvocatoria ?></p>
+				</div>
+				
+				<div class="campo controlado multi">
+	            	<label for="sector">Sector*</label>
+		            <select class="grande desplegable" name="sector" id="sector">
+		            	<option value=""></option>
+						<?
 						
-						?><option value="<?= $clave ?>" <?= ( ($this->planDO->getFkSector() == $clave)?'selected="selected"':'' ) ?>><?= $nombre ?></option><?
+						// Estado del Plan
+						foreach ( $this->sectoresIDX as $clave => $nombre) {
+							
+							?><option value="<?= $clave ?>" <?= ( ($this->planDO->getFkSector() == $clave)?'selected="selected"':'' ) ?>><?= $nombre ?></option><?
+							
+						}
 						
-					}
-					
-					?>
-				</select>
-				<p id="errorSector" class="errorInput"><?= $this->errorSector ?></p>
-			</div>
-			
-			<div class="campo controlado multi">
-                <label for="expediente">Número de expediente*</label>
-                <input type="text" name="expediente" id="expediente" class="campoTexto" value="<?= $this->planDO->getVNumeroExpediente() ?>"/>
-                <p id="errorExpediente" class="errorInput"><?= $this->errorExpediente ?></p>
-            </div>
-			
-			
-			<div class="campo controlado multi">
-            	<label for="estado">Estado del Plan*</label>
-	            <select class="grande desplegable" name="estado" id="estado">
-	            	<option value=""></option>
-					<?
-					
-					// Estado del Plan
-					foreach ( $this->estadosPlanIDX as $clave => $nombre) {
+						?>
+					</select>
+					<p id="errorSector" class="errorInput"><?= $this->errorSector ?></p>
+				</div>
+				
+				<div class="separadorH"></div>
+				
+	        </div>
+	        
+	        <div class="bloque">
+	        
+		        <h3 class="alter">Entidades vinculadas</h3>
+				
+				<div class="campo controlado multi">
+	            	<label for="estado">Estado del Plan*</label>
+		            <select class="grande desplegable" name="estado" id="estado">
+		            	<option value=""></option>
+						<?
 						
-						?><option value="<?= $clave ?>" <?= ( ($this->planDO->getFkEstadoPlan() == $clave)?'selected="selected"':'' ) ?>><?= $nombre ?></option><?
+						// Estado del Plan
+						foreach ( $this->estadosPlanIDX as $clave => $nombre) {
+							
+							?><option value="<?= $clave ?>" <?= ( ($this->planDO->getFkEstadoPlan() == $clave)?'selected="selected"':'' ) ?>><?= $nombre ?></option><?
+							
+						}
 						
-					}
-					
-					?>
-				</select>
-				<p id="errorEstado" class="errorInput"><?= $this->errorEstado ?></p>
-			</div>
-			
-			<div class="separadorH"></div>
-			
-			<div class="campo controlado multi">
-            	<label for="propietario">Propietario*</label>
-	            <select class="grande desplegable" name="propietario" id="propietario">
-	            	<option value=""></option>
-					<?
-					
-					// Propietario
-					foreach ( $this->consultorasIDX as $clave => $nombre) {
+						?>
+					</select>
+					<p id="errorEstado" class="errorInput"><?= $this->errorEstado ?></p>
+				</div>
+				
+				<div class="campo controlado multi">
+	            	<label for="propietario">Propietario*</label>
+		            <select class="grande desplegable" name="propietario" id="propietario">
+		            	<option value=""></option>
+						<?
 						
-						?><option value="<?= $clave ?>" <?= ( ($this->planDO->getFkEmpresaPropietaria() == $clave)?'selected="selected"':'' ) ?>><?= $nombre ?></option><?
+						// Propietario
+						foreach ( $this->consultorasIDX as $clave => $nombre) {
+							
+							?><option value="<?= $clave ?>" <?= ( ($this->planDO->getFkEmpresaPropietaria() == $clave)?'selected="selected"':'' ) ?>><?= $nombre ?></option><?
+							
+						}
 						
-					}
-					
-					?>
-				</select>
-				<p id="errorPropietario" class="errorInput"><?= $this->errorPropietario ?></p>
-			</div>
-			
-			<div class="campo controlado multi">
-            	<label for="consultora">Consultora*</label>
-	            <select class="grande desplegable" name="consultora" id="consultora">
-	            	<option value=""></option>
-					<?
-					
-					// Consultora
-					foreach ( $this->consultorasIDX as $clave => $nombre) {
+						?>
+					</select>
+					<p id="errorPropietario" class="errorInput"><?= $this->errorPropietario ?></p>
+				</div>
+				
+				<div class="campo controlado multi">
+	            	<label for="consultora">Consultora*</label>
+		            <select class="grande desplegable" name="consultora" id="consultora">
+		            	<option value=""></option>
+						<?
 						
-						?><option value="<?= $clave ?>" <?= ( ($this->planDO->getFkEmpresaConsultora() == $clave)?'selected="selected"':'' ) ?>><?= $nombre ?></option><?
+						// Consultora
+						foreach ( $this->consultorasIDX as $clave => $nombre) {
+							
+							?><option value="<?= $clave ?>" <?= ( ($this->planDO->getFkEmpresaConsultora() == $clave)?'selected="selected"':'' ) ?>><?= $nombre ?></option><?
+							
+						}
 						
-					}
-					
-					?>
-				</select>
-				<p id="errorConsultora" class="errorInput"><?= $this->errorConsultora ?></p>
-			</div>
-			
-			<div class="campo controlado">
-                <label for="presupuesto">Presupuesto*</label>
-                <input class="campoTexto dinero" type="text" name="presupuesto" id="presupuesto" value="<?= OwlNumeric::decimalFormatoEuropeo($this->planDO->getEPresupuestoAsignado(), 2) ?>" />
-                <p id="errorPresupuesto" class="errorInput"><?=$this->errorPresupuesto?></p>
-                <p class="tooltip" id="presupuestoTooltip">Utilice la coma(,) para separar decimales y el punto(.) para los miles</p>
-            </div>
-			
-            <div class="campo">
-                <label for="descripcion">Descripción</label>
-                <textarea rows="5" cols="40" name="descripcion" id="descripcion"><?= $this->planDO->getVDescripcion() ?></textarea>
-            </div>
-            
-            <input class="oculto" type="submit" value="Guardar" />
-            
-            <noscript>
-            	<div class="campo">
-            		<input type="submit" value="Guardar" />
-            	</div>
-            </noscript>
-            
+						?>
+					</select>
+					<p id="errorConsultora" class="errorInput"><?= $this->errorConsultora ?></p>
+				</div>
+				
+				<div class="campo controlado">
+	                <label for="presupuesto">Presupuesto*</label>
+	                <input class="campoTexto dinero" type="text" name="presupuesto" id="presupuesto" value="<?= OwlNumeric::decimalFormatoEuropeo($this->planDO->getEPresupuestoAsignado(), 2) ?>" />
+	                <p id="errorPresupuesto" class="errorInput"><?=$this->errorPresupuesto?></p>
+	                <p class="tooltip" id="presupuestoTooltip">Utilice la coma(,) para separar decimales y el punto(.) para los miles</p>
+	            </div>
+				
+	            <div class="campo">
+	                <label for="descripcion">Descripción</label>
+	                <textarea rows="5" cols="40" name="descripcion" id="descripcion"><?= $this->planDO->getVDescripcion() ?></textarea>
+	            </div>
+	            
+	            <input class="oculto" type="submit" value="Guardar" />
+	            
+	            <noscript>
+	            	<div class="campo">
+	            		<input type="submit" value="Guardar" />
+	            	</div>
+	            </noscript>
+	            
+	         </div>
+	            
         </fieldset>
-    </form>
-    <p>* Campos obligatorios</p>  
-<?
+    </form><?
 	
 	} else {
 	
-	?><h3>No se ha encontrado el plan</h3><?
+		?><h3 class="noResult">No se ha encontrado el plan</h3><?
 	
 	}
 

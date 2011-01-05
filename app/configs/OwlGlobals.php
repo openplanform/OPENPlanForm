@@ -60,13 +60,20 @@ define('MODULEDIR', APPDIR . 'modules/');
 // Directorio de clases
 define('CLASSESDIR', APPDIR . 'classes/');
 
-// Desarrollo | Producción
-define('DEVELOPMENT', preg_match('/\.in\./', $_SERVER['SERVER_NAME']));
+// Desarrollo | Producción ( Si no estamos en CLI )
+if (array_key_exists('SERVER_NAME', $_SERVER)){
+	define('DEVELOPMENT', preg_match('/\.in\./', $_SERVER['SERVER_NAME']));
+} else {
+	define('DEVELOPMENT', true);
+}
 
 // Codificación a utilizar
 define('APPENCODING', 'UTF-8');
 
 // Zend Framework
 define('ZEND_FRAMEWORK', EXTLIBDIR . 'Zend/');
+
+// Directorio de loggin
+define('LOGDIR', INCDIR . 'log/');
 
 ?>

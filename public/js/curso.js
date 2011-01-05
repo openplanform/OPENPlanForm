@@ -254,9 +254,14 @@ $j(document).ready(function(){
 
 		// Seleccionamos todos los profesores del curso para no perderlos al guardar
 		selectProfesores();
+		return comprobarCampos();
+		
+	});
+	
+	$j('#alumnosCurso').bind('submit', function(){
+
 		// Seleccionamos todos los alumnos del curso para no perderlos al guardar
 		selectAlumnos();
-		return comprobarCampos();
 		
 	});
 	

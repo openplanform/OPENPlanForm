@@ -69,6 +69,8 @@
     <form id="editarAlumno" action="<?= $_SERVER['REQUEST_URI'] ?>" method="post">
         <fieldset>
         
+        	<legend>Edición de alumno</legend>
+        
         	<input type="hidden" value="1" name="send" />
         	
         	<h3>Datos del Usuario</h3>
@@ -100,253 +102,257 @@
 	             <p id="errorEmailUsuario" class="errorInput"><?= $this->errorEmail ?></p>
 	        </div>
 	        
-        	<h3>Datos del Alumno</h3>
-        	
-            <div class="campo multi controlado">
-                <label for="nombre">Nombre*</label>
-                <input type="text" name="nombre" id="nombre" class="campoTexto" value="<?= $this->alumnoDO->getVNombre() ?>"/>
-                <p id="errorNombre" class="errorInput"><?= $this->errorNombre ?></p>
-            </div>
-    
-            <div class="campo multi controlado">
-                <label for="apellido1">Primer Apellido*</label>
-                <input type="text" name="apellido1" id="apellido1" class="campoTexto" value="<?= $this->alumnoDO->getVPrimerApellido() ?>"/>
-                <p id="errorApellido1" class="errorInput"><?= $this->errorApellido ?></p>
-            </div>
-    
-            <div class="campo multi controlado">
-                <label for="apellido2">Segundo Apellido</label>
-                <input type="text" name="apellido2" id="apellido2" class="campoTexto" value="<?= $this->alumnoDO->getVSegundoApellido() ?>"/>
-                <p id="errorApellido2" class="errorInput"><?= $this->errorApellido2 ?></p>
-            </div>
-            
-            <div class="separadorH"></div>
-            
-            <div class="campo multi controlado">
-                <label>Sexo</label>
-                <label class="alter" for="f">Hombre</label><input id="f" class="radioOpt" type="radio" name="sexo" value="Hombre" <?= ($this->alumnoDO->getVSexo() == 'Hombre' ) ? 'checked="checked"' : '' ?>/>
-                <label class="alter" for="m">Mujer</label><input id="m" class="radioOpt" type="radio" name="sexo" value="Mujer" <?= ($this->alumnoDO->getVSexo() == 'Mujer' ) ? 'checked="checked"' : '' ?>/>
-            </div>
-            
-            <div class="campo multi controlado">
-                <label>Discapacidad</label>
-                <label class="alter" for="si">Si</label><input id="si" class="radioOpt" type="radio" name="discapacidad" value="1" <?= ($this->alumnoDO->getBDiscapacidad()) ? 'checked="checked"' : '' ?>/>
-                <label class="alter" for="no">No</label><input id="no" class="radioOpt" type="radio" name="discapacidad" value="0" <?= ($this->alumnoDO->getBDiscapacidad()) ? '' : 'checked="checked"' ?>/>
-            </div>
-            
-            <div class="campo multi controlado">
-                <label for="nacimiento">Fecha de nacimiento*</label>
-                <input type="text" name="nacimiento" id="nacimiento" class="campoTexto mediano" onkeypress="return false;"  value="<?= OwlDate::getDiaMesAno($this->alumnoDO->getDNacimiento()) ?>"/>
-                <p id="errorNacimiento" class="errorInput"><?= $this->errorNacimiento ?></p>
-            </div>
-            
-            <div class="campo multi">
-                <label for="tipoIdentificacion">Tipo de identificación</label><?
-                
-                ?><select name="tipoIdentificacion" id="tipoIdentificacion" class="campoTexto mediano">
-                    <option value=""></option><?
-                    
-                    foreach ($this->tipoIdentificacionCOL as $tipoIdentificacionDO){
-    
-                        $claveTipo = $tipoIdentificacionDO->getIdTipoIdentificacion();
-                        echo '<option value="' . $claveTipo . '" ' . ( ($this->alumnoDO->getFkTipoIdentificacion() == $claveTipo)?'selected="selected"':'' ) . ' >' . $tipoIdentificacionDO->getVNombre() . '</option>' . "\n";
-                        
-                    }
-                    
-                ?></select>
-                <p id="errorTipoIdentificacion" class="errorInput"><?= $this->errorTipoIdentificacion ?></p>
-            </div>
-            
-            <div class="campo multi controlado">
-                <label for="dni">Número identificación*</label>
-                <input type="text" name="dni" id="dni" class="campoTexto mediano" onblur="comprobarDni('dni', false, true)" value="<?= $this->alumnoDO->getVNumeroIdentificacion() ?>"/>
-                <input type="hidden" name="dniOculto" id="dniOculto" value="<?= $this->alumnoDO->getVNumeroIdentificacion() ?>"/>
-                <p id="errorDni" class="errorInput"><?= $this->errorDni ?></p>
-            </div>
-            
-            <div class="separadorH"></div>
-            
-            <div class="campo multi">
-                <label for="numeroSS">Número Seguridad Social</label>
-                <input type="text" name="numeroSS" id="numeroSS" class="campoTexto mediano" value="<?= $this->alumnoDO->getVNumeroSS() ?>" />
-            </div>
-            
-            <div class="campo multi">
-                <label for="tel">Teléfono</label>
-                <input type="text" name="tel" id="tel" class="campoTexto mediano" value="<?= $this->alumnoDO->getVTelefono() ?>" />
-            </div>
-    
-            <div class="campo multi">
-                <label for="movil">Teléfono móvil</label>
-                <input type="text" name="movil" id="movil" class="campoTexto mediano" value="<?= $this->alumnoDO->getVMovil() ?>" />
-            </div>
-            
-            <div class="separadorH"></div>
-    
-            <div class="campo multi">
-                <label for="direccion">Dirección</label>
-                <input type="text" name="direccion" id="direccion" class="campoTexto" value="<?= $this->alumnoDO->getVDireccion() ?>" />
-            </div>
-    
-            <div class="campo multi">
-                <label for="poblacion">Población</label>
-                <input type="text" name="poblacion" id="poblacion" class="campoTexto" value="<?= $this->alumnoDO->getVPoblacion() ?>" />
-            </div>
-    
-            <div class="separadorH"></div>
-    
-            <div class="campo multi">
-                <label for="cp">Código Postal</label>
-                <input type="text" name="cp" id="cp" class="campoTexto mediano" value="<?= $this->alumnoDO->getVCp() ?>" />
-            </div>
-    
-            <div class="campo multi">
-                <label for="provincia">Provincia</label><?
-                
-                ?><select name="provinciasUsuario" id="provincia" class="campoTexto mediano">
-                    <option value=""></option><?
-                    
-                    foreach ($this->provinciasCOL as $provinciaDO){
-    
-                        $claveProvincia = $provinciaDO->getIdProvincia();
-                        echo '<option value="' . $claveProvincia . '" ' . ( ($this->alumnoDO->getFkProvincia() == $claveProvincia)?'selected="selected"':'' ) . '>' . $provinciaDO->getVNombreEs() . '</option>' . "\n";
-                        
-                    }
-                    
-                ?></select>
-            </div>
-            
-            <div class="campo multi controlado">
-                <label for="pais">País*</label>
-                <select name="pais" id="pais" class="campoTexto mediano">
-                	<option value=""></option><?
-                        
-                    foreach ($this->paisesCOL as $paisDO){
-    
-                    	$clavePais = $paisDO->getVIso();
-                        echo '<option value="' . $clavePais . '" ' . ( ($this->alumnoDO->getFkPais() == $clavePais)?'selected="selected"':'' ) . '>' . $paisDO->getVNombreEs() . '</option>' . "\n"; 
-                            
-                    }
-                        
-				?></select>
-                <p id="errorPais" class="errorInput"><?= $this->errorPais ?></p>
-            </div>
-            
-            <div class="separadorH"></div>
-            
-            <div class="campo multi controlado">
-                <label for="nivelEstudios">Nivel de estudios*</label>
-                <select name="nivelEstudios" id="nivelEstudios" class="campoTexto mediano">
-                	<option value=""></option><?
-                        
-                    foreach ($this->nivelEstudiosCOL as $nivelEstudiosDO){
-                            
-                    	$claveNivelEstudios = $nivelEstudiosDO->getIdNivelEstudios();
-                        echo '<option value="' . $claveNivelEstudios . '" ' . ( ($this->alumnoDO->getFkNivelEstudios() == $claveNivelEstudios)?'selected="selected"':'' ) . '>' . $nivelEstudiosDO->getVNombre() . '</option>' . "\n";
-                            
-                    }
-                        
-				?></select>
-                <p id="errorNivelEstudios" class="errorInput"><?= $this->errorNivelEstudios ?></p>
-            </div>
-            
-			<div class="campo multi controlado">
-                <label for="estadoCivil">Estado Civil*</label>
-                <select name="estadoCivil" id="estadoCivil" class="campoTexto mediano">
-                	<option value=""></option><?
-                        
-                    foreach ($this->estadosCivilesCOL as $estadoCivilDO){
-                            
-                    	$claveEstadoCivil = $estadoCivilDO->getIdEstadoCivil();
-                        echo '<option value="' . $claveEstadoCivil . '" ' . ( ($this->alumnoDO->getFkEstadoCivil() == $claveEstadoCivil)?'selected="selected"':'' ) . '>' . $estadoCivilDO->getVNombre() . '</option>' . "\n";
-                            
-                    }
-                        
-                ?></select>
-				<p id="errorEstadoCivil" class="errorInput"><?= $this->errorEstadoCivil ?></p>
-            </div>
-			
-			 <div class="campo multi controlado">
-                <label for="estadoLaboral">Estado Laboral*</label>
-                    <select name="estadoLaboral" id="estadoLaboral" class="campoTexto mediano">
-                        <option value=""></option><?
-                        
-                        foreach ($this->estadosLaboralesCOL as $estadoLaboralDO){
-                            
-                            $claveEstadoLaboral = $estadoLaboralDO->getIdEstadoLaboral();
-                            echo '<option value="' . $claveEstadoLaboral . '" ' . ( ($this->alumnoDO->getFkEstadoLaboral() == $claveEstadoLaboral)?'selected="selected"':'' ) . '>' . $estadoLaboralDO->getVNombre() . '</option>' . "\n";
-                            
-                        }
-                        
-                    ?></select>
-                    <p id="errorEstadoLaboral" class="errorInput"><?= $this->errorEstadoLaboral ?></p>
-            </div>
-            
-			<div class="separadorH"></div>
-			
-			<div id="empresaActual" class="alterForm">
-            	<h3>Entidad donde trabaja actualmente</h3>
-            	
-            	<div class="campo multi">
-            		<label for="categoriaEmpleo">Categoría</label>
-            		<select id="categoriaEmpleo" name="categoriaEmpleo">
-    					<option></option>
-    					<?
-    					
-    					foreach ( $this->categoriasEmpleoIDX as $clave => $categoriaEmpleoDO ){
-    						?><option <?= ($this->alumnoDO->getFkCategoriaEmpleo() == $clave) ? 'selected="selected"' : '' ?> value="<?= $clave ?>"><?= $categoriaEmpleoDO->getVNombre() ?></option><?
-    					}
-    					
-    					?>
-    				</select>
-            	</div>
-            	
-            	<div class="separadorH"></div>
-            	
-            	<div class="campo multi">
-            		<label>Empresa con más de 250 trabajadores</label>
-            		<label for="si250" class="alter">Si</label><input <?= ($this->alumnoDO->getBMas250Trabajadores() == '1' ) ? 'checked="checked"' : '' ?> class="radioOpt" id="si250" type="radio" name="trabajadores250" value="1"/>
-            		<label for="no250" class="alter">No</label><input <?= ($this->alumnoDO->getBMas250Trabajadores() == '0' ) ? 'checked="checked"' : '' ?> class="radioOpt" id="no250" type="radio" name="trabajadores250" value="0"/>
-            	</div>
-            	
-            	<div class="campo multi">
-            		<label for="sectorEmpresaActual">Sector/Convenio</label>
-            		<input class="campoTexto" type="text" name="sectorEmpresaActual" id="sectorEmpresaActual" value="<?= $this->alumnoDO->getVSectorEmpresaActual() ?>" />
-            	</div>
-            	
-            	<div class="separadorH"></div>
-            	
-            	<div class="campo multi">
-            		<label for="razonEmpresaActual">Razón social</label>
-            		<input class="campoTexto enorme" type="text" name="razonEmpresaActual" id="razonEmpresaActual" value="<?= $this->alumnoDO->getVRazonSocialEmpresaActual() ?>" />
-            	</div>
-            	
-            	<div class="campo multi">
-            		<label for="cif">C.I.F.</label>
-            		<input class="campoTexto mediano" type="text" name="cif" id="cif" value="<?= $this->alumnoDO->getVCifEmpresaActual() ?>" />
-            	</div>
-            	
-            	<div class="separadorH"></div>
-            	
-            	<div class="campo multi">
-            		<label for="domicilioEmpresaActual">Domicilio del centro de trabajo</label>
-            		<input class="campoTexto enorme" type="text" name="domicilioEmpresaActual" id="domicilioEmpresaActual" value="<?= $this->alumnoDO->getVDomicilioCentroTrabajo() ?>"/>
-            	</div>
-            	
-            	<div class="separadorH"></div>
-            	
-            	<div class="campo multi">
-            		<label for="localidadEmpresaActual">Localidad</label>
-            		<input class="campoTexto" type="text" name="localidadEmpresaActual" id="localidadEmpresaActual" value="<?= $this->alumnoDO->getVLocalidadCentroTrabajo() ?>"/>
-            	</div>
-
-            	<div class="campo multi">
-            		<label for="cpEmpresaActual">CP</label>
-            		<input class="campoTexto pequeno" type="text" name="cpEmpresaActual" id="cpEmpresaActual" value="<?= $this->alumnoDO->getVCpCentroTrabajo() ?>"/>
-            	</div>
-            </div>
-            
-            <div class="separadorH"></div>
+	        <div class="bloque">
+	        
+	        	<h3>Datos del Alumno</h3>
+	        	
+	            <div class="campo multi controlado">
+	                <label for="nombre">Nombre*</label>
+	                <input type="text" name="nombre" id="nombre" class="campoTexto" value="<?= $this->alumnoDO->getVNombre() ?>"/>
+	                <p id="errorNombre" class="errorInput"><?= $this->errorNombre ?></p>
+	            </div>
+	    
+	            <div class="campo multi controlado">
+	                <label for="apellido1">Primer Apellido*</label>
+	                <input type="text" name="apellido1" id="apellido1" class="campoTexto" value="<?= $this->alumnoDO->getVPrimerApellido() ?>"/>
+	                <p id="errorApellido1" class="errorInput"><?= $this->errorApellido ?></p>
+	            </div>
+	    
+	            <div class="campo multi controlado">
+	                <label for="apellido2">Segundo Apellido</label>
+	                <input type="text" name="apellido2" id="apellido2" class="campoTexto" value="<?= $this->alumnoDO->getVSegundoApellido() ?>"/>
+	                <p id="errorApellido2" class="errorInput"><?= $this->errorApellido2 ?></p>
+	            </div>
+	            
+	            <div class="separadorH"></div>
+	            
+	            <div class="campo multi controlado">
+	                <label>Sexo</label>
+	                <label class="alter" for="f">Hombre</label><input id="f" class="radioOpt" type="radio" name="sexo" value="Hombre" <?= ($this->alumnoDO->getVSexo() == 'Hombre' ) ? 'checked="checked"' : '' ?>/>
+	                <label class="alter" for="m">Mujer</label><input id="m" class="radioOpt" type="radio" name="sexo" value="Mujer" <?= ($this->alumnoDO->getVSexo() == 'Mujer' ) ? 'checked="checked"' : '' ?>/>
+	            </div>
+	            
+	            <div class="campo multi controlado">
+	                <label>Discapacidad</label>
+	                <label class="alter" for="si">Si</label><input id="si" class="radioOpt" type="radio" name="discapacidad" value="1" <?= ($this->alumnoDO->getBDiscapacidad()) ? 'checked="checked"' : '' ?>/>
+	                <label class="alter" for="no">No</label><input id="no" class="radioOpt" type="radio" name="discapacidad" value="0" <?= ($this->alumnoDO->getBDiscapacidad()) ? '' : 'checked="checked"' ?>/>
+	            </div>
+	            
+	            <div class="campo multi controlado">
+	                <label for="nacimiento">Fecha de nacimiento*</label>
+	                <input type="text" name="nacimiento" id="nacimiento" class="campoTexto mediano" onkeypress="return false;"  value="<?= OwlDate::getDiaMesAno($this->alumnoDO->getDNacimiento()) ?>"/>
+	                <p id="errorNacimiento" class="errorInput"><?= $this->errorNacimiento ?></p>
+	            </div>
+	            
+	            <div class="campo multi">
+	                <label for="tipoIdentificacion">Tipo de identificación</label><?
+	                
+	                ?><select name="tipoIdentificacion" id="tipoIdentificacion" class="campoTexto mediano">
+	                    <option value=""></option><?
+	                    
+	                    foreach ($this->tipoIdentificacionCOL as $tipoIdentificacionDO){
+	    
+	                        $claveTipo = $tipoIdentificacionDO->getIdTipoIdentificacion();
+	                        echo '<option value="' . $claveTipo . '" ' . ( ($this->alumnoDO->getFkTipoIdentificacion() == $claveTipo)?'selected="selected"':'' ) . ' >' . $tipoIdentificacionDO->getVNombre() . '</option>' . "\n";
+	                        
+	                    }
+	                    
+	                ?></select>
+	                <p id="errorTipoIdentificacion" class="errorInput"><?= $this->errorTipoIdentificacion ?></p>
+	            </div>
+	            
+	            <div class="campo multi controlado">
+	                <label for="dni">Número identificación*</label>
+	                <input type="text" name="dni" id="dni" class="campoTexto mediano" onblur="comprobarDni('dni', false, true)" value="<?= $this->alumnoDO->getVNumeroIdentificacion() ?>"/>
+	                <input type="hidden" name="dniOculto" id="dniOculto" value="<?= $this->alumnoDO->getVNumeroIdentificacion() ?>"/>
+	                <p id="errorDni" class="errorInput"><?= $this->errorDni ?></p>
+	            </div>
+	            
+	            <div class="separadorH"></div>
+	            
+	            <div class="campo multi">
+	                <label for="numeroSS">Número Seguridad Social</label>
+	                <input type="text" name="numeroSS" id="numeroSS" class="campoTexto mediano" value="<?= $this->alumnoDO->getVNumeroSS() ?>" />
+	            </div>
+	            
+	            <div class="campo multi">
+	                <label for="tel">Teléfono</label>
+	                <input type="text" name="tel" id="tel" class="campoTexto mediano" value="<?= $this->alumnoDO->getVTelefono() ?>" />
+	            </div>
+	    
+	            <div class="campo multi">
+	                <label for="movil">Teléfono móvil</label>
+	                <input type="text" name="movil" id="movil" class="campoTexto mediano" value="<?= $this->alumnoDO->getVMovil() ?>" />
+	            </div>
+	            
+	            <div class="separadorH"></div>
+	    
+	            <div class="campo multi">
+	                <label for="direccion">Dirección</label>
+	                <input type="text" name="direccion" id="direccion" class="campoTexto" value="<?= $this->alumnoDO->getVDireccion() ?>" />
+	            </div>
+	    
+	            <div class="campo multi">
+	                <label for="poblacion">Población</label>
+	                <input type="text" name="poblacion" id="poblacion" class="campoTexto" value="<?= $this->alumnoDO->getVPoblacion() ?>" />
+	            </div>
+	    
+	            <div class="separadorH"></div>
+	    
+	            <div class="campo multi">
+	                <label for="cp">Código Postal</label>
+	                <input type="text" name="cp" id="cp" class="campoTexto mediano" value="<?= $this->alumnoDO->getVCp() ?>" />
+	            </div>
+	    
+	            <div class="campo multi">
+	                <label for="provincia">Provincia</label><?
+	                
+	                ?><select name="provinciasUsuario" id="provincia" class="campoTexto mediano">
+	                    <option value=""></option><?
+	                    
+	                    foreach ($this->provinciasCOL as $provinciaDO){
+	    
+	                        $claveProvincia = $provinciaDO->getIdProvincia();
+	                        echo '<option value="' . $claveProvincia . '" ' . ( ($this->alumnoDO->getFkProvincia() == $claveProvincia)?'selected="selected"':'' ) . '>' . $provinciaDO->getVNombreEs() . '</option>' . "\n";
+	                        
+	                    }
+	                    
+	                ?></select>
+	            </div>
+	            
+	            <div class="campo multi controlado">
+	                <label for="pais">País*</label>
+	                <select name="pais" id="pais" class="campoTexto mediano">
+	                	<option value=""></option><?
+	                        
+	                    foreach ($this->paisesCOL as $paisDO){
+	    
+	                    	$clavePais = $paisDO->getVIso();
+	                        echo '<option value="' . $clavePais . '" ' . ( ($this->alumnoDO->getFkPais() == $clavePais)?'selected="selected"':'' ) . '>' . $paisDO->getVNombreEs() . '</option>' . "\n"; 
+	                            
+	                    }
+	                        
+					?></select>
+	                <p id="errorPais" class="errorInput"><?= $this->errorPais ?></p>
+	            </div>
+	            
+	            <div class="separadorH"></div>
+	            
+	            <div class="campo multi controlado">
+	                <label for="nivelEstudios">Nivel de estudios*</label>
+	                <select name="nivelEstudios" id="nivelEstudios" class="campoTexto mediano">
+	                	<option value=""></option><?
+	                        
+	                    foreach ($this->nivelEstudiosCOL as $nivelEstudiosDO){
+	                            
+	                    	$claveNivelEstudios = $nivelEstudiosDO->getIdNivelEstudios();
+	                        echo '<option value="' . $claveNivelEstudios . '" ' . ( ($this->alumnoDO->getFkNivelEstudios() == $claveNivelEstudios)?'selected="selected"':'' ) . '>' . $nivelEstudiosDO->getVNombre() . '</option>' . "\n";
+	                            
+	                    }
+	                        
+					?></select>
+	                <p id="errorNivelEstudios" class="errorInput"><?= $this->errorNivelEstudios ?></p>
+	            </div>
+	            
+				<div class="campo multi controlado">
+	                <label for="estadoCivil">Estado Civil*</label>
+	                <select name="estadoCivil" id="estadoCivil" class="campoTexto mediano">
+	                	<option value=""></option><?
+	                        
+	                    foreach ($this->estadosCivilesCOL as $estadoCivilDO){
+	                            
+	                    	$claveEstadoCivil = $estadoCivilDO->getIdEstadoCivil();
+	                        echo '<option value="' . $claveEstadoCivil . '" ' . ( ($this->alumnoDO->getFkEstadoCivil() == $claveEstadoCivil)?'selected="selected"':'' ) . '>' . $estadoCivilDO->getVNombre() . '</option>' . "\n";
+	                            
+	                    }
+	                        
+	                ?></select>
+					<p id="errorEstadoCivil" class="errorInput"><?= $this->errorEstadoCivil ?></p>
+	            </div>
+				
+				 <div class="campo multi controlado">
+	                <label for="estadoLaboral">Estado Laboral*</label>
+	                    <select name="estadoLaboral" id="estadoLaboral" class="campoTexto mediano">
+	                        <option value=""></option><?
+	                        
+	                        foreach ($this->estadosLaboralesCOL as $estadoLaboralDO){
+	                            
+	                            $claveEstadoLaboral = $estadoLaboralDO->getIdEstadoLaboral();
+	                            echo '<option value="' . $claveEstadoLaboral . '" ' . ( ($this->alumnoDO->getFkEstadoLaboral() == $claveEstadoLaboral)?'selected="selected"':'' ) . '>' . $estadoLaboralDO->getVNombre() . '</option>' . "\n";
+	                            
+	                        }
+	                        
+	                    ?></select>
+	                    <p id="errorEstadoLaboral" class="errorInput"><?= $this->errorEstadoLaboral ?></p>
+	            </div>
+	            
+				<div class="separadorH"></div>
+				
+				<div id="empresaActual" class="alterForm">
+	            	<h3>Entidad donde trabaja actualmente</h3>
+	            	
+	            	<div class="campo multi">
+	            		<label for="categoriaEmpleo">Categoría</label>
+	            		<select id="categoriaEmpleo" name="categoriaEmpleo">
+	    					<option></option>
+	    					<?
+	    					
+	    					foreach ( $this->categoriasEmpleoIDX as $clave => $categoriaEmpleoDO ){
+	    						?><option <?= ($this->alumnoDO->getFkCategoriaEmpleo() == $clave) ? 'selected="selected"' : '' ?> value="<?= $clave ?>"><?= $categoriaEmpleoDO->getVNombre() ?></option><?
+	    					}
+	    					
+	    					?>
+	    				</select>
+	            	</div>
+	            	
+	            	<div class="separadorH"></div>
+	            	
+	            	<div class="campo multi">
+	            		<label>Empresa con más de 250 trabajadores</label>
+	            		<label for="si250" class="alter">Si</label><input <?= ($this->alumnoDO->getBMas250Trabajadores() == '1' ) ? 'checked="checked"' : '' ?> class="radioOpt" id="si250" type="radio" name="trabajadores250" value="1"/>
+	            		<label for="no250" class="alter">No</label><input <?= ($this->alumnoDO->getBMas250Trabajadores() == '0' ) ? 'checked="checked"' : '' ?> class="radioOpt" id="no250" type="radio" name="trabajadores250" value="0"/>
+	            	</div>
+	            	
+	            	<div class="campo multi">
+	            		<label for="sectorEmpresaActual">Sector/Convenio</label>
+	            		<input class="campoTexto" type="text" name="sectorEmpresaActual" id="sectorEmpresaActual" value="<?= $this->alumnoDO->getVSectorEmpresaActual() ?>" />
+	            	</div>
+	            	
+	            	<div class="separadorH"></div>
+	            	
+	            	<div class="campo multi">
+	            		<label for="razonEmpresaActual">Razón social</label>
+	            		<input class="campoTexto enorme" type="text" name="razonEmpresaActual" id="razonEmpresaActual" value="<?= $this->alumnoDO->getVRazonSocialEmpresaActual() ?>" />
+	            	</div>
+	            	
+	            	<div class="campo multi">
+	            		<label for="cif">C.I.F.</label>
+	            		<input class="campoTexto mediano" type="text" name="cif" id="cif" value="<?= $this->alumnoDO->getVCifEmpresaActual() ?>" />
+	            	</div>
+	            	
+	            	<div class="separadorH"></div>
+	            	
+	            	<div class="campo multi">
+	            		<label for="domicilioEmpresaActual">Domicilio del centro de trabajo</label>
+	            		<input class="campoTexto enorme" type="text" name="domicilioEmpresaActual" id="domicilioEmpresaActual" value="<?= $this->alumnoDO->getVDomicilioCentroTrabajo() ?>"/>
+	            	</div>
+	            	
+	            	<div class="separadorH"></div>
+	            	
+	            	<div class="campo multi">
+	            		<label for="localidadEmpresaActual">Localidad</label>
+	            		<input class="campoTexto" type="text" name="localidadEmpresaActual" id="localidadEmpresaActual" value="<?= $this->alumnoDO->getVLocalidadCentroTrabajo() ?>"/>
+	            	</div>
+	
+	            	<div class="campo multi">
+	            		<label for="cpEmpresaActual">CP</label>
+	            		<input class="campoTexto pequeno" type="text" name="cpEmpresaActual" id="cpEmpresaActual" value="<?= $this->alumnoDO->getVCpCentroTrabajo() ?>"/>
+	            	</div>
+	            </div>
+	            
+	            <div class="separadorH"></div>
+	            
+	        </div>
     
     		<div id="paro" class="alterForm">
     			
@@ -419,41 +425,109 @@
 	            ?>
             </div>
 			
-			<div class="campo">
-				<label for="observaciones">Observaciones</label>
-		        <textarea name="observaciones" id="observaciones" ><?= $this->alumnoDO->getVObservaciones() ?></textarea>
-		    </div>
+			<div class="bloque">
 			
-			<div class="campo multi">
-	            <label for="cursosSeleccionados">Preinscripciones del alumno</label>
-	            
-	            <div class="contenedorMultiselect">
-	            	<a title="Ir a la ficha del curso" class="btnFicha" href="javascript:fichaCurso();hidePopups();"><span>ficha</span></a>
-		            <a title="Quitar curso" class="btnEliminar" href="javascript:ventanaConfirmacion('Confirmar','¿Está seguro que desea quitar el/los curso/s del alumno?', 'javascript:quitarCursoAlumno();hidePopups()')"><span>eliminar</span></a>
-		            <select name="cursos[]" multiple="multiple" id="cursosSeleccionados" class="campoTexto enorme multiple"><?
-						
-		            	foreach ( $this->cursosAlumnoCOL as $cursoAlumnoDO ){
-		            		
-		            		?><option value="<?= $cursoAlumnoDO->getFkCurso() ?>"><?
-		            		
-		            			foreach ( $this->cursosCOL as $cursoDO ){
-		            				
-		            				if ( $cursoDO->getIdCurso() == $cursoAlumnoDO->getFkCurso() ){
-		            					echo $cursoDO->getVNombre(); 
-		            				}
-		            				
-		            			}
-		            			 
-		            		?></option><?
-		            		
-		            	}
-		            	
-		            ?></select>
-	            </div>
-	            <p class="tooltip" id="cursosSeleccionadosTooltip">Se pueden seleccionar varios cursos manteniendo pulsada la tecla CTRL</p>
-        	</div>
+				<div class="campo">
+					<label for="observaciones">Observaciones</label>
+			        <textarea name="observaciones" id="observaciones" ><?= $this->alumnoDO->getVObservaciones() ?></textarea>
+			    </div>
+			    
+			</div>
+
+			<div class="bloque">
 			
-			<div class="separadorH"></div>
+				<div class="bloque">
+		            <h3>Listado de cursos a los que se puede preinscribir</h3>
+		            <p class="subtitulo">Se han filtrado los cursos de los que es alumno o candidato. Para ver esta información visita la <a href="/alumno/ficha.html/<?= $this->alumnoDO->getIdPersona() ?>">ficha</a> del alumno.</p>
+		        </div>
+			
+				<div class="campo multi">
+				
+		            <div class="contenedorMultiselect" id="cursosEdicion">
+		            	<a title="Ir a la ficha del curso" class="btnFicha" href="javascript:fichaCurso();hidePopups();"><span>ficha</span></a>
+			            <a title="Quitar curso" class="btnEliminar" href="javascript:ventanaConfirmacion('Confirmar','¿Está seguro que desea quitar el/los curso/s del alumno?', 'javascript:quitarCursoAlumno();hidePopups()')"><span>eliminar</span></a>
+			            <select name="cursos[]" multiple="multiple" id="cursosSeleccionados" class="campoTexto grande multiple"><?
+							
+			            	foreach ( $this->cursosAlumnoCOL as $cursoAlumnoDO ){
+			            		
+			            		?><option value="<?= $cursoAlumnoDO->getFkCurso() ?>"><?
+			            		
+			            			foreach ( $this->cursosCOL as $cursoDO ){
+			            				
+			            				if ( $cursoDO->getIdCurso() == $cursoAlumnoDO->getFkCurso() ){
+			            					echo $cursoDO->getVNombre(); 
+			            				}
+			            				
+			            			}
+			            			 
+			            		?></option><?
+			            		
+			            	}
+			            	
+			            ?></select>
+		            </div>
+		            <p class="tooltip" id="cursosSeleccionadosTooltip">Se pueden seleccionar varios cursos manteniendo pulsada la tecla CTRL</p>
+	        	</div>
+	        	
+				<?
+			    	if ( count($this->cursosPreinscribiblesCOL) > 0 ){
+			    ?>
+			    
+			    <div class="campo multi">
+			    	<div class="scroll">
+				    	<table class="listado selector">
+						    <thead>
+								<tr>
+									<th>Nombre</th>
+									<th>Categoria</th>
+									<th>Inicio</th>
+									<th>Fin</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								<?php
+								
+									$contador = 0;
+									foreach ( $this->cursosPreinscribiblesCOL as $cursoDO ){
+										
+									    //$cursoDO = new TblCurso($db);
+										$clase = ( ($contador%2)==0 )?'':'class="alter"';
+										$contador++;
+										
+										?>
+										<tr	<?= $clase ?> >
+											<td><a href="/curso/ficha.html/<?= $cursoDO->getIdCurso() ?>"><?= $cursoDO->getVNombre() ?></a></td>
+											<td><?= $this->categoriasIDX[$cursoDO->getFkCategoria()] ?></td>
+											<?php
+											
+											$fechaIni = OwlDate::getDiaMesAno($cursoDO->getDInicio());
+											( $fechaIni == '01/01/1970' ) ? $fechaIni = '-' : '';
+											$fechaFin = OwlDate::getDiaMesAno($cursoDO->getDFin());
+											( $fechaFin == '01/01/1970' ) ? $fechaFin = '-' : '';
+											
+											?>
+											<td><?= $fechaIni ?></td>
+											<td><?= $fechaFin ?></td>
+											<td><a href="javascript:comprobarCandidatoCurso('<?= $this->alumnoDO->getIdPersona() ?>','<?= $cursoDO->getIdCurso() ?>', '<?= $cursoDO->getVNombre() ?>')" class="btnAnadir" title="Asignar al alumno"><span>añadir</span></a></td>
+										</tr>
+										<?
+										
+									}
+									
+								?>
+							</tbody>
+						</table>
+					</div>
+			    </div>
+			    
+			    <div class="separadorH"></div>
+			    
+			    <?
+			    	}
+			    ?>	        	
+	        	
+	        </div>
 			
             <input class="oculto" type="submit" value="Guardar" />
             
@@ -466,70 +540,11 @@
         </fieldset>
     </form>
     
-    <?
-    	if ( count($this->cursosPreinscribiblesCOL) > 0 ){
-    ?>
-    <h3>Listado de cursos a los que se puede preinscribir</h3>
-    <p class="subtitulo">Se han filtrado los cursos de los que es alumno o candidato. Para ver esta información visita la <a href="/alumno/ficha.html/<?= $this->alumnoDO->getIdPersona() ?>">ficha</a> del alumno.</p>
-    <div class="campo multi">
-    	<div class="scroll">
-	    	<table class="listado">
-    <thead>
-		<tr>
-			<th>Nombre</th>
-			<th>Categoria</th>
-			<th>Inicio</th>
-			<th>Fin</th>
-			<th></th>
-		</tr>
-	</thead>
-	<tbody>
-		<?php
-		
-			$contador = 0;
-			foreach ( $this->cursosPreinscribiblesCOL as $cursoDO ){
-				
-			    //$cursoDO = new TblCurso($db);
-				$clase = ( ($contador%2)==0 )?'':'class="alter"';
-				$contador++;
-				
-				?>
-				<tr	<?= $clase ?> >
-					<td><a href="/curso/ficha.html/<?= $cursoDO->getIdCurso() ?>"><?= $cursoDO->getVNombre() ?></a></td>
-					<td><?= $this->categoriasIDX[$cursoDO->getFkCategoria()] ?></td>
-					<?php
-					
-					$fechaIni = OwlDate::getDiaMesAno($cursoDO->getDInicio());
-					( $fechaIni == '01/01/1970' ) ? $fechaIni = '-' : '';
-					$fechaFin = OwlDate::getDiaMesAno($cursoDO->getDFin());
-					( $fechaFin == '01/01/1970' ) ? $fechaFin = '-' : '';
-					
-					?>
-					<td><?= $fechaIni ?></td>
-					<td><?= $fechaFin ?></td>
-					<td><a href="javascript:comprobarCandidatoCurso('<?= $this->alumnoDO->getIdPersona() ?>','<?= $cursoDO->getIdCurso() ?>', '<?= $cursoDO->getVNombre() ?>')" class="btnAnadir" title="Asignar al alumno"><span>añadir</span></a></td>
-				</tr>
-				<?
-				
-			}
-			
-		?>
-	</tbody>
-</table>
-		</div>
-    </div>
-    <?
-    	}
-    ?>
-    
-    <div class="separadorH"></div>
-     
-    <p>* Campos obligatorios</p>
-<?
+    <div class="separadorH"></div><?
 	
 	} else {
 	
-	?><h3>No se ha encontrado el alumno</h3><?
+	?><h3 class="noResult">No se ha encontrado el alumno</h3><?
 	
 	}
 

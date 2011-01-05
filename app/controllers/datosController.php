@@ -1,5 +1,6 @@
 <?php
 require_once 'OwlPaginator.inc';
+require_once 'helper/OwlString.inc';
 
 require_once CLASSESDIR . 'PplController.inc';
 
@@ -10,6 +11,14 @@ require_once MODELDIR . 'TblEstadoCivil.inc';
 require_once MODELDIR . 'TblEstadoLaboral.inc';
 require_once MODELDIR . 'TblModalidad.inc';
 require_once MODELDIR . 'TblNivelEstudios.inc';
+require_once MODELDIR . 'TblEstudio.inc';
+require_once MODELDIR . 'TblRequisito.inc';
+require_once MODELDIR . 'TblSector.inc';
+require_once MODELDIR . 'TblTipoIdentificacion.inc';
+require_once MODELDIR . 'TblTipoConvocatoria.inc';
+require_once MODELDIR . 'TblEstadoPlan.inc';
+require_once MODELDIR . 'TblTipoPlan.inc';
+
 
 class datosController extends PplController{
 	
@@ -703,6 +712,973 @@ class datosController extends PplController{
 	}
 	
 	/**
+	 * Control y edición de paises
+	 */
+	public function paisAction(){
+		
+		// 1. Obtenemos el objeto en caso de ser una edición
+		$idPais = $this->getParam(0);
+		if ( !is_null($idPais) ){
+			$paisDO = TblPais::findByPrimaryKey($this->db, $idPais);
+			$this->view->paisDO = $paisDO;
+		}
+		
+		// 2. Comprobamos si se ha enviado el formulario
+        if ( array_key_exists(md5('send'), $_POST) ){
+        	
+        	$correcto = true;
+        	$nombre = $this->helper->getAndEscape('nombre');
+        	$iso = $this->helper->getAndEscape('iso');
+        	        	
+        	if ( empty($nombre) ){
+        		$correcto = false;
+        		$this->view->errorNombre = "El nombre no puede estar vacío";
+        	}
+        	        	
+        	if ( empty($iso) ){
+        		$correcto = false;
+        		$this->view->errorIso = "El iso no puede estar vacío";
+        	}
+        	
+        	if ( $correcto ){
+        	
+        		$this->db->begin();
+        		
+	        	// 2.1. Alta
+	        	if ( $correcto && $_POST[md5('send')] == md5('alta') ) {
+	        		$paisDO = new TblPais($this->db);
+	        		$paisDO->setVIso($iso);
+	        		$paisDO->setVNombre($nombre);
+	        		if ( !$paisDO->insert() ){
+	        			$correcto = false;
+	        		}
+	        	}
+	        	
+	        	// 2.2. Editar
+	        	if ( $correcto && $_POST[md5('send')] == md5('editar') ) {
+	        		$paisDO = TblPais::findByPrimaryKey($this->db, $idPais);
+	        		$paisDO->setVIso($iso);
+	        		$paisDO->setVNombre($nombre);
+	        		if ( !$paisDO->update() ){
+	        			$correcto = false;
+	        		}
+	        		// Pasamos a la vista el objeto editado
+	        		$this->view->paisDO = $paisDO;
+	        	}
+	        	
+	        	if ( $correcto ){
+	        		$this->db->commit();
+	        	} else {
+	        		$this->db->rollback();
+	        	}
+	        	
+        	}
+        	
+        }
+		
+		// 3. Obtenemos los datos del paginador
+    	$aliasCampos = array(
+    		'nom' 	=> 'vNombre_es',
+    		'iso' 	=> 'vIso'
+    	);
+    	
+    	if ( !empty($_REQUEST) && array_key_exists('o', $_GET) & array_key_exists('ob', $_GET) ){
+        	$order = $this->helper->escapeInjection($_GET['o']);
+        	$orderBy = $aliasCampos[$_GET['ob']];
+        	$aliasOrderBy = $_GET['ob'];
+        } else {
+    		$order	 = 'asc';
+    		$orderBy = 'vNombre_es';
+    		$aliasOrderBy = 'nom';
+        }
+        
+        // Envío el orden a la vista
+        if ( $order == 'asc' ){
+        	$this->view->order = 'desc';
+        } else {
+        	$this->view->order = 'asc';
+        }
+        $this->view->orderBy = $aliasOrderBy;
+		
+        // Se instancia y configura el paginador
+        $paginador = new OwlPaginator($this->db, null, 'tblPais', $this->helper);
+        $paginador->setItemsPorPagina(10);
+        $paginaActual = $this->helper->escapeInjection($this->helper->get('p'));
+        $paginaActual = empty($paginaActual) ? 1 : $paginaActual;
+        $paginador->setPaginaActual($paginaActual);
+        $paginador->setOrderBy($orderBy);
+        $paginador->setOrder($order);
+        
+         // Obtengo los estadosLaborales
+        $paisesCOL = $paginador->getItemCollection();
+        
+        // 4. Lo enviamos todo a la vista
+        $this->view->paginador = $paginador->getPaginatorHtml();
+    	
+    	// Envío los estadosLaborales
+        $this->view->paisesCOL = $paisesCOL;		
+		
+	}
+	
+	
+	
+	/**
+	 * Control y edición de provincias
+	 */
+	public function provinciaAction(){
+		
+		// 1. Obtenemos el objeto en caso de ser una edición
+		$idProvincia = $this->getParam(0);
+		if ( !is_null($idProvincia) ){
+			$provinciaDO = TblProvincia::findByPrimaryKey($this->db, $idProvincia);
+			$this->view->provinciaDO = $provinciaDO;
+		}
+		
+		// 2. Comprobamos si se ha enviado el formulario
+        if ( array_key_exists(md5('send'), $_POST) ){
+        	
+        	$correcto = true;
+        	$nombre = $this->helper->getAndEscape('nombre');
+        	        	
+        	if ( empty($nombre) ){
+        		$correcto = false;
+        		$this->view->errorNombre = "El nombre no puede estar vacío";
+        	}
+        	
+        	if ( $correcto ){
+        	
+        		$this->db->begin();
+        		
+	        	// 2.1. Alta
+	        	if ( $correcto && $_POST[md5('send')] == md5('alta') ) {
+	        		$provinciaDO = new TblPais($this->db);
+	        		$provinciaDO->setVNombreEs($nombre);
+	        		if ( !$provinciaDO->insert() ){
+	        			$correcto = false;
+	        		}
+	        	}
+	        	
+	        	// 2.2. Editar
+	        	if ( $correcto && $_POST[md5('send')] == md5('editar') ) {
+	        		$provinciaDO = TblProvincia::findByPrimaryKey($this->db, $idProvincia);
+	        		$provinciaDO->setVNombreEs($nombre);
+	        		if ( !$provinciaDO->update() ){
+	        			$correcto = false;
+	        		}
+	        		// Pasamos a la vista el objeto editado
+	        		$this->view->provinciaDO = $provinciaDO;
+	        	}
+	        	
+	        	if ( $correcto ){
+	        		$this->db->commit();
+	        	} else {
+	        		$this->db->rollback();
+	        	}
+	        	
+        	}
+        	
+        }
+		
+		// 3. Obtenemos los datos del paginador
+    	$aliasCampos = array(
+    		'nom' 	=> 'vNombre_es',
+    	);
+    	
+    	if ( !empty($_REQUEST) && array_key_exists('o', $_GET) & array_key_exists('ob', $_GET) ){
+        	$order = $this->helper->escapeInjection($_GET['o']);
+        	$orderBy = $aliasCampos[$_GET['ob']];
+        	$aliasOrderBy = $_GET['ob'];
+        } else {
+    		$order	 = 'asc';
+    		$orderBy = 'vNombre_es';
+    		$aliasOrderBy = 'nom';
+        }
+        
+        // Envío el orden a la vista
+        if ( $order == 'asc' ){
+        	$this->view->order = 'desc';
+        } else {
+        	$this->view->order = 'asc';
+        }
+        $this->view->orderBy = $aliasOrderBy;
+		
+        // Se instancia y configura el paginador
+        $paginador = new OwlPaginator($this->db, null, 'tblProvincia', $this->helper);
+        $paginador->setItemsPorPagina(10);
+        $paginaActual = $this->helper->escapeInjection($this->helper->get('p'));
+        $paginaActual = empty($paginaActual) ? 1 : $paginaActual;
+        $paginador->setPaginaActual($paginaActual);
+        $paginador->setOrderBy($orderBy);
+        $paginador->setOrder($order);
+        
+         // Obtengo los estadosLaborales
+        $provinciasCOL = $paginador->getItemCollection();
+        
+        // 4. Lo enviamos todo a la vista
+        $this->view->paginador = $paginador->getPaginatorHtml();
+    	
+    	// Envío los estadosLaborales
+        $this->view->provinciasCOL = $provinciasCOL;		
+		
+	}
+	
+	
+	/**
+	 * Niveles de estudios
+	 */
+	public function estudiosAction(){
+		
+		// Edicion
+		$clave = $this->getParam(0);
+		$sent = intval($this->helper->getAndEscape('sent'));
+		
+		if ($estudioDO = TblEstudio::findByPrimaryKey($this->db, $clave)){
+			
+			$this->view->nombre = $estudioDO->getVNombre();
+			$this->view->desc = $estudioDO->getVDescripcion();
+
+			$this->view->editar = true;
+			
+			if ($sent == 1){
+			
+				$estudioDO->setVNombre($this->helper->get('nombre'));
+				$estudioDO->setVDescripcion($this->helper->get('desc'));
+				
+				if (!$estudioDO->update()){
+					
+	   				$this->view->popup = array(
+					    'estado' => 'ko',
+					    'titulo' => 'Error',
+					    'mensaje'=> 'Ha ocurrido un error al actualizar el estudio. Inténtelo de nuevo en unos instantes por favor.<br/>Si el problema persiste póngase en contacto con el administrador. Muchas gracias.',
+					    'url'=> '',
+					);	
+	
+					return;
+					
+				} else {
+					
+					$this->redirectTo('datos','estudios');
+					return;
+					
+				}
+				
+			}
+				
+			
+		}
+		
+		// Alta
+		if ($sent == 1){
+			
+			$estudioDO = new TblEstudio($this->db);
+			
+			$estudioDO->setVNombre($this->helper->getAndEscape('nombre'));
+			$estudioDO->setVDescripcion($this->helper->getAndEscape('desc'));
+			
+			if (!$estudioDO->insert()){
+				
+   				$this->view->popup = array(
+				    'estado' => 'ko',
+				    'titulo' => 'Error',
+				    'mensaje'=> 'Ha ocurrido un error al insertar el estudio. Inténtelo de nuevo en unos instantes por favor.<br/>Si el problema persiste póngase en contacto con el administrador. Muchas gracias.',
+				    'url'=> '',
+				);	
+
+				return;
+				
+			} else {
+				
+				$this->redirectTo('datos','estudios');
+				return;
+				
+			}			
+			
+		}
+		
+		$aliasCampos = array(
+    		'nom' 	=> 'vNombre',
+    		'desc' 	=> 'vDescripcion',
+    	);
+    	
+    	if ( !empty($_REQUEST) && array_key_exists('o', $_GET) & array_key_exists('ob', $_GET) ){
+        	$order = $this->helper->escapeInjection($_GET['o']);
+        	$orderBy = $aliasCampos[$_GET['ob']];
+        	$aliasOrderBy = $_GET['ob'];
+        } else {
+    		$order	 = 'asc';
+    		$orderBy = 'vNombre';
+    		$aliasOrderBy = 'nom';
+        }
+
+        // Envío el orden a la vista
+        if ( $order == 'asc' ){
+        	$this->view->order = 'desc';
+        } else {
+        	$this->view->order = 'asc';
+        }
+        $this->view->orderBy = $aliasOrderBy;        
+		
+        // Se instancia y configura el paginador
+        $paginador = new OwlPaginator($this->db, null, 'tblEstudio', $this->helper);
+        $paginador->setItemsPorPagina(10);
+        $paginaActual = $this->helper->escapeInjection($this->helper->get('p'));
+        $paginaActual = empty($paginaActual) ? 1 : $paginaActual;
+        $paginador->setPaginaActual($paginaActual);
+        $paginador->setOrderBy($orderBy);
+        $paginador->setOrder($order);	
+
+        $this->view->estudiosCOL = $paginador->getItemCollection();
+        $this->view->paginador = $paginador->getPaginatorHtml();
+        
+	}
+	
+	
+	/**
+	 * Requisitos
+	 */
+	public function requisitoAction(){
+		
+		$clave = $this->getParam(0);
+		$sent = intval($this->helper->getAndEscape('sent'));
+		
+		if ($requisitoDO = TblRequisito::findByPrimaryKey($this->db, $clave)){
+			
+			$this->view->nombre = $requisitoDO->getVNombre();
+			$this->view->desc = $requisitoDO->getVDescripcion();
+
+			$this->view->editar = true;
+			
+			if ($sent == 1){
+			
+				$requisitoDO->setVNombre($this->helper->get('nombre'));
+				$requisitoDO->setVDescripcion($this->helper->get('desc'));
+				
+				if (!$requisitoDO->update()){
+					
+	   				$this->view->popup = array(
+					    'estado' => 'ko',
+					    'titulo' => 'Error',
+					    'mensaje'=> 'Ha ocurrido un error al actualizar el requisito. Inténtelo de nuevo en unos instantes por favor.<br/>Si el problema persiste póngase en contacto con el administrador. Muchas gracias.',
+					    'url'=> '',
+					);	
+	
+					return;
+					
+				} else {
+					
+					$this->redirectTo('datos','requisito');
+					return;
+					
+				}
+				
+			}
+				
+			
+		}	
+
+		// Alta
+		if ($sent == 1){
+			
+			$requisitoDO = new TblRequisito($this->db);
+			
+			$requisitoDO->setVNombre($this->helper->getAndEscape('nombre'));
+			$requisitoDO->setVDescripcion($this->helper->getAndEscape('desc'));
+			
+			if (!$requisitoDO->insert()){
+				
+   				$this->view->popup = array(
+				    'estado' => 'ko',
+				    'titulo' => 'Error',
+				    'mensaje'=> 'Ha ocurrido un error al insertar el requisito. Inténtelo de nuevo en unos instantes por favor.<br/>Si el problema persiste póngase en contacto con el administrador. Muchas gracias.',
+				    'url'=> '',
+				);	
+
+				return;
+				
+			} else {
+				
+				$this->redirectTo('datos','requisito');
+				return;
+				
+			}			
+			
+		}		
+		
+		$aliasCampos = array(
+    		'nom' 	=> 'vNombre',
+    		'desc' 	=> 'vDescripcion',
+    	);
+    	
+    	if ( !empty($_REQUEST) && array_key_exists('o', $_GET) & array_key_exists('ob', $_GET) ){
+        	$order = $this->helper->escapeInjection($_GET['o']);
+        	$orderBy = $aliasCampos[$_GET['ob']];
+        	$aliasOrderBy = $_GET['ob'];
+        } else {
+    		$order	 = 'asc';
+    		$orderBy = 'vNombre';
+    		$aliasOrderBy = 'nom';
+        }
+
+        // Envío el orden a la vista
+        if ( $order == 'asc' ){
+        	$this->view->order = 'desc';
+        } else {
+        	$this->view->order = 'asc';
+        }
+        $this->view->orderBy = $aliasOrderBy;        
+		
+        // Se instancia y configura el paginador
+        $paginador = new OwlPaginator($this->db, null, 'tblRequisito', $this->helper);
+        $paginador->setItemsPorPagina(10);
+        $paginaActual = $this->helper->escapeInjection($this->helper->get('p'));
+        $paginaActual = empty($paginaActual) ? 1 : $paginaActual;
+        $paginador->setPaginaActual($paginaActual);
+        $paginador->setOrderBy($orderBy);
+        $paginador->setOrder($order);
+
+        $this->view->requisitosCOL = $paginador->getItemCollection();
+        $this->view->paginador = $paginador->getPaginatorHtml();
+		
+	}
+
+	
+	/**
+	 * Sectores
+	 */
+	public function sectorAction(){
+		
+		$clave = $this->getParam(0);
+		$sent = intval($this->helper->getAndEscape('sent'));
+		
+		if ($sectorDO = TblSector::findByPrimaryKey($this->db, $clave)){
+			
+			$this->view->nombre = $sectorDO->getVNombre();
+			$this->view->desc = $sectorDO->getVDescripcion();
+
+			$this->view->editar = true;
+			
+			if ($sent == 1){
+			
+				$sectorDO->setVNombre($this->helper->get('nombre'));
+				$sectorDO->setVDescripcion($this->helper->get('desc'));
+				
+				if (!$sectorDO->update()){
+					
+	   				$this->view->popup = array(
+					    'estado' => 'ko',
+					    'titulo' => 'Error',
+					    'mensaje'=> 'Ha ocurrido un error al actualizar el sector. Inténtelo de nuevo en unos instantes por favor.<br/>Si el problema persiste póngase en contacto con el administrador. Muchas gracias.',
+					    'url'=> '',
+					);	
+	
+					return;
+					
+				} else {
+					
+					$this->redirectTo('datos','sector');
+					return;
+					
+				}
+				
+			}
+				
+			
+		}	
+
+		// Alta
+		if ($sent == 1){
+			
+			$sectorDO = new TblSector($this->db);
+			
+			$sectorDO->setVNombre($this->helper->getAndEscape('nombre'));
+			$sectorDO->setVDescripcion($this->helper->getAndEscape('desc'));
+			
+			if (!$sectorDO->insert()){
+				
+   				$this->view->popup = array(
+				    'estado' => 'ko',
+				    'titulo' => 'Error',
+				    'mensaje'=> 'Ha ocurrido un error al insertar el sector. Inténtelo de nuevo en unos instantes por favor.<br/>Si el problema persiste póngase en contacto con el administrador. Muchas gracias.',
+				    'url'=> '',
+				);	
+
+				return;
+				
+			} else {
+				
+				$this->redirectTo('datos','sector');
+				return;
+				
+			}			
+			
+		}		
+		
+		$aliasCampos = array(
+    		'nom' 	=> 'vNombre',
+    		'desc' 	=> 'vDescripcion',
+    	);
+    	
+    	if ( !empty($_REQUEST) && array_key_exists('o', $_GET) & array_key_exists('ob', $_GET) ){
+        	$order = $this->helper->escapeInjection($_GET['o']);
+        	$orderBy = $aliasCampos[$_GET['ob']];
+        	$aliasOrderBy = $_GET['ob'];
+        } else {
+    		$order	 = 'asc';
+    		$orderBy = 'vNombre';
+    		$aliasOrderBy = 'nom';
+        }
+
+        // Envío el orden a la vista
+        if ( $order == 'asc' ){
+        	$this->view->order = 'desc';
+        } else {
+        	$this->view->order = 'asc';
+        }
+        $this->view->orderBy = $aliasOrderBy;        
+		
+        // Se instancia y configura el paginador
+        $paginador = new OwlPaginator($this->db, null, 'tblSector', $this->helper);
+        $paginador->setItemsPorPagina(10);
+        $paginaActual = $this->helper->escapeInjection($this->helper->get('p'));
+        $paginaActual = empty($paginaActual) ? 1 : $paginaActual;
+        $paginador->setPaginaActual($paginaActual);
+        $paginador->setOrderBy($orderBy);
+        $paginador->setOrder($order);
+
+        $this->view->sectoresCOL = $paginador->getItemCollection();
+        $this->view->paginador = $paginador->getPaginatorHtml();		
+		
+	}
+	
+	
+	/**
+	 * Tipos de identificaciones
+	 */
+	public function identificacionAction(){
+		
+		
+		$clave = $this->getParam(0);
+		$sent = intval($this->helper->getAndEscape('sent'));
+		
+		if ($identificacionDO = TblTipoIdentificacion::findByPrimaryKey($this->db, $clave)){
+			
+			$this->view->nombre = $identificacionDO->getVNombre();
+			$this->view->editar = true;
+			
+			if ($sent == 1){
+			
+				$identificacionDO->setVNombre($this->helper->get('nombre'));
+				
+				if (!$identificacionDO->update()){
+					
+	   				$this->view->popup = array(
+					    'estado' => 'ko',
+					    'titulo' => 'Error',
+					    'mensaje'=> 'Ha ocurrido un error al actualizar el tipo de identificacion. Inténtelo de nuevo en unos instantes por favor.<br/>Si el problema persiste póngase en contacto con el administrador. Muchas gracias.',
+					    'url'=> '',
+					);	
+	
+					return;
+					
+				} else {
+					
+					$this->redirectTo('datos','identificacion');
+					return;
+					
+				}
+				
+			}
+				
+			
+		}	
+
+		// Alta
+		if ($sent == 1){
+			
+			$identificacionDO = new TblTipoIdentificacion($this->db);
+			
+			$identificacionDO->setVNombre($this->helper->getAndEscape('nombre'));
+			
+			if (!$identificacionDO->insert()){
+				
+   				$this->view->popup = array(
+				    'estado' => 'ko',
+				    'titulo' => 'Error',
+				    'mensaje'=> 'Ha ocurrido un error al insertar el tipo de identificacion. Inténtelo de nuevo en unos instantes por favor.<br/>Si el problema persiste póngase en contacto con el administrador. Muchas gracias.',
+				    'url'=> '',
+				);	
+
+				return;
+				
+			} else {
+				
+				$this->redirectTo('datos','identificacion');
+				return;
+				
+			}			
+			
+		}		
+		
+		$aliasCampos = array(
+    		'nom' 	=> 'vNombre',
+    	);
+    	
+    	if ( !empty($_REQUEST) && array_key_exists('o', $_GET) & array_key_exists('ob', $_GET) ){
+        	$order = $this->helper->escapeInjection($_GET['o']);
+        	$orderBy = $aliasCampos[$_GET['ob']];
+        	$aliasOrderBy = $_GET['ob'];
+        } else {
+    		$order	 = 'asc';
+    		$orderBy = 'vNombre';
+    		$aliasOrderBy = 'nom';
+        }
+
+        // Envío el orden a la vista
+        if ( $order == 'asc' ){
+        	$this->view->order = 'desc';
+        } else {
+        	$this->view->order = 'asc';
+        }
+        $this->view->orderBy = $aliasOrderBy;        
+		
+        // Se instancia y configura el paginador
+        $paginador = new OwlPaginator($this->db, null, 'tblTipoIdentificacion', $this->helper);
+        $paginador->setItemsPorPagina(10);
+        $paginaActual = $this->helper->escapeInjection($this->helper->get('p'));
+        $paginaActual = empty($paginaActual) ? 1 : $paginaActual;
+        $paginador->setPaginaActual($paginaActual);
+        $paginador->setOrderBy($orderBy);
+        $paginador->setOrder($order);
+
+        $this->view->identificacionesCOL = $paginador->getItemCollection();
+        $this->view->paginador = $paginador->getPaginatorHtml();		
+		
+	}
+	
+	
+	/**
+	 * Tipos de convocatoria
+	 */
+	public function tiposConvocatoriaAction(){
+		
+		$clave = $this->getParam(0);
+		$sent = intval($this->helper->getAndEscape('sent'));
+		
+		if ($tipoConvocatoriaDO = TblTipoConvocatoria::findByPrimaryKey($this->db, $clave)){
+			
+			$this->view->tipoConvocatoriaDO = $tipoConvocatoriaDO;
+			$this->view->nombre = $tipoConvocatoriaDO->getVNombre();
+			$this->view->editar = true;
+			
+			if ($sent == 1){
+			
+				$tipoConvocatoriaDO->setVNombre($this->helper->get('nombre'));
+				$tipoConvocatoriaDO->setVDescripcion($this->helper->get('descripcion'));
+				
+				if (!$tipoConvocatoriaDO->update()){
+					
+	   				$this->view->popup = array(
+					    'estado' => 'ko',
+					    'titulo' => 'Error',
+					    'mensaje'=> 'Ha ocurrido un error al actualizar el tipo de convocatoria. Inténtelo de nuevo en unos instantes por favor. Muchas gracias.',
+					    'url'=> '',
+					);
+	
+					return;
+					
+				} else {
+					
+					
+					$this->redirectTo('datos','tiposConvocatoria');
+					return;
+					
+				}
+				
+			}			
+			
+		}
+		
+		// Alta
+		if ($sent == 1){
+			
+			$tipoConvocatoriaDO = new TblTipoConvocatoria($this->db);
+			
+			$tipoConvocatoriaDO->setVNombre($this->helper->getAndEscape('nombre'));
+			
+			if (!$tipoConvocatoriaDO->insert()){
+				
+   				$this->view->popup = array(
+				    'estado' => 'ko',
+				    'titulo' => 'Error',
+				    'mensaje'=> 'Ha ocurrido un error al insertar el tipo de convocatoria. Inténtelo de nuevo en unos instantes por favor.<br/> Muchas gracias.',
+				    'url'=> '',
+				);	
+
+				return;
+				
+			} else {
+				
+				$this->redirectTo('datos','tiposConvocatoria');
+				return;
+				
+			}			
+			
+		}
+
+		$aliasCampos = array(
+    		'nom' 	=> 'vNombre',
+    		'desc' 	=> 'vDescripcion',
+    	);
+    	
+    	if ( !empty($_REQUEST) && array_key_exists('o', $_GET) & array_key_exists('ob', $_GET) ){
+        	$order = $this->helper->escapeInjection($_GET['o']);
+        	$orderBy = $aliasCampos[$_GET['ob']];
+        	$aliasOrderBy = $_GET['ob'];
+        } else {
+    		$order	 = 'asc';
+    		$orderBy = 'vNombre';
+    		$aliasOrderBy = 'nom';
+        }
+
+        // Envío el orden a la vista
+        if ( $order == 'asc' ){
+        	$this->view->order = 'desc';
+        } else {
+        	$this->view->order = 'asc';
+        }
+        $this->view->orderBy = $aliasOrderBy;        
+		
+        // Se instancia y configura el paginador
+        $paginador = new OwlPaginator($this->db, null, 'tblTipoConvocatoria', $this->helper);
+        $paginador->setItemsPorPagina(10);
+        $paginaActual = $this->helper->escapeInjection($this->helper->get('p'));
+        $paginaActual = empty($paginaActual) ? 1 : $paginaActual;
+        $paginador->setPaginaActual($paginaActual);
+        $paginador->setOrderBy($orderBy);
+        $paginador->setOrder($order);
+
+        $this->view->tiposConvocatoriaCOL = $paginador->getItemCollection();
+        $this->view->paginador = $paginador->getPaginatorHtml();		
+		
+		
+	}
+	
+	
+	/**
+	 * Estados de planes 
+	 */
+	public function estadoplanAction(){
+		
+		$clave = $this->getParam(0);
+		$sent = intval($this->helper->getAndEscape('sent'));
+		
+		if ($estadoPlanDO = TblEstadoPlan::findByPrimaryKey($this->db, $clave)){
+			
+			$this->view->estadoPlanDO = $estadoPlanDO;
+			$this->view->nombre = $estadoPlanDO->getVNombre();
+			$this->view->editar = true;
+			
+			if ($sent == 1){
+			
+				$estadoPlanDO->setVNombre($this->helper->get('nombre'));
+				$estadoPlanDO->setVDescripcion($this->helper->get('descripcion'));
+				
+				if (!$estadoPlanDO->update()){
+					
+	   				$this->view->popup = array(
+					    'estado' => 'ko',
+					    'titulo' => 'Error',
+					    'mensaje'=> 'Ha ocurrido un error al actualizar el estado de plan. Inténtelo de nuevo en unos instantes por favor. Muchas gracias.',
+					    'url'=> '',
+					);
+	
+					return;
+					
+				} else {
+					
+					
+					$this->redirectTo('datos','estadoplan');
+					return;
+					
+				}
+				
+			}			
+			
+		}
+		
+		// Alta
+		if ($sent == 1){
+			
+			$estadoPlanDO = new TblEstadoPlan($this->db);
+			
+			$estadoPlanDO->setVNombre($this->helper->getAndEscape('nombre'));
+			$estadoPlanDO->setVDescripcion($this->helper->getAndEscape('descripcion'));
+			
+			if (!$estadoPlanDO->insert()){
+				
+   				$this->view->popup = array(
+				    'estado' => 'ko',
+				    'titulo' => 'Error',
+				    'mensaje'=> 'Ha ocurrido un error al insertar el estado de plan. Inténtelo de nuevo en unos instantes por favor.<br/> Muchas gracias.',
+				    'url'=> '',
+				);	
+
+				return;
+				
+			} else {
+				
+				$this->redirectTo('datos','estadoplan');
+				return;
+				
+			}			
+			
+		}
+
+		$aliasCampos = array(
+    		'nom' 	=> 'vNombre',
+    		'desc' 	=> 'vDescripcion',
+    	);
+    	
+    	if ( !empty($_REQUEST) && array_key_exists('o', $_GET) & array_key_exists('ob', $_GET) ){
+        	$order = $this->helper->escapeInjection($_GET['o']);
+        	$orderBy = $aliasCampos[$_GET['ob']];
+        	$aliasOrderBy = $_GET['ob'];
+        } else {
+    		$order	 = 'asc';
+    		$orderBy = 'vNombre';
+    		$aliasOrderBy = 'nom';
+        }
+
+        // Envío el orden a la vista
+        if ( $order == 'asc' ){
+        	$this->view->order = 'desc';
+        } else {
+        	$this->view->order = 'asc';
+        }
+        $this->view->orderBy = $aliasOrderBy;        
+		
+        // Se instancia y configura el paginador
+        $paginador = new OwlPaginator($this->db, null, 'tblEstadoPlan', $this->helper);
+        $paginador->setItemsPorPagina(10);
+        $paginaActual = $this->helper->escapeInjection($this->helper->get('p'));
+        $paginaActual = empty($paginaActual) ? 1 : $paginaActual;
+        $paginador->setPaginaActual($paginaActual);
+        $paginador->setOrderBy($orderBy);
+        $paginador->setOrder($order);
+
+        $this->view->estadosPlanCOL = $paginador->getItemCollection();
+        $this->view->paginador = $paginador->getPaginatorHtml();				
+		
+	}
+	
+	
+	/**
+	 * Tipos de plan
+	 */
+	public function tipoplanAction(){
+		
+		$clave = $this->getParam(0);
+		$sent = intval($this->helper->getAndEscape('sent'));
+		
+		if ($tipoPlanDO = TblTipoPlan::findByPrimaryKey($this->db, $clave)){
+			
+			$this->view->tipoPlanDO = $tipoPlanDO;
+			$this->view->nombre = $tipoPlanDO->getVNombre();
+			$this->view->editar = true;
+			
+			if ($sent == 1){
+			
+				$tipoPlanDO->setVNombre($this->helper->get('nombre'));
+				$tipoPlanDO->setVDescripcion($this->helper->get('descripcion'));
+				
+				if (!$tipoPlanDO->update()){
+					
+	   				$this->view->popup = array(
+					    'estado' => 'ko',
+					    'titulo' => 'Error',
+					    'mensaje'=> 'Ha ocurrido un error al actualizar el tipo de plan. Inténtelo de nuevo en unos instantes por favor. Muchas gracias.',
+					    'url'=> '',
+					);
+	
+					return;
+					
+				} else {
+					
+					$this->redirectTo('datos','tipoplan');
+					return;
+					
+				}
+				
+			}			
+			
+		}
+		
+		// Alta
+		if ($sent == 1){
+			
+			$tipoPlanDO = new TblTipoPlan($this->db);
+			
+			$tipoPlanDO->setVNombre($this->helper->getAndEscape('nombre'));
+			$tipoPlanDO->setVDescripcion($this->helper->getAndEscape('descripcion'));
+			
+			if (!$tipoPlanDO->insert()){
+				
+   				$this->view->popup = array(
+				    'estado' => 'ko',
+				    'titulo' => 'Error',
+				    'mensaje'=> 'Ha ocurrido un error al insertar el tipo de plan. Inténtelo de nuevo en unos instantes por favor.<br/> Muchas gracias.',
+				    'url'=> '',
+				);	
+
+				return;
+				
+			} else {
+				
+				$this->redirectTo('datos','tipoplan');
+				return;
+				
+			}			
+			
+		}
+
+		$aliasCampos = array(
+    		'nom' 	=> 'vNombre',
+    		'desc' 	=> 'vDescripcion',
+    	);
+    	
+    	if ( !empty($_REQUEST) && array_key_exists('o', $_GET) & array_key_exists('ob', $_GET) ){
+        	$order = $this->helper->escapeInjection($_GET['o']);
+        	$orderBy = $aliasCampos[$_GET['ob']];
+        	$aliasOrderBy = $_GET['ob'];
+        } else {
+    		$order	 = 'asc';
+    		$orderBy = 'vNombre';
+    		$aliasOrderBy = 'nom';
+        }
+
+        // Envío el orden a la vista
+        if ( $order == 'asc' ){
+        	$this->view->order = 'desc';
+        } else {
+        	$this->view->order = 'asc';
+        }
+        $this->view->orderBy = $aliasOrderBy;        
+		
+        // Se instancia y configura el paginador
+        $paginador = new OwlPaginator($this->db, null, 'tblTipoPlan', $this->helper);
+        $paginador->setItemsPorPagina(10);
+        $paginaActual = $this->helper->escapeInjection($this->helper->get('p'));
+        $paginaActual = empty($paginaActual) ? 1 : $paginaActual;
+        $paginador->setPaginaActual($paginaActual);
+        $paginador->setOrderBy($orderBy);
+        $paginador->setOrder($order);
+
+        $this->view->tiposPlanCOL = $paginador->getItemCollection();
+        $this->view->paginador = $paginador->getPaginatorHtml();			
+		
+	}
+	
+/**
 	 * Elimina un elemento pasado por la url
 	 */
 	public function eliminarAction(){
@@ -745,6 +1721,42 @@ class datosController extends PplController{
 				case 'nivelEstudios':
 					$itemDO = TblNivelEstudios::findByPrimaryKey($this->db, $id);
 					break;
+
+				case 'pais':
+					$itemDO = TblPais::findByPrimaryKey($this->db, $id);
+					break;
+
+				case 'provincia':
+					$itemDO = TblProvincia::findByPrimaryKey($this->db, $id);
+					break;
+
+				case 'estudios':
+					$itemDO = TblEstudio::findByPrimaryKey($this->db, $id);
+					break;
+
+				case 'requisito':
+					$itemDO = TblRequisito::findByPrimaryKey($this->db, $id);
+					break;
+
+				case 'identificacion':
+					$itemDO = TblTipoIdentificacion::findByPrimaryKey($this->db, $id);
+					break;
+
+				case 'sector':
+					$itemDO = TblSector::findByPrimaryKey($this->db, $id);
+					break;
+
+				case 'tiposConvocatoria':
+					$itemDO = TblTipoConvocatoria::findByPrimaryKey($this->db, $id);
+					break;
+
+				case 'estadoplan':
+					$itemDO = TblEstadoPlan::findByPrimaryKey($this->db, $id);
+					break;
+
+				case 'tipoplan':
+					$itemDO = TblTipoPlan::findByPrimaryKey($this->db, $id);
+					break;
 				
 			}
 			
@@ -758,108 +1770,7 @@ class datosController extends PplController{
 		
 	}
 	
-	
-	/**
-	 * Control y edición de paises
-	 */
-	public function paisAction(){
-		
-		// 1. Obtenemos el objeto en caso de ser una edición
-		$idPais = $this->getParam(0);
-		if ( !is_null($idPais) ){
-			$paisDO = TblEstadoLaboral::findByPrimaryKey($this->db, $idPais);
-			$this->view->paisDO = $paisDO;
-		}
-		
-		// 2. Comprobamos si se ha enviado el formulario
-        if ( array_key_exists(md5('send'), $_POST) ){
-        	
-        	$correcto = true;
-        	$nombre = $this->helper->getAndEscape('nombre');
-        	        	
-        	if ( empty($nombre) ){
-        		$correcto = false;
-        		$this->view->errorNombre = "El nombre no puede estar vacío";
-        	}
-        	
-        	if ( $correcto ){
-        	
-        		$this->db->begin();
-        		
-	        	// 2.1. Alta
-	        	if ( $correcto && $_POST[md5('send')] == md5('alta') ) {
-	        		$paisDO = new TblPais($this->db);
-	        		$paisDO->setVNombre($nombre);
-	        		if ( !$paisDO->insert() ){
-	        			$correcto = false;
-	        		}
-	        	}
-	        	
-	        	// 2.2. Editar
-	        	if ( $correcto && $_POST[md5('send')] == md5('editar') ) {
-	        		$paisDO = TblPais::findByPrimaryKey($this->db, $idPais);
-	        		$paisDO->setVNombre($nombre);
-	        		if ( !$paisDO->update() ){
-	        			$correcto = false;
-	        		}
-	        		// Pasamos a la vista el objeto editado
-	        		$this->view->paisDO = $paisDO;
-	        	}
-	        	
-	        	if ( $correcto ){
-	        		$this->db->commit();
-	        	} else {
-	        		$this->db->rollback();
-	        	}
-	        	
-        	}
-        	
-        }
-		
-		// 3. Obtenemos los datos del paginador
-    	$aliasCampos = array(
-    		'nom' 	=> 'vNombre'
-    	);
-    	
-    	if ( !empty($_REQUEST) && array_key_exists('o', $_GET) & array_key_exists('ob', $_GET) ){
-        	$order = $this->helper->escapeInjection($_GET['o']);
-        	$orderBy = $aliasCampos[$_GET['ob']];
-        	$aliasOrderBy = $_GET['ob'];
-        } else {
-    		$order	 = 'asc';
-    		$orderBy = 'vNombre';
-    		$aliasOrderBy = 'nom';
-        }
-        
-        // Envío el orden a la vista
-        if ( $order == 'asc' ){
-        	$this->view->order = 'desc';
-        } else {
-        	$this->view->order = 'asc';
-        }
-        $this->view->orderBy = $aliasOrderBy;
-		
-        // Se instancia y configura el paginador
-        $paginador = new OwlPaginator($this->db, null, 'tblEstadoLaboral', $this->helper);
-        $paginador->setItemsPorPagina(10);
-        $paginaActual = $this->helper->escapeInjection($this->helper->get('p'));
-        $paginaActual = empty($paginaActual) ? 1 : $paginaActual;
-        $paginador->setPaginaActual($paginaActual);
-        $paginador->setOrderBy($orderBy);
-        $paginador->setOrder($order);
-        
-         // Obtengo los estadosLaborales
-        $estadosLaboralesCOL = $paginador->getItemCollection();
-        
-        // 4. Lo enviamos todo a la vista
-        $this->view->paginador = $paginador->getPaginatorHtml();
-    	
-    	// Envío los estadosLaborales
-        $this->view->estadosLaboralesCOL = $estadosLaboralesCOL;		
-		
-	}
-	
-	
 }
+
 
 ?>

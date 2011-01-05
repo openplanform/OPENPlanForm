@@ -13,6 +13,8 @@
     <form id="altaAcademia" action="/academia/alta.html" method="post">
         <fieldset>
         
+        	<legend>Alta de nueva academia</legend>
+        
         	<input type="hidden" value="1" name="send" />
         	
 	        <h3>Datos del Usuario</h3>
@@ -43,88 +45,95 @@
 	             <p id="errorEmailUsuario" class="errorInput"><?= $this->errorEmail ?></p>
 	        </div>
 	        
-        	<h3>Datos de la Academia</h3>
-        	
-            <div class="campo controlado multi">
-                <label for="nombre">Nombre*</label>
-                <input type="text" name="nombre" id="nombre" class="campoTexto" />
-                <p id="errorNombre" class="errorInput"><?= $this->errorNombre ?></p>
-            </div>
-			
-			<div class="campo controlado multi">
-                <label for="cif">CIF*</label>
-                <input type="text" name="cif" id="cif" class="campoTexto" onblur="comprobarDni('cif', true)" />
-                <p id="errorCif" class="errorInput"><?= $this->errorCif ?></p>
-            </div>
-			
-			<div class="campo controlado clear">
-            	<label for="pais">País*</label>
-	            <select class="grande" name="pais" id="pais">
-	            	<option value=""></option>
-					<?
-					
-					// País
-					foreach ( $this->paisesCOL as $paisDO) {
-						//$paisDO = new TblPais($db);
-						?><option value="<?= $paisDO->getVIso() ?>" ><?= $paisDO->getVNombre() ?></option><?
+	        <div class="bloque">
+	        
+	        	<h3>Datos de la Academia</h3>
+	        	
+	            <div class="campo controlado multi">
+	                <label for="nombre">Nombre*</label>
+	                <input type="text" name="nombre" id="nombre" class="campoTexto" />
+	                <p id="errorNombre" class="errorInput"><?= $this->errorNombre ?></p>
+	            </div>
+				
+				<div class="campo controlado multi">
+	                <label for="cif">CIF*</label>
+	                <input type="text" name="cif" id="cif" class="campoTexto" onblur="comprobarDni('cif', true)" />
+	                <p id="errorCif" class="errorInput"><?= $this->errorCif ?></p>
+	            </div>
+				
+				<div class="campo controlado clear">
+	            	<label for="pais">País*</label>
+		            <select class="grande" name="pais" id="pais">
+		            	<option value=""></option>
+						<?
 						
-					}
-					
-					?>
-				</select>
-				<p id="errorPais" class="errorInput"><?= $this->errorPais ?></p>
-			</div>
-			
-			<div class="campo controlado">
-            	<label for="provincia">Provincia*</label>
-	            <select class="grande" name="provincia" id="provincia">
-	            	<option value=""></option>
-					<?
-					
-					// Provincia
-					foreach ( $this->provinciasCOL as $provinciaDO) {
+						// País
+						foreach ( $this->paisesCOL as $paisDO) {
+							//$paisDO = new TblPais($db);
+							?><option value="<?= $paisDO->getVIso() ?>" ><?= $paisDO->getVNombre() ?></option><?
+							
+						}
 						
-						?><option value="<?= $provinciaDO->getIdProvincia() ?>" ><?= $provinciaDO->getVNombre() ?></option><?
+						?>
+					</select>
+					<p id="errorPais" class="errorInput"><?= $this->errorPais ?></p>
+				</div>
+				
+				<div class="campo controlado">
+	            	<label for="provincia">Provincia*</label>
+		            <select class="grande" name="provincia" id="provincia">
+		            	<option value=""></option>
+						<?
 						
-					}
-					
-					?>
-				</select>
-				<p id="errorProvincia" class="errorInput"><?= $this->errorProvincia ?></p>
+						// Provincia
+						foreach ( $this->provinciasCOL as $provinciaDO) {
+							
+							?><option value="<?= $provinciaDO->getIdProvincia() ?>" ><?= $provinciaDO->getVNombre() ?></option><?
+							
+						}
+						
+						?>
+					</select>
+					<p id="errorProvincia" class="errorInput"><?= $this->errorProvincia ?></p>
+				</div>
+				
+				<div class="campo multi">
+	            	<label for="poblacion">Poblacion</label>
+		            <input type="text" name="poblacion" id="poblacion" class="campoTexto" />
+				</div>
+				
+				<div class="campo multi">
+	            	<label for="direccion">Dirección</label>
+		            <input type="text" name="direccion" id="direccion" class="campoTexto" />
+				</div>
+				
+				<div class="campo clear">
+	            	<label for="cp">C.P.</label>
+		            <input type="text" name="cp" id="cp" class="campoTexto" />
+				</div>
+				
+				<div class="separadorH"></div>
+				
+				<div class="campo multi">
+	            	<label for="latitud">Latitud</label>
+		            <input type="text" name="latitud" id="latitud" class="campoTexto" />
+				</div>
+				
+				<div class="campo multi">
+	            	<label for="longitud">Longitud</label>
+		            <input type="text" name="longitud" id="longitud" class="campoTexto" />
+				</div>
+				
+				<div class="separadorH"></div>
+				
 			</div>
 			
-			<div class="campo multi">
-            	<label for="poblacion">Poblacion</label>
-	            <input type="text" name="poblacion" id="poblacion" class="campoTexto" />
-			</div>
-			
-			<div class="campo multi">
-            	<label for="direccion">Dirección</label>
-	            <input type="text" name="direccion" id="direccion" class="campoTexto" />
-			</div>
-			
-			<div class="campo clear">
-            	<label for="cp">C.P.</label>
-	            <input type="text" name="cp" id="cp" class="campoTexto" />
-			</div>
-			
-			<div class="separadorH"></div>
-			
-			<div class="campo multi">
-            	<label for="latitud">Latitud</label>
-	            <input type="text" name="latitud" id="latitud" class="campoTexto" />
-			</div>
-			
-			<div class="campo multi">
-            	<label for="longitud">Longitud</label>
-	            <input type="text" name="longitud" id="longitud" class="campoTexto" />
-			</div>
-			
-			<div class="separadorH"></div>
-			
-			<div class="campo">
-				<p>Marca en el mapa el emplazamiento de la academia</p>
-				<div id="mapa"></div>
+			<div class="bloque">
+				<h3>Ubicación principal</h3>
+				<div class="campo">
+					<p class="desc">Marca en el mapa el emplazamiento de la academia</p>
+					<div id="mapa"></div>
+				</div>
 			</div>
 			
 			<div class="separadorH"></div>
@@ -154,4 +163,3 @@
             
         </fieldset>
     </form>
-    <p>* Campos obligatorios</p>

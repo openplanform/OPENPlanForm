@@ -3,15 +3,15 @@
 	if ( !is_null($this->convocatoriaDO) ){
 		
 ?>
-		<div class="ficha">
-			<p><strong>Nombre:</strong><span> <?= $this->convocatoriaDO->getVNombre() ?></span></p>
-			<p><strong>Tipo:</strong><span> <?= $this->tiposConvocatoriaIDX[$this->convocatoriaDO->getFkTipoConvocatoria()] ?></span></p>
-			<p><strong>Presupuesto:</strong><span> <?= OwlNumeric::decimalFormatoEuropeo($this->convocatoriaDO->getEPresupuesto(), 2) ?>€</span></p>
+		<div class="ficha bloque">
+			<p><strong>Nombre</strong><span> <?= $this->convocatoriaDO->getVNombre() ?></span></p>
+			<p><strong>Tipo</strong><span> <?= $this->tiposConvocatoriaIDX[$this->convocatoriaDO->getFkTipoConvocatoria()] ?></span></p>
+			<p><strong>Presupuesto</strong><span> <?= OwlNumeric::decimalFormatoEuropeo($this->convocatoriaDO->getEPresupuesto(), 2) ?>€</span></p>
 			<?
 			
 			$descripcion = $this->convocatoriaDO->getVDescripcion();
 			if ( !empty($descripcion) ){
-				?><p class="extended"><strong>Descripción:</strong><span> <?= $descripcion ?></span></p><?
+				?><p class="extended"><strong>Descripción</strong><span> <?= $descripcion ?></span></p><?
 			}
 			
 			?>
@@ -20,19 +20,26 @@
 		// Requisitos
 		if ( !is_null($this->arrRequisitosConvocatoriaDO) ){
 			
-			?><p><strong>Requisitos: </strong><span><?
+			?><p class="lista"><strong>Requisitos</strong></p><ul class="listaFicha"><?
 			
-			$contador = 0;
+			$reqARR = array();
 			foreach ( $this->arrRequisitosConvocatoriaDO as $requisitoConvocatoriaDO ){
-				echo ($contador)?', ':'';
-				echo $this->requisitosIDX[$requisitoConvocatoriaDO->getFkRequisito()];
-				$contador++;
+				
+				$reqARR[] = $this->requisitosIDX[$requisitoConvocatoriaDO->getFkRequisito()];
+				
 			}
-			?></span></p><?
+			
+			if (count($reqARR) > 0){
+				
+				echo '<li>' . implode('</li><li>', $reqARR) . '</li>';
+				
+			}
+			
+			?></ul><?
 			
 		}
 		
-		?>
+		?><div class="separadorH"></div>
 		</div><?
 
 		
@@ -40,17 +47,20 @@
         $arrPlanesDO = $this->convocatoriaDO->getTblPlans();
         if ( !empty($arrPlanesDO) ){
 
-            ?><h3>Planes presentados para esta convocatoria: </h3><?
-            
-            echo '<ul class="listaItemsFicha">';
-            
-            foreach ( $arrPlanesDO as $planDO ){
-                echo '<li><a href="/plan/ficha/' . $planDO->getIdPlan() . '" class="' . strtolower($this->estadosPlanIDX[$planDO->getFkEstadoPlan()]) . '">' . $planDO->getVNombre() . '</a></li>';
-            }
-            
-            echo '</ul>';
+            ?><div class="bloque">
+	            <h3>Planes presentados para esta convocatoria: </h3><?
+	            
+	            echo '<ul class="listaItemsFicha">';
+	            
+	            foreach ( $arrPlanesDO as $planDO ){
+	                echo '<li><a href="/plan/ficha/' . $planDO->getIdPlan() . '" class="' . strtolower($this->estadosPlanIDX[$planDO->getFkEstadoPlan()]) . '">' . $planDO->getVNombre() . '</a></li>';
+	            }
+	            
+	            echo '</ul>';
             
         }
+        
+        ?></div><?
         
         
         if ($this->documentosCOL){
