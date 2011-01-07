@@ -14,11 +14,14 @@ if ( !is_null($this->popup) ){
 	
 	if (!$this->editar){
 		
-		echo '<h2>Alta de nueva categoría</h2>';
+		?><h2>Alta de nueva categoría</h2><?
 		
 	} else {
 		
-		echo '<h2>Edición de categoría</h2>';
+		?><h2>Edición de categoría</h2>
+		<div class="campo">
+            <input type="button" class="btnSubmit" value="Nueva" onclick="window.location='/categoria/index.html'"/>
+        </div><?
 		
 	}
 
