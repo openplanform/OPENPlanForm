@@ -27,8 +27,6 @@ class administradorController extends PplController{
     
     public function indexAction(){
         
-        
-        
     }
     
 
