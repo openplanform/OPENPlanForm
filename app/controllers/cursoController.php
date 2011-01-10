@@ -508,6 +508,18 @@ class cursoController extends PplController{
 	    	$fin = "";
 	    }
 	    
+	    // Comparar fechas
+	    if ( !empty($inicio) && !empty($fin) ){
+	    	
+	    	$strInicio = strtotime(OwlDate::europeoAmericano($inicio));
+	    	$strFin = strtotime(OwlDate::europeoAmericano($fin));
+	    	if ( $strInicio > $strFin ){
+	    		$this->view->errorFecha = "Fecha incorrecta";
+	    		$correcto = false;
+	    	}
+	    	
+	    }
+	    
     	// Descripción
     	$descripcion = $this->helper->escapeInjection($this->helper->get('descripcion'));
 	    if ( is_null($descripcion) || empty($descripcion) ){

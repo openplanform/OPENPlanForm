@@ -145,8 +145,6 @@
 	                <input type="text" name="numAlumnos" id="numAlumnos" class="campoTexto mediano numerico" value="<?= $this->cursoDO->getINumeroAlumnos() ?>"/>
 	            </div>
 	            
-	            <div class="separadorH"></div>
-	            
 	            <div class="campo multi">
 	                <label for="accion">Número de acción</label>
 	                <input type="text" name="accion" id="accion" class="campoTexto mediano decimal" value="<?= $this->cursoDO->getIAccion() ?>"/>
@@ -161,13 +159,14 @@
 	                <input type="text" name="inicio" id="inicio" class="campoTexto pequeno" onkeypress="return false;" value="<?= $fechaIni ?>"/>
 	            </div>
 	            
-	            <div class="campo multi">
+	            <div class="campo controlado multi">
 	                <label for="fin">Fecha de fin</label>
 	                <?php 
 						$fechaFin = OwlDate::getDiaMesAno($this->cursoDO->getDFin());
 						( $fechaFin == '01/01/1970' ) ? $fechaFin = '' : '';
 	                ?>
 	                <input type="text" name="fin" id="fin" class="campoTexto pequeno" onkeypress="return false;" value="<?= $fechaFin ?>"/>
+	                <p id="errorFecha" class="errorInput"><?= $this->errorFecha ?></p>
 	            </div>
 	            
 	            <div class="separadorH"></div>

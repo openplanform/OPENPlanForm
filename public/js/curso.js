@@ -1,6 +1,51 @@
 var $j = jQuery;
 
 /**
+ * Compara dos fechas en formato dd/mm/aaaa. Verdadero si la primera es mayor que la segunda.
+ * @param fecha
+ * @param fecha2
+ * @returns boolean
+ */
+function comparaFecha(fecha, fecha2){
+	
+	var fechaIni=fecha.split("/");
+	var fechaFin=fecha2.split("/");
+
+	// año
+	if(parseInt(fechaIni[2],10)>parseInt(fechaFin[2],10)){
+		return(true);
+	}else{
+		
+		// año
+		if(parseInt(fechaIni[2],10)==parseInt(fechaFin[2],10)){
+			
+			// mes
+			if(parseInt(fechaIni[1],10)>parseInt(fechaFin[1],10)){
+				return(true);
+			}
+			
+			// mes
+			if(parseInt(fechaIni[1],10)==parseInt(fechaFin[1],10)){
+				
+				// dia
+				if(parseInt(fechaIni[0],10)>parseInt(fechaFin[0],10)){
+					return(true);
+				}else{
+					return(false);
+				}
+				
+			}else{
+				return(false);
+			}
+			
+		}else{
+			return(false);
+		}
+	}
+
+}
+
+/**
  * Edita una fila del horario del curso
  * @param idHorario
  */
@@ -231,9 +276,21 @@ function comprobarCampos() {
 		return false;
 	}
 	
-	// Aula
-	if ( !comprobarVacio('aula', 'El aula no puede estar vacía') ){
+	// Centro
+	if ( !comprobarVacio('centro', 'El centro no puede estar vacío') ){
 		return false;
+	}
+	
+	// Fechas
+	var inicio = $j("#inicio").val();
+	var fin = $j("#fin").val();
+	if ( inicio != '' && fin != '' && !comparaFecha(fin, inicio) ){
+		$j('#errorFecha').html('Fecha incorrecta');
+		$j('#fin').css("borderColor","#F00");
+		return false;
+	} else {
+		$j('#fin').css("borderColor","#A6A6A6");
+		$j('#errorFecha').html('');
 	}
 	
 	return true;
