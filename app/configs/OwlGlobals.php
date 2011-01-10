@@ -74,6 +74,6 @@ define('APPENCODING', 'UTF-8');
 define('ZEND_FRAMEWORK', EXTLIBDIR . 'Zend/');
 
 // Directorio de loggin
-define('LOGDIR', INCDIR . 'log/');
+define('LOGDIR', APPDIR . 'log/');
 
 ?>
