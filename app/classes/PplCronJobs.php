@@ -66,7 +66,8 @@ switch ($modo){
 		// Avisos sobre inicio de cursos
 		checkInicioCursos();
 		
-		
+		// Avisos sobre finalización de cursos
+		checkFinalizacionCursos();
 		
 	break;
 	
@@ -86,20 +87,19 @@ function checkInicioCursos(){
 	
 	global $shell, $log, $cacheBO, $mailer, $appConfig;
 	
-	
 	// Fechas
 	$proximoInicio = date('Y-m-d', strtotime('+5 day'));
 	$hoy = date('Y-m-d');
 	
-	// Se obtienen todos los cursos
-	$sql = "SELECT * FROM tblCurso WHERE dInicio BETWEEN '$hoy' AND '$proximoInicio'";
+	// Se obtienen todos los cursos próximos a iniciar que aún no han sido notificados
+	$sql = "SELECT * FROM tblCurso WHERE dInicio BETWEEN '$hoy' AND '$proximoInicio' AND bNotificacionInicio = 0";
+	
 	$cursosProximosCOL = OwlGenericDO::createCollection($shell->db, $sql, 'TblCurso');
-	
-	
+
 	// Se avisará a todos los *alumnos* de cada curso
 	// que el mismo está por comenzar 
 	foreach ($cursosProximosCOL as $cursoDO){
-	
+		
 		$alumnosCOL = $cacheBO->getAlumnosCurso($cursoDO->getIdCurso());
 		
 		$mt = new OwlMailerTemplate();
@@ -121,7 +121,7 @@ function checkInicioCursos(){
 			try {
 				
 				$mailer->send();
-				
+
 			} catch (Zend_Mail_Protocol_Exception $e){
 				
 				$log->addLine('Error al enviar aviso a: ' . $alumnoDO->getVEmail() . '. Exept: ' . $e->getMessage());
@@ -131,6 +131,10 @@ function checkInicioCursos(){
 			
 		}
 		
+		// Se actualiza el flag de notificación
+		$cursoDO->setBNotificacionInicio(true);
+		$cursoDO->update();		
+		
 		$log->addLine('Enviados todos los avisos de inicio para el curso: ' . $cursoDO->getVNombre());
 		
 	}
@@ -138,36 +142,77 @@ function checkInicioCursos(){
 }
 
 
+
+
 /**
- * ENVÍA EL AVISO DE LOS PRECANDIDATOS QUE NO HAN SIDO SELECCIONADOS
+ * ENVÍA LOS CORREOS DE AVISO DE INICIO DE CURSO
  */
-function avisoPrecandidatosOut(){
+function checkFinalizacionCursos(){
 	
-	/*global $shell, $log, $cacheBO, $mailer, $appConfig;
+	global $shell, $log, $cacheBO, $mailer, $appConfig;
 	
 	// Fechas
-	$proximoInicio = date('Y-m-d', strtotime('+5 day'));
+	$proximoFin = date('Y-m-d', strtotime('+5 day'));
 	$hoy = date('Y-m-d');
 	
-	// Se obtienen todos los cursos
-	$sql = "SELECT * FROM tblCurso WHERE dInicio BETWEEN '$hoy' AND '$proximoInicio'";
+	// Se obtienen todos los cursos próximos a iniciar que aún no han sido notificados
+	$sql = "SELECT * FROM tblCurso WHERE dFin BETWEEN '$hoy' AND '$proximoFin' AND bNotificacionFin = 0";
+	
 	$cursosProximosCOL = OwlGenericDO::createCollection($shell->db, $sql, 'TblCurso');
 	
+	
+	// Se avisará a todos los *alumnos* de cada curso
+	// que el mismo está por comenzar 
 	foreach ($cursosProximosCOL as $cursoDO){
+	
+		$alumnosCOL = $cacheBO->getAlumnosCurso($cursoDO->getIdCurso());
 		
-		$precandidatosARR = $cacheBO->getDatosUsuarioPrecandidatosCurso($cursoDO->getIdCurso());
+		$mt = new OwlMailerTemplate();
+		$mt->setTemplate(LAYOUTDIR . 'finCurso.txt');
+		$mt->addField('CURSO', $cursoDO->getVNombre());
+		$mt->addField('FECHA', OwlDate::getDiaMesAno($cursoDO->getDInicio()));
+		$mt->addField('ENLACE', 'http://www.in.planespime.es/cursos/ficha.html/' . $cursoDO->getIdCurso());		
 		
-		foreach ($precandidatosARR as $precandidato){
+		// Enviaré un correo a cada alumno
+		foreach ($alumnosCOL as $alumnoDO){
 			
+			$mailer = new OwlMailer($appConfig->getMailerConfiguration());
 			
+			$mailer->setFrom('noreply@planespime.es', 'Recordatorios Planespime.es');
+			$mailer->setBody($mt->getContent());
+			$mailer->addTo($alumnoDO->getVEmail(), $alumnoDO->getVNombre() . ' ' . $alumnoDO->getVPrimerApellido() . ($alumnoDO->getVSegundoApellido() ? ' ' . $alumnoDO->getVSegundoApellido() : ''));
+			$mailer->setSubject('Recordatorio de finalización de curso - ' . $cursoDO->getVNombre());
+			
+			try {
+				
+				$mailer->send();
+
+			} catch (Zend_Mail_Protocol_Exception $e){
+				
+				$log->addLine('Error al enviar aviso a: ' . $alumnoDO->getVEmail() . '. Exept: ' . $e->getMessage());
+				continue;
+				
+			}
 			
 		}
 		
+		// Se actualiza el flag de notificación
+		$cursoDO->setBNotificacionFin(true);
+		$cursoDO->update();		
+		
+		$log->addLine('Enviados todos los avisos de fin para el curso: ' . $cursoDO->getVNombre());
+		
 	}
 	
-	VERIFICAR, IGUAL NO ES NECESARIO REALIZAR ESTA TAREA EN UN CRON, COMENTAR CON AARON
+}
+
+
+/**
+ * ELIMINA LOS DOCUMENTOS DINÁMICOS GENERADOS DURANTE EL DÍA
+ */
+function clearDocumentDir(){
 	
-	*/
+	
 	
 }
 

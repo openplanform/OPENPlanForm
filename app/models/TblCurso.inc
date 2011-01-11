@@ -1,7 +1,7 @@
 <?php
 /**
  * Este archivo ha sido generado con Owl DoGen v.0.6
- * el 28 de December de 2010 a las 09:18:17
+ * el 11 de January de 2011 a las 08:52:54
  * @package dataAccess
  */
 
@@ -61,6 +61,18 @@ class TblCurso extends OwlGenericDO{
      * @var string
      */
     public $vNombre;
+
+    /**
+     * Atributo que representa el campo "bNotificacionInicio"
+     * @var boolean
+     */
+    public $bNotificacionInicio;
+
+    /**
+     * Atributo que representa el campo "bNotificacionFin"
+     * @var boolean
+     */
+    public $bNotificacionFin;
 
     /**
      * Atributo que representa el campo "vDescripcion"
@@ -163,6 +175,8 @@ class TblCurso extends OwlGenericDO{
         $this->fkModalidad = $data['fkModalidad'];
         $this->fkCentro = $data['fkCentro'];
         $this->vNombre = $data['vNombre'];
+        $this->bNotificacionInicio = $data['bNotificacionInicio'];
+        $this->bNotificacionFin = $data['bNotificacionFin'];
         $this->vDescripcion = $data['vDescripcion'];
         $this->iHorasPresenciales = $data['iHorasPresenciales'];
         $this->iHorasDistancia = $data['iHorasDistancia'];
@@ -211,6 +225,12 @@ class TblCurso extends OwlGenericDO{
         }
         if( $tmp = $searchItem->vNombre ){
             $where[] = "vNombre='$tmp'";
+        }
+        if( $tmp = $searchItem->bNotificacionInicio ){
+            $where[] = "bNotificacionInicio='$tmp'";
+        }
+        if( $tmp = $searchItem->bNotificacionFin ){
+            $where[] = "bNotificacionFin='$tmp'";
         }
         if( $tmp = $searchItem->vDescripcion ){
             $where[] = "vDescripcion='$tmp'";
@@ -397,6 +417,8 @@ class TblCurso extends OwlGenericDO{
         $sets[] = 'fkModalidad=' . ( ( ( $value = $this->fkModalidad ) === null || !isset($this->fkModalidad) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'fkCentro=' . ( ( ( $value = $this->fkCentro ) === null || !isset($this->fkCentro) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'vNombre=' . ( ( ( $value = $this->vNombre ) === null || !isset($this->vNombre) ) ? 'null' :  "'".addslashes($value)."'" );
+        $sets[] = 'bNotificacionInicio=' . ( ( ( $value = $this->bNotificacionInicio ) === null || !isset($this->bNotificacionInicio) ) ? 'null' :  "'".addslashes($value)."'" );
+        $sets[] = 'bNotificacionFin=' . ( ( ( $value = $this->bNotificacionFin ) === null || !isset($this->bNotificacionFin) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'vDescripcion=' . ( ( ( $value = $this->vDescripcion ) === null || !isset($this->vDescripcion) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'iHorasPresenciales=' . ( ( ( $value = $this->iHorasPresenciales ) === null || !isset($this->iHorasPresenciales) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'iHorasDistancia=' . ( ( ( $value = $this->iHorasDistancia ) === null || !isset($this->iHorasDistancia) ) ? 'null' :  "'".addslashes($value)."'" );
@@ -424,6 +446,8 @@ class TblCurso extends OwlGenericDO{
         $attributes[] = 'fkModalidad';
         $attributes[] = 'fkCentro';
         $attributes[] = 'vNombre';
+        $attributes[] = 'bNotificacionInicio';
+        $attributes[] = 'bNotificacionFin';
         $attributes[] = 'vDescripcion';
         $attributes[] = 'iHorasPresenciales';
         $attributes[] = 'iHorasDistancia';
@@ -444,6 +468,8 @@ class TblCurso extends OwlGenericDO{
         $values[] = (( $value = $this->fkModalidad ) === null || !isset($this->fkModalidad) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->fkCentro ) === null || !isset($this->fkCentro) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->vNombre ) === null || !isset($this->vNombre) ) ? 'null' : "'".addslashes($value)."'";
+        $values[] = (( $value = $this->bNotificacionInicio ) === null || !isset($this->bNotificacionInicio) ) ? 'null' : "'".addslashes($value)."'";
+        $values[] = (( $value = $this->bNotificacionFin ) === null || !isset($this->bNotificacionFin) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->vDescripcion ) === null || !isset($this->vDescripcion) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->iHorasPresenciales ) === null || !isset($this->iHorasPresenciales) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->iHorasDistancia ) === null || !isset($this->iHorasDistancia) ) ? 'null' : "'".addslashes($value)."'";
@@ -601,6 +627,46 @@ class TblCurso extends OwlGenericDO{
     public function setVNombre( $value ){
 
         $this->vNombre = $value;
+
+    }
+
+    /**
+      * Obtiene el valor del atributo 'bNotificacionInicio'.
+      *
+      * @return boolean
+      */
+    public function isBNotificacionInicio(){
+        return ($this->bNotificacionInicio ? true : false);
+    }
+
+    /**
+      * Establece el valor del atributo 'bNotificacionInicio'.
+      *
+      * @param boolean Valor.
+      */
+    public function setBNotificacionInicio( $value ){
+
+        $this->bNotificacionInicio = $value;
+
+    }
+
+    /**
+      * Obtiene el valor del atributo 'bNotificacionFin'.
+      *
+      * @return boolean
+      */
+    public function isBNotificacionFin(){
+        return ($this->bNotificacionFin ? true : false);
+    }
+
+    /**
+      * Establece el valor del atributo 'bNotificacionFin'.
+      *
+      * @param boolean Valor.
+      */
+    public function setBNotificacionFin( $value ){
+
+        $this->bNotificacionFin = $value;
 
     }
 

@@ -148,6 +148,7 @@
 	            <div class="campo multi">
 	                <label for="fin">Fecha de fin</label>
 	                <input type="text" name="fin" id="fin" class="campoTexto pequeno" onkeypress="return false;" />
+	                <p id="errorFecha" class="errorInput"><?= $this->errorFecha ?></p>
 	            </div>
 	            
 	            <div class="separadorH"></div>
@@ -283,7 +284,7 @@
 	            <label for="profesoresSeleccionados">Profesores del curso</label>
 	            
 	            <div class="contenedorMultiselect">
-		            <a title="Quitar profesor" class="btnEliminar" href="javascript:ventanaConfirmacion('Confirmar','¿Está seguro que desea quitar el/los profesor/es del curso?', 'javascript:quitarProfCurso();hidePopups()')"><span>eliminar</span></a>
+		            <a title="Quitar profesor" class="btnEliminar" href="javascript:ventanaConfirmacion('Confirmar','¿Está seguro que desea quitar el/los profesor/es del curso?', 'javascript:quitarPersonaCurso(\'profesoresSeleccionados\');hidePopups()')"><span>eliminar</span></a>
 		            <select name="profesores[]" multiple="multiple" id="profesoresSeleccionados" class="campoTexto grande multiple">
 		            	<option value="0"></option>
 		            </select>
