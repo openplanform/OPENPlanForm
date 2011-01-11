@@ -7,13 +7,14 @@
 	}
 	
 	if ( !is_null($this->cursoDO) ){
-
+	
 	?>
 	<ul class="pestanyas">
-		<li class="actual datos"><strong>Datos generales</strong></li>
+		<li class="actual"><strong class="datos">Datos generales</strong></li>
 		<li><a class="horarios" href="/curso/horario.html/<?= $this->cursoDO->getIdCurso() ?>">Horario</a></li>
 		<li><a class="documentacion" href="/curso/documentacion.html/<?= $this->cursoDO->getIdCurso() ?>">Documentación</a></li>
 		<li><a class="alumnos" href="/curso/alumnos.html/<?= $this->cursoDO->getIdCurso() ?>">Alumnos</a></li>
+		<li><a class="material" href="/curso/materialDidactico.html/<?= $this->cursoDO->getIdCurso() ?>">Material didáctico</a></li>
 	</ul>
 	
 	<div class="separadorH"></div>

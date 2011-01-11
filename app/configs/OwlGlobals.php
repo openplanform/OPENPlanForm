@@ -1,19 +1,29 @@
 <?php
 
-/**
- * OWL
+/* vim: set syn=php expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
+
+/**																			 
+ *  ,_,  
+ * (o,o) 
+ * {`"'}   OWL (Open Web Library)
+ * -"-"-
  * 
- * Software distribuido bajo la "New BSD License", mas información en /doc/LICENSE
+ * Software distribuido bajo la "GNU GENERAL PUBLIC LICENSE v3", 
+ * mas información en /doc/LICENSE
  * 
  * Definición de directorios del sistema, en este archivo solo deben guardarse
  * datos del sitema. Para configuraciones utilizar application.ini
  * 
  * @category Owl
  * @package Owl
- * @version 0.5
- * @since 0.5
+ * @license GNU GPL V3 (http://www.gnu.org/licenses/gpl-3.0.txt)
+ * @author Nicolás Palumbo <npalumbo@xinax.net> 
+ * @author Aaron Amengual Arranz <aaron.amengual@gmail.com> 
+ * @version 0.5.4
+ * @since 0.3
  * 
  */
+
 
 // Versión del cms
 define('VERSION', '0.5.2-dev');

@@ -221,6 +221,28 @@ function addProfCurso(idProfesor, nombre){
 }
 
 /**
+ * Añade un documento al curso
+ * @param integer idDocumento
+ * @param string nombre
+ */
+function addDocumentoCurso(idDocumento, nombre){
+	
+	idDocumento = typeof(idDocumento) != 'undefined' ? idDocumento : false;
+	var anadir = true;
+	
+	$j('#documentosSeleccionados option').each( function(){
+		if ( $j(this).val() == idDocumento ) {
+			anadir = false;
+		} 
+	});
+	
+	if ( anadir ){
+		$j('#documentosSeleccionados').prepend($('<option selected="selected" onclick="this.select"></option>').attr("value",idDocumento).text(nombre));
+	}
+	
+}
+
+/**
  * Función que selecciona todos los profesores para pasarlos por el form
  */
 function selectProfesores(){

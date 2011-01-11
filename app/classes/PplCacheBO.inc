@@ -300,6 +300,12 @@ class PplCacheBO {
      */
     private $categoriasEmpleoIDX = null;
     
+    /**
+     * Documentos indexados por su clave
+     * @var array
+     */
+    private $documentosIDX = null;
+    
     
     /**
      * Constructora, propaga la referencia a la base de datos 
@@ -1274,6 +1280,25 @@ class PplCacheBO {
 		}
 		
 		return $returnARR;
+		
+	}
+	
+	
+	/**
+	 * Devuelve los documentos indexados por su clave
+	 * @return array
+	 */
+	public function getDocumentos(){
+		
+		if ( is_null($this->documentosIDX) ){
+			
+			$documentosCOL = TblDocumento::findAll($this->db, 'idDocumento');
+			$documentosIDX = OwlDatabase::indexFor('idDocumento', $documentosCOL);
+			$this->documentosIDX = $documentosIDX;
+			
+		}
+		
+		return $this->documentosIDX;
 		
 	}
 	

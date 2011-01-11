@@ -16,6 +16,7 @@ require_once MODELDIR . '/TblCategoria.inc';
 require_once MODELDIR . '/TblCategoriaExtendida.inc';
 require_once MODELDIR . '/TblColectivo.inc';
 require_once MODELDIR . '/TblCurso.inc';
+require_once MODELDIR . '/TblDocumento.inc';
 require_once MODELDIR . '/TblEstadoCivil.inc';
 require_once MODELDIR . '/TblHorario.inc';
 require_once MODELDIR . '/TblModalidad.inc';
@@ -23,6 +24,7 @@ require_once MODELDIR . '/TblSector.inc';
 require_once MODELDIR . '/TblTutoria.inc';
 require_once MODELDIR . '/TblPlan.inc';
 require_once MODELDIR . '/TrelCandidato.inc';
+require_once MODELDIR . '/TrelDocumentoCurso.inc';
 require_once MODELDIR . '/TrelPrecandidato.inc';
 require_once MODELDIR . '/TrelProfesor.inc';
 require_once MODELDIR . '/TblTutoria.inc';
@@ -1497,6 +1499,31 @@ class cursoController extends PplController{
         	return;
         	
         }
+    	
+    	
+    }
+
+    /**
+    * Material didáctico del curso
+    */
+    public function materialDidacticoAction(){
+    	
+    	// Sin clave no hay nada que hacer
+    	if (!$idCurso = $this->getParam(0)){
+    		$this->redirectTo('curso');
+    		return;
+    	}
+    	
+    	// El curso no existe
+    	if (!$cursoDO = TblCurso::findByPrimaryKey($this->db, $idCurso)){
+			$this->redirectTo('curso');
+    		return;    		
+    	}
+    	
+    	// Pasamos los datos a la vista
+    	$this->view->cursoDO = $cursoDO;
+    	$this->view->materialDidacticoCursoCOL = TrelDocumentoCurso::findAll($this->db);
+    	$this->view->documentosIDX = $this->cacheBO->getDocumentos();
     	
     	
     }

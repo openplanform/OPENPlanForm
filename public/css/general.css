@@ -890,6 +890,10 @@ p.lista{
     background: url(/img/iconos/alumnos16.png) 5px 5px no-repeat;
     padding-left: 30px;	
 }
+.pestanyas .material{
+    background: url(/img/iconos/material16.png) 5px 2px no-repeat;
+    padding-left: 30px;	
+}
 .contenedorMultiselect select.grande{
 	width: 270px;
 }
