@@ -306,6 +306,12 @@ class PplCacheBO {
      */
     private $documentosIDX = null;
     
+    /**
+     * Cursos indexados por su clave
+     * @var array
+     */
+    private $cursosIDX = null;
+    
     
     /**
      * Constructora, propaga la referencia a la base de datos 
@@ -1162,7 +1168,7 @@ class PplCacheBO {
 				            FROM tblAlumno a 
 				            WHERE a.iPersona = " . $idPersona . " AND a.fkCurso = c.idCurso
 				                
-				) AND c.dInicio < NOW()";
+				) AND c.dInicio > NOW()";
 		
 		$this->db->executeQuery($sql);
 		
@@ -1285,20 +1291,42 @@ class PplCacheBO {
 	
 	
 	/**
-	 * Devuelve los documentos indexados por su clave
+	 * Devuelve los documentos NO dinámicos indexados por su clave
 	 * @return array
 	 */
 	public function getDocumentos(){
 		
 		if ( is_null($this->documentosIDX) ){
 			
-			$documentosCOL = TblDocumento::findAll($this->db, 'idDocumento');
+			$sql = 'SELECT * 
+					FROM tblDocumento
+					WHERE bDinamico = 0';
+			
+			$documentosCOL = OwlGenericDO::createCollection( $this->db, $sql, 'TblDocumento' );
 			$documentosIDX = OwlDatabase::indexFor('idDocumento', $documentosCOL);
 			$this->documentosIDX = $documentosIDX;
 			
 		}
 		
 		return $this->documentosIDX;
+		
+	}
+	
+	/**
+	 * Devuelve los cursos indexados por su clave
+	 * @return array
+	 */
+	public function getCursos(){
+		
+		if ( is_null($this->cursosIDX) ){
+			
+			$cursosCOL = TblCurso::findAll($this->db, 'idCurso');
+			$cursosIDX = OwlDatabase::indexFor('idCurso', $cursosCOL);
+			$this->cursosIDX = $cursosIDX;
+			
+		}
+		
+		return $this->cursosIDX;
 		
 	}
 	

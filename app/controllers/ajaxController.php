@@ -1,4 +1,5 @@
 <?php
+require_once 'helper/OwlDate.inc';
 
 require_once CLASSESDIR . 'PplController.inc';
 
@@ -118,20 +119,54 @@ class ajaxController extends PplController{
      */
     public function editarHorarioAction(){
     	
+    	// Iniciamos variables
     	$arrRespuesta = array();
+    	$correcto = true;
+    	
+    	// Comprobamos si existe el horario
     	if ( array_key_exists('idHorario', $_POST) && !empty($_POST['idHorario']) ) {
     		
+   			// Comprobamos que no exceda las horas totales del curso
     		if ( ( array_key_exists('nuevoInicio', $_POST) && !empty($_POST['nuevoInicio']) && preg_match('/^\d{1,2}:\d{1,2}$/', $_POST['nuevoInicio']) ) && ( array_key_exists('nuevoFin', $_POST) && !empty($_POST['nuevoFin']) && preg_match('/^\d{1,2}:\d{1,2}$/', $_POST['nuevoFin']) ) ){
+
+    			// Sesión
+    			$nuevoTiempoSesion = substr(OwlDate::restaHoras($_POST['nuevoInicio'], $_POST['nuevoFin']), 0, 5);
+    			$horasTotales = $_POST['horasTotales'] . ':00';
     			
-    			$horarioDO = TblHorario::findByPrimaryKey($this->db, $_POST['idHorario']);
-    			$horarioDO->setIDesde($_POST['nuevoInicio']);
-    			$horarioDO->setIHasta($_POST['nuevoFin']);
-    			if ( !$horarioDO->update() ){
-    				// Error al insertar
-	    			$arrRespuesta['resultado'] = 'ko';
-	    			$arrRespuesta['mensaje'] = 'Ha ocurrido un error al guardar el horario';
+    			// Horas destinadas
+    			$minutosAsignados = empty($_POST['minutosAsignados']) ? '00' : $_POST['minutosAsignados'];
+    			$horasAsignadas = $_POST['horasAsignadas'] . ':' . $minutosAsignados;
+    			
+    			// Convertimos las horas nuevas y las horas asignadas a minutos para poder realizar la suma, y las volvemos a convertir a time para poder compararlas con las horas totales
+    			$minutosNuevoTiempoSesion = OwlDate::timeToMinutes($nuevoTiempoSesion);
+    			$minutosHorasAsignadas = OwlDate::timeToMinutes($horasAsignadas);
+    			$horasDefinitivas = OwlDate::minutesToHours($minutosNuevoTiempoSesion + $minutosHorasAsignadas);
+    			$horasDefinitivas = substr(OwlDate::restaTiempo($horasDefinitivas . ':00', $_POST['horasSesion'] . ':00'), 0, 5);
+    			
+    			$mayor = false;
+    			if ( $horasDefinitivas > $horasTotales ){
+    				$correcto = false;
+    				$mayor = true;
     			}
     			
+    			// Insertamos el nuevo horario
+    			if ( $correcto ) {
+	    			$arrRespuesta['horas'] = $nuevoTiempoSesion;
+	    			$arrRespuesta['horasAsignadas'] = $horasDefinitivas;
+	    			
+	    			$horarioDO = TblHorario::findByPrimaryKey($this->db, $_POST['idHorario']);
+	    			$horarioDO->setIDesde($_POST['nuevoInicio']);
+	    			$horarioDO->setIHasta($_POST['nuevoFin']);
+	    			$horarioDO->setIHoras($nuevoTiempoSesion);
+	    			if ( !$horarioDO->update() ){
+	    				// Error al insertar
+		    			$arrRespuesta['resultado'] = 'ko';
+		    			$arrRespuesta['mensaje'] = 'Ha ocurrido un error al guardar el horario';
+	    			}
+    			} else {
+    				$arrRespuesta['resultado'] = 'ko';
+		    		$arrRespuesta['mensaje'] = 'Este curso tiene <strong>' . $horasTotales . '</strong> horas asignadas, para crear más sesiones se debe aumentar esta cantidad.';
+    			}
     		} else {
     			
     			// Horario vacío
@@ -148,6 +183,7 @@ class ajaxController extends PplController{
     		
     	}
     	
+    	// Respuesta
     	$jsonArrRespuesta = json_encode($arrRespuesta);
 		echo $jsonArrRespuesta;
     	

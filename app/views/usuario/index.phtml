@@ -34,7 +34,7 @@
             ?><tr <?= $alter ? 'class="alter"' : '' ?>>
                 <td><?= $clave ?></td><?
 
-                // Solo se podrá ver la ficha de un usuario que tenga los datos completos
+                // Sólo se podrá ver la ficha de un usuario que tenga los datos completos
                 if ($usuario['datos']){
                 
                     ?><td><a href="/usuario/ficha/<?= $clave ?>"><?= $usuario['nombre'] ?></a></td><?

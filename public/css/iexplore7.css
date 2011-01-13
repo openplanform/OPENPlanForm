@@ -9,4 +9,12 @@
 .scroll{
 	overflow: auto;
 	overflow-x: hidden;
+	max-height: 185px;
+}
+.scroll .listado.selector td{
+    padding: 5px 15px 5px 10px;
+}
+legend{
+	margin: 0 0 20px 0;
+	display: inline;
 }

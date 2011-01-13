@@ -123,17 +123,23 @@
 	            <input type="text" name="cp" id="cp" class="campoTexto" value="<?= $this->consultoraDO->getVCp() ?>" />
 			</div>
 			
+			<div class="campo controlado multi">
+                <label for="contacto">Persona de contacto*</label>
+                <input type="text" name="contacto" id="contacto" class="campoTexto" value="<?= $this->consultoraDO->getVPersonaContacto() ?>"/>
+                <p id="errorContacto" class="errorInput"><?= $this->errorContacto ?></p>
+            </div>
+			
 			<div class="campo multi">
             	<label for="telefono1">Teléfono 1</label>
 	            <input type="text" name="telefono1" id="telefono1" class="campoTexto" value="<?= $this->consultoraDO->getVTelefono() ?>" />
 			</div>
 			
-			<div class="campo multi">
+			<div class="campo multi clear">
             	<label for="telefono1">Teléfono 2</label>
 	            <input type="text" name="telefono2" id="telefono2" class="campoTexto" value="<?= $this->consultoraDO->getVTelefono2() ?>" />
 			</div>
 			
-			<div class="campo clear">
+			<div class="campo multi">
             	<label for="fax">Fax</label>
 	            <input type="text" name="fax" id="fax" class="campoTexto" value="<?= $this->consultoraDO->getVFax() ?>" />
 			</div>

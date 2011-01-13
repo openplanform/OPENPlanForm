@@ -7,6 +7,12 @@ error_reporting(E_ALL);
 
 // Es necesario cambiar el directorio base para que las constantes de path
 // se referencien correctamente.
+$dirScript = substr($_SERVER['PHP_SELF'], 0, strlen($_SERVER['PHP_SELF']) - strlen('PplCronJobs.php'));
+
+// Se cambia al directorio
+chdir($dirScript);
+
+// Se sube un nivel
 chdir('../');
 
 // Se incluyen las definiciones del sistema de archivos
@@ -49,7 +55,7 @@ try {
 
 // ------------------------ FLUJO DE EJECUCIÓN  --------------------------
 
-$modos = array('curso');
+$modos = array('curso', 'docs');
 
 if ($token != '-m'){
 	muestraAyuda();
@@ -68,6 +74,13 @@ switch ($modo){
 		
 		// Avisos sobre finalización de cursos
 		checkFinalizacionCursos();
+		
+	break;
+	
+	case 'docs':
+		
+		// Elimina todos los archivos de documentación dinámica
+		clearDocumentDir();
 		
 	break;
 	
@@ -132,8 +145,8 @@ function checkInicioCursos(){
 		}
 		
 		// Se actualiza el flag de notificación
-		$cursoDO->setBNotificacionInicio(true);
-		$cursoDO->update();		
+		//$cursoDO->setBNotificacionInicio(true);
+		//$cursoDO->update();		
 		
 		$log->addLine('Enviados todos los avisos de inicio para el curso: ' . $cursoDO->getVNombre());
 		
@@ -197,8 +210,8 @@ function checkFinalizacionCursos(){
 		}
 		
 		// Se actualiza el flag de notificación
-		$cursoDO->setBNotificacionFin(true);
-		$cursoDO->update();		
+		//$cursoDO->setBNotificacionFin(true);
+		//$cursoDO->update();		
 		
 		$log->addLine('Enviados todos los avisos de fin para el curso: ' . $cursoDO->getVNombre());
 		
@@ -212,7 +225,11 @@ function checkFinalizacionCursos(){
  */
 function clearDocumentDir(){
 	
+	global $shell, $log;
 	
+	$cantidad = $shell->fileSystem->rm(PUBDIR . 'tmp/*.*');
+	
+	$log->addLine('Vacíado el directorio de documentación (' . $cantidad . ' archivos eliminados)'); 
 	
 }
 

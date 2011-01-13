@@ -21,7 +21,7 @@
         
         <div class="campo controlado">
              <label for="nombreUsuario">Nombre de usuario*</label>
-             <input type="text" name="nombreUsuario" id="nombreUsuario" class="campoTexto mediano" value="<?= $this->usuarioBO->getNombre() ?>" onblur="comprobarUsuario(this.id, true)" />
+             <input type="text" name="nombreUsuario" id="nombreUsuario" class="campoTexto mediano" value="<?= $this->usuarioBO->getNombre() ?>" onblur="comprobarUsuario('nombreUsuario', true)" />
              <input type="hidden" id="nombreUsuarioOculto"  name="nombreUsuarioOculto" value="<?= $this->usuarioBO->getNombre() ?>" />
              <p id="errorNombreUsuario" class="errorInput"><?= $this->errorNombre ?></p>
              <p class="tooltip" id="nombreUsuarioTooltip">El nombre de usuario debe tener 5 caracteres como mínimo y 16 como máximo. Debe estar compuesto de sólo letras y/o números. <em>Ej: usuario12</em></p>
@@ -79,7 +79,7 @@
             
             <div class="campo controlado multi">
                 <label for="cif">CIF*</label>
-                <input type="text" name="cif" id="cif" class="campoTexto" />
+                <input type="text" name="cif" id="cif" class="campoTexto" onblur="comprobarDni('cif', true)" />
                 <p id="errorCif" class="errorInput"><?= $this->errorCif ?></p>
             </div>
             
@@ -91,7 +91,6 @@
                     
                     // País
                     foreach ( $this->paisesCOL as $paisDO) {
-                        //$paisDO = new TblPais($db);
                         
                         ?><option value="<?= $paisDO->getVIso() ?>" ><?= $paisDO->getVNombre() ?></option><?
                         
@@ -135,17 +134,23 @@
                 <input type="text" name="cp" id="cp" class="campoTexto" />
             </div>
             
+            <div class="campo controlado multi">
+                <label for="contacto">Persona de contacto*</label>
+                <input type="text" name="contacto" id="contacto" class="campoTexto" />
+                <p id="errorContacto" class="errorInput"><?= $this->errorContacto ?></p>
+            </div>
+            
             <div class="campo multi">
                 <label for="telefono1">Teléfono 1</label>
                 <input type="text" name="telefono1" id="telefono1" class="campoTexto" />
             </div>
             
-            <div class="campo multi">
+            <div class="campo multi clear">
                 <label for="telefono2">Teléfono 2</label>
                 <input type="text" name="telefono2" id="telefono2" class="campoTexto" />
             </div>
             
-            <div class="campo clear">
+            <div class="campo multi">
                 <label for="fax">Fax</label>
                 <input type="text" name="fax" id="fax" class="campoTexto" />
             </div>
@@ -201,7 +206,7 @@
             
             <div class="campo multi controlado">
                 <label for="dniPersona">Número identificación*</label>
-                <input type="text" name="dniPersona" id="dniPersona" class="campoTexto mediano" />
+                <input type="text" name="dniPersona" id="dniPersona" class="campoTexto mediano" onblur="comprobarDni('dniPersona')" />
                 <p id="errorDniPersona" class="errorInput"><?= $this->errorDniPersona ?></p>
             </div>
             

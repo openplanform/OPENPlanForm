@@ -38,7 +38,7 @@ CREATE TABLE `tblAcceso` (
   PRIMARY KEY  (`idAcceso`,`fkPadre`),
   KEY `fk_tblAcceso_tblAcceso1` (`fkPadre`),
   CONSTRAINT `fk_tblAcceso_tblAcceso1` FOREIGN KEY (`fkPadre`) REFERENCES `tblAcceso` (`idAcceso`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=115 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=120 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -47,7 +47,7 @@ CREATE TABLE `tblAcceso` (
 
 LOCK TABLES `tblAcceso` WRITE;
 /*!40000 ALTER TABLE `tblAcceso` DISABLE KEYS */;
-INSERT INTO `tblAcceso` VALUES (1,0,'Convocatorias',1,0,'convocatoria',NULL,NULL),(2,1,'Alta',1,0,'convocatoria','alta','1,2'),(3,1,'Listado',1,1,'convocatoria','index','1,2'),(4,1,'_Buscar...',1,3,'convocatoria','buscar','1,2'),(5,1,'Editar',0,5,'convocatoria','editar','1,2'),(6,0,'Planes',1,1,'plan',NULL,NULL),(7,6,'Alta',1,0,'plan','alta','1,2'),(8,6,'Listado',1,1,'plan','index','1,2,3'),(9,6,'_Buscar...',1,4,'plan','buscar','1,2,3'),(10,6,'Editar',0,5,'plan','editar','1,2'),(11,0,'Cursos',1,3,'curso',NULL,NULL),(13,11,'Alta',1,0,'curso','alta','1,3'),(14,11,'Listado',1,1,'curso','index','1,2,3,4,5,6'),(15,11,'_Buscar...',1,6,'curso','buscar','1,2,3,4,5,6'),(16,11,'Editar',0,5,'curso','editar','1,3'),(22,0,'Gestoras',1,4,'consultora',NULL,NULL),(23,22,'Alta',1,0,'consultora','alta','1,2'),(24,22,'Listado',1,1,'consultora','index','1,2,3'),(25,22,'_Buscar...',1,2,'consultora','buscar','1,2,3'),(26,22,'Editar',0,3,'consultora','editar','1,2'),(27,0,'Profesores',1,5,'profesor',NULL,NULL),(28,27,'Alta',1,0,'profesor','alta','1,3,4'),(29,27,'Listado',1,1,'profesor','index','1,2,3,4,5'),(30,27,'_Buscar...',1,2,'profesor','buscar','1,2,3,4,5'),(31,27,'Editar',0,3,'profesor','editar','1,3,4'),(32,0,'Academias',1,6,'academia',NULL,NULL),(33,32,'Alta',1,0,'academia','alta','1,3'),(34,32,'Listado',1,1,'academia','index','1,2,3,4,5,6'),(35,32,'_Buscar...',1,3,'academia','buscar','1,2,3,4,5,6'),(36,32,'Editar',0,3,'academia','editar','1,3,4'),(37,32,'Centros',1,2,'centro',NULL,'1'),(38,37,'Alta',1,0,'centro','alta','1,3,4'),(39,37,'Listado',1,1,'centro','index','1'),(40,37,'_Buscar...',1,3,'centro','buscar','1'),(41,37,'Editar',0,3,'centro','editar','1'),(42,37,'Aulas',1,2,'aula',NULL,'1,3,4'),(43,42,'Alta',1,0,'aula','alta','1,3,4'),(44,42,'Listado',1,1,'aula','index','1,3,4'),(45,42,'_Buscar...',1,2,'aula','buscar','1,3,4'),(46,42,'Editar',0,3,'aula','editar','1,3,4'),(47,11,'Alumnos',1,2,'alumno','','1,2,3,4'),(48,47,'Listado',1,1,'alumno','index','1,3,4'),(49,47,'_Buscar...',1,2,'alumno','buscar','1,3,4'),(50,0,'Usuarios',1,10,'usuario',NULL,NULL),(51,50,'Alta',1,0,'usuario','alta','1'),(52,50,'_Buscar...',1,2,'usuario','buscar','1'),(53,50,'Listado',1,1,'usuario','index','1'),(54,50,'Editar',0,3,'usuario','editar','1'),(55,0,'Administración',1,12,'administrador',NULL,NULL),(56,55,'Roles',1,19,'administrador','roles','1'),(57,55,'Configuración',1,18,'administrador','configuracion','1'),(59,55,'Menú',1,17,'administrador','menu','1'),(71,112,'Países',1,0,'datos','pais','1'),(72,112,'Provincias',1,1,'datos','provincia','1'),(73,112,'Carnets de conducir',1,2,'datos','carnet','1,2,3'),(74,112,'Categorías',1,3,'categoria','index','1,2,3'),(75,112,'Colectivos',1,4,'datos','colectivo','1,2,3'),(76,112,'Equipamiento',1,5,'datos','equipamiento','1,2,3,4'),(77,112,'Estados civiles',1,6,'datos','estadoCivil','1,2,3'),(78,112,'Estados laborales',1,7,'datos','estadoLaboral','1,2,3'),(79,6,'Estados de plan',1,2,'datos','estadoplan','1,2,3'),(81,112,'Modalidades',1,10,'datos','modalidad','1,2,3'),(82,112,'Niveles de estudios',1,11,'datos','estudios','1,2,3'),(83,112,'Requisitos',1,12,'datos','requisito','1,2,3'),(84,112,'Sectores',1,13,'datos','sector','1,2,3'),(85,1,'Tipos de convocatoria',1,2,'datos','tiposConvocatoria','1,2,3'),(86,112,'Tipos de identificaciones',1,15,'datos','identificacion','1,2,3'),(87,6,'Tipos de plan',1,3,'datos','tipoplan','1,2,3'),(97,47,'Editar',0,5,'alumno','editar','1,3'),(98,50,'Ficha',0,4,'usuario','ficha','1,2,3,4,5,6'),(99,1,'Ficha',0,6,'convocatoria','ficha','1,2,3'),(100,11,'Ficha',0,6,'curso','ficha','1,2,3,4,5,6'),(101,47,'Ficha',0,4,'alumno','ficha','1,3,4'),(102,22,'Ficha',0,4,'consultora','ficha','1,2,3'),(103,27,'Ficha',0,4,'profesor','ficha','1,2,3,4,5'),(104,32,'Ficha',0,4,'academia','ficha','1,2,3,4,5,6'),(105,42,'Ficha',0,4,'aula','ficha','1,3,4'),(106,37,'Ficha',0,4,'centro','ficha','1,3,4'),(107,0,'Panel Principal',0,0,'index','panel','1,2,3,4,5,6,7'),(108,47,'Alta',1,0,'alumno','alta','1,2,3,4'),(109,112,'Documentos',1,4,'documento','index','1,2,3,4'),(110,6,'Ficha',0,6,'plan','ficha','1,2,3'),(111,11,'Horario',0,7,'curso','horario','1,2,3'),(112,0,'Datos Comunes',1,11,'datos',NULL,NULL),(113,11,'Documentación',0,3,'curso','documentacion','1,2,3,4'),(114,11,'Alumnos del curso',0,4,'curso','alumnos','1,2,3,4');
+INSERT INTO `tblAcceso` VALUES (1,0,'Convocatorias',1,0,'convocatoria',NULL,NULL),(2,1,'Alta',1,0,'convocatoria','alta','1,2'),(3,1,'Listado',1,1,'convocatoria','index','1,2'),(4,1,'_Buscar...',1,3,'convocatoria','buscar','1,2'),(5,1,'Editar',0,5,'convocatoria','editar','1,2'),(6,0,'Planes',1,1,'plan',NULL,NULL),(7,6,'Alta',1,0,'plan','alta','1,2'),(8,6,'Listado',1,1,'plan','index','1,2,3'),(9,6,'_Buscar...',1,4,'plan','buscar','1,2,3'),(10,6,'Editar',0,5,'plan','editar','1,2'),(11,0,'Cursos',1,3,'curso',NULL,NULL),(13,11,'Alta',1,0,'curso','alta','1,3'),(14,11,'Listado',1,1,'curso','index','1,2,3,4,5,6'),(15,11,'_Buscar...',1,6,'curso','buscar','1,2,3,4,5,6'),(16,11,'Editar',0,5,'curso','editar','1,3'),(22,0,'Gestoras',1,4,'consultora',NULL,NULL),(23,22,'Alta',1,0,'consultora','alta','1,2'),(24,22,'Listado',1,1,'consultora','index','1,2,3'),(25,22,'_Buscar...',1,2,'consultora','buscar','1,2,3'),(26,22,'Editar',0,3,'consultora','editar','1,2'),(27,0,'Profesores',1,5,'profesor',NULL,NULL),(28,27,'Alta',1,0,'profesor','alta','1,3,4'),(29,27,'Listado',1,1,'profesor','index','1,2,3,4,5'),(30,27,'_Buscar...',1,2,'profesor','buscar','1,2,3,4,5'),(31,27,'Editar',0,3,'profesor','editar','1,3,4'),(32,0,'Academias',1,6,'academia',NULL,NULL),(33,32,'Alta',1,0,'academia','alta','1,3'),(34,32,'Listado',1,1,'academia','index','1,2,3,4,5,6'),(35,32,'_Buscar...',1,3,'academia','buscar','1,2,3,4,5,6'),(36,32,'Editar',0,3,'academia','editar','1,3,4'),(37,32,'Centros',1,2,'centro',NULL,'1'),(38,37,'Alta',1,0,'centro','alta','1,3,4'),(39,37,'Listado',1,1,'centro','index','1'),(40,37,'_Buscar...',1,3,'centro','buscar','1'),(41,37,'Editar',0,3,'centro','editar','1'),(42,37,'Aulas',1,2,'aula',NULL,'1,3,4'),(43,42,'Alta',1,0,'aula','alta','1,3,4'),(44,42,'Listado',1,1,'aula','index','1,3,4'),(45,42,'_Buscar...',1,2,'aula','buscar','1,3,4'),(46,42,'Editar',0,3,'aula','editar','1,3,4'),(47,11,'Alumnos',1,2,'alumno','','1,2,3,4'),(48,47,'Listado',1,1,'alumno','index','1,3,4'),(49,47,'_Buscar...',1,2,'alumno','buscar','1,3,4'),(50,0,'Usuarios',1,10,'usuario',NULL,NULL),(51,50,'Alta',1,0,'usuario','alta','1'),(52,50,'_Buscar...',1,2,'usuario','buscar','1'),(53,50,'Listado',1,1,'usuario','index','1'),(54,50,'Editar',0,3,'usuario','editar','1'),(55,0,'Administración',1,13,'administrador',NULL,NULL),(56,55,'Roles',1,19,'administrador','roles','1'),(57,55,'Configuración',1,18,'administrador','configuracion','1'),(59,55,'Menú',1,17,'administrador','menu','1'),(71,112,'Países',1,0,'datos','pais','1'),(72,112,'Provincias',1,1,'datos','provincia','1'),(73,112,'Carnets de conducir',1,2,'datos','carnet','1,2,3'),(74,112,'Categorías',1,3,'categoria','index','1,2,3'),(75,112,'Colectivos',1,4,'datos','colectivo','1,2,3'),(76,112,'Equipamiento',1,5,'datos','equipamiento','1,2,3,4'),(77,112,'Estados civiles',1,6,'datos','estadoCivil','1,2,3'),(78,112,'Estados laborales',1,7,'datos','estadoLaboral','1,2,3'),(79,6,'Estados de plan',1,2,'datos','estadoplan','1,2,3'),(81,112,'Modalidades',1,10,'datos','modalidad','1,2,3'),(82,112,'Niveles de estudios',1,11,'datos','estudios','1,2,3'),(83,112,'Requisitos',1,12,'datos','requisito','1,2,3'),(84,112,'Sectores',1,13,'datos','sector','1,2,3'),(85,1,'Tipos de convocatoria',1,2,'datos','tiposConvocatoria','1,2,3'),(86,112,'Tipos de identificaciones',1,15,'datos','identificacion','1,2,3'),(87,6,'Tipos de plan',1,3,'datos','tipoplan','1,2,3'),(97,47,'Editar',0,5,'alumno','editar','1,3'),(98,50,'Ficha',0,4,'usuario','ficha','1,2,3,4,5,6'),(99,1,'Ficha',0,6,'convocatoria','ficha','1,2,3'),(100,11,'Ficha',0,6,'curso','ficha','1,2,3,4,5,6'),(101,47,'Ficha',0,4,'alumno','ficha','1,3,4'),(102,22,'Ficha',0,4,'consultora','ficha','1,2,3'),(103,27,'Ficha',0,4,'profesor','ficha','1,2,3,4,5'),(104,32,'Ficha',0,4,'academia','ficha','1,2,3,4,5,6'),(105,42,'Ficha',0,4,'aula','ficha','1,3,4'),(106,37,'Ficha',0,4,'centro','ficha','1,3,4'),(107,0,'Panel Principal',0,0,'index','panel','1,2,3,4,5,6,7'),(108,47,'Alta',1,0,'alumno','alta','1,2,3,4'),(109,112,'Documentos',1,4,'documento','index','1,2,3,4'),(110,6,'Ficha',0,6,'plan','ficha','1,2,3'),(111,11,'Horario',0,7,'curso','horario','1,2,3'),(112,0,'Datos Comunes',1,11,'datos',NULL,NULL),(113,11,'Documentación',0,3,'curso','documentacion','1,2,3,4'),(114,11,'Alumnos del curso',0,4,'curso','alumnos','1,2,3,4'),(115,0,'Sugerencias',1,12,'sugerencia',NULL,NULL),(117,115,'Listado',1,1,'sugerencia','index','1,2,3,4,5,6'),(118,0,'Editar',0,2,'sugerencia','editar',NULL),(119,115,'Editar',0,2,'sugerencia','editar','1,2,3,4,5');
 /*!40000 ALTER TABLE `tblAcceso` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -81,11 +81,22 @@ CREATE TABLE `tblAlumno` (
   `dNacimiento` date NOT NULL,
   `dBaja` date default NULL,
   `vNumeroSS` varchar(45) default NULL,
+  `bNotificacion` tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (`idAlumno`),
   KEY `fk_tblAlumno_trelPlanCursoCentro1` (`fkCurso`),
   CONSTRAINT `fk_tblAlumno_trelPlanCursoCentro1` FOREIGN KEY (`fkCurso`) REFERENCES `tblCurso` (`idCurso`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=474 DEFAULT CHARSET=utf8 COMMENT='Copia datos desde persona, se mantiene el id de usuario';
+) ENGINE=InnoDB AUTO_INCREMENT=484 DEFAULT CHARSET=utf8 COMMENT='Copia datos desde persona, se mantiene el id de usuario';
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tblAlumno`
+--
+
+LOCK TABLES `tblAlumno` WRITE;
+/*!40000 ALTER TABLE `tblAlumno` DISABLE KEYS */;
+INSERT INTO `tblAlumno` VALUES (193,7,45,114,'es',NULL,'DNI','Soltero/a','Desocupado','Universidad','Aaron','Amengual','Arranz','Palma','435621A','aaron@ningen.es','Gremi Fusters 32',NULL,'2010-12-16','1980-09-27',NULL,NULL,0),(194,8,45,114,'es',NULL,'DNI','Soltero/a','Desocupado','Universidad','Aaron','Amengual','Arranz','Palma','435621A','aaron@ningen.es','Gremi Fusters 32',NULL,'2010-12-16','1980-09-27',NULL,NULL,0),(436,25,45,114,'es',NULL,'DNI','Soltero/a','Desocupado','Universidad','Aaron','Amengual','Arranz','Palma','435621A','aaron@ningen.es','Gremi Fusters 32',NULL,'2010-12-28','1980-09-27',NULL,'0123456789877',0),(441,30,23,82,'es','Araba','DNI','Casado/a','Desocupado','EGB','Diego','Palo','Alagua','Palma de Mallorca','43135621M','aaron@ningen.es','Gremi Fusters 32',NULL,'2011-01-03','1994-11-01',NULL,'',0),(442,30,24,83,'ar','Albacete','DNI','Casado/a','Ocupado','Universidad','Nicolás','Palumbo','','Palma de Mallorca','43135621L','nico@ningen.es','General Riera 27',NULL,'2011-01-03','1984-03-22',NULL,NULL,0),(443,30,25,84,'es','Araba','DNI','Casado/a','Ocupado','Universidad','Xisco','Serra','','Palma de Mallorca','43135621J','xavi@ningen.es','Gremi Fusters 32',NULL,'2011-01-03','1975-05-15',NULL,NULL,0),(444,30,26,85,'es','Araba','DNI','Soltero/a','Ocupado','Universidad','David','Rosselló','Fernandez','Palma de Mallorca','43135621B','david@ningen.es','Av. Alemania 2',NULL,'2011-01-03','1964-12-09',NULL,NULL,0),(445,30,27,86,'es','Araba','DNI','Soltero/a','Ocupado','Universidad','Juan','Fernández','Fernandez','Palma de Mallorca','74859212G','juan@ningen.es','Av. Alemania 2',NULL,'2011-01-03','1964-12-09',NULL,NULL,0),(446,30,28,87,'es','Araba','DNI','Soltero/a','Ocupado','Universidad','Diego','Amengual','Lopez','Palma de Mallorca','43135621F','diego@ningen.es','Av. Alemania 2',NULL,'2011-01-03','1964-12-09',NULL,NULL,0),(447,30,30,89,'es','Araba','DNI','Casado/a','Ocupado','Universidad','Juanjo','García','Méndez','Palma de Mallorca','43135621C','juanjo@ningen.es','Gremi Fusters 32',NULL,'2011-01-03','1975-05-15',NULL,NULL,0),(448,30,31,90,'es','Araba','DNI','Casado/a','Desocupado','EGB','Yeray','Amengual','','Palma de Mallorca','43135621R','yeray@ningen.es','Gremi Fusters 32',NULL,'2011-01-03','1994-11-01',NULL,NULL,0),(449,30,38,107,'es',NULL,'DNI','Casado/a','Desocupado','EGB','Nicolai','Nicolau','','Palma de Mallorca','123321123','nico@ningen.es','',NULL,'2011-01-03','2010-11-12',NULL,NULL,0),(450,30,41,110,'es',NULL,'DNI','Divorciado/a','Desocupado','ESO','Nicolas','Palumbo','Segundo','Palma de Mallorca','31195646','nico@ningen.es','',NULL,'2011-01-03','2010-12-18',NULL,'',0),(451,30,42,111,'es',NULL,'NIE','Divorciado/a','Ocupado','EGB','Nicolas','Palumbo','Tercero','Palma de Mallorca','Y678876678','nico@ningen.es','',NULL,'2011-01-03','2010-12-03',NULL,'',0),(452,30,43,112,'es','A Coruña','DNI','Casado/a','Ocupado','ESO','Torito','Bravo','segundoApellido','Palma de Mallorca','Y777888999','nico@ningen.es','La calle 123',NULL,'2011-01-03','2010-12-12',NULL,NULL,0),(453,30,44,113,'es',NULL,'DNI','Casado/a','Desocupado','ESO','Torito','Bravo','','Palma de Mallorca','Y888777','nico@ningen.es','',NULL,'2011-01-03','2010-12-24',NULL,NULL,0),(454,30,45,114,'es',NULL,'DNI','Soltero/a','Desocupado','Universidad','Aaron','Amengual','Arranz','Palma','435621A','aaron@ningen.es','Gremi Fusters 32',NULL,'2011-01-03','1980-09-27',NULL,'0123456789877',0),(455,30,56,133,'ad','A Coruña','DNI','Casado/a','Desocupado','EGB','Michael','Jackson','','Palma','435621G','aaron@ningen.es','direccion',NULL,'2011-01-03','2010-12-03',NULL,NULL,0),(456,30,57,134,'si','Albacete','DNI','Divorciado/a','Desocupado','Universidad','Mario','Barakus','Mr T','Palma de Mallorca','666777888','nico@ningen.com','La calle 123',NULL,'2011-01-03','1983-04-12',NULL,NULL,0),(457,30,58,136,'hk','Ourense','DNI','Casado/a','Desocupado','EGB','Juana','Llopis','Llopis','Palma','43135621JF','aaron@ningen.es','Gremi Fusters 32',NULL,'2011-01-03','2010-12-16',NULL,'0123456789877',0),(478,35,55,130,'es',NULL,'DNI','Divorciado/a','Desocupado','EGB','Nicolás','Palumbo','','Palma de Mallorca','Y0154689X','nico@ningen.es','',NULL,'2011-01-11','2010-12-16',NULL,NULL,0),(479,35,66,145,'es',NULL,'DNI','Casado/a','Desocupado','EGB','Jose','Perez','','Palma de Mallorca','98778978','nico@ningen.es','',NULL,'2011-01-11','2010-12-16',NULL,NULL,0),(482,28,60,139,'af',NULL,'DNI','Soltero/a','Situación de cuidador no profesional (CPN)','EGB','Conan','El','Bárbaro','Cimmeria','435621E','example@example.com','Gremi Fusters 32',NULL,'2011-01-11','1930-01-01',NULL,'',0),(483,28,66,145,'es',NULL,'DNI','Casado/a','Desocupado','EGB','Jose','Perez','','Palma de Mallorca','98778978','nico@ningen.es','',NULL,'2011-01-11','2010-12-16',NULL,NULL,0);
+/*!40000 ALTER TABLE `tblAlumno` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `tblAula`
@@ -321,6 +332,8 @@ CREATE TABLE `tblCurso` (
   `fkModalidad` int(11) NOT NULL,
   `fkCentro` int(11) NOT NULL,
   `vNombre` varchar(255) NOT NULL,
+  `bNotificacionInicio` tinyint(1) NOT NULL default '0',
+  `bNotificacionFin` tinyint(1) NOT NULL default '0',
   `vDescripcion` varchar(1000) default NULL,
   `iHorasPresenciales` int(4) default NULL,
   `iHorasDistancia` int(4) default NULL,
@@ -344,7 +357,7 @@ CREATE TABLE `tblCurso` (
   CONSTRAINT `fk_tblCurso_tblColectivo1` FOREIGN KEY (`fkColectivo`) REFERENCES `tblColectivo` (`idColectivo`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_tblCurso_tblModalidad1` FOREIGN KEY (`fkModalidad`) REFERENCES `tblModalidad` (`idModalidad`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_trelPlanCursoCentro_tblPlan1` FOREIGN KEY (`fkPlan`) REFERENCES `tblPlan` (`idPlan`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -584,6 +597,16 @@ CREATE TABLE `tblEstudio` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `tblEstudio`
+--
+
+LOCK TABLES `tblEstudio` WRITE;
+/*!40000 ALTER TABLE `tblEstudio` DISABLE KEYS */;
+INSERT INTO `tblEstudio` VALUES (1,'Sin Estudios',NULL),(2,'ESO / Graduado Escolar',NULL),(3,'Bachiller',NULL),(5,'Técnico FP Grado Superior / FPII',NULL),(6,'Diplomado (Educación Univercitaria de primer ciclo)','Diplomado. 2'),(7,'Doctor',NULL);
+/*!40000 ALTER TABLE `tblEstudio` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `tblHorario`
 --
 
@@ -597,6 +620,7 @@ CREATE TABLE `tblHorario` (
   `iDesde` time NOT NULL,
   `iHasta` time NOT NULL,
   `iSesion` int(4) default '0',
+  `iHoras` time NOT NULL default '00:00:00',
   PRIMARY KEY  (`idHorario`),
   KEY `fk_tblHorario_tblCurso1` (`fkCurso`),
   KEY `tbl_Horario_fkCurso` (`fkCurso`),
@@ -879,6 +903,16 @@ CREATE TABLE `tblRequisito` (
   PRIMARY KEY  (`idRequisito`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tblRequisito`
+--
+
+LOCK TABLES `tblRequisito` WRITE;
+/*!40000 ALTER TABLE `tblRequisito` DISABLE KEYS */;
+INSERT INTO `tblRequisito` VALUES (1,'Documentación obligatoria',NULL),(2,'Memoria pedagógica',NULL),(3,'Preferentemente parados','Parados'),(4,'Preferentemente ocupados',NULL),(5,'Un requisito','Un requisito en particular.');
+/*!40000 ALTER TABLE `tblRequisito` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `tblRol`

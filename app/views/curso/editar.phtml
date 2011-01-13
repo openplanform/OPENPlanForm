@@ -193,10 +193,10 @@
 	            	<?
 	            	
 	            	if ( $this->tutoriaDO ){
-	            		$tutoria=true;
+	            		$tutoria = true;
 	            		?><input type="hidden" name="tutoria" value="<?= $this->tutoriaDO->getIdTutoria() ?>" /><?
 	            	} else {
-	            		$tutoria=false;
+	            		$tutoria = false;
 	            	}
 	            	
 	            	?>
@@ -207,7 +207,9 @@
 	            			
 	            			foreach ($this->profesoresIDX as $clave => $profesor){
 	            				
-	            				if ( $tutoria ) ( $this->tutoriaDO->getFkTutor() == $clave ) ? $sel = 'selected = "selected"' : $sel = "";
+	            				if ( $tutoria ) {
+									$this->tutoriaDO->getFkTutor() == $clave ? $sel = 'selected = "selected"' : $sel = "";
+	            				}
 	            				echo '<option value="' . $clave . '" ' . $sel . '>' . $profesor . '</option>' . "\n";
 	            				
 	            			}
@@ -225,7 +227,9 @@
 	            			
 	            			foreach ($this->modalidadesIDX as $clave=>$modalidad){
 	            				
-	            				if ( $tutoria ) ( $this->tutoriaDO->getFkModalidad() == $clave ) ? $sel = 'selected = "selected"' : $sel = "";
+	            				if ( $tutoria ) {
+	            					$this->tutoriaDO->getFkModalidad() == $clave ? $sel = 'selected = "selected"' : $sel = "";
+	            				}
 	            				echo '<option value="' . $clave . '" ' . $sel . ' >' . $modalidad . '</option>' . "\n";
 	            				
 	            			}
@@ -313,7 +317,7 @@
 		            <label for="profesoresSeleccionados">Profesores del curso</label>
 		            
 		            <div class="contenedorMultiselect">
-		            	<a title="Ir a la ficha de profesor" class="btnFicha" href="javascript:fichaProfesor();hidePopups();"><span>ficha</span></a>
+		            	<a title="Ir a la ficha de profesor" class="btnFicha" href="javascript:fichaProfesor();"><span>ficha</span></a>
 			            <a title="Quitar profesor" class="btnEliminar" href="javascript:ventanaConfirmacion('Confirmar','¿Está seguro que desea quitar el/los profesor/es del curso?', 'javascript:quitarPersonaCurso(\'profesoresSeleccionados\');hidePopups()')"><span>eliminar</span></a>
 			            <select name="profesores[]" multiple="multiple" id="profesoresSeleccionados" class="campoTexto grande multiple"><?
 			                

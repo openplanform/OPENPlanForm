@@ -36,9 +36,9 @@ if (count($this->identificacionesCOL) > 0){
 		<div id="paginadorContainer"><?= $this->paginador ?></div>
 	</div>
 	<div class="col2">
-		<h2><?= $this->editar ? 'Modificar tipo de identificacion' : 'Añadir nuevo tipo de identificacion' ?></h2>
 		<form action="<?= $_SERVER['REQUEST_URI'] ?>" method="post">
 			<fieldset>
+				<?= $this->editar ? '<legend>Edición de tipo de identificación</legend>' : '<legend>Alta de nuevo tipo de identificación</legend>' ?>
 				<input type="hidden" name="sent" value="1">
 				<div class="campo">
 					<label for="nombre">Nombre</label>

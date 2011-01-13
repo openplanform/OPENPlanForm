@@ -60,6 +60,7 @@
 		<?
 		if ( !is_null($this->equipamientoDO) ){
 		?>
+			<legend>Edición de equipamiento</legend>
 			<input type="hidden" name="<?= md5('send') ?>" value="<?= md5('editar') ?>" />
 			<div class="campo">
 				<input type="button" onclick="window.location='/datos/equipamiento.html'" value="Nuevo" class="btnSubmit">
@@ -67,6 +68,7 @@
 		<?
 		} else {
 		?>
+			<legend>Alta de nuevo equipamiento</legend>
 			<input type="hidden" name="<?= md5('send') ?>" value="<?= md5('alta') ?>" />
 		<?
 		}

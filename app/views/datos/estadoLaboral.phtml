@@ -58,6 +58,7 @@
 		<?
 		if ( !is_null($this->estadoLaboralDO) ){
 		?>
+			<legend>Edición de estado laboral</legend>
 			<input type="hidden" name="<?= md5('send') ?>" value="<?= md5('editar') ?>" />
 			<div class="campo">
 				<input type="button" onclick="window.location='/datos/estadoLaboral.html'" value="Nuevo" class="btnSubmit">
@@ -65,6 +66,7 @@
 		<?
 		} else {
 		?>
+			<legend>Alta de nuevo estado laboral</legend>
 			<input type="hidden" name="<?= md5('send') ?>" value="<?= md5('alta') ?>" />
 		<?
 		}

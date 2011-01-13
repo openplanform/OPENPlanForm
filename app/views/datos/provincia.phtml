@@ -60,6 +60,7 @@
 		<?
 		if ( !is_null($this->provinciaDO) ){
 		?>
+			<legend>Edición de provincia</legend>
 			<input type="hidden" name="<?= md5('send') ?>" value="<?= md5('editar') ?>" />
 			<div class="campo">
 				<input type="button" onclick="window.location='/datos/provincia.html'" value="Nuevo" class="btnSubmit">
@@ -67,6 +68,7 @@
 		<?
 		} else {
 		?>
+			<legend>Alta de nueva provincia</legend>
 			<input type="hidden" name="<?= md5('send') ?>" value="<?= md5('alta') ?>" />
 		<?
 		}

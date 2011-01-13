@@ -2,4 +2,5 @@
 Líneas para añadir al cron:
 --------------------------
 
-
+10  0   *   *   *    php /var/www/extranet.planespime.es/app/classes/PplCronJobs.php -m curso
+11  0   *   *   *    php /var/www/extranet.planespime.es/app/classes/PplCronJobs.php -m docs

@@ -85,6 +85,11 @@ function comprobarCampos() {
 		return false;
 	}
 	
+	// Persona contacto
+	if ( !comprobarVacio('contacto', 'El contacto no puede estar vacío') ){
+		return false;
+	}
+	
 	return true;
 	
 }

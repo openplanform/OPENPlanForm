@@ -571,6 +571,7 @@ class usuarioController extends PplController{
                 $resultIDX[$idUsuario]['nombre'] = $usuarioDO->getVNombre();
                 $resultIDX[$idUsuario]['roles'] = implode(', ', $nombresRolesUsuario);
                 $resultIDX[$idUsuario]['email'] = $usuarioDO->getVEmail();
+                $resultIDX[$idUsuario]['datos'] = $this->aclManager->datosCompletosUsuario($idUsuario);
                 
             }
             
@@ -603,10 +604,10 @@ class usuarioController extends PplController{
         }
         
         // Provincias
-        $this->view->provinciasCOL = TblProvincia::findAll($this->db);
+        $this->view->provinciasCOL = TblProvincia::findAll($this->db, 'vNombre_es');
         
         // Paises
-        $this->view->paisesCOL = TblPais::findAll($this->db);
+        $this->view->paisesCOL = TblPais::findAll($this->db, 'vNombre_es');
         
         
         // Flag de envío mediante formulario
@@ -861,9 +862,11 @@ class usuarioController extends PplController{
                 $personaDO->setLastModified(date('Y-m-d'));
                 $personaDO->setModUser($this->view->usuarioBO->getNombre());
                 
+                $this->db->disableForeignChecks();
                 if (!$personaDO->update()){
                     
                     $this->db->rollback();
+                    $this->db->enableForeignChecks();
                     
                     $this->view->popup = array(
                         'estado' => 'ko',
@@ -877,6 +880,7 @@ class usuarioController extends PplController{
                 }
                 
                 $this->db->commit();
+                $this->db->enableForeignChecks();
                 
                 
             } elseif (md5('empresa') == $tipo){
@@ -927,9 +931,11 @@ class usuarioController extends PplController{
                 $empresaDO->setVFax($fax);
                 
                 // Se insteran los datos
+                $this->db->disableForeignChecks();
                 if (!$empresaDO->update()){
                     
                     $this->db->rollback();
+                    $this->db->enableForeignChecks();
                     
                     $this->view->popup = array(
                         'estado' => 'ko',
@@ -943,6 +949,7 @@ class usuarioController extends PplController{
                 }
                 
                 $this->db->commit();
+                $this->db->enableForeignChecks();
                 
             }
             
@@ -1038,10 +1045,10 @@ class usuarioController extends PplController{
         }
         
         // Provincias
-        $this->view->provinciasCOL = TblProvincia::findAll($this->db);
+        $this->view->provinciasCOL = TblProvincia::findAll($this->db, 'vNombre_es');
         
         // Paises
-        $this->view->paisesCOL = TblPais::findAll($this->db);
+        $this->view->paisesCOL = TblPais::findAll($this->db, 'vNombre_es');
         
         
         // Flag de envío mediante formulario
@@ -1072,7 +1079,7 @@ class usuarioController extends PplController{
                 return;                
             }
             
-            // Se verificará la existencia del nombre de usuario, solo en el caso que el nombre haya cambiado
+            // Se verificará la existencia del nombre de usuario, sólo en el caso que el nombre haya cambiado
             $oldUsername = OwlSession::getValue('oldUsername');
             
             if ($oldUsername != $nombreUsuario){
@@ -1114,9 +1121,6 @@ class usuarioController extends PplController{
                 $this->view->errorEmail = 'La dirección de correo proporcionada no es correcta.';
                 return;
             }
-            
-            // Se insertan los datos
-            $this->db->begin();
             
             //
             // DATOS DE ACCESO
@@ -1248,9 +1252,13 @@ class usuarioController extends PplController{
                 $personaDO->setLastModified(date('Y-m-d'));
                 $personaDO->setModUser($this->view->usuarioBO->getNombre());
                 
+                // Se insertan los datos
+            	$this->db->begin();
+            	$this->db->disableForeignChecks();
                 if (!$personaDO->insert()){
                     
                     $this->db->rollback();
+                    $this->db->enableForeignChecks();
                     
                     $this->view->popup = array(
                         'estado' => 'ko',
@@ -1259,11 +1267,12 @@ class usuarioController extends PplController{
                         'url'=> '',
                     );
                     
-                    return;                    
+                    return;
                     
                 }
                 
                 $this->db->commit();
+                $this->db->enableForeignChecks();
                 
                 
             } elseif (md5('empresa') == $tipo){
@@ -1278,25 +1287,35 @@ class usuarioController extends PplController{
                 $poblacion = $this->helper->getAndEscape('poblacion');
                 $direccion = $this->helper->getAndEscape('direccion');
                 $cp = $this->helper->getAndEscape('cp');
+                $contacto = $this->helper->getAndEscape('contacto');
                 $telefono = $this->helper->getAndEscape('telefono1');
                 $telefono2 = $this->helper->getAndEscape('telefono2');
                 $fax = $this->helper->getAndEscape('fax');
                 
                 // Comprobación de campos
                 if (empty($nombreEmpresa)){
-                    $this->view->errorNombre = 'El nombre no puede quedar vacío.';
+                    $this->view->errorNombre = 'El nombre no puede estar vacío.';
+                    return;
                 }
                 
                 if (empty($cif)){
-                    $this->view->errorCif = 'El CIF no puede quedar vacío';
+                    $this->view->errorCif = 'El CIF no puede estar vacío';
+                    return;
                 }
                 
                 if (empty($pais)){
                     $this->view->errorPais = 'Debe seleccionar un país.';
+                    return;
                 }
 
                 if (empty($provincia)){
                     $this->view->errorProvincia = 'Debe seleccionar una provincia.';
+                    return;
+                }
+
+                if (empty($contacto)){
+                    $this->view->errorContacto = 'El contacto no puede estar vacío';
+                    return;
                 }
                 
                 // Se prepara el insert
@@ -1313,12 +1332,16 @@ class usuarioController extends PplController{
                 $empresaDO->setVTelefono($telefono);
                 $empresaDO->setVTelefono2($telefono2);
                 $empresaDO->setVFax($fax);
+                $empresaDO->setVPersonaContacto($contacto);
                 $empresaDO->setDAlta(date('Y-m-d'));
                 
-                // Se insteran los datos
+                // Se insertan los datos
+            	$this->db->begin();
+            	$this->db->disableForeignChecks();
                 if (!$empresaDO->insert()){
                     
                     $this->db->rollback();
+                    $this->db->enableForeignChecks();
                     
                     $this->view->popup = array(
                         'estado' => 'ko',
@@ -1332,6 +1355,7 @@ class usuarioController extends PplController{
                 }
                 
                 $this->db->commit();
+                $this->db->enableForeignChecks();
                 
             }
             
