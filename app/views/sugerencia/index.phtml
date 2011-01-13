@@ -1,0 +1,107 @@
+<?php 
+
+	if ( count($this->sugerenciasCOL) > 0 ){
+
+?>
+
+
+<table class="listado">
+    <thead>
+		<tr>
+			<th><a href="/sugerencia/index.html/?ob=id&o=<?=$this->order?>" <?=( ($this->orderBy == 'id')?'class="ordenado ' . $this->order . '"':'' )?> >Id</a></th>
+			<th><a href="/sugerencia/index.html/?ob=per&o=<?=$this->order?>" <?=( ($this->orderBy == 'per')?'class="ordenado ' . $this->order . '"':'' )?> >Autor</a></th>			
+			<th><a href="/sugerencia/index.html/?ob=desc&o=<?=$this->order?>" <?=( ($this->orderBy == 'desc')?'class="ordenado ' . $this->order . '"':'' )?> >Descripción</a></th>
+			<?
+			
+				if ( $this->editar ){
+					?><th>Eliminar</th><?	
+				}
+			
+			?>
+		</tr>
+	</thead>
+	<tbody>
+		<?php
+		
+			$contador = 0;
+			foreach ( $this->sugerenciasCOL as $sugerenciaDO ){
+				
+				$clase = ( ($contador%2)==0 )?'':'class="alter"';
+				$contador++;
+				
+				?>
+				<tr	<?= $clase ?> >
+					<td><?= $sugerenciaDO->getIdDesiderata() ?></td>
+					<td><?= $this->personasIDX[$sugerenciaDO->getFkPersona()]->getVNombre() . ' ' . $this->personasIDX[$sugerenciaDO->getFkPersona()]->getVPrimerApellido() . ' ' . $this->personasIDX[$sugerenciaDO->getFkPersona()]->getVSegundoApellido()?></td>
+					<td><a href="/sugerencia/index.html/<?= $sugerenciaDO->getIdDesiderata() ?>"><?= OwlString::limitaTexto($sugerenciaDO->getVDescripcion(), 100) ?></a></td>
+					<?
+					
+						if ( $this->editar ){
+							?><td class="accion"><a href="javascript:ventanaConfirmacion('Confirmar','¿Está seguro que desea eliminar la sugerencia <strong><?= $sugerenciaDO->getIdDesiderata() ?></strong>?','/sugerencia/eliminar.html/<?= $sugerenciaDO->getIdDesiderata() ?>')" class="btnEliminar" title="Eliminar Sugerencia"><span>eliminar</span></a></td><?
+						}
+					
+					?>
+				</tr>
+				<?
+				
+			}
+			
+		?>
+	</tbody>
+</table>
+<div id="paginadorContainer"><?= $this->paginador ?></div>
+
+<?php 
+
+	} else {
+
+?>
+
+<h3>No hay ninguna sugerencia</h3>
+
+<?php 
+
+	}
+
+?>
+
+<form id="formSugerencia" method="post">
+	<fieldset>
+	
+		<?
+		if ( !is_null($this->sugerenciaDO) ){
+		?>
+			<legend>Edición de sugerencia</legend>
+			<input type="hidden" name="<?= md5('send') ?>" value="<?= md5('editar') ?>" />
+			<div class="campo">
+				<input type="button" onclick="window.location='/sugerencia/index.html'" value="Nueva" class="btnSubmit">
+			</div>
+		<?
+		} else {
+		?>
+			<legend>Alta de nueva sugerencia</legend>
+			<input type="hidden" name="<?= md5('send') ?>" value="<?= md5('alta') ?>" />
+		<?
+		}
+		?>
+		
+		<div class="campo controlado">
+			<label for="descripcion">Descripción</label>
+			<textarea id="descripcion" name="descripcion"><?= (!is_null($this->sugerenciaDO)) ? $this->sugerenciaDO->getVDescripcion() : '' ?></textarea>
+			<p id="errorDescripcion" class="errorInput"><?=$this->errorDescripcion?></p>
+		</div>
+		<div class="campo">
+			<?
+			if ( !is_null($this->sugerenciaDO) ){
+			?>
+				<input type="submit" value="Editar" class="btnSubmit" />
+			<?
+			} else {
+			?>
+				<input type="submit" value="Añadir" class="btnSubmit" />
+			<?
+			}
+			?>
+		</div>
+	</fieldset>
+</form>

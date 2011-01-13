@@ -124,7 +124,8 @@ class alumnoController extends PplController{
         $this->view->nivelEstudiosCOL = TblNivelEstudios::findAll($this->db, 'vNombre');
         
         // Cursos
-        $this->view->cursosCOL = TblCurso::findAll($this->db, 'vNombre');
+        $sql = "SELECT * FROM tblCurso WHERE dInicio >= now()";
+        $this->view->cursosCOL = OwlGenericDO::createCollection($this->db, $sql, 'tblCurso');
         
          // Sectores
 	    $this->view->sectoresIDX = $this->cacheBO->getSectores();
@@ -252,7 +253,7 @@ class alumnoController extends PplController{
 	        $this->view->nivelEstudiosCOL = TblNivelEstudios::findAll($this->db, 'vNombre');
 	        
 	        // Cursos
-	        $this->view->cursosCOL = TblCurso::findAll($this->db, 'vNombre');
+	        $this->view->cursosIDX = $this->cacheBO->getCursos();
 	        
 	        // Cursos precandidato alumno
 	        $this->view->cursosAlumnoCOL = TrelPrecandidato::findByTblPersona($this->db, $alumnoDO->getIdPersona() , 'dAlta');
@@ -785,12 +786,11 @@ class alumnoController extends PplController{
 	    	
     		if ( $correcto ){
     			// Todo ha ido bien
-    			$this->db->enableForeignChecks();
     			$this->db->commit();
     		} else {
-    			$this->db->enableForeignChecks();
     			$this->db->rollback();
     		}
+    		$this->db->enableForeignChecks();
 	    	
 	    }
 	    	

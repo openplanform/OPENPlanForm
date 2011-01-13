@@ -442,6 +442,13 @@ class consultoraController extends PplController{
             $cp = '';
         }
         
+        // Persona contacto
+        $contacto = $this->helper->escapeInjection($this->helper->get('contacto'));
+        if ( is_null($contacto) || empty($contacto) ){
+        	$correcto = false;
+            $this->errorContacto = "El contacto no puede estar vacío";
+        }
+        
         // Teléfono 1
         $telefono1 = $this->helper->escapeInjection($this->helper->get('telefono1'));
         if ( is_null($telefono1) || empty($telefono1) ){
@@ -533,6 +540,7 @@ class consultoraController extends PplController{
                 $consultoraDO->setVTelefono($telefono1);
                 $consultoraDO->setVTelefono2($telefono2);
                 $consultoraDO->setVFax($fax);
+                $consultoraDO->setVPersonaContacto($contacto);
                 $consultoraDO->setDAlta(date('Y-m-d'));
                 
                 if ( $editar ){

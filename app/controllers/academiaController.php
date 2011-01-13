@@ -491,6 +491,13 @@ class academiaController extends PplController{
 	    	$longitud = '';
 	    }
 	    
+    	// Persona contacto
+    	$contacto = $this->helper->escapeInjection($this->helper->get('contacto'));
+	    if ( is_null($contacto) || empty($contacto) ){
+	    	$correcto = false;
+	    	$this->view->errorContacto = 'El contacto no puede estar vacío';
+	    }
+	    
     	// Teléfono 1
     	$telefono1 = $this->helper->escapeInjection($this->helper->get('telefono1'));
 	    if ( is_null($telefono1) || empty($telefono1) ){
@@ -585,6 +592,7 @@ class academiaController extends PplController{
 		    	$academiaDO->setVFax(str_ireplace(' ', '', $fax));
 		    	$academiaDO->setVLatitud($latitud);
 		    	$academiaDO->setVLongitud($longitud);
+		    	$academiaDO->setVPersonaContacto($contacto);
 		    	$academiaDO->setDAlta(date('Y-m-d'));
 		    	$academiaDO->setLastModified(date('Y-m-d'));
                 $academiaDO->setModUser($this->usuario->getNombre());
