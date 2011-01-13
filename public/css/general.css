@@ -236,8 +236,7 @@ textarea{
 .alterForm{
     background-color: #C3D0DF;
     border: 1px solid #819DCF;
-    padding: 10px 24px 0 24px;
-    margin: 0 0 24px 0;
+    padding: 10px 20px;
     float: left;
 }
 .alterForm.ficha span,
@@ -738,6 +737,20 @@ div.ficha{
 	background: url(/img/iconos/rojo16.png) left center no-repeat;
 	padding-left: 20px;
 }
+.estadosPlan .aprobado{
+	background: url(/img/iconos/verde16.png) 5px 2px no-repeat;
+}
+.estadosPlan .pendiente{
+	background: url(/img/iconos/amarillo16.png) 5px 2px no-repeat;
+}
+.estadosPlan .denegado{
+    background: url(/img/iconos/rojo16.png) 5px 2px no-repeat;	
+}
+.estadosPlan .estado{
+	background-color: #fff;
+	padding-left: 25px;
+	width: 320px;
+}
 .multiple{
 	height: 200px;
 }
@@ -791,7 +804,7 @@ a.doc.pdf{
 	margin-bottom: 5px;
 }
 #convocatoriaDoc li{
-	width: 240px;
+	/*width: 240px; no poner ancho */
 	float: left;
 	background: url(/img/iconos/pdf16.png) left top no-repeat;
 	padding-left: 20px;
@@ -853,9 +866,9 @@ label a{
 .listaFicha{
 	background-color: #fff;
 	border: 1px solid #CFCFCF;
-	width: 690px;
+	width: 700px;
 	float: left;
-	padding: 0 5px;
+	/*padding: 0 5px;*/
 	min-height: 20px;
 	line-height: 20px;
 }
@@ -903,4 +916,46 @@ p.lista{
 }
 #cursosEdicion{
 	margin-top: 17px;
+}
+#contadorHoras{
+}
+#contadorHoras p{
+	margin-bottom: 15px;
+}
+#contadorHoras p strong{
+	color: #9F1313;
+	font-size: 14px;
+}
+#barraHoras{
+	height: 25px;
+	width: 698px;
+	margin-bottom: 10px;
+	border: 1px solid #6F6F6F;
+	background-color: #9F9F9F;
+	position: relative;
+	overflow: hidden;
+}
+#barraHoras div{
+    background-color: #68A6EF;
+    height: 23px;
+    float: left;
+    border: 1px solid #458BDF;    
+}
+#tablaHorarios{
+	width: 700px;
+}
+#barraHoras strong{
+	text-align: center;
+	line-height: 25px;
+	color: #fff;
+	display: block;
+	width: 200px;
+	height: 25px;
+	position: absolute;
+	top: 0px;
+	left: 249px;
+}
+#barraHoras div.excede{
+    border: 1px solid #CF262D;
+    background-color: #DF2929;	
 }

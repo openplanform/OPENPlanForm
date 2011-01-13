@@ -67,7 +67,7 @@
 	                <p id="errorCif" class="errorInput"><?= $this->errorCif ?></p>
 	            </div>
 				
-				<div class="campo controlado clear">
+				<div class="campo controlado multi clear">
 	            	<label for="pais">País*</label>
 		            <select class="grande" name="pais" id="pais">
 		            	<option value=""></option>
@@ -85,7 +85,7 @@
 					<p id="errorPais" class="errorInput"><?= $this->errorPais ?></p>
 				</div>
 				
-				<div class="campo controlado">
+				<div class="campo controlado multi">
 	            	<label for="provincia">Provincia*</label>
 		            <select class="grande" name="provincia" id="provincia">
 		            	<option value=""></option>
@@ -103,7 +103,7 @@
 					<p id="errorProvincia" class="errorInput"><?= $this->errorProvincia ?></p>
 				</div>
 				
-				<div class="campo multi">
+				<div class="campo multi clear">
 	            	<label for="poblacion">Poblacion</label>
 		            <input type="text" name="poblacion" id="poblacion" class="campoTexto" value="<?= $this->academiaDO->getVPoblacion() ?>" />
 				</div>
@@ -144,17 +144,23 @@
 			
 			<div class="separadorH"></div>
 			
+			<div class="campo controlado multi">
+                <label for="contacto">Persona de contacto*</label>
+                <input type="text" name="contacto" id="contacto" class="campoTexto" value="<?= $this->academiaDO->getVPersonaContacto() ?>"/>
+                <p id="errorContacto" class="errorInput"><?= $this->errorContacto ?></p>
+            </div>
+			
 			<div class="campo multi">
             	<label for="telefono1">Teléfono 1</label>
 	            <input type="text" name="telefono1" id="telefono1" class="campoTexto" value="<?= $this->academiaDO->getVTelefono() ?>" />
 			</div>
 			
-			<div class="campo multi">
+			<div class="campo multi clear">
             	<label for="telefono1">Teléfono 2</label>
 	            <input type="text" name="telefono2" id="telefono2" class="campoTexto" value="<?= $this->academiaDO->getVTelefono2() ?>" />
 			</div>
 			
-			<div class="campo clear">
+			<div class="campo multi">
             	<label for="fax">Fax</label>
 	            <input type="text" name="fax" id="fax" class="campoTexto" value="<?= $this->academiaDO->getVFax() ?>" />
 			</div>

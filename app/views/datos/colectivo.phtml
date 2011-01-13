@@ -60,6 +60,7 @@
 		<?
 		if ( !is_null($this->colectivoDO) ){
 		?>
+			<legend>Edición de colectivo</legend>
 			<input type="hidden" name="<?= md5('send') ?>" value="<?= md5('editar') ?>" />
 			<div class="campo">
 				<input type="button" onclick="window.location='/datos/colectivo.html'" value="Nuevo" class="btnSubmit">
@@ -67,6 +68,7 @@
 		<?
 		} else {
 		?>
+			<legend>Alta de nuevo colectivo</legend>
 			<input type="hidden" name="<?= md5('send') ?>" value="<?= md5('alta') ?>" />
 		<?
 		}

@@ -1,7 +1,7 @@
 <?php
 /**
  * Este archivo ha sido generado con Owl Dogen v.0.6
- * el 13 de December de 2010 a las 08:54:13
+ * el 12 de January de 2011 a las 12:12:47
  * @package dataAccess
  */
 
@@ -53,5 +53,12 @@ class TblHorarioSearch{
      * @var integer
      */
     public $iSesion;
+
+    /**
+     * Representa el atributo iHoras.
+     *
+     * @var string
+     */
+    public $iHoras;
 }
 ?>

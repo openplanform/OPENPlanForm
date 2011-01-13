@@ -60,7 +60,7 @@
             
             <div class="campo controlado multi">
                 <label for="pais">País*</label>
-                <select class="grande desplegable campoTexto" name="pais" id="pais">
+                <select class="grande" name="pais" id="pais">
                     <option value=""></option>
                     <?
                     
@@ -78,7 +78,7 @@
             
             <div class="campo controlado multi">
                 <label for="provincia">Provincia*</label>
-                <select class="grande desplegable campoTexto" name="provincia" id="provincia">
+                <select class="grande" name="provincia" id="provincia">
                     <option value=""></option>
                     <?
                     
@@ -111,19 +111,25 @@
                 <input type="text" name="cp" id="cp" class="campoTexto mediano" />
             </div>
             
-            <div class="campo multi">
-                <label for="telefono1">Teléfono 1</label>
-                <input type="text" name="telefono1" id="telefono1" class="campoTexto mediano" />
+            <div class="campo controlado multi">
+                <label for="contacto">Persona de contacto*</label>
+                <input type="text" name="contacto" id="contacto" class="campoTexto" />
+                <p id="errorContacto" class="errorInput"><?= $this->errorContacto ?></p>
             </div>
             
             <div class="campo multi">
+                <label for="telefono1">Teléfono 1</label>
+                <input type="text" name="telefono1" id="telefono1" class="campoTexto" />
+            </div>
+            
+            <div class="campo multi clear">
                 <label for="telefono1">Teléfono 2</label>
-                <input type="text" name="telefono1" id="telefono1" class="campoTexto mediano" />
+                <input type="text" name="telefono2" id="telefono2" class="campoTexto" />
             </div>
             
             <div class="campo multi">
                 <label for="fax">Fax</label>
-                <input type="text" name="fax" id="fax" class="campoTexto mediano" />
+                <input type="text" name="fax" id="fax" class="campoTexto" />
             </div>
             
             <div class="separadorH"></div>

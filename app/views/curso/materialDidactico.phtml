@@ -2,6 +2,10 @@
     
     $this->addJavascriptInclude('/js/curso.js');
 
+    if ( !is_null($this->popup) ){
+    	echo '<script type="text/javascript">ventana' . ucfirst($this->popup['estado']) . '("' . $this->popup['titulo'] . '", "' . $this->popup['mensaje'] . '", "' . $this->popup['url'] . '");</script>'; 
+	}
+    
     if ( !is_null($this->cursoDO) ){
     
     ?>
@@ -15,71 +19,78 @@
     
     <div class="separadorH"></div>
     
-	<div class="bloque">
-	            
-    	<h3>Documentos asignados</h3>
-            
-        <div class="campo multi">
-	    	<label for="documentosSeleccionados">Documentos del curso</label>
-	            
-	        <div class="contenedorMultiselect">
-	        	<a title="Ver el documento" class="btnFicha" href="javascript:verDocumento();hidePopups();"><span>ver documentos</span></a>
-		        <a title="Quitar documentos" class="btnEliminar" href="javascript:ventanaConfirmacion('Confirmar','¿Está seguro que desea quitar el/los documento/s del curso?', 'javascript:quitarDocumentosCurso(\'documentosSeleccionados\');hidePopups()')"><span>eliminar</span></a>
-		        <select name="documentos[]" multiple="multiple" id="documentosSeleccionados" class="campoTexto grande multiple"><?
-		                
-		            	foreach ( $this->materialDidacticoCursoCOL as $materialDidacticoCursoDO ){
-		            		
-		            		?><option value="<?= $materialDidacticoCursoDO->getFkDocumento() ?>"><?= $this->documentosIDX[$materialDidacticoCursoDO->getFkDocumento()] ?></option><?
-		            		
-		            	}
-		            
-		        ?></select>
-	        </div>
-		</div>
-		<?
-		
-    	if ( count($this->documentosIDX) > 0 ){
-    		
-		?>
-		<div class="campo multi">
-			<div class="scroll">
-				<table class="listado selector">
-					<thead>
-				    	<tr>
-					    	<th class="nombre">Nombre</th>
-					    	<th></th>
-					    </tr>
-					</thead>
-				    <tbody>
-					<?
-											
-						// Documentos
-						$alter = true;
-						foreach ( $this->documentosIDX as $clave => $documentoDO) {
-							$alter = !$alter;
-							?>
-							
-							<tr <?= $alter ? 'class="alter"' : '' ?>>
-								<td><?= $documentoDO->getVNombre() ?></td>
-								<td><a href="javascript:addDocumentoCurso('<?= $clave ?>', '<?= $documentoDO->getVNombre() ?>')" class="btnAnadir" title="Asignar al curso"><span>añadir</span></a></td>
-							</tr>
-							
+    <form action="<?= $_SERVER['REQUEST_URI'] ?>" method="post" id="materialDidacticoCurso">
+		<fieldset>
+			
+			<legend>Material didáctico del curso</legend>
+	    
+	    	<input type="hidden" name="sent" value="1" />
+			<div class="bloque">
+			            
+		        <div class="campo multi">
+			    	<label for="documentosSeleccionados">Documentos del curso</label>
+			            
+			        <div class="contenedorMultiselect">
+			        	<a title="Ver el documento" class="btnFicha" href="javascript:verDocumento();"><span>ver documentos</span></a>
+				        <a title="Quitar documentos" class="btnEliminar" href="javascript:ventanaConfirmacion('Confirmar','¿Está seguro que desea quitar el/los documento/s del curso?', 'javascript:quitarDocumentosCurso(\'documentosSeleccionados\');hidePopups()')"><span>eliminar</span></a>
+				        <select name="documentos[]" multiple="multiple" id="documentosSeleccionados" class="campoTexto grande multiple"><?
+				                
+				            	foreach ( $this->materialDidacticoCursoCOL as $materialDidacticoCursoDO ){
+				            		
+				            		?><option value="<?= $materialDidacticoCursoDO->getFkDocumento() ?>"><?= $this->documentosIDX[$materialDidacticoCursoDO->getFkDocumento()]->getVNombre() ?></option><?
+				            		
+				            	}
+				            
+				        ?></select>
+			        </div>
+				</div>
+				<?
+				
+		    	if ( count($this->documentosIDX) > 0 ){
+		    		
+				?>
+				<div class="campo multi">
+					<div class="scroll">
+						<table class="listado selector">
+							<thead>
+						    	<tr>
+							    	<th class="nombre">Nombre</th>
+							    	<th></th>
+							    </tr>
+							</thead>
+						    <tbody>
 							<?
-						}
-					?>
-					</tbody>
-				</table>
+													
+								// Documentos
+								$alter = true;
+								foreach ( $this->documentosIDX as $clave => $documentoDO) {
+									$alter = !$alter;
+									?>
+									
+									<tr <?= $alter ? 'class="alter"' : '' ?>>
+										<td><?= $documentoDO->getVNombre() ?></td>
+										<td><a href="javascript:addDocumentoCurso('<?= $clave ?>', '<?= $documentoDO->getVNombre() ?>')" class="btnAnadir" title="Asignar al curso"><span>añadir</span></a></td>
+									</tr>
+									
+									<?
+								}
+							?>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			    <?
+			    
+		    	}
+			    
+		    	?>	        	
+		            
+				<div class="separadorH"></div>
+			    
 			</div>
-		</div>
-	    <?
-	    
-    	}
-	    
-    	?>	        	
-            
-		<div class="separadorH"></div>
-		    
-	</div>
+			
+		</fieldset>
+	</form>
     <?
 	
 	} else {

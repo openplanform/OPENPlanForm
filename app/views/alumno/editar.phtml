@@ -450,17 +450,7 @@
 							
 			            	foreach ( $this->cursosAlumnoCOL as $cursoAlumnoDO ){
 			            		
-			            		?><option value="<?= $cursoAlumnoDO->getFkCurso() ?>"><?
-			            		
-			            			foreach ( $this->cursosCOL as $cursoDO ){
-			            				
-			            				if ( $cursoDO->getIdCurso() == $cursoAlumnoDO->getFkCurso() ){
-			            					echo $cursoDO->getVNombre(); 
-			            				}
-			            				
-			            			}
-			            			 
-			            		?></option><?
+			            		?><option value="<?= $cursoAlumnoDO->getFkCurso() ?>"><?= $this->cursosIDX[$cursoAlumnoDO->getFkCurso()]->getVNombre() ?></option><?
 			            		
 			            	}
 			            	

@@ -1,10 +1,14 @@
 <?php
+
 	$this->addJavascriptInclude('/js/curso.js');
+	
+	if ( !is_null($this->popup) ){
+    	echo '<script type="text/javascript">ventana' . ucfirst($this->popup['estado']) . '("' . $this->popup['titulo'] . '", "' . $this->popup['mensaje'] . '", "' . $this->popup['url'] . '");</script>'; 
+	}	
 	
 	if ( !is_null($this->cursoDO) ){
 
-?>
-	<ul class="pestanyas">
+?><ul class="pestanyas">
 		<li><a class="datos" href="/curso/editar.html/<?= $this->cursoDO->getIdCurso() ?>">Datos generales</a></li>
 		<li class="actual"><strong class="horarios">Horario</strong></li>
 		<li><a class="documentacion" href="/curso/documentacion.html/<?= $this->cursoDO->getIdCurso() ?>">Documentación</a></li>
@@ -14,33 +18,63 @@
 	
 	<div class="separadorH"></div>
 	
-	<?
+	<h3>Horarios asignados</h3>
+		
+	<div id="contadorHoras">
+		
+		<p>Para este curso se han destinado <strong id="horasTotales"><?= $this->horasTotales ?></strong> horas, <?
+		
+		if (0 == $this->horasAsignadas){
+			?>pero aún no se ha asignado ninguna.<?
+		} else {
+			
+			$horasARR = explode(':', $this->horasAsignadas);
+			$hora = $horasARR[0];
+			$minutos = $horasARR[1];
+			
+			if (intval($minutos) == 0){
+				
+				?><span id="informacionHoras">en las que <strong id="horasAsignadas"><?= $hora ?></strong> han sido asignadas</span></p><?
+				
+			} else {
+			
+				?><span id="informacionHoras">en las que <strong id="horasAsignadas"><?= $hora ?></strong> horas y <strong id="minutosAsignados"><?= $minutos ?></strong> minutos han sido asignados.</span></p><?
+				
+			}
+		}
+		
+		?><div id="barraHoras">
+			<strong id="porcentaje">( <?= $this->porcentajeAsignado ?> %)</strong>
+			<div <?= $this->porcentajeAsignado > 100 ? 'class="excede" ' : '' ?> style="width: <?= $this->porcentajeAsignado ?>%;">
+			</div>
+		</div>
+	
+	</div><?
 	
 	if ( count($this->horariosCOL) > 0 ){
 		
-	?>
-		<h3>Horarios asignados</h3>
-		<table class="listado">
+		?><table class="listado" id="tablaHorarios">
 			<thead>
 				<tr>
 					<th>Sesión</th>
 					<th>Día</th>
+					<th>Horas</th>
 					<th>Hora Inicio</th>
 					<th>Hora Fin</th>
 					<th>Editar</th>
 					<th>Eliminar</th>
 				</tr>
 			</thead>
-			<tbody>
-			<? 
+			<tbody><? 
 			
 			$alter = true;
+			$languageBO = new OwlLanguage();
+			
+        	$semanaARR = $languageBO->getDiasEs();
+        	$mesesARR = $languageBO->getMesesEs();			
+			
 			foreach ( $this->horariosCOL as $horarioDO ){
-				
-				$languageBO = new OwlLanguage();
-        		$semanaARR = $languageBO->getDiasEs();
-        		$mesesARR = $languageBO->getMesesEs();
-        		
+
         		$fechaIniTime = strtotime($horarioDO->getDDia());
         		$diaSemana = ( (date('w', $fechaIniTime)-1) == -1 ) ? 6 : (date('w', $fechaIniTime)-1);
 				
@@ -49,6 +83,7 @@
 				<tr <?= ($alter)?'class="alter"':'' ?>>
 					<td><?= $horarioDO->getISesion() ?></td>
 					<td><?= $semanaARR[$diaSemana] . ', ' . date('d', $fechaIniTime) . ' de ' . $mesesARR[(date('n', $fechaIniTime) - 1)] . ' de ' . date('Y', $fechaIniTime)?></td>
+					<td id="horas_<?= $horarioDO->getIdHorario() ?>"><?= substr($horarioDO->getIHoras(),0,5) ?></td>
 					<td id="inicio_<?= $horarioDO->getIdHorario() ?>"><?= substr($horarioDO->getIDesde(),0,5) ?></td>
 					<td id="fin_<?= $horarioDO->getIdHorario() ?>"><?= substr($horarioDO->getIHasta(),0,5) ?></td>
 					<td id="editar_<?= $horarioDO->getIdHorario() ?>" class="accion"><a href="javascript:editarHorario('<?= $horarioDO->getIdHorario() ?>')" class="btnEditar" title="Editar Horario"><span>editar</span></a></td>
@@ -60,6 +95,7 @@
 			
 			?>
 				<tr <?= (!$alter)?'class="alter"':'' ?>>
+					<td></td>
 					<td></td>
 					<td></td>
 					<td></td>

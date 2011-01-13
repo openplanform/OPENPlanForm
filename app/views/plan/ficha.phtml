@@ -4,6 +4,9 @@
 		
 ?>
 	<div class="ficha">
+	
+			<h3>Datos generales</h3>
+	
 			<div class="bloque">
 		
 				<p><strong>Nombre</strong><span> <?= $this->planDO->getVNombre() ?></span></p>
@@ -11,7 +14,7 @@
 				<p><strong>Convocatoria</strong><span><a href="/convocatoria/ficha/<?= $this->planDO->getFkConvocatoria() ?>" rel="external"><?= $this->convocatoriasIDX[$this->planDO->getFkConvocatoria()] ?></a></span></p>
 				<p><strong>Sector</strong><span> <?= $this->sectoresIDX[$this->planDO->getFkSector()] ?></span></p>
 				<p><strong>Número de expediente</strong><span> <?= $this->planDO->getVNumeroExpediente() ?></span></p>
-				<p><strong>Estado</strong><span> <?= $this->estadosPlanIDX[$this->planDO->getFkEstadoPlan()] ?></span></p>
+				<p class="estadosPlan"><strong>Estado</strong><span class="estado <?= strtolower($this->estadosPlanIDX[$this->planDO->getFkEstadoPlan()]) ?>"> <?= $this->estadosPlanIDX[$this->planDO->getFkEstadoPlan()] ?></span></p>
 				<p><strong>Empresa Propietaria</strong><span> <?= $this->empresasIDX[$this->planDO->getFkEmpresaPropietaria()] ?></span></p>
 				<p><strong>Consultora</strong><span> <?= $this->empresasIDX[$this->planDO->getFkEmpresaConsultora()] ?></span></p>
 				<p><strong>Presupuesto</strong><span> <?= OwlNumeric::decimalFormatoEuropeo($this->planDO->getEPresupuestoAsignado(), 2) ?>€</span></p>

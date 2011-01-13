@@ -38,9 +38,9 @@ if (count($this->requisitosCOL) > 0){
 		<div id="paginadorContainer"><?= $this->paginador ?></div>
 	</div>
 	<div class="col2">
-		<h2><?= $this->editar ? 'Modificar requisito' : 'Añadir nuevo requisito' ?></h2>
 		<form action="<?= $_SERVER['REQUEST_URI'] ?>" method="post">
 			<fieldset>
+				<?= $this->editar ? '<legend>Edición de requisito</legend>' : '<legend>Alta de nuevo requisito</legend>' ?>
 				<input type="hidden" name="sent" value="1">
 				<div class="campo">
 					<label for="nombre">Nombre</label>

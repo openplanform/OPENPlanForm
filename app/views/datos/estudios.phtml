@@ -38,9 +38,9 @@ if (count($this->estudiosCOL) > 0){
 		<div id="paginadorContainer"><?= $this->paginador ?></div>
 	</div>
 	<div class="col2">
-		<h2><?= $this->editar ? 'Modificar estudio' : 'Añadir nuevo estudio' ?></h2>
 		<form action="<?= $_SERVER['REQUEST_URI'] ?>" method="post">
 			<fieldset>
+				<?= $this->editar ? '<legend>Edición de estudio</legend>' : '<legend>Alta de nuevo estudio</legend>' ?>
 				<input type="hidden" name="sent" value="1">
 				<div class="campo">
 					<label for="nombre">Nombre</label>

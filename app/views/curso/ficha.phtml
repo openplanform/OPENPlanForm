@@ -2,8 +2,22 @@
 
 	if ( !is_null($this->cursoDO) ){
 	    
-?>
-		<div class="ficha">
+?><div class="ficha">
+
+		<h3>Secciones de edición</h3>
+
+		<ul class="pestanyas">
+			<li><a class="horarios" href="/curso/horario.html/<?= $this->cursoDO->getIdCurso() ?>">Horario</a></li>
+			<li><a class="documentacion" href="/curso/documentacion.html/<?= $this->cursoDO->getIdCurso() ?>">Documentación</a></li>
+			<li><a class="alumnos" href="/curso/alumnos.html/<?= $this->cursoDO->getIdCurso() ?>">Alumnos</a></li>
+			<li><a class="material" href="/curso/materialDidactico.html/<?= $this->cursoDO->getIdCurso() ?>">Material didáctico</a></li>
+		</ul>
+		
+		<div class="separadorH"></div>
+
+		<div class="bloque">
+
+			<h3>Datos generales</h3>
 		
 			<p><strong>Nombre:</strong><span> <?= $this->cursoDO->getVNombre() ?></span></p>
 			<p><strong>Expediente:</strong><span> <?= $this->cursoDO->getVExpediente() ?></span></p>
@@ -14,53 +28,28 @@
 			<p><strong>Centro:</strong><span> <?= $this->cursoDO->getTblCentro()->getVNombre() ?></span></p><?
 			
 			$alumnos = $this->cursoDO->getINumeroAlumnos();
-            ?><p><strong>Número de alumnos:</strong><span class="min"> <?= $alumnos ?></span></p>
+            ?><p><strong>Cantidad de plazas:</strong><span class="min"> <?= $alumnos ?></span></p>
             <p><strong>Número de acción:</strong><span class="min"> <?= $this->cursoDO->getIAccion() ?></span></p>
                 
 			<div class="multi">
                 <p><strong>Grupo:</strong><span class="min"> <?= $this->cursoDO->getIGrupo() ?></span></p>
 			</div>
 			
+		</div>
+		<div class="bloque">
+			
+			<h3>Horarios y fechas</h3>
+			
             <div class="multi"><?
 			
     			$horasP = $this->cursoDO->getIHorasPresenciales();
-				?><p><strong>Horas presenciales:</strong><span class="min"> <?= $horasP ?></span></p><?
+				?><p><strong>Horas presenciales:</strong><span class="med"> <?= $horasP ?></span></p><?
 				
                 $horasD = $this->cursoDO->getIHorasDistancia();
-                ?><p><strong>Horas a distancia:</strong><span class="min"> <?= $horasD ?></span></p><?
+                ?><p><strong>Horas a distancia:</strong><span class="med"> <?= $horasD ?></span></p><?
             
     	    ?></div><?
-    	    
-    	    /*$horasT = $this->cursoDO->getIHorasTutoria();
-    	    
-    	    if (intval($horasT) != 0){
-    	    
-	    	    ?><div class="alterForm ficha">
-	    	    
-	    	    	<h3>Tutoría a distancia</h3>
-	    	    	
-    	    		<p><strong>Horas tutoría:</strong><span class="min"> <?= $horasT ?></span></p><?
-    	    		
-    	    		$tutorDistancia = 'Aún no asignado';
-    	    		if ($idTutorDistancia = $this->cursoDO->getFkTutorDistancia()){
-    	    			
-    	    			$tutorDistancia = $this->profesoresIDX[$idTutorDistancia];
-    	    			
-    	    		}
-	    	    	
-	    	    	?><p><strong>Tutor formación a distancia:</strong><span> <?= $tutorDistancia ?></span></p><?
-	    	    	
-	    	    	$tipoTutoria = 'Aún no asignada';
-	    	    	if ($idTipoTutoria = $this->cursoDO->getFkModalidadTutoria()){
-	    	    		$tipoTutoria = $this->modalidadesIDX[$idTipoTutoria];
-	    	    	}
-	    	    	
-	    	    	?><p><strong>Tipo de tutoría:</strong><span> <?= $tipoTutoria ?></span></p>
-	    	    	
-	    	    </div><?
-	    	    
-    	    }*/
-    	    
+    	       	    
     	    ?><div class="multi"><?
 			
     			$fechaIni = OwlDate::getDiaMesAno($this->cursoDO->getDInicio());
@@ -69,19 +58,70 @@
     			$fechaFin = OwlDate::getDiaMesAno($this->cursoDO->getDFin());
     			?><p><strong>Fecha de finalización:</strong><span class="med"><?= $fechaFin ?></span></p>
     			
+			</div>
+		</div><?
+		
+		if ($this->tutoriaDO instanceof TblTutoria){
+		
+			?><div class="bloque">
+				<h3>Tutoría del curso</h3>	
+				<div class="alterForm">
+					<p><strong>Modalidad:</strong><span><?= $this->modalidadesIDX[$this->tutoriaDO->getFkModalidad()] ?></span></p>
+					<p><strong>Tutor:</strong><span><a href="/profesor/ficha/<?= $this->tutoriaDO->getFkTutor() ?>" rel="external"><?= $this->profesoresIDX[$this->tutoriaDO->getFkTutor()] ?></a></span></p>
+					<p><strong>Horas Tutoría:</strong><span class="med"><?= $this->tutoriaDO->getIHoras() ?></span></p>
+					<p class="lista"><strong>Días:</strong></p>
+					<ul class="listaFicha"><?
+						
+						$diasARR = array('Lunes'=>'Lunes', 'Martes'=>'Martes', 'Miercoles'=>'Miércoles', 'Jueves'=>'Jueves', 'Viernes'=>'Viernes', 'Sabado'=>'Sábado', 'Domingo'=>'Domingo');
+						foreach ($diasARR as $dia => $label){
+
+							$metodo = 'isB' . $dia;
+							if (true == $this->tutoriaDO->$metodo()){
+								echo '<li>' . $label . '</li>';
+							}
+							
+						}
+					
+					?></ul><?
+					
+					$deMan = $this->tutoriaDO->getIDesdeManana();
+					$aMan = $this->tutoriaDO->getIHastaManana();
+					$deTar = $this->tutoriaDO->getIDesdeTarde();
+					$aTar = $this->tutoriaDO->getIHastaTarde();
+					
+					if ( $deMan && $aMan ){
+						
+						?><p><strong>Horario (Mañana)</strong><span>De <?= substr($deMan, 0, 5) ?> a <?= substr($aMan, 0, 5) ?></span></p><?
+					
+					}
+					
+					if ( $deTar && $aTar ){
+						
+						?><p><strong>Horario (Tarde)</strong><span>De <?= substr($deTar, 0, 5) ?> a <?= substr($aTar, 0, 5) ?></span></p><?
+					
+					}
+					
+				?></div>
+				<div class="separadorH"></div>
 			</div><?
+			
+		}
+			
+		?><div class="bloque">
+		
+    		<h3>Datos adicionales</h3><?
 			
 			$desc = $this->cursoDO->getVDescripcion();
 			if (!empty($desc)){
 			
-                ?><p class="extended separator"><strong>Descripción:</strong><span><?= $this->cursoDO->getVDescripcion() ?></span></p><?
+                ?><p class="extended"><strong>Descripción:</strong><span><?= $this->cursoDO->getVDescripcion() ?></span></p><?
                 
 			}
 
 			$obs = $this->cursoDO->getVObservaciones();
 			if (!empty($obs)){
 			
-                ?><p class="extended separator"><strong>Observaciones:</strong><span><?= $this->cursoDO->getVObservaciones() ?></span></p><?
+                ?><p class="extended"><strong>Observaciones:</strong><span><?= $this->cursoDO->getVObservaciones() ?></span></p><?
                 
 			}
 			
@@ -101,7 +141,7 @@
 				
 			}
 			
-		?>
+		?></div>
 		</div>
 		<div class="ficha">
 		<?
@@ -179,10 +219,10 @@
 			// Alumnos
 			if ( count($this->alumnosCursoCOL) > 0 ){
 	
-				?><h3>Alumnos</h3>
+				?><h3>Alumnos asignados al curso</h3>
 				
 				<div class="scroll">
-					<table class="listado">
+					<table class="listado fijo">
 						<thead>
 							<tr>
 								<th>Nombre</th>

@@ -1,7 +1,7 @@
 <?php
 /**
  * Este archivo ha sido generado con Owl DoGen v.0.6
- * el 13 de December de 2010 a las 08:54:13
+ * el 12 de January de 2011 a las 12:12:47
  * @package dataAccess
  */
 
@@ -56,6 +56,12 @@ class TblHorario extends OwlGenericDO{
      */
     public $iSesion;
 
+    /**
+     * Atributo que representa el campo "iHoras"
+     * @var string
+     */
+    public $iHoras;
+
     // Constructor
 
     /**
@@ -84,6 +90,7 @@ class TblHorario extends OwlGenericDO{
         $this->iDesde = $data['iDesde'];
         $this->iHasta = $data['iHasta'];
         $this->iSesion = $data['iSesion'];
+        $this->iHoras = $data['iHoras'];
 
     }
 
@@ -117,6 +124,9 @@ class TblHorario extends OwlGenericDO{
         }
         if( $tmp = $searchItem->iSesion ){
             $where[] = "iSesion='$tmp'";
+        }
+        if( $tmp = $searchItem->iHoras ){
+            $where[] = "iHoras='$tmp'";
         }
         if( count($where) > 0 ){
             $where = implode( ' and ', $where );
@@ -202,6 +212,7 @@ class TblHorario extends OwlGenericDO{
         $sets[] = 'iDesde=' . ( ( ( $value = $this->iDesde ) === null || !isset($this->iDesde) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'iHasta=' . ( ( ( $value = $this->iHasta ) === null || !isset($this->iHasta) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'iSesion=' . ( ( ( $value = $this->iSesion ) === null || !isset($this->iSesion) ) ? 'null' :  "'".addslashes($value)."'" );
+        $sets[] = 'iHoras=' . ( ( ( $value = $this->iHoras ) === null || !isset($this->iHoras) ) ? 'null' :  "'".addslashes($value)."'" );
         $setStr = implode(',', $sets);
         return $this->_db->executeQuery("UPDATE tblHorario SET $setStr WHERE idHorario='".addslashes($this->_data['idHorario'])."'");
     }
@@ -216,6 +227,7 @@ class TblHorario extends OwlGenericDO{
         $attributes[] = 'iDesde';
         $attributes[] = 'iHasta';
         $attributes[] = 'iSesion';
+        $attributes[] = 'iHoras';
         $attributes = implode(',', $attributes);
         $values = array();
         $values[] = (( $value = $this->fkCurso ) === null || !isset($this->fkCurso) ) ? 'null' : "'".addslashes($value)."'";
@@ -223,6 +235,7 @@ class TblHorario extends OwlGenericDO{
         $values[] = (( $value = $this->iDesde ) === null || !isset($this->iDesde) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->iHasta ) === null || !isset($this->iHasta) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->iSesion ) === null || !isset($this->iSesion) ) ? 'null' : "'".addslashes($value)."'";
+        $values[] = (( $value = $this->iHoras ) === null || !isset($this->iHoras) ) ? 'null' : "'".addslashes($value)."'";
         $values = implode(',', $values);
         if( $this->_db->executeQuery("INSERT INTO tblHorario($attributes) VALUES($values)") ){
             $eleDO = $this->findByPrimaryKey( $this->_db, $this->_db->getLastInsertId() );
@@ -348,6 +361,26 @@ class TblHorario extends OwlGenericDO{
     public function setISesion( $value ){
 
         $this->iSesion = $value;
+
+    }
+
+    /**
+      * Obtiene el valor del atributo 'iHoras'.
+      *
+      * @return string
+      */
+    public function getIHoras(){
+        return $this->iHoras;
+    }
+
+    /**
+      * Establece el valor del atributo 'iHoras'.
+      *
+      * @param string Valor.
+      */
+    public function setIHoras( $value ){
+
+        $this->iHoras = $value;
 
     }
 

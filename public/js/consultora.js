@@ -68,7 +68,7 @@ function comprobarCampos() {
 		return false;
 	}
 	
-	// Datos de academia
+	// Datos de consultora
 	
 	// Nombre
 	if ( !comprobarVacio('nombre', 'El nombre no puede estar vacío') ){
@@ -87,6 +87,11 @@ function comprobarCampos() {
 	
 	// Población
 	if ( !comprobarVacio('provincia', 'La provincia no puede estar vacía') ){
+		return false;
+	}
+	
+	// Persona contacto
+	if ( !comprobarVacio('contacto', 'El contacto no puede estar vacío') ){
 		return false;
 	}
 	
