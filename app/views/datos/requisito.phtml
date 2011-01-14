@@ -37,27 +37,31 @@ if (count($this->requisitosCOL) > 0){
 		</table>
 		<div id="paginadorContainer"><?= $this->paginador ?></div>
 	</div>
-	<div class="col2">
-		<form action="<?= $_SERVER['REQUEST_URI'] ?>" method="post">
-			<fieldset>
-				<?= $this->editar ? '<legend>Edición de requisito</legend>' : '<legend>Alta de nuevo requisito</legend>' ?>
-				<input type="hidden" name="sent" value="1">
-				<div class="campo">
-					<label for="nombre">Nombre</label>
-					<input type="text" name="nombre" id="nombre" class="campoTexto grande" value="<?= $this->nombre ?>" />
-				</div>
-				<div class="campo">
-					<label for="desc">Descripción</label>
-					<textarea rows="10" cols="80" class="campoTexto" id="desc" name="desc"><?= $this->desc ?></textarea>
-				</div>
-				<div class="campo">
-					<input type="submit" class="btnSubmit" value="<?= $this->editar ? 'Guardar' : 'Añadir' ?>" />
-				</div>
-			</fieldset>
-		</form>
-	</div>
-	<div class="separadorH"></div><?
+	<?
+	
+} else {
+	
+	echo '<h3 class="noResult">No se ha encontrado ningún requisito</h3>';
 	
 }
 
-?>
+?><div class="col2">
+	<form action="<?= $_SERVER['REQUEST_URI'] ?>" method="post">
+		<fieldset>
+			<?= $this->editar ? '<legend>Edición de requisito</legend>' : '<legend>Alta de nuevo requisito</legend>' ?>
+			<input type="hidden" name="sent" value="1">
+			<div class="campo">
+				<label for="nombre">Nombre</label>
+				<input type="text" name="nombre" id="nombre" class="campoTexto grande" value="<?= $this->nombre ?>" />
+			</div>
+			<div class="campo">
+				<label for="desc">Descripción</label>
+				<textarea rows="10" cols="80" class="campoTexto" id="desc" name="desc"><?= $this->desc ?></textarea>
+			</div>
+			<div class="campo">
+				<input type="submit" class="btnSubmit" value="<?= $this->editar ? 'Guardar' : 'Añadir' ?>" />
+			</div>
+		</fieldset>
+	</form>
+</div>
+<div class="separadorH"></div>
