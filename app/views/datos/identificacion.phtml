@@ -34,24 +34,28 @@ if (count($this->identificacionesCOL) > 0){
 		</tbody>
 		</table>
 		<div id="paginadorContainer"><?= $this->paginador ?></div>
-	</div>
-	<div class="col2">
-		<form action="<?= $_SERVER['REQUEST_URI'] ?>" method="post">
-			<fieldset>
-				<?= $this->editar ? '<legend>Edición de tipo de identificación</legend>' : '<legend>Alta de nuevo tipo de identificación</legend>' ?>
-				<input type="hidden" name="sent" value="1">
-				<div class="campo">
-					<label for="nombre">Nombre</label>
-					<input type="text" name="nombre" id="nombre" class="campoTexto grande" value="<?= $this->nombre ?>" />
-				</div>
-				<div class="campo">
-					<input type="submit" class="btnSubmit" value="<?= $this->editar ? 'Guardar' : 'Añadir' ?>" />
-				</div>
-			</fieldset>
-		</form>
-	</div>
-	<div class="separadorH"></div><?
+	</div><?
+	
+} else {
+	
+	echo '<h3 class="noResult">No se ha encontrado ningún tipo de identificación</h3>';	
 	
 }
 
 ?>
+<div class="col2">
+	<form action="<?= $_SERVER['REQUEST_URI'] ?>" method="post">
+		<fieldset>
+			<?= $this->editar ? '<legend>Edición de tipo de identificación</legend>' : '<legend>Alta de nuevo tipo de identificación</legend>' ?>
+			<input type="hidden" name="sent" value="1">
+			<div class="campo">
+				<label for="nombre">Nombre</label>
+				<input type="text" name="nombre" id="nombre" class="campoTexto grande" value="<?= $this->nombre ?>" />
+			</div>
+			<div class="campo">
+				<input type="submit" class="btnSubmit" value="<?= $this->editar ? 'Guardar' : 'Añadir' ?>" />
+			</div>
+		</fieldset>
+	</form>
+</div>
+<div class="separadorH"></div>

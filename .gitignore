@@ -1,5 +1,4 @@
 .htaccess
 owl/
-owl/*
 public/tmp/
-public/tmp/*.zip
+public/docs/

@@ -826,6 +826,13 @@ CREATE TABLE `tblPersona` (
 ) ENGINE=InnoDB AUTO_INCREMENT=67 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+
+---
+---	Se inserta la persona ficticia para el usuario administrador
+---
+
+INSERT INTO `planespime`.`tblPersona` (`idPersona`, `fkUsuario`, `fkPais`, `fkProvincia`, `fkTipoIdentificacion`, `fkEstadoCivil`, `fkEstadoLaboral`, `fkNivelEstudios`, `vNombre`, `vPrimerApellido`, `vPoblacion`, `vCp`, `vNumeroIdentificacion`, `vDireccion`, `vTelefono`, `bActiva`, `dAlta`, `dNacimiento`, `bDiscapacidad`, `mod_user`) VALUES ('1', '1', 'es', '1', '1', '1', '1', '1', 'Administrador', 'Administrador', 'Población', '07777', '999999999', 'Dirección', '999999999', '0', '2011-01-13', '2011-01-13', '0', 'admin');
+
 --
 -- Table structure for table `tblPlan`
 --
@@ -910,7 +917,7 @@ CREATE TABLE `tblRequisito` (
 
 LOCK TABLES `tblRequisito` WRITE;
 /*!40000 ALTER TABLE `tblRequisito` DISABLE KEYS */;
-INSERT INTO `tblRequisito` VALUES (1,'Documentación obligatoria',NULL),(2,'Memoria pedagógica',NULL),(3,'Preferentemente parados','Parados'),(4,'Preferentemente ocupados',NULL),(5,'Un requisito','Un requisito en particular.');
+INSERT INTO `tblRequisito` VALUES (1,'Documentación obligatoria',NULL),(2,'Memoria pedagógica',NULL),(3,'Preferentemente parados','Parados'),(4,'Preferentemente ocupados',NULL);
 /*!40000 ALTER TABLE `tblRequisito` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -928,6 +935,12 @@ CREATE TABLE `tblRol` (
   PRIMARY KEY  (`idRol`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Se asigna el rol de administrador para el usuario por defecto
+--
+
+INSERT INTO `planespime`.`trelRolUsuario` (`fkUsuario`, `fkRol`) VALUES ('1', '1');
 
 --
 -- Dumping data for table `tblRol`
