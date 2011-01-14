@@ -599,6 +599,8 @@ class cursoController extends PplController{
 		    	$cursoDO->setLastModified(date('Y-m-d'));
 		    	$cursoDO->setVExpediente($expediente);
                 $cursoDO->setModUser($this->usuario->getNombre());
+                $cursoDO->setBNotificacionFin(false);
+                $cursoDO->setBNotificacionInicio(false);
 		    	
 		    	if ( $editar ){
 		    		$correcto = $cursoDO->update();
