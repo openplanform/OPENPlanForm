@@ -1,3 +1,5 @@
 RewriteEngine on
-RewriteRule !\.(js|ico|gif|pdf|jpg|png|css|zip)$ index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule !\.(js|ico|gif|jpg|png|css|xml)$ index.php
 
