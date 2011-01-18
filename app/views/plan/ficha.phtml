@@ -10,9 +10,9 @@
 			<div class="bloque">
 		
 				<p><strong>Nombre</strong><span> <?= $this->planDO->getVNombre() ?></span></p>
-				<p><strong>Tipo</strong><span> <?= $this->tiposPlanIDX[$this->planDO->getFkTipoPlan()] ?></span></p>
+				<p><strong>Tipo</strong><span> <?= ( is_null($this->planDO->getFkTipoPlan()) || $this->planDO->getFkTipoPlan() == 0 ) ? '-' : $this->tiposPlanIDX[$this->planDO->getFkTipoPlan()] ?></span></p>
 				<p><strong>Convocatoria</strong><span><a href="/convocatoria/ficha/<?= $this->planDO->getFkConvocatoria() ?>" rel="external"><?= $this->convocatoriasIDX[$this->planDO->getFkConvocatoria()] ?></a></span></p>
-				<p><strong>Sector</strong><span> <?= $this->sectoresIDX[$this->planDO->getFkSector()] ?></span></p>
+				<p><strong>Sector</strong><span> <?= ( is_null($this->planDO->getFkSector()) || $this->planDO->getFkSector() == 0 ) ? '-' : $this->sectoresIDX[$this->planDO->getFkSector()] ?></span></p>
 				<p><strong>Número de expediente</strong><span> <?= $this->planDO->getVNumeroExpediente() ?></span></p>
 				<p class="estadosPlan"><strong>Estado</strong><span class="estado <?= strtolower($this->estadosPlanIDX[$this->planDO->getFkEstadoPlan()]) ?>"> <?= $this->estadosPlanIDX[$this->planDO->getFkEstadoPlan()] ?></span></p>
 				<p><strong>Empresa Propietaria</strong><span> <?= $this->empresasIDX[$this->planDO->getFkEmpresaPropietaria()] ?></span></p>

@@ -1,7 +1,7 @@
 <?php
 /**
  * Este archivo ha sido generado con Owl DoGen v.0.6
- * el 15 de December de 2010 a las 04:49:58
+ * el 18 de January de 2011 a las 08:44:23
  * @package dataAccess
  */
 
@@ -263,6 +263,22 @@ class TblPlan extends OwlGenericDO{
      }
 
     /**
+     * Obtiene todas las filas de la tabla tblPlan que coinciden con el criterio fkTipoPlan='$fkTipoPlan'.
+     *
+     * @param Connection $db Conexión con la base de datos.
+     * @param integer fkTipoPlan string Valor del campo fkTipoPlan.
+     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
+     * @return array
+     */
+     public static function findByTblTipoPlan( $db, $fkTipoPlan, $orderBy='' ){
+         $sql = "SELECT * FROM tblPlan WHERE fkTipoPlan='$fkTipoPlan'";
+         if( $orderBy != '' ){
+             $sql .= " ORDER BY $orderBy";
+         }
+         return OwlGenericDO::createCollection( $db, $sql, 'TblPlan' );
+     }
+
+    /**
      * Obtiene todas las filas de la tabla tblPlan que coinciden con el criterio fkConvocatoria='$fkConvocatoria'.
      *
      * @param Connection $db Conexión con la base de datos.
@@ -320,22 +336,6 @@ class TblPlan extends OwlGenericDO{
      */
      public static function findByTblEstadoPlan( $db, $fkEstadoPlan, $orderBy='' ){
          $sql = "SELECT * FROM tblPlan WHERE fkEstadoPlan='$fkEstadoPlan'";
-         if( $orderBy != '' ){
-             $sql .= " ORDER BY $orderBy";
-         }
-         return OwlGenericDO::createCollection( $db, $sql, 'TblPlan' );
-     }
-
-    /**
-     * Obtiene todas las filas de la tabla tblPlan que coinciden con el criterio fkTipoPlan='$fkTipoPlan'.
-     *
-     * @param Connection $db Conexión con la base de datos.
-     * @param integer fkTipoPlan string Valor del campo fkTipoPlan.
-     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
-     * @return array
-     */
-     public static function findByTblTipoPlan( $db, $fkTipoPlan, $orderBy='' ){
-         $sql = "SELECT * FROM tblPlan WHERE fkTipoPlan='$fkTipoPlan'";
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
@@ -698,6 +698,26 @@ class TblPlan extends OwlGenericDO{
     }
 
     /**
+     * Obtiene el objeto 'TblTipoPlan' relacionado.
+     *
+     * @return TblTipoPlan
+     */
+    public function getTblTipoPlan(){
+        require_once('TblTipoPlan.inc');
+        return TblTipoPlan::findByPrimaryKey( $this->_db, $this->fkTipoPlan );
+    }
+
+    /**
+     * Asigna el objeto 'TblTipoPlan' relacionado.
+     *
+     * @param TblTipoPlan $dataObject
+     */
+    public function setTblTipoPlan( $dataObject ){
+        require_once('TblTipoPlan.inc');
+        $this->setFkTipoPlan( $dataObject->getIdTipoPlan() );
+    }
+
+    /**
      * Obtiene el objeto 'TblConvocatoria' relacionado.
      *
      * @return TblConvocatoria
@@ -775,26 +795,6 @@ class TblPlan extends OwlGenericDO{
     public function setTblEstadoPlan( $dataObject ){
         require_once('TblEstadoPlan.inc');
         $this->setFkEstadoPlan( $dataObject->getIdEstadoPlan() );
-    }
-
-    /**
-     * Obtiene el objeto 'TblTipoPlan' relacionado.
-     *
-     * @return TblTipoPlan
-     */
-    public function getTblTipoPlan(){
-        require_once('TblTipoPlan.inc');
-        return TblTipoPlan::findByPrimaryKey( $this->_db, $this->fkTipoPlan );
-    }
-
-    /**
-     * Asigna el objeto 'TblTipoPlan' relacionado.
-     *
-     * @param TblTipoPlan $dataObject
-     */
-    public function setTblTipoPlan( $dataObject ){
-        require_once('TblTipoPlan.inc');
-        $this->setFkTipoPlan( $dataObject->getIdTipoPlan() );
     }
 }
 ?>

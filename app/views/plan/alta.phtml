@@ -21,16 +21,15 @@
 	                <p id="errorNombre" class="errorInput"><?= $this->errorNombre ?></p>
 	            </div>
 	            
-				<div class="campo controlado multi">
-	                <label for="expediente">Número de expediente*</label>
+				<div class="campo multi">
+	                <label for="expediente">Número de expediente</label>
 	                <input type="text" name="expediente" id="expediente" class="campoTexto mediano" />
-	                <p id="errorExpediente" class="errorInput"><?= $this->errorExpediente ?></p>
 	            </div>
 	            
 	            <div class="separadorH"></div>            
 				
-				<div class="campo controlado multi">
-	            	<label for="tipo">Tipo de Plan*</label>
+				<div class="campo multi">
+	            	<label for="tipo">Tipo de Plan</label>
 		            <select class="grande desplegable" name="tipo" id="tipo">
 		            	<option value=""></option>
 						<?
@@ -44,7 +43,6 @@
 						
 						?>
 					</select>
-					<p id="errorTipo" class="errorInput"><?= $this->errorTipo ?></p>
 				</div>
 				
 				<div class="campo controlado multi">
@@ -65,8 +63,8 @@
 					<p id="errorConvocatoria" class="errorInput"><?= $this->errorConvocatoria ?></p>
 				</div>
 				
-				<div class="campo controlado multi">
-	            	<label for="sector">Sector*</label>
+				<div class="campo multi">
+	            	<label for="sector">Sector</label>
 		            <select class="grande desplegable" name="sector" id="sector">
 		            	<option value=""></option>
 						<?
@@ -80,7 +78,6 @@
 						
 						?>
 					</select>
-					<p id="errorSector" class="errorInput"><?= $this->errorSector ?></p>
 				</div>
 			
 				<div class="separadorH"></div>
@@ -148,7 +145,7 @@
 				<div class="separadorH"></div>
 				
 				<div class="campo controlado">
-	                <label for="presupuesto">Presupuesto*</label>
+	                <label for="presupuesto">Presupuesto</label>
 	                <input class="campoTexto dinero" type="text" name="presupuesto" id="presupuesto" />
 	                <p id="errorPresupuesto" class="errorInput"><?=$this->errorPresupuesto?></p>
 	                <p class="tooltip" id="presupuestoTooltip">Utilice la coma(,) para separar decimales y el punto(.) para los miles</p>

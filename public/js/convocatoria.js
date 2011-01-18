@@ -14,10 +14,6 @@ function comprobarCampos() {
 		return false;
 	}
 	
-	if ( !comprobarVacio('presupuesto', 'El presupuesto no puede estar vacío') ){
-		return false;
-	}
-	
 	return true;
 	
 }

@@ -1,5 +1,7 @@
 <?php
 
+	// Variables que se usan en "curso.js" para que sólo se pueda escoger un día dentro de la fecha de inicio y fin del curso
+	echo '<script type="text/javascript">var inicioCurso = "' . $this->cursoDO->getDInicio() . '"; var finCurso = "' . $this->cursoDO->getDFin() . '"</script>';
 	$this->addJavascriptInclude('/js/curso.js');
 	
 	if ( !is_null($this->popup) ){
@@ -8,245 +10,255 @@
 	
 	if ( !is_null($this->cursoDO) ){
 
-?><ul class="pestanyas">
-		<li><a class="datos" href="/curso/editar.html/<?= $this->cursoDO->getIdCurso() ?>">Datos generales</a></li>
-		<li class="actual"><strong class="horarios">Horario</strong></li>
-		<li><a class="documentacion" href="/curso/documentacion.html/<?= $this->cursoDO->getIdCurso() ?>">Documentación</a></li>
-		<li><a class="alumnos" href="/curso/alumnos.html/<?= $this->cursoDO->getIdCurso() ?>">Alumnos</a></li>
-		<li><a class="material" href="/curso/materialDidactico.html/<?= $this->cursoDO->getIdCurso() ?>">Material didáctico</a></li>
-	</ul>
-	
-	<div class="separadorH"></div>
-	
-	<h3>Horarios asignados</h3>
+		?><ul class="pestanyas">
+			<li><a class="datos" href="/curso/editar.html/<?= $this->cursoDO->getIdCurso() ?>">Datos generales</a></li>
+			<li class="actual"><strong class="horarios">Horario</strong></li>
+			<li><a class="documentacion" href="/curso/documentacion.html/<?= $this->cursoDO->getIdCurso() ?>">Documentación</a></li>
+			<li><a class="alumnos" href="/curso/alumnos.html/<?= $this->cursoDO->getIdCurso() ?>">Alumnos</a></li>
+			<li><a class="material" href="/curso/materialDidactico.html/<?= $this->cursoDO->getIdCurso() ?>">Material didáctico</a></li>
+		</ul>
 		
-	<div id="contadorHoras">
+		<div class="separadorH"></div>
 		
-		<p>Para este curso se han destinado <strong id="horasTotales"><?= $this->horasTotales ?></strong> horas, <?
+		<h3>Horarios asignados</h3>
 		
-		if (0 == $this->horasAsignadas){
-			?>pero aún no se ha asignado ninguna.<?
-		} else {
-			
-			$horasARR = explode(':', $this->horasAsignadas);
-			$hora = $horasARR[0];
-			$minutos = $horasARR[1];
-			
-			if (intval($minutos) == 0){
-				
-				?><span id="informacionHoras">en las que <strong id="horasAsignadas"><?= $hora ?></strong> han sido asignadas</span></p><?
-				
-			} else {
-			
-				?><span id="informacionHoras">en las que <strong id="horasAsignadas"><?= $hora ?></strong> horas y <strong id="minutosAsignados"><?= $minutos ?></strong> minutos han sido asignados.</span></p><?
-				
-			}
-		}
-		
-		?><div id="barraHoras">
-			<strong id="porcentaje">( <?= $this->porcentajeAsignado ?> %)</strong>
-			<div <?= $this->porcentajeAsignado > 100 ? 'class="excede" ' : '' ?> style="width: <?= $this->porcentajeAsignado ?>%;">
-			</div>
-		</div>
-	
-	</div><?
-	
-	if ( count($this->horariosCOL) > 0 ){
-		
-		?><table class="listado" id="tablaHorarios">
-			<thead>
-				<tr>
-					<th>Sesión</th>
-					<th>Día</th>
-					<th>Horas</th>
-					<th>Hora Inicio</th>
-					<th>Hora Fin</th>
-					<th>Editar</th>
-					<th>Eliminar</th>
-				</tr>
-			</thead>
-			<tbody><? 
-			
-			$alter = true;
-			$languageBO = new OwlLanguage();
-			
-        	$semanaARR = $languageBO->getDiasEs();
-        	$mesesARR = $languageBO->getMesesEs();			
-			
-			foreach ( $this->horariosCOL as $horarioDO ){
+		<? if ( !is_null($this->cursoDO->getDInicio()) || !is_null($this->cursoDO->getDFin()) ){ ?>
 
-        		$fechaIniTime = strtotime($horarioDO->getDDia());
-        		$diaSemana = ( (date('w', $fechaIniTime)-1) == -1 ) ? 6 : (date('w', $fechaIniTime)-1);
+		
+			<div id="contadorHoras">
 				
-				$alter = !$alter;
-				?>
-				<tr <?= ($alter)?'class="alter"':'' ?>>
-					<td><?= $horarioDO->getISesion() ?></td>
-					<td><?= $semanaARR[$diaSemana] . ', ' . date('d', $fechaIniTime) . ' de ' . $mesesARR[(date('n', $fechaIniTime) - 1)] . ' de ' . date('Y', $fechaIniTime)?></td>
-					<td id="horas_<?= $horarioDO->getIdHorario() ?>"><?= substr($horarioDO->getIHoras(),0,5) ?></td>
-					<td id="inicio_<?= $horarioDO->getIdHorario() ?>"><?= substr($horarioDO->getIDesde(),0,5) ?></td>
-					<td id="fin_<?= $horarioDO->getIdHorario() ?>"><?= substr($horarioDO->getIHasta(),0,5) ?></td>
-					<td id="editar_<?= $horarioDO->getIdHorario() ?>" class="accion"><a href="javascript:editarHorario('<?= $horarioDO->getIdHorario() ?>')" class="btnEditar" title="Editar Horario"><span>editar</span></a></td>
-					<td class="accion"><a href="javascript:ventanaConfirmacion('Confirmar','¿Está seguro que desea eliminar el horario del día <strong><?= OwlDate::getDiaMesAno($horarioDO->getDDia()) ?></strong>?','/curso/eliminarHorario.html/<?= $horarioDO->getIdHorario() ?>')" class="btnEliminar" title="Eliminar Horario"><span>eliminar</span></a></td>
-				</tr>
+				<p>Para este curso se han destinado <strong id="horasTotales"><?= $this->horasTotales ?></strong> horas, <?
+				
+				if (0 == $this->horasAsignadas){
+					?>pero aún no se ha asignado ninguna.<?
+				} else {
+					
+					$horasARR = explode(':', $this->horasAsignadas);
+					$hora = $horasARR[0];
+					$minutos = $horasARR[1];
+					
+					if (intval($minutos) == 0){
+						
+						?><span id="informacionHoras">en las que <strong id="horasAsignadas"><?= $hora ?></strong> han sido asignadas</span></p><?
+						
+					} else {
+					
+						?><span id="informacionHoras">en las que <strong id="horasAsignadas"><?= $hora ?></strong> horas y <strong id="minutosAsignados"><?= $minutos ?></strong> minutos han sido asignados.</span></p><?
+						
+					}
+				}
+				
+				?><div id="barraHoras">
+					<strong id="porcentaje">( <?= $this->porcentajeAsignado ?> %)</strong>
+					<div <?= $this->porcentajeAsignado > 100 ? 'class="excede" ' : '' ?> style="width: <?= $this->porcentajeAsignado ?>%;">
+					</div>
+				</div>
+			
+			</div><?
+			
+			if ( count($this->horariosCOL) > 0 ){
+				
+				?><table class="listado" id="tablaHorarios">
+					<thead>
+						<tr>
+							<th>Sesión</th>
+							<th>Día</th>
+							<th>Horas</th>
+							<th>Hora Inicio</th>
+							<th>Hora Fin</th>
+							<th>Editar</th>
+							<th>Eliminar</th>
+						</tr>
+					</thead>
+					<tbody><? 
+					
+					$alter = true;
+					$languageBO = new OwlLanguage();
+					
+		        	$semanaARR = $languageBO->getDiasEs();
+		        	$mesesARR = $languageBO->getMesesEs();			
+					
+					foreach ( $this->horariosCOL as $horarioDO ){
+		
+		        		$fechaIniTime = strtotime($horarioDO->getDDia());
+		        		$diaSemana = ( (date('w', $fechaIniTime)-1) == -1 ) ? 6 : (date('w', $fechaIniTime)-1);
+						
+						$alter = !$alter;
+						?>
+						<tr <?= ($alter)?'class="alter"':'' ?>>
+							<td><?= $horarioDO->getISesion() ?></td>
+							<td><?= $semanaARR[$diaSemana] . ', ' . date('d', $fechaIniTime) . ' de ' . $mesesARR[(date('n', $fechaIniTime) - 1)] . ' de ' . date('Y', $fechaIniTime)?></td>
+							<td id="horas_<?= $horarioDO->getIdHorario() ?>"><?= substr($horarioDO->getIHoras(),0,5) ?></td>
+							<td id="inicio_<?= $horarioDO->getIdHorario() ?>"><?= substr($horarioDO->getIDesde(),0,5) ?></td>
+							<td id="fin_<?= $horarioDO->getIdHorario() ?>"><?= substr($horarioDO->getIHasta(),0,5) ?></td>
+							<td id="editar_<?= $horarioDO->getIdHorario() ?>" class="accion"><a href="javascript:editarHorario('<?= $horarioDO->getIdHorario() ?>')" class="btnEditar" title="Editar Horario"><span>editar</span></a></td>
+							<td class="accion"><a href="javascript:ventanaConfirmacion('Confirmar','¿Está seguro que desea eliminar el horario del día <strong><?= OwlDate::getDiaMesAno($horarioDO->getDDia()) ?></strong>?','/curso/eliminarHorario.html/<?= $horarioDO->getIdHorario() ?>')" class="btnEliminar" title="Eliminar Horario"><span>eliminar</span></a></td>
+						</tr>
+						<?
+					
+					}
+					
+					?>
+						<tr <?= (!$alter)?'class="alter"':'' ?>>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td class="accion"><a href="javascript:ventanaConfirmacion('Confirmar','¿Está seguro que desea eliminar el horario completo?','/curso/eliminarTodoHorario.html/<?= $horarioDO->getFkCurso() ?>')"  title="Eliminar el horario completo">Eliminar todo</a></td>
+						</tr>
+					</tbody>
+				</table>
+				<div id="paginadorContainer"><?= $this->paginador ?></div>
 				<?
 			
 			}
 			
 			?>
-				<tr <?= (!$alter)?'class="alter"':'' ?>>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td class="accion"><a href="javascript:ventanaConfirmacion('Confirmar','¿Está seguro que desea eliminar el horario completo?','/curso/eliminarTodoHorario.html/<?= $horarioDO->getFkCurso() ?>')"  title="Eliminar el horario completo">Eliminar todo</a></td>
-				</tr>
-			</tbody>
-		</table>
-		<div id="paginadorContainer"><?= $this->paginador ?></div>
-		<?
-	
-	}
-	
-	?>
-	<div class="bloque">
-		<form id="horarioCurso" action="<?= $_SERVER['REQUEST_URI'] ?>" method="post">
-			<fieldset>
+			<div class="bloque">
+				<form id="horarioCurso" action="<?= $_SERVER['REQUEST_URI'] ?>" method="post">
+					<fieldset>
+					
+						<input type="hidden" name="<?= md5('sendHorario') ?>" value="<?= md5(1) ?>" />
+						
+						<h3 class="conSubtitulo">Horario semanal general</h3>
+						<p class="subtitulo">El horario que se repetirá semanalmente para este curso. Una vez introducido podrás modificar o eliminar cada día individualmente.</p>
+						<div class="campo multi controlado">
+							<label class="alter" for="lunes">Lunes</label>
+							<input class="checkbox" type="checkbox" name="lunes" id="lunes" />
+						</div>
+						<div class="campo multi controlado">
+							<label class="alter" for="martes">Martes</label>
+							<input class="checkbox" type="checkbox" name="martes" id="martes" />
+						</div>
+						<div class="campo multi controlado">
+							<label class="alter" for="miercoles">Miércoles</label>
+							<input class="checkbox" type="checkbox" name="miercoles" id="miercoles" />
+						</div>
+						<div class="campo multi controlado">				
+							<label class="alter" for="jueves">Jueves</label>
+							<input class="checkbox" type="checkbox" name="jueves" id="jueves" />
+						</div>
+						<div class="campo multi controlado">
+							<label class="alter" for="viernes">Viernes</label>
+							<input class="checkbox" type="checkbox" name="viernes" id="viernes" />
+						</div>
+						<div class="campo multi controlado">
+							<label class="alter" for="sabado">Sábado</label>
+							<input class="checkbox" type="checkbox" name="sabado" id="sabado" />
+						</div>
+						
+						<div class="campo multi controlado">
+							<label class="alter" for="domingo">Domingo</label>
+							<input class="checkbox" type="checkbox" name="domingo" id="domingo" />
+						</div>
+						
+						<div class="separadorH"></div>
+						
+						<p id="errorSemana" class="errorInput"><?=$this->errorSemana?></p>
+						
+						<div class="separadorH"></div>
+						
+						<div class="campo multi controlado">
+							<label for="inicioGrupo">Hora de inicio*</label>
+							<input class="campoTexto pequeno" type="text" name="inicioGrupo" id="inicioGrupo"/>
+							<p id="errorInicioGrupo" class="errorInput"><?=$this->errorInicioGrupo?></p>
+						</div>
+						
+						<div class="campo multi controlado">
+							<label for="finGrupo">Hora de fin*</label>
+							<input class="campoTexto pequeno" type="text" name="finGrupo" id="finGrupo"/>
+							<p class="tooltip" id="finGrupoTooltip">Formato de hora: HH:MM</p>
+								<p class="tooltip" id="inicioGrupoTooltip">Formato de hora: HH:MM</p>
+							<p id="errorFinGrupo" class="errorInput"><?=$this->errorFinGrupo?></p>
+						</div>
+						
+						<?
+						if ( $this->sinFechas ){
+						?>
+							<div class="separadorH"></div>
+							<p class="errorInput">No puede crear ningún grupo hasta que el curso tenga fecha de inicio y fecha de fin.</p>
+						
+						<?
+						} else {
+						?>
+						
+							<div class="campo multi boton">
+								<input class="btnSubmit" type="submit" value="guardar"/>
+							</div>
+							<div class="separadorH"></div>
+						
+						<?
+						}
+						?>
+						
+					</fieldset>
+				</form>
+			</div>
 			
-				<input type="hidden" name="<?= md5('sendHorario') ?>" value="<?= md5(1) ?>" />
-				
-				<h3 class="conSubtitulo">Horario semanal general</h3>
-				<p class="subtitulo">El horario que se repetirá semanalmente para este curso. Una vez introducido podrás modificar o eliminar cada día individualmente.</p>
-				<div class="campo multi controlado">
-					<label class="alter" for="lunes">Lunes</label>
-					<input class="checkbox" type="checkbox" name="lunes" id="lunes" />
-				</div>
-				<div class="campo multi controlado">
-					<label class="alter" for="martes">Martes</label>
-					<input class="checkbox" type="checkbox" name="martes" id="martes" />
-				</div>
-				<div class="campo multi controlado">
-					<label class="alter" for="miercoles">Miércoles</label>
-					<input class="checkbox" type="checkbox" name="miercoles" id="miercoles" />
-				</div>
-				<div class="campo multi controlado">				
-					<label class="alter" for="jueves">Jueves</label>
-					<input class="checkbox" type="checkbox" name="jueves" id="jueves" />
-				</div>
-				<div class="campo multi controlado">
-					<label class="alter" for="viernes">Viernes</label>
-					<input class="checkbox" type="checkbox" name="viernes" id="viernes" />
-				</div>
-				<div class="campo multi controlado">
-					<label class="alter" for="sabado">Sábado</label>
-					<input class="checkbox" type="checkbox" name="sabado" id="sabado" />
-				</div>
-				
-				<div class="campo multi controlado">
-					<label class="alter" for="domingo">Domingo</label>
-					<input class="checkbox" type="checkbox" name="domingo" id="domingo" />
-				</div>
-				
-				<div class="separadorH"></div>
-				
-				<p id="errorSemana" class="errorInput"><?=$this->errorSemana?></p>
-				
-				<div class="separadorH"></div>
-				
-				<div class="campo multi controlado">
-					<label for="inicioGrupo">Hora de inicio*</label>
-					<input class="campoTexto pequeno" type="text" name="inicioGrupo" id="inicioGrupo"/>
-					<p id="errorInicioGrupo" class="errorInput"><?=$this->errorInicioGrupo?></p>
-				</div>
-				
-				<div class="campo multi controlado">
-					<label for="finGrupo">Hora de fin*</label>
-					<input class="campoTexto pequeno" type="text" name="finGrupo" id="finGrupo"/>
-					<p class="tooltip" id="finGrupoTooltip">Formato de hora: HH:MM</p>
-						<p class="tooltip" id="inicioGrupoTooltip">Formato de hora: HH:MM</p>
-					<p id="errorFinGrupo" class="errorInput"><?=$this->errorFinGrupo?></p>
-				</div>
-				
-				<?
-				if ( $this->sinFechas ){
-				?>
-					<div class="separadorH"></div>
-					<p class="errorInput">No puede crear ningún grupo hasta que el curso tenga fecha de inicio y fecha de fin.</p>
-				
-				<?
-				} else {
-				?>
-				
-					<div class="campo multi boton">
-						<input class="btnSubmit" type="submit" value="guardar"/>
-					</div>
-					<div class="separadorH"></div>
-				
-				<?
-				}
-				?>
-				
-			</fieldset>
-		</form>
-	</div>
-	
-	<div class="campo">
-		<form id="diaCurso" action="<?= $_SERVER['REQUEST_URI'] ?>" method="post">
-			<fieldset>
-				<h3 class="conSubtitulo">Día específico</h3>
-				<p class="subtitulo">Aquí puedes añadir un día que no entre en el horario habitual del curso.</p>
-				
-				<input type="hidden" name="<?= md5('sendDia') ?>" value="<?= md5(1) ?>" />
-				
-				<div class="campo multi controlado">
-					<label for="dia">Día*</label>
-					<input class="campoTexto pequeno" type="text" name="dia" id="dia"/>
-					<p id="errorDia" class="errorInput"><?=$this->errorDia?></p>
-				</div>
-				
-				<div class="campo multi controlado">
-					<label for="inicioDia">Hora de inicio*</label>
-					<input class="campoTexto pequeno" type="text" name="inicioDia" id="inicioDia"/>
-					<p id="errorInicioDia" class="errorInput"><?=$this->errorInicioDia?></p>
-				</div>
-				
-				<div class="campo multi controlado">
-					<label for="finDia">Hora de fin*</label>
-					<input class="campoTexto pequeno" type="text" name="finDia" id="finDia"/>
-					<p class="tooltip" id="finDiaTooltip">Formato de hora: HH:MM</p>
-					<p class="tooltip" id="inicioDiaTooltip">Formato de hora: HH:MM</p>
-					<p id="errorFinDia" class="errorInput"><?=$this->errorFinDia?></p>
-				</div>
-				
-				<?
-				if ( $this->sinFechas ){
-				?>
-					<div class="separadorH"></div>
-					<p class="errorInput">No puede crear ningún día hasta que el curso tenga fecha de inicio y fecha de fin.</p>
-				
-				<?
-				} else {
-				?>
-				
-					<div class="campo multi boton">
-						<input class="btnSubmit" type="submit" value="guardar"/>
-					</div>
-					<div class="separadorH"></div>
-				
-				<?
-				}
-				?>
-				
-			</fieldset>
-		</form>
-	</div>
-	<?
+			<div class="campo">
+				<form id="diaCurso" action="<?= $_SERVER['REQUEST_URI'] ?>" method="post">
+					<fieldset>
+						<h3 class="conSubtitulo">Día específico</h3>
+						<p class="subtitulo">Aquí puedes añadir un día que no entre en el horario habitual del curso.</p>
+						
+						<input type="hidden" name="<?= md5('sendDia') ?>" value="<?= md5(1) ?>" />
+						
+						<div class="campo multi controlado">
+							<label for="dia">Día*</label>
+							<input class="campoTexto pequeno" type="text" name="dia" id="dia"/>
+							<p id="errorDia" class="errorInput"><?=$this->errorDia?></p>
+						</div>
+						
+						<div class="campo multi controlado">
+							<label for="inicioDia">Hora de inicio*</label>
+							<input class="campoTexto pequeno" type="text" name="inicioDia" id="inicioDia"/>
+							<p id="errorInicioDia" class="errorInput"><?=$this->errorInicioDia?></p>
+						</div>
+						
+						<div class="campo multi controlado">
+							<label for="finDia">Hora de fin*</label>
+							<input class="campoTexto pequeno" type="text" name="finDia" id="finDia"/>
+							<p class="tooltip" id="finDiaTooltip">Formato de hora: HH:MM</p>
+							<p class="tooltip" id="inicioDiaTooltip">Formato de hora: HH:MM</p>
+							<p id="errorFinDia" class="errorInput"><?=$this->errorFinDia?></p>
+						</div>
+						
+						<?
+						if ( $this->sinFechas ){
+						?>
+							<div class="separadorH"></div>
+							<p class="errorInput">No puede crear ningún día hasta que el curso tenga fecha de inicio y fecha de fin.</p>
+						
+						<?
+						} else {
+						?>
+						
+							<div class="campo multi boton">
+								<input class="btnSubmit" type="submit" value="guardar"/>
+							</div>
+							<div class="separadorH"></div>
+						
+						<?
+						}
+						?>
+						
+					</fieldset>
+				</form>
+			</div>
+			<?
+		} else {
+
+			?><ul class="erroresDocumentacion">
+				<li>Falta definir la fecha de inicio y la fecha de fin</li>
+			</ul><?
+			
+		}
 	
 	} else {
 	
-	?><h3>No se ha encontrado el curso</h3><?
+		?><h3>No se ha encontrado el curso</h3><?
 	
 	}
 

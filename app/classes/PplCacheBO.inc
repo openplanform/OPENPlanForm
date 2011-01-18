@@ -589,7 +589,7 @@ class PplCacheBO {
 	
 	
 	/**
-	 * Obtiene los centros
+	 * Obtiene los centros indexados por su clave
 	 * @return array
 	 */
 	public function getCentros() {

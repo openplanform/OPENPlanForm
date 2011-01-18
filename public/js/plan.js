@@ -5,20 +5,8 @@ function comprobarCampos() {
 	if ( !comprobarVacio('nombre', 'El nombre no puede estar vacío') ){
 		return false;
 	}
-	
-	if ( !comprobarVacio('tipo', 'El tipo no puede estar vacío') ){
-		return false;
-	}
 
 	if ( !comprobarVacio('convocatoria', 'La convocatoria no puede estar vacío') ){
-		return false;
-	}
-	
-	if ( !comprobarVacio('sector', 'El sector no puede estar vacío') ){
-		return false;
-	}
-	
-	if ( !comprobarVacio('expediente', 'El número no puede estar vacío') ){
 		return false;
 	}
 	
@@ -31,10 +19,6 @@ function comprobarCampos() {
 	}
 	
 	if ( !comprobarVacio('consultora', 'La consultora no puede estar vacía') ){
-		return false;
-	}
-	
-	if ( !comprobarVacio('presupuesto', 'El presupuesto no puede estar vacío') ){
 		return false;
 	}
 	

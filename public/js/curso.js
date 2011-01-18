@@ -375,11 +375,6 @@ function comprobarCampos() {
 		return false;
 	}
 	
-	// Categoría
-	if ( !comprobarVacio('categoria', 'La categoría no puede estar vacía') ){
-		return false;
-	}
-	
 	// Sector
 	if ( !comprobarVacio('sector', 'El sector no puede estar vacío') ){
 		return false;
@@ -515,9 +510,29 @@ $j(document).ready(function(){
 		yearRange: 'c-1:c+2'
 	});
 	
-    $j("#inicio" ).datepicker();
-    $j("#fin" ).datepicker();
-    $j("#dia" ).datepicker();
+	// Inicio y fin del curso
+	$j("#fin" ).datepicker();
+    $j("#inicio" ).datepicker({
+    	onSelect: function(date){
+    		// Hacemos que el selector de fecha de fin sea posterior a la fecha de inicio
+    		$j("#fin").datepicker('destroy');
+    		$j("#fin").val('');
+    		var arrFecha = date.split("/");
+    		$j("#fin" ).datepicker({
+    			minDate: new Date(arrFecha[2], arrFecha[1]-1, arrFecha[0])
+    		});
+    	}
+    });
+    
+    // Dia de clase en concreto
+    if ( typeof(inicioCurso) != "undefined" && typeof(finCurso) != "undefined" ){
+    	var arrInicio = inicioCurso.split("-"); // inicioCurso se setea en la carga de la página
+    	var arrFin = finCurso.split("-"); // finCurso se setea en la carga de la página
+	    $j("#dia" ).datepicker({
+	    	minDate: new Date(arrInicio[0], arrInicio[1]-1, arrInicio[2]),
+	    	maxDate: new Date(arrFin[0], arrFin[1]-1, arrFin[2]) 
+	    });
+    }
     
     // Se permite un decimal
 	$j(".decimal").numeric('.', 'none');

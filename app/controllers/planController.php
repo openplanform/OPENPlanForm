@@ -314,10 +314,6 @@ class planController extends PplController{
 
     	// Tipo
 		$tipo = $this->helper->escapeInjection($this->helper->get('tipo'));
-	    if ( is_null($tipo) || empty($tipo) ){
-	    	$correcto = false;
-	    	$this->view->errorTipo = 'El tipo no puede estar vacío';
-	    }
 	    
 	    // Convocatoria
 		$convocatoria = $this->helper->escapeInjection($this->helper->get('convocatoria'));
@@ -328,17 +324,9 @@ class planController extends PplController{
 	    
 	    // Sector
 		$sector = $this->helper->escapeInjection($this->helper->get('sector'));
-	    if ( is_null($sector) || empty($sector) ){
-	    	$correcto = false;
-	    	$this->view->errorSector = 'El sector no puede estar vacío';
-	    }
 	    
 	    // Número de expediente
 		$expediente = $this->helper->escapeInjection($this->helper->get('expediente'));
-	    if ( is_null($expediente) || empty($expediente) ){
-	    	$correcto = false;
-	    	$this->view->errorExpediente = 'El expediente no puede estar vacío';
-	    }
 	    
     	// Estado
 		$estado = $this->helper->escapeInjection($this->helper->get('estado'));
@@ -350,10 +338,8 @@ class planController extends PplController{
     	// Presupuesto
 		$presupuesto = $this->helper->escapeInjection($this->helper->get('presupuesto'));
 	    if ( is_null($presupuesto) || empty($presupuesto) ){
-	    	$correcto = false;
-	    	$this->view->errorPresupuesto = 'El presupuesto no puede estar vacío';
+	    	$presupuesto = '';
 	    } else if ( !OwlNumeric::currencyEuro($presupuesto) ) {
-	    	$correcto = false;
 	    	$this->view->errorPresupuesto = 'El presupuesto no tiene el formato correcto';
 	    }
 	    
@@ -401,6 +387,7 @@ class planController extends PplController{
             
 	    	// Empieza la transacción
 	    	$this->db->begin();
+	    	$this->db->disableForeignChecks();
 	    	
 	    	if ( $editar ){
 	    		$correcto = $planDO->update();
@@ -408,6 +395,7 @@ class planController extends PplController{
 	    		$correcto = $planDO->insert();
 	    	} 
 	    	
+	    	$this->db->enableForeignChecks();
     		if ( $correcto ){
     			// Todo ha ido bien
     			$this->db->commit();

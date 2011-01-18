@@ -8,10 +8,12 @@
     <thead>
 		<tr>
 			<th><a href="/curso/index.html/?ob=nom&o=<?=$this->order?>" <?=( ($this->orderBy == 'nom')?'class="ordenado ' . $this->order . '"':'' )?> >Nombre</a></th>
-			<th><a href="/curso/index.html/?ob=plan&o=<?=$this->order?>" <?=( ($this->orderBy == 'plan')?'class="ordenado ' . $this->order . '"':'' )?> >Plan</a></th>
-			<th><a href="/curso/index.html/?ob=cat&o=<?=$this->order?>" <?=( ($this->orderBy == 'cat')?'class="ordenado ' . $this->order . '"':'' )?> >Categoria</a></th>
 			<th><a href="/curso/index.html/?ob=ini&o=<?=$this->order?>" <?=( ($this->orderBy == 'ini')?'class="ordenado ' . $this->order . '"':'' )?> >Inicio</a></th>
 			<th><a href="/curso/index.html/?ob=fin&o=<?=$this->order?>" <?=( ($this->orderBy == 'fin')?'class="ordenado ' . $this->order . '"':'' )?> >Fin</a></th>
+			<th><a href="/curso/index.html/?ob=hor&o=<?=$this->order?>" <?=( ($this->orderBy == 'hor')?'class="ordenado ' . $this->order . '"':'' )?> >Horas</a></th>
+			<th>Nº Acción</th>
+			<th>Profesor</th>
+			<th><a href="/curso/index.html/?ob=cen&o=<?=$this->order?>" <?=( ($this->orderBy == 'cen')?'class="ordenado ' . $this->order . '"':'' )?> >Centro</a></th>
 			<?
 			
 				if ( $this->editar ){
@@ -38,10 +40,8 @@
 				?>
 				<tr	<?= $clase ?> >
 					<td><a href="/curso/ficha.html/<?= $cursoDO->getIdCurso() ?>"><?= $cursoDO->getVNombre() ?></a></td>
-					<td><a href="/plan/ficha.html/<?= $cursoDO->getFkPlan() ?>"><?= $this->planesIDX[$cursoDO->getFkPlan()] ?></a></td>
-					<td><?= $this->categoriasIDX[$cursoDO->getFkCategoria()] ?></td>
 					<?php
-					 
+					
 					$fechaIni = OwlDate::getDiaMesAno($cursoDO->getDInicio());
 					( $fechaIni == '01/01/1970' ) ? $fechaIni = '-' : '';
 					$fechaFin = OwlDate::getDiaMesAno($cursoDO->getDFin());
@@ -50,6 +50,10 @@
 					?>
 					<td><?= $fechaIni ?></td>
 					<td><?= $fechaFin ?></td>
+					<td><?= $cursoDO->getIHorasPresenciales() + $cursoDO->getIHorasDistancia() ?></td>
+					<td><?= (is_null($cursoDO->getIAccion()) || $cursoDO->getIAccion() == 0) ? '-' : $cursoDO->getIAccion() ?></td>
+					<td></td>
+					<td><?= $this->centrosIDX[$cursoDO->getFkCentro()] ?></td>
 					<?
 			
 						if ( $this->editar ){

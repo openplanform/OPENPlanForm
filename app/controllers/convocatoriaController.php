@@ -332,10 +332,8 @@ class convocatoriaController extends PplController{
 		// Presupuesto
 		$presupuesto = $this->helper->escapeInjection($this->helper->get('presupuesto'));
 	    if ( is_null($presupuesto) || empty($presupuesto) ){
-	    	$correcto = false;
-	    	$this->view->errorPresupuesto = 'El presupuesto no puede estar vacío';
+	    	$presupuesto = '';
 	    } else if ( !OwlNumeric::currencyEuro($presupuesto) ) {
-	    	$correcto = false;
 	    	$this->view->errorPresupuesto = 'El presupuesto no tiene el formato correcto';
 	    }
 	    		
@@ -373,7 +371,8 @@ class convocatoriaController extends PplController{
 	    		$correcto = $convocatoriaDO->update();
 	    	} else {
 	    		$correcto = $convocatoriaDO->insert();
-	    	} 
+	    		$idConvocatoria = $this->db->getLastInsertId();
+	    	}
 	    	
 	    	if ( $correcto ){
 	    		
@@ -381,12 +380,11 @@ class convocatoriaController extends PplController{
 	    		if ( !empty($arrIdsRequisitos) ){
 	    			
 	    			if ( $editar ){
-		    			// Borramos los requisitos antiguos
+	    				
 		    			$sql = "DELETE FROM trelRequisitoConvocatoria WHERE fkConvocatoria = ".$idConvocatoria;
 		    			$this->db->executeQuery($sql);
-	    			} else {
-	    				$idConvocatoria = $this->db->getLastInsertId();
-	    			}
+		    			
+	    			} 
 	    			
 	    			// Insertamos los requisitos
 		    		$requisitoConvocatoria = new TrelRequisitoConvocatoria($this->db);

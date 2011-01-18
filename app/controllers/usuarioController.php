@@ -103,7 +103,7 @@ class usuarioController extends PplController{
              foreach ($rolesUsuariosCOL as $rolUsuarioDO){
                  
                  if ($idUsuario == $rolUsuarioDO->getFkUsuario()){
-                     $nombresRolesUsuario[] = $rolesCOL[$rolUsuarioDO->getFkRol()]; 
+                     $nombresRolesUsuario[] = $rolesCOL[$rolUsuarioDO->getFkRol()];
                  }
                  
              }
