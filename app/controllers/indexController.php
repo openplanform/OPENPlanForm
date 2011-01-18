@@ -201,7 +201,7 @@ class indexController extends PplController{
 	 * Panel Principal
 	 */
     public function panelAction(){
-        
+    	
         // CONVOCATORIAS ------------------------------------
         
         $sql = "SELECT COUNT(*) AS total FROM tblConvocatoria;";

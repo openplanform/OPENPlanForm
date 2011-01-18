@@ -58,11 +58,11 @@ class cursoController extends PplController{
     	
     	// Parámetros de ordenación para el paginador
     	$aliasCampos = array(
-    		'cat'	=> 'fkCategoria',
     		'fin'	=> 'dFin',
     		'ini'	=> 'dInicio',
     		'nom' 	=> 'vNombre',
-    		'plan'	=> 'fkPlan',
+    		'nac' 	=> 'iAccion',
+    		'cen'	=> 'fkCentro'
     	);
     	
         if ( !empty($_REQUEST) && array_key_exists('o', $_GET) & array_key_exists('ob', $_GET) ){
@@ -106,6 +106,18 @@ class cursoController extends PplController{
         
         // Categorías
         $this->view->categoriasIDX = $this->cacheBO->getCategorias();
+        
+        // Centros
+        $this->view->centrosIDX = $this->cacheBO->getCentros();
+                
+        // Profesores
+        $this->view->profesoresIDX = $this->cacheBO->getProfesores();
+        
+        // Profesores curso
+        $profesoresCursoIDX = array();
+        foreach ($cursosCOL as $cursoDO) {
+        	
+        }
         
         // Permiso para editar
     	if ( $this->aclManager->hasPerms('curso', 'editar') ){
@@ -452,10 +464,6 @@ class cursoController extends PplController{
 	    
 	    // Categoría
     	$categoria = $this->helper->escapeInjection($this->helper->get('categoria'));
-	    if ( is_null($categoria) || empty($categoria) ){
-	    	$correcto = false;
-	    	$this->view->errorCategoria = 'La categoria no puede estar vacía';
-	    }
 	    
 	    // Colectivo
     	$colectivo = $this->helper->escapeInjection($this->helper->get('colectivo'));

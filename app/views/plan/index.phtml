@@ -30,7 +30,6 @@
 			$contador = 0;
 			foreach ( $this->planesCOL as $planDO ){
 				
-			    //$planDO = new TblPlan($db);
 				$clase = ( ($contador%2)==0 )?'':'class="alter"';
 				$contador++;
 				
@@ -38,7 +37,7 @@
 				<tr	<?= $clase ?> >
 					<td><a href="/plan/ficha.html/<?= $planDO->getIdPlan() ?>"><?= $planDO->getVNombre() ?></a></td>
 					<td><a href="/convocatoria/ficha.html/<?= $planDO->getFkConvocatoria() ?>"><?= $this->convocatoriasIDX[$planDO->getFkConvocatoria()] ?></a></td>
-					<td><?= $this->tiposPlanIDX[$planDO->getFkTipoPlan()] ?></td>
+					<td><?= ( is_null($planDO->getFkTipoPlan()) || $planDO->getFkTipoPlan() == 0 ) ? '-' : $this->tiposPlanIDX[$planDO->getFkTipoPlan()] ?></td>
 					<td><?= $this->estadosPlanIDX[$planDO->getFkEstadoPlan()] ?></td>
 					<td><?= $this->consultorasIDX[$planDO->getFkEmpresaPropietaria()] ?></td>
 					<td><?= OwlNumeric::decimalFormatoEuropeo($planDO->getEPresupuestoAsignado(), 2) ?>€</td>

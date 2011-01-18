@@ -1,3 +1,6 @@
 owl/
 public/tmp/
 public/docs/
+app/log/
+*.log
+app/log/extranet.planespime/

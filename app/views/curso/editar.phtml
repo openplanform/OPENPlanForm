@@ -59,8 +59,8 @@
 				
 				<div class="separadorH"></div>			
 				
-				<div class="campo controlado multi">
-	            	<label for="categoria">Categoría*</label>
+				<div class="campo multi">
+	            	<label for="categoria">Categoría</label>
 		            <select class="grande" name="categoria" id="categoria">
 		            	<option value=""></option>
 						<?
@@ -70,7 +70,6 @@
 						
 						?>
 					</select>
-					<p id="errorCategoria" class="errorInput"><?= $this->errorCategoria ?></p>
 				</div>
 				
 				<div class="campo controlado multi">
@@ -367,12 +366,11 @@
 										
 										?>
 										<tr <?= $alter ? 'class="alter"' : '' ?>>
-											<td><a href="/profesor/ficha.html/<?= $clave ?>"><?= $nombre ?></a></td>
+											<td><a href="/profesor/ficha.html/<?= $clave ?>" rel="external"><?= $nombre ?></a></td>
 											<td><?= $categoriasProfesor ?></td>
 											<td><a href="javascript:addProfCurso('<?= $clave ?>', '<?= $nombre ?>')" class="btnAnadir" title="Asignar al curso"><span>añadir</span></a></td>
 										</tr>
 										<?
-										
 										
 									}
 									

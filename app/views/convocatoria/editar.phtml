@@ -51,7 +51,7 @@
 				</div>
 	            
 	            <div class="campo controlado multi">
-	                <label for="presupuesto">Fondos*</label>
+	                <label for="presupuesto">Fondos</label>
 	                <input class="campoTexto dinero mediano" type="text" name="presupuesto" id="presupuesto" value="<?= OwlNumeric::decimalFormatoEuropeo($this->convocatoriaDO->getEPresupuesto(), 2) ?>"/>
 	                <p id="errorPresupuesto" class="errorInput"><?= $this->errorPresupuesto ?></p>
 	                <p class="tooltip" id="presupuestoTooltip">Utilice la coma(,) para separar decimales y el punto(.) para los miles</p>

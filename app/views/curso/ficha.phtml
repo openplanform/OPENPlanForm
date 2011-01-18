@@ -22,7 +22,7 @@
 			<p><strong>Nombre:</strong><span> <?= $this->cursoDO->getVNombre() ?></span></p>
 			<p><strong>Expediente:</strong><span> <?= $this->cursoDO->getVExpediente() ?></span></p>
 			<p><strong>Plan:</strong><span> <?= $this->cursoDO->getTblPlan()->getVNombre() ?></span></p>
-			<p><strong>Categoría:</strong><span> <?= $this->categoriaDO->getVNombre() ?></span></p>
+			<p><strong>Categoría:</strong><span> <?= empty($this->categoriaDO) ? '-' : $this->categoriaDO->getVNombre() ?></span></p>
 			<p><strong>Colectivo:</strong><span> <?= $this->cursoDO->getTblColectivo()->getVNombre() ?></span></p>
 			<p><strong>Modalidad:</strong><span> <?= $this->modalidadesIDX[$this->cursoDO->getFkModalidad()] ?></span></p>
 			<p><strong>Centro:</strong><span> <?= $this->cursoDO->getTblCentro()->getVNombre() ?></span></p><?
