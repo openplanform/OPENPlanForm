@@ -37,6 +37,24 @@ class PplCacheBO {
 	const CLAVE_MODALIDAD_PRESENCIAL = 1;
 	
 	/**
+	 * Valor de la clave de modalidad teleformacion 
+	 * @var integer
+	 */
+	const CLAVE_MODALIDAD_TELEFORMACION = 2;
+	
+	/**
+	 * Valor de la clave de modalidad mixta 
+	 * @var integer
+	 */
+	const CLAVE_MODALIDAD_MIXTA = 3;
+	
+	/**
+	 * Valor de la clave de modalidad online 
+	 * @var integer
+	 */
+	const CLAVE_MODALIDAD_ONLINE= 4;
+	
+	/**
      * Referencia a la base de datos
      * @var OwlConnection
      */
@@ -312,6 +330,11 @@ class PplCacheBO {
      */
     private $cursosIDX = null;
     
+    /**
+     * Trabajo en paro indexado por su clave
+     * @var array
+     */
+    private $trabajosParoIDX = null;
     
     /**
      * Constructora, propaga la referencia a la base de datos 
@@ -1327,6 +1350,24 @@ class PplCacheBO {
 		}
 		
 		return $this->cursosIDX;
+		
+	}
+	
+	/**
+	 * Devuelve el tipo de paro indexado por su clave
+	 * @return array
+	 */
+	public function getTrabajoParo(){
+		
+		if ( is_null($this->trabajosParoIDX) ){
+			
+			$trabajosParoCOL = TblTrabajoParo::findAll($this->db, 'idTrabajoParo');
+			$trabajosParoIDX = OwlDatabase::indexFor('idTrabajoParo', $trabajosParoCOL);
+			$this->trabajosParoIDX = $trabajosParoIDX;
+			
+		}
+		
+		return $this->trabajosParoIDX;
 		
 	}
 	

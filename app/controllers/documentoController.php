@@ -270,8 +270,6 @@ class documentoController extends PplController{
     		
     	}
     	
-    	
-    	
     }
     
 }

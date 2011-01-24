@@ -4,7 +4,6 @@
 	$this->echoOnHead($this->cabeceraMapa);
 	$this->echoOnHead($this->mapa);
 	
-	
 	if ( !is_null($this->popup) ){
     	echo '<script type="text/javascript">ventana' . ucfirst($this->popup['estado']) . '("' . $this->popup['titulo'] . '", "' . $this->popup['mensaje'] . '", "' . $this->popup['url'] . '");</script>'; 
 	}
@@ -69,7 +68,6 @@
 						
 						// País
 						foreach ( $this->paisesCOL as $paisDO) {
-							//$paisDO = new TblPais($db);
 							?><option value="<?= $paisDO->getVIso() ?>" ><?= $paisDO->getVNombre() ?></option><?
 							
 						}
@@ -131,7 +129,7 @@
 			<div class="bloque">
 				<h3>Ubicación principal</h3>
 				<div class="campo">
-					<p class="desc">Marca en el mapa el emplazamiento de la academia</p>
+					<p class="desc">Marca en el mapa el emplazamiento de la academia o <a href="javascript:obtenerCoordenadasDireccion()">Actualizar mapa con la dirección proporcionada</a></p>
 					<div id="mapa"></div>
 				</div>
 			</div>

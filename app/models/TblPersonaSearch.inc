@@ -1,7 +1,7 @@
 <?php
 /**
  * Este archivo ha sido generado con Owl Dogen v.0.6
- * el 16 de December de 2010 a las 04:06:51
+ * el 21 de January de 2011 a las 10:11:21
  * @package dataAccess
  */
 
@@ -202,11 +202,11 @@ class TblPersonaSearch{
     public $dAntiguedadParo;
 
     /**
-     * Representa el atributo vTrabajoParo.
+     * Representa el atributo fkTrabajoParo.
      *
-     * @var string
+     * @var integer
      */
-    public $vTrabajoParo;
+    public $fkTrabajoParo;
 
     /**
      * Representa el atributo vSectorEmpresaActual.

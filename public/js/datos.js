@@ -50,5 +50,8 @@ $j(document).ready(function(){
 	$j('#formNivelEstudio').bind('submit', function() {
 		return comprobarNombre();
 	});
+	$j('#formCategorialaboral').bind('submit', function() {
+		return comprobarNombre();
+	});
 	
 });

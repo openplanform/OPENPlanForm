@@ -390,11 +390,6 @@ function comprobarCampos() {
 		return false;
 	}
 	
-	// Centro
-	if ( !comprobarVacio('centro', 'El centro no puede estar vacío') ){
-		return false;
-	}
-	
 	// Fechas
 	var inicio = $j("#inicio").val();
 	var fin = $j("#fin").val();

@@ -1,7 +1,7 @@
 <?php
 /**
  * Este archivo ha sido generado con Owl DoGen v.0.6
- * el 16 de December de 2010 a las 04:06:51
+ * el 21 de January de 2011 a las 10:11:21
  * @package dataAccess
  */
 
@@ -183,10 +183,10 @@ class TblPersona extends OwlGenericDO{
     public $dAntiguedadParo;
 
     /**
-     * Atributo que representa el campo "vTrabajoParo"
-     * @var string
+     * Atributo que representa el campo "fkTrabajoParo"
+     * @var integer
      */
-    public $vTrabajoParo;
+    public $fkTrabajoParo;
 
     /**
      * Atributo que representa el campo "vSectorEmpresaActual"
@@ -297,7 +297,7 @@ class TblPersona extends OwlGenericDO{
         $this->dBaja = $data['dBaja'];
         $this->fkCobros = $data['fkCobros'];
         $this->dAntiguedadParo = $data['dAntiguedadParo'];
-        $this->vTrabajoParo = $data['vTrabajoParo'];
+        $this->fkTrabajoParo = $data['fkTrabajoParo'];
         $this->vSectorEmpresaActual = $data['vSectorEmpresaActual'];
         $this->fkCategoriaEmpleo = $data['fkCategoriaEmpleo'];
         $this->bMas250Trabajadores = $data['bMas250Trabajadores'];
@@ -405,8 +405,8 @@ class TblPersona extends OwlGenericDO{
         if( $tmp = $searchItem->dAntiguedadParo ){
             $where[] = "dAntiguedadParo='$tmp'";
         }
-        if( $tmp = $searchItem->vTrabajoParo ){
-            $where[] = "vTrabajoParo='$tmp'";
+        if( $tmp = $searchItem->fkTrabajoParo ){
+            $where[] = "fkTrabajoParo='$tmp'";
         }
         if( $tmp = $searchItem->vSectorEmpresaActual ){
             $where[] = "vSectorEmpresaActual='$tmp'";
@@ -495,6 +495,22 @@ class TblPersona extends OwlGenericDO{
         return OwlGenericDO::createDO( $db, $data, 'TblPersona');
 
     }
+
+    /**
+     * Obtiene todas las filas de la tabla tblPersona que coinciden con el criterio fkTrabajoParo='$fkTrabajoParo'.
+     *
+     * @param Connection $db Conexión con la base de datos.
+     * @param integer fkTrabajoParo string Valor del campo fkTrabajoParo.
+     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
+     * @return array
+     */
+     public static function findByTblTrabajoParo( $db, $fkTrabajoParo, $orderBy='' ){
+         $sql = "SELECT * FROM tblPersona WHERE fkTrabajoParo='$fkTrabajoParo'";
+         if( $orderBy != '' ){
+             $sql .= " ORDER BY $orderBy";
+         }
+         return OwlGenericDO::createCollection( $db, $sql, 'TblPersona' );
+     }
 
     /**
      * Obtiene todas las filas de la tabla tblPersona que coinciden con el criterio fkCategoriaEmpleo='$fkCategoriaEmpleo'.
@@ -671,7 +687,7 @@ class TblPersona extends OwlGenericDO{
         $sets[] = 'dBaja=' . ( ( ( $value = $this->dBaja ) === null || !isset($this->dBaja) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'fkCobros=' . ( ( ( $value = $this->fkCobros ) === null || !isset($this->fkCobros) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'dAntiguedadParo=' . ( ( ( $value = $this->dAntiguedadParo ) === null || !isset($this->dAntiguedadParo) ) ? 'null' :  "'".addslashes($value)."'" );
-        $sets[] = 'vTrabajoParo=' . ( ( ( $value = $this->vTrabajoParo ) === null || !isset($this->vTrabajoParo) ) ? 'null' :  "'".addslashes($value)."'" );
+        $sets[] = 'fkTrabajoParo=' . ( ( ( $value = $this->fkTrabajoParo ) === null || !isset($this->fkTrabajoParo) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'vSectorEmpresaActual=' . ( ( ( $value = $this->vSectorEmpresaActual ) === null || !isset($this->vSectorEmpresaActual) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'fkCategoriaEmpleo=' . ( ( ( $value = $this->fkCategoriaEmpleo ) === null || !isset($this->fkCategoriaEmpleo) ) ? 'null' :  "'".addslashes($value)."'" );
         $sets[] = 'bMas250Trabajadores=' . ( ( ( $value = $this->bMas250Trabajadores ) === null || !isset($this->bMas250Trabajadores) ) ? 'null' :  "'".addslashes($value)."'" );
@@ -717,7 +733,7 @@ class TblPersona extends OwlGenericDO{
         $attributes[] = 'dBaja';
         $attributes[] = 'fkCobros';
         $attributes[] = 'dAntiguedadParo';
-        $attributes[] = 'vTrabajoParo';
+        $attributes[] = 'fkTrabajoParo';
         $attributes[] = 'vSectorEmpresaActual';
         $attributes[] = 'fkCategoriaEmpleo';
         $attributes[] = 'bMas250Trabajadores';
@@ -756,7 +772,7 @@ class TblPersona extends OwlGenericDO{
         $values[] = (( $value = $this->dBaja ) === null || !isset($this->dBaja) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->fkCobros ) === null || !isset($this->fkCobros) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->dAntiguedadParo ) === null || !isset($this->dAntiguedadParo) ) ? 'null' : "'".addslashes($value)."'";
-        $values[] = (( $value = $this->vTrabajoParo ) === null || !isset($this->vTrabajoParo) ) ? 'null' : "'".addslashes($value)."'";
+        $values[] = (( $value = $this->fkTrabajoParo ) === null || !isset($this->fkTrabajoParo) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->vSectorEmpresaActual ) === null || !isset($this->vSectorEmpresaActual) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->fkCategoriaEmpleo ) === null || !isset($this->fkCategoriaEmpleo) ) ? 'null' : "'".addslashes($value)."'";
         $values[] = (( $value = $this->bMas250Trabajadores ) === null || !isset($this->bMas250Trabajadores) ) ? 'null' : "'".addslashes($value)."'";
@@ -1316,22 +1332,22 @@ class TblPersona extends OwlGenericDO{
     }
 
     /**
-      * Obtiene el valor del atributo 'vTrabajoParo'.
+      * Obtiene el valor del atributo 'fkTrabajoParo'.
       *
-      * @return string
+      * @return integer
       */
-    public function getVTrabajoParo(){
-        return $this->vTrabajoParo;
+    public function getFkTrabajoParo(){
+        return $this->fkTrabajoParo;
     }
 
     /**
-      * Establece el valor del atributo 'vTrabajoParo'.
+      * Establece el valor del atributo 'fkTrabajoParo'.
       *
-      * @param string Valor.
+      * @param integer Valor.
       */
-    public function setVTrabajoParo( $value ){
+    public function setFkTrabajoParo( $value ){
 
-        $this->vTrabajoParo = $value;
+        $this->fkTrabajoParo = $value;
 
     }
 
@@ -1562,6 +1578,19 @@ class TblPersona extends OwlGenericDO{
     }
 
     /**
+     * Obtiene todos los elementos relacionados de la tabla 'tblTutoria'
+     *
+     * @param Connection $db Conexión con la base de datos.
+     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
+     */
+    public function getTblTutorias( $orderBy='' ){
+
+        include_once('TblTutoria.inc');
+        return TblTutoria::findByTblPersona( $this->_db, $this->idPersona, $orderBy );
+
+    }
+
+    /**
      * Obtiene todos los elementos relacionados de la tabla 'trelCandidato'
      *
      * @param Connection $db Conexión con la base de datos.
@@ -1571,6 +1600,19 @@ class TblPersona extends OwlGenericDO{
 
         include_once('TrelCandidato.inc');
         return TrelCandidato::findByTblPersona( $this->_db, $this->idPersona, $orderBy );
+
+    }
+
+    /**
+     * Obtiene todos los elementos relacionados de la tabla 'trelEstudioPersona'
+     *
+     * @param Connection $db Conexión con la base de datos.
+     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
+     */
+    public function getTrelEstudioPersonas( $orderBy='' ){
+
+        include_once('TrelEstudioPersona.inc');
+        return TrelEstudioPersona::findByTblPersona( $this->_db, $this->idPersona, $orderBy );
 
     }
 
@@ -1640,6 +1682,26 @@ class TblPersona extends OwlGenericDO{
     }
 
     // Relaciones
+
+    /**
+     * Obtiene el objeto 'TblTrabajoParo' relacionado.
+     *
+     * @return TblTrabajoParo
+     */
+    public function getTblTrabajoParo(){
+        require_once('TblTrabajoParo.inc');
+        return TblTrabajoParo::findByPrimaryKey( $this->_db, $this->fkTrabajoParo );
+    }
+
+    /**
+     * Asigna el objeto 'TblTrabajoParo' relacionado.
+     *
+     * @param TblTrabajoParo $dataObject
+     */
+    public function setTblTrabajoParo( $dataObject ){
+        require_once('TblTrabajoParo.inc');
+        $this->setFkTrabajoParo( $dataObject->getIdTrabajoParo() );
+    }
 
     /**
      * Obtiene el objeto 'TblCategoriaEmpleo' relacionado.
