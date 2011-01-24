@@ -1371,6 +1371,30 @@ CREATE TABLE `trelRequisitoConvocatoria` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `tblTrabajoParo`
+--
+
+DROP TABLE IF EXISTS `tblTrabajoParo`;
+CREATE TABLE `tblTrabajoParo` (
+  `idTrabajoParo` int(11) NOT NULL auto_increment,
+  `vDescripcion` varchar(100) NOT NULL,
+  PRIMARY KEY  (`idTrabajoParo`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8
+
+INSERT INTO `planespime`.`tblTrabajoParo` (`idTrabajoParo`, `vDescripcion`) VALUES (1, 'He trabajado anteriormente y finalizó la contratación'),(2, 'No he trabajado nunca');
+
+
+SET FOREIGN_KEY_CHECKS = 0;
+ALTER TABLE `planespime`.`tblPersona` CHANGE COLUMN `vTrabajoParo` `fkTrabajoParo` INT(11) NULL DEFAULT NULL  , 
+  ADD CONSTRAINT `fk_tblPersona_tblTrabajoParo`
+  FOREIGN KEY (`fkTrabajoParo` )
+  REFERENCES `planespime`.`tblTrabajoParo` (`idTrabajoParo` )
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION
+, ADD INDEX `fk_tblPersona_tblTrabajoParo` (`fkTrabajoParo` ASC) ;
+SET FOREIGN_KEY_CHECKS = 1;
+
+--
 -- Table structure for table `trelRolUsuario`
 --
 

@@ -372,10 +372,13 @@
     			<div class="campo multi">
     				<label for="trabajo">Trabajo</label>
     				<select class="campoTexto desplegable grande" id="trabajo" name="trabajo">
-    					<option></option>
-    					<option <?= ($this->alumnoDO->getVTrabajoParo() == '0') ? 'selected="selected"' : '' ?> value="0">He trabajado anteriormente y finalizó la contratación</option>
-    					<option <?= ($this->alumnoDO->getVTrabajoParo() == '1') ? 'selected="selected"' : '' ?>value="1">No he trabajado nunca</option>
-    				</select>
+    					<option></option><?
+				    					
+    						foreach ( $this->trabajosParoIDX as $clave => $trabajoParoDO ){
+    							?><option <?= ($this->alumnoDO->getFkTrabajoParo() == $clave) ? 'selected="selected"' : '' ?> value="<?= $clave ?>"><?= $trabajoParoDO->getVDescripcion() ?></option><?
+	    					}
+	    					
+    					?></select>
             	</div>
     			
     			<div class="separadorH"></div>

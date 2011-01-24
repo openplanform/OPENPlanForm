@@ -16,6 +16,7 @@ require_once MODELDIR . 'TblPais.inc';
 require_once MODELDIR . 'TblPersona.inc';
 require_once MODELDIR . 'TblProvincia.inc';
 require_once MODELDIR . 'TblSector.inc';
+require_once MODELDIR . 'TblTrabajoParo.inc';
 require_once MODELDIR . 'TblTipoIdentificacion.inc';
 require_once MODELDIR . 'TrelCandidato.inc';
 require_once MODELDIR . 'TrelPersonaCategoria.inc';
@@ -138,6 +139,9 @@ class alumnoController extends PplController{
 	    
 	    // Cobro de paro
 	    $this->view->cobrosParoIDX = $this->cacheBO->getCobrosParo();
+	    
+	    // Trabajos paro
+	    $this->view->trabajosParoIDX = $this->cacheBO->getTrabajoParo();
 	    
 	    // Categorías de empleo
 	    $this->view->categoriasEmpleoIDX = $this->cacheBO->getCategoriasEmpleo();
@@ -275,6 +279,9 @@ class alumnoController extends PplController{
 		    
 	    	// Cobro de paro
 	    	$this->view->cobrosParoIDX = $this->cacheBO->getCobrosParo();
+	    	
+	    	// Trabajos paro
+	    	$this->view->trabajosParoIDX = $this->cacheBO->getTrabajoParo();
 	    	
 	    	// Categorías de empleo
 	    	$this->view->categoriasEmpleoIDX = $this->cacheBO->getCategoriasEmpleo();
@@ -708,7 +715,7 @@ class alumnoController extends PplController{
 		    	
                 // Situación laboral "Desocupado"
                 $alumnoDO->setDAntiguedadParo(OwlDate::europeoAmericano($fechaParo));
-                $alumnoDO->setVTrabajoParo($trabajo);
+                $alumnoDO->setFkTrabajoParo($trabajo);
                 $alumnoDO->setFkCobros($cobro);
                 
                 // Situación laboral "Ocupado"

@@ -6,17 +6,17 @@
  */
 
 /**
- * Objeto que representa la clave primaria de la tabla tblPersona.
+ * Objeto que representa la clave primaria de la tabla tblTrabajoParo.
  *
  * @package dataAccess
  */
-class TblPersonaPK{
+class TblTrabajoParoPK{
 
     /**
-     * Representa el atributo idPersona.
+     * Representa el atributo idTrabajoParo.
      *
      * @var integer
      */
-    public $idPersona;
+    public $idTrabajoParo;
 }
 ?>

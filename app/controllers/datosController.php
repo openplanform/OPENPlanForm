@@ -6,6 +6,7 @@ require_once CLASSESDIR . 'PplController.inc';
 
 require_once MODELDIR . 'TblCarnetConducir.inc';
 require_once MODELDIR . 'TblColectivo.inc';
+require_once MODELDIR . 'TblCategoriaEmpleo.inc';
 require_once MODELDIR . 'TblEquipamiento.inc';
 require_once MODELDIR . 'TblEstadoCivil.inc';
 require_once MODELDIR . 'TblEstadoLaboral.inc';
@@ -1678,7 +1679,116 @@ class datosController extends PplController{
 		
 	}
 	
-/**
+	/**
+	 * Gestiona las categorías laborales
+	 */
+	public function categorialaboralAction(){
+		
+		/**
+		 * 1. Obtenemos el objeto en caso de ser una edición
+		 * 2. Comprobamos si se ha enviado el formulario
+		 * 	2.1. Alta
+		 * 	2.2. Editar
+		 * 3. Obtenemos los datos del paginador
+		 * 4. Lo enviamos todo a la vista
+		 */
+		
+		// 1. Obtenemos el objeto en caso de ser una edición
+		$idCategoriaLaboral = $this->getParam(0);
+		if ( !is_null($idCategoriaLaboral) ){
+			$categoriaLaboralDO = TblCategoriaEmpleo::findByPrimaryKey($this->db, $idCategoriaLaboral);
+			$this->view->categoriaLaboralDO = $categoriaLaboralDO;
+		}
+		
+		// 2. Comprobamos si se ha enviado el formulario
+        if ( array_key_exists(md5('send'), $_POST) ){
+        	
+        	$correcto = true;
+        	$nombre = $this->helper->getAndEscape('nombre');
+        	
+        	if ( empty($nombre) ){
+        		$correcto = false;
+        		$this->view->errorNombre = "El nombre no puede estar vacío";
+        	}
+        	
+        	if ( $correcto ){
+        	
+        		$this->db->begin();
+        		
+	        	// 2.1. Alta
+	        	if ( $correcto && $_POST[md5('send')] == md5('alta') ) {
+	        		$categoriaLaboralDO = new TblCategoriaEmpleo($this->db);
+	        		$categoriaLaboralDO->setVNombre($nombre);
+	        		if ( !$categoriaLaboralDO->insert() ){
+	        			$correcto = false;
+	        		}
+	        	}
+	        	
+	        	// 2.2. Editar
+	        	if ( $correcto && $_POST[md5('send')] == md5('editar') ) {
+	        		$categoriaLaboralDO = TblCategoriaEmpleo::findByPrimaryKey($this->db, $idCategoriaLaboral);
+	        		$categoriaLaboralDO->setVNombre($nombre);
+	        		if ( !$categoriaLaboralDO->update() ){
+	        			$correcto = false;
+	        		}
+	        		// Pasamos a la vista el objeto editado
+	        		$this->view->categoriaLaboralDO = $categoriaLaboralDO;
+	        	}
+	        	
+	        	if ( $correcto ){
+	        		$this->db->commit();
+	        	} else {
+	        		$this->db->rollback();
+	        	}
+	        	
+        	}
+        	
+        }
+		
+		// 3. Obtenemos los datos del paginador
+    	$aliasCampos = array(
+    		'nom' 	=> 'vNombre',
+    	);
+    	
+    	if ( !empty($_REQUEST) && array_key_exists('o', $_GET) & array_key_exists('ob', $_GET) ){
+        	$order = $this->helper->escapeInjection($_GET['o']);
+        	$orderBy = $aliasCampos[$_GET['ob']];
+        	$aliasOrderBy = $_GET['ob'];
+        } else {
+    		$order	 = 'asc';
+    		$orderBy = 'vNombre';
+    		$aliasOrderBy = 'nom';
+        }
+        
+        // Envío el orden a la vista
+        if ( $order == 'asc' ){
+        	$this->view->order = 'desc';
+        } else {
+        	$this->view->order = 'asc';
+        }
+        $this->view->orderBy = $aliasOrderBy;
+		
+        // Se instancia y configura el paginador
+        $paginador = new OwlPaginator($this->db, null, 'tblCategoriaEmpleo', $this->helper);
+        $paginador->setItemsPorPagina(10);
+        $paginaActual = $this->helper->escapeInjection($this->helper->get('p'));
+        $paginaActual = empty($paginaActual) ? 1 : $paginaActual;
+        $paginador->setPaginaActual($paginaActual);
+        $paginador->setOrderBy($orderBy);
+        $paginador->setOrder($order);
+        
+         // Obtengo las categorías
+        $categoriasLaboralesCOL = $paginador->getItemCollection();
+        
+        // 4. Lo enviamos todo a la vista
+        $this->view->paginador = $paginador->getPaginatorHtml();
+    	
+    	// Envío los carnets
+        $this->view->categoriasLaboralesCOL = $categoriasLaboralesCOL;
+        
+	}
+	
+	/**
 	 * Elimina un elemento pasado por la url
 	 */
 	public function eliminarAction(){
@@ -1756,6 +1866,10 @@ class datosController extends PplController{
 
 				case 'tipoplan':
 					$itemDO = TblTipoPlan::findByPrimaryKey($this->db, $id);
+					break;
+
+				case 'categorialaboral':
+					$itemDO = TblCategoriaEmpleo::findByPrimaryKey($this->db, $id);
 					break;
 				
 			}

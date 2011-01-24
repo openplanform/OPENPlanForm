@@ -99,8 +99,8 @@
 				
 				<div class="separadorH"></div>
 				
-				<div class="campo controlado multi">
-	            	<label for="centro">Centro*</label>
+				<div class="campo multi">
+	            	<label for="centro">Centro</label>
 		            <select class="grande desplegable" name="centro" id="centro">
 		            	<option value=""></option>
 						<?
@@ -114,7 +114,6 @@
 						
 						?>
 					</select>
-					<p id="errorAula" class="errorInput"><?= $this->errorAula ?></p>
 				</div>
 				
 				<div class="separadorH"></div>
@@ -125,7 +124,7 @@
 	            </div>
 				
 				<div class="campo multi">
-	                <label for="horasD">Horas a distancia</label>
+	                <label for="horasD">Horas a distancia(no tutorías)</label>
 	                <input type="text" name="horasD" id="horasD" class="campoTexto mediano numerico" />
 	            </div>
 				
@@ -138,6 +137,8 @@
 	                <label for="accion">Número de acción</label>
 	                <input type="text" name="accion" id="accion" class="campoTexto mediano decimal" />
 	            </div>
+	            
+	            <div class="separadorH"></div>
 	            
 	            <div class="campo multi">
 	                <label for="inicio">Fecha de inicio</label>

@@ -498,7 +498,8 @@ a.btnEliminar,
 a.btnFicha,
 a.btnGuardar,
 a.btnHorario,
-a.btnDocumentacion{
+a.btnDocumentacion,
+a.btnAlumnos{
 	display: block;
 	width: 16px;
 	height: 16px;
@@ -515,7 +516,8 @@ a.btnEliminar span,
 a.btnFicha span,
 a.btnGuardar span,
 a.btnHorario span,
-a.btnDocumentacion span{
+a.btnDocumentacion span,
+a.btnAlumnos span{
 	display: none;
 }
 a.btnEditar{
@@ -538,6 +540,9 @@ a.btnHorario{
 }
 a.btnDocumentacion{
     background: url(/img/iconos/pdf16.png) top center no-repeat;
+}
+a.btnAlumnos{
+    background: url(/img/iconos/alumnos16.png) top center no-repeat;
 }
 table.listado tbody tr.alter{
 	background-color: #EFEFEF;

@@ -111,13 +111,21 @@ class cursoController extends PplController{
         $this->view->centrosIDX = $this->cacheBO->getCentros();
                 
         // Profesores
-        $this->view->profesoresIDX = $this->cacheBO->getProfesores();
+        $profesoresIDX = $this->cacheBO->getProfesores();
         
         // Profesores curso
-        $profesoresCursoIDX = array();
+        $profesoresCursosIDX = OwlDatabase::groupBy( 'fkCurso', TrelProfesor::findAll($this->db, 'fkCurso') );
         foreach ($cursosCOL as $cursoDO) {
-        	
+        	if ( array_key_exists($cursoDO->getIdCurso(), $profesoresCursosIDX) ){
+				$profesoresCursoCOL = $profesoresCursosIDX[$cursoDO->getIdCurso()];
+				$nombreProfesoresARR = array();
+				foreach ( $profesoresCursoCOL as $profesorCursoDO ){
+					array_push($nombreProfesoresARR, $profesoresIDX[$profesorCursoDO->getFkPersona()] );
+				}
+				$profesoresCursosIDX[$cursoDO->getIdCurso()] = implode(', ', $nombreProfesoresARR);
+        	}
         }
+        $this->view->profesoresCursosIDX = $profesoresCursosIDX;
         
         // Permiso para editar
     	if ( $this->aclManager->hasPerms('curso', 'editar') ){
@@ -480,10 +488,6 @@ class cursoController extends PplController{
 	    
 	    // Centro
     	$centro = $this->helper->escapeInjection($this->helper->get('centro'));
-	    if ( is_null($centro) || empty($centro) ){
-	    	$correcto = false;
-	    	$this->view->errorCentro = 'El centro no puede estar vacío';
-	    }
 	    
 	     // Horas presenciales
     	$horasP = $this->helper->escapeInjection($this->helper->get('horasP'));
@@ -1102,7 +1106,7 @@ class cursoController extends PplController{
 		        $this->view->horasAsignadas = OwlDate::minutesToHours($horasAsignadas + $nuevasHoras);
 		        
 		        // Calcularemos el porcentaje cubierto de horas
-		        $this->view->porcentajeAsignado = intval((intval($this->view->horasAsignadas) * 100) / $this->view->horasTotales);
+		        $this->view->porcentajeAsignado = ($this->view->horasTotales >0 ) ? intval((intval($this->view->horasAsignadas) * 100) / $this->view->horasTotales) : 0;
 		        
 		        // Envío el paginador
 		        $this->view->paginador = $paginador->getPaginatorHtml();

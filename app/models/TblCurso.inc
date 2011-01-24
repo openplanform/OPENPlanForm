@@ -1,7 +1,7 @@
 <?php
 /**
  * Este archivo ha sido generado con Owl DoGen v.0.6
- * el 11 de January de 2011 a las 08:52:54
+ * el 18 de January de 2011 a las 12:33:36
  * @package dataAccess
  */
 
@@ -327,22 +327,6 @@ class TblCurso extends OwlGenericDO{
     }
 
     /**
-     * Obtiene todas las filas de la tabla tblCurso que coinciden con el criterio fkCategoria='$fkCategoria'.
-     *
-     * @param Connection $db Conexión con la base de datos.
-     * @param integer fkCategoria string Valor del campo fkCategoria.
-     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
-     * @return array
-     */
-     public static function findByTblCategoria( $db, $fkCategoria, $orderBy='' ){
-         $sql = "SELECT * FROM tblCurso WHERE fkCategoria='$fkCategoria'";
-         if( $orderBy != '' ){
-             $sql .= " ORDER BY $orderBy";
-         }
-         return OwlGenericDO::createCollection( $db, $sql, 'TblCurso' );
-     }
-
-    /**
      * Obtiene todas las filas de la tabla tblCurso que coinciden con el criterio fkCentro='$fkCentro'.
      *
      * @param Connection $db Conexión con la base de datos.
@@ -352,6 +336,22 @@ class TblCurso extends OwlGenericDO{
      */
      public static function findByTblCentro( $db, $fkCentro, $orderBy='' ){
          $sql = "SELECT * FROM tblCurso WHERE fkCentro='$fkCentro'";
+         if( $orderBy != '' ){
+             $sql .= " ORDER BY $orderBy";
+         }
+         return OwlGenericDO::createCollection( $db, $sql, 'TblCurso' );
+     }
+
+    /**
+     * Obtiene todas las filas de la tabla tblCurso que coinciden con el criterio fkCategoria='$fkCategoria'.
+     *
+     * @param Connection $db Conexión con la base de datos.
+     * @param integer fkCategoria string Valor del campo fkCategoria.
+     * @param string $orderBy Cadena con los campos de ordenación separados por comas.
+     * @return array
+     */
+     public static function findByTblCategoria( $db, $fkCategoria, $orderBy='' ){
+         $sql = "SELECT * FROM tblCurso WHERE fkCategoria='$fkCategoria'";
          if( $orderBy != '' ){
              $sql .= " ORDER BY $orderBy";
          }
@@ -1030,26 +1030,6 @@ class TblCurso extends OwlGenericDO{
     // Relaciones
 
     /**
-     * Obtiene el objeto 'TblCategoria' relacionado.
-     *
-     * @return TblCategoria
-     */
-    public function getTblCategoria(){
-        require_once('TblCategoria.inc');
-        return TblCategoria::findByPrimaryKey( $this->_db, $this->fkCategoria );
-    }
-
-    /**
-     * Asigna el objeto 'TblCategoria' relacionado.
-     *
-     * @param TblCategoria $dataObject
-     */
-    public function setTblCategoria( $dataObject ){
-        require_once('TblCategoria.inc');
-        $this->setFkCategoria( $dataObject->getIdCategoria() );
-    }
-
-    /**
      * Obtiene el objeto 'TblCentro' relacionado.
      *
      * @return TblCentro
@@ -1067,6 +1047,26 @@ class TblCurso extends OwlGenericDO{
     public function setTblCentro( $dataObject ){
         require_once('TblCentro.inc');
         $this->setFkCentro( $dataObject->getIdCentro() );
+    }
+
+    /**
+     * Obtiene el objeto 'TblCategoria' relacionado.
+     *
+     * @return TblCategoria
+     */
+    public function getTblCategoria(){
+        require_once('TblCategoria.inc');
+        return TblCategoria::findByPrimaryKey( $this->_db, $this->fkCategoria );
+    }
+
+    /**
+     * Asigna el objeto 'TblCategoria' relacionado.
+     *
+     * @param TblCategoria $dataObject
+     */
+    public function setTblCategoria( $dataObject ){
+        require_once('TblCategoria.inc');
+        $this->setFkCategoria( $dataObject->getIdCategoria() );
     }
 
     /**
