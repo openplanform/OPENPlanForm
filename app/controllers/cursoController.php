@@ -5,6 +5,8 @@ require_once 'helper/OwlDate.inc';
 require_once 'helper/OwlString.inc';
 require_once 'helper/OwlLanguage.inc';
 require_once 'OwlPaginator.inc';
+require_once 'OwlMailer.inc';
+require_once 'OwlMailerTemplate.inc';
 
 require_once CLASSESDIR . 'PplController.inc';
 require_once CLASSESDIR . 'PplDocumentacion.inc';
@@ -1493,6 +1495,15 @@ class cursoController extends PplController{
 		    	// Alumnos
 		    	if ( $correcto ){
 		    		
+		    		// Necesito el listado de alumnos del curso para enviarles el correo de alta en el curso
+		    		$sql = 'SELECT iPersona FROM tblAlumno WHERE fkCurso = ' . $idCurso;
+		    		$this->db->executeQuery($sql);
+		    		$idsAlumnosCursoARR = array();
+		    		while ( $id = $this->db->fetchRow() ){
+			    		array_push($idsAlumnosCursoARR, $id['iPersona']); 
+		    		}
+		    		
+		    		// Elimino todos los alumnos y luego los inserto de nuevo con las modificaciones
 	    			$sql = 'DELETE FROM tblAlumno WHERE fkCurso = ' . $idCurso;
 	    			if ( !$this->db->executeQuery($sql) ){
 	    				$correcto = false;
@@ -1541,6 +1552,39 @@ class cursoController extends PplController{
 								}
 								
 				    		}
+				    		
+				    		// ----------------- //
+				    		//   EMAIL DE AVISO 
+				    		// ----------------- //
+				    		if ( $correcto ){
+				    			
+				    			foreach ( $personasCOL as $personaDO ){
+				    				
+				    				if ( !in_array($personaDO->getIdPersona(), $idsAlumnosCursoARR) ){
+				    					
+				    					// Email de inscripción al curso
+					        			$mailTemplate = new OwlMailerTemplate();
+					        			$mailTemplate->setTemplate( LAYOUTDIR . 'alumno.txt');
+					        			$mailTemplate->addField('CURSO', $cursoDO->getVNombre());
+					        			$mailTemplate->addField('INICIO', OwlDate::getDiaMesAno($cursoDO->getDInicio()) );
+					        			$mailTemplate->addField('FIN', OwlDate::getDiaMesAno($cursoDO->getDFin()) );
+					        			$mailTemplate->addField('ENLACE', 'http://www.pimeb.org/cursos/ficha.html/' . $cursoDO->getIdCurso() );
+					        			$mailTemplate->addField('WEB', 'http://www.pimeb.org' );
+					        			
+					        			//Envío
+					        			$mailer = new OwlMailer($this->getApplicationConfig()->getMailerConfiguration());
+					        			$mailer->addTo($personaDO->getTblUsuario()->getVEmail());
+					        			$mailer->setSubject("Formación PIME - Alumno de curso");
+				            			$mailer->setFrom('<noreply@planespime.es>', 'PlanesPIME');
+					        			$mailer->setBody($mailTemplate->getContent());
+					        			$mailer->send();
+				    				}
+				    				
+				    			}
+				    			
+				    		}
+				    		
+				    		
 		    			}
 		    		}
 		    		
@@ -1567,13 +1611,13 @@ class cursoController extends PplController{
             $this->view->cursoDO = $cursoDO;
             
 	    	// Precandidatos
-        	$this->view->precandidatosCursoCOL = TrelPrecandidato::findByTblCurso($this->db, $cursoDO->getIdCurso());
+        	$this->view->precandidatosCursoCOL = TrelPrecandidato::findByTblCurso($this->db, $cursoDO->getIdCurso(), 'dAlta DESC');
         
     	    // Alumnos
-		    $this->view->alumnosCursoCOL = $alumnosCOL = TblAlumno::findByTblCurso($this->db, $cursoDO->getIdCurso());
+		    $this->view->alumnosCursoCOL = $alumnosCOL = TblAlumno::findByTblCurso($this->db, $cursoDO->getIdCurso(), 'dAlta DESC');
 
 	        // Candidatos
-		    $this->view->candidatosCursoCOL = TrelCandidato::findByTblCurso($this->db, $cursoDO->getIdCurso());
+		    $this->view->candidatosCursoCOL = TrelCandidato::findByTblCurso($this->db, $cursoDO->getIdCurso(), 'dAlta DESC');
 		    
 		    // Personas
 	        $this->view->personasIDX = $this->cacheBO->getPersonas();			    

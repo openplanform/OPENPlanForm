@@ -48,7 +48,7 @@ class indexController extends PplController{
 	 * Identifica a un usuario en el sistema
 	 */
 	public function loginAction(){
-	    
+		
 	    // Se verifica si el usuario se encuentra ya logueado
         $this->usuario = OwlSession::getValue('usuario');
         

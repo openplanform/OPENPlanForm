@@ -1,0 +1,22 @@
+Se ha realizado un proceso de selección y ha pasado a ser ALUMNO del curso "%%CURSO%%".
+Dicho curso comienza el %%INICIO%% y finaliza el %%FIN%%.
+Puede ver la ficha del curso en %%ENLACE%%
+
+Recuerde que para finalizar el proceso de inscripción debe completar la ficha de inscripción. Tiene 2 opciones:
+
+1. Completarla online y hacérnosla llegar.
+
+    - Visite %%WEB%%
+    - Inicie sesión con sus datos de usuario
+    - Vaya a la ficha del curso
+    - Verá que ha aparecido un aviso para completar la ficha. Si le da al enlace la ficha se completará automáticamente.
+      Imprímala, complete los campos que faltan, fírmela y háganosla llegar bien trayéndola usted mismo o a través de otra persona.
+      Recuerde que necesitamos la firma original.
+    
+2. Acercarse a nuestras oficinas para completarla.
+
+Muchas gracias por utilizar nuestro servicio
+
+--
+Fin del mensaje.
+Un cordial saludo.

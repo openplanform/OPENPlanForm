@@ -26,7 +26,7 @@ class PplCacheBO {
 	
 	/**
 	 * Valor del estado laboral "Desocupado" en la bbdd
-	 * @var intenger
+	 * @var integer
 	 */
 	const CLAVE_DESOCUPADO = 2;
 	
