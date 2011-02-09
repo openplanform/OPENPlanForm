@@ -13,7 +13,7 @@ $this->echoOnHead('
 ');
 
 ?><div id="wrapper">
-    <div id="login">
+    <div id="login" <?= !is_null($this->mensaje) ? 'class="extendido"' : '' ?>>
         <div class="barraTitulo login">Acceso Usuarios</div>
         <div class="inner">
             <form id="formularioLogin" action="/index/login.html" method="post">

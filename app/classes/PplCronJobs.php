@@ -113,7 +113,7 @@ function checkInicioCursos(){
 	// que el mismo está por comenzar 
 	foreach ($cursosProximosCOL as $cursoDO){
 		
-		$alumnosCOL = $cacheBO->getAlumnosCurso($cursoDO->getIdCurso());
+		$alumnosARR = $cacheBO->getPersonaUsuarioCurso($cursoDO->getIdCurso());
 		
 		$mt = new OwlMailerTemplate();
 		$mt->setTemplate(LAYOUTDIR . 'inicioCurso.txt');
@@ -122,13 +122,13 @@ function checkInicioCursos(){
 		$mt->addField('ENLACE', 'http://www.in.planespime.es/cursos/ficha.html/' . $cursoDO->getIdCurso());		
 		
 		// Enviaré un correo a cada alumno
-		foreach ($alumnosCOL as $alumnoDO){
+		foreach ($alumnosARR as $alumno){
 			
 			$mailer = new OwlMailer($appConfig->getMailerConfiguration());
 			
 			$mailer->setFrom('noreply@planespime.es', 'Recordatorios Planespime.es');
 			$mailer->setBody($mt->getContent());
-			$mailer->addTo($alumnoDO->getVEmail(), $alumnoDO->getVNombre() . ' ' . $alumnoDO->getVPrimerApellido() . ($alumnoDO->getVSegundoApellido() ? ' ' . $alumnoDO->getVSegundoApellido() : ''));
+			$mailer->addTo($alumno['vEmail'], $alumno['vNombre'] . ' ' . $alumno['vPrimerApellido'] . ( !empty($alumno['vSegundoApellido']) ? ' ' . $alumno['vSegundoApellido'] : ''));
 			$mailer->setSubject('Recordatorio de inicio de curso - ' . $cursoDO->getVNombre());
 			
 			try {
@@ -137,7 +137,7 @@ function checkInicioCursos(){
 
 			} catch (Zend_Mail_Protocol_Exception $e){
 				
-				$log->addLine('Error al enviar aviso a: ' . $alumnoDO->getVEmail() . '. Exept: ' . $e->getMessage());
+				$log->addLine('Error al enviar aviso a: ' . $alumno['vEmail'] . '. Exept: ' . $e->getMessage());
 				continue;
 				
 			}
@@ -145,8 +145,8 @@ function checkInicioCursos(){
 		}
 		
 		// Se actualiza el flag de notificación
-		//$cursoDO->setBNotificacionInicio(true);
-		//$cursoDO->update();		
+		$cursoDO->setBNotificacionInicio(true);
+		$cursoDO->update();		
 		
 		$log->addLine('Enviados todos los avisos de inicio para el curso: ' . $cursoDO->getVNombre());
 		
@@ -178,7 +178,7 @@ function checkFinalizacionCursos(){
 	// que el mismo está por comenzar 
 	foreach ($cursosProximosCOL as $cursoDO){
 	
-		$alumnosCOL = $cacheBO->getAlumnosCurso($cursoDO->getIdCurso());
+		$alumnosARR = $cacheBO->getPersonaUsuarioCurso($cursoDO->getIdCurso());
 		
 		$mt = new OwlMailerTemplate();
 		$mt->setTemplate(LAYOUTDIR . 'finCurso.txt');
@@ -187,13 +187,13 @@ function checkFinalizacionCursos(){
 		$mt->addField('ENLACE', 'http://www.in.planespime.es/cursos/ficha.html/' . $cursoDO->getIdCurso());		
 		
 		// Enviaré un correo a cada alumno
-		foreach ($alumnosCOL as $alumnoDO){
+		foreach ($alumnosARR as $alumno){
 			
 			$mailer = new OwlMailer($appConfig->getMailerConfiguration());
 			
 			$mailer->setFrom('noreply@planespime.es', 'Recordatorios Planespime.es');
 			$mailer->setBody($mt->getContent());
-			$mailer->addTo($alumnoDO->getVEmail(), $alumnoDO->getVNombre() . ' ' . $alumnoDO->getVPrimerApellido() . ($alumnoDO->getVSegundoApellido() ? ' ' . $alumnoDO->getVSegundoApellido() : ''));
+			$mailer->addTo($alumno['vEmail'], $alumno['vNombre'] . ' ' . $alumno['vPrimerApellido'] . ( !empty($alumno['vSegundoApellido']) ? ' ' . $alumno['vSegundoApellido'] : ''));
 			$mailer->setSubject('Recordatorio de finalización de curso - ' . $cursoDO->getVNombre());
 			
 			try {
@@ -202,7 +202,7 @@ function checkFinalizacionCursos(){
 
 			} catch (Zend_Mail_Protocol_Exception $e){
 				
-				$log->addLine('Error al enviar aviso a: ' . $alumnoDO->getVEmail() . '. Exept: ' . $e->getMessage());
+				$log->addLine('Error al enviar aviso a: ' . $alumno['vEmail'] . '. Exept: ' . $e->getMessage());
 				continue;
 				
 			}
@@ -210,8 +210,8 @@ function checkFinalizacionCursos(){
 		}
 		
 		// Se actualiza el flag de notificación
-		//$cursoDO->setBNotificacionFin(true);
-		//$cursoDO->update();		
+		$cursoDO->setBNotificacionFin(true);
+		$cursoDO->update();		
 		
 		$log->addLine('Enviados todos los avisos de fin para el curso: ' . $cursoDO->getVNombre());
 		

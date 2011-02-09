@@ -27,6 +27,10 @@
     margin: 0;
     color: #F00;
 }
+#login.extendido{
+	height: 270px;
+	margin-top: -135px;
+}
 #login .inner{
 	width: 200px;
 	margin-left: 25px;

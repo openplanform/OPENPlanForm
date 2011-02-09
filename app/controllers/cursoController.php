@@ -5,6 +5,8 @@ require_once 'helper/OwlDate.inc';
 require_once 'helper/OwlString.inc';
 require_once 'helper/OwlLanguage.inc';
 require_once 'OwlPaginator.inc';
+require_once 'OwlMailer.inc';
+require_once 'OwlMailerTemplate.inc';
 
 require_once CLASSESDIR . 'PplController.inc';
 require_once CLASSESDIR . 'PplDocumentacion.inc';
@@ -23,6 +25,7 @@ require_once MODELDIR . '/TblModalidad.inc';
 require_once MODELDIR . '/TblSector.inc';
 require_once MODELDIR . '/TblTutoria.inc';
 require_once MODELDIR . '/TblPlan.inc';
+require_once MODELDIR . '/TrelAlumno.inc';
 require_once MODELDIR . '/TrelCandidato.inc';
 require_once MODELDIR . '/TrelDocumentoCurso.inc';
 require_once MODELDIR . '/TrelPrecandidato.inc';
@@ -329,7 +332,8 @@ class cursoController extends PplController{
 		    	$this->view->candidatosCursoCOL = TrelCandidato::findByTblCurso($this->db, $cursoDO->getIdCurso());
 		    	
 		    	// Alumnos
-		    	$this->view->alumnosCursoCOL = TblAlumno::findByTblCurso($this->db, $cursoDO->getIdCurso());
+//		    	$this->view->alumnosCursoCOL = TblAlumno::findByTblCurso($this->db, $cursoDO->getIdCurso());
+		    	$this->view->alumnosCursoCOL = $this->cacheBO->getAlumnosCurso($cursoDO->getIdCurso());
 		    	
 		    	// Modalidades
 		    	$this->view->modalidadesIDX = $this->cacheBO->getModalidades();
@@ -1306,8 +1310,9 @@ class cursoController extends PplController{
     	$profesorDO = array_shift($profesoresCOL);
     	
     	// Alumnos del curso
-    	$alumnosCOL = TblAlumno::findByTblCurso($this->db, $idCurso);
-
+//    	$alumnosCOL = TblAlumno::findByTblCurso($this->db, $idCurso);
+    	$alumnosCOL = $this->cacheBO->getAlumnosCurso($idCurso);
+    	
     	// Horarios de formación del curso
     	$horariosCOL = TblHorario::findByTblCurso($this->db, $idCurso);
     	
@@ -1381,7 +1386,11 @@ class cursoController extends PplController{
     				$academiaDO = $this->cacheBO->getAcademiaCurso($idCurso);
     				$tutoriaDO = $this->cacheBO->getTutoriaCurso($idCurso);
     				
-    				$this->view->inicioAccion = $docMan->docInicioAccionFormativa($planDO, $cursoDO, $modalidadesIDX, $academiaDO, $horariosCOL, $tutoriaDO);
+    				if ( $academiaDO instanceof TblEmpresa ){
+    					$this->view->inicioAccion = $docMan->docInicioAccionFormativa($planDO, $cursoDO, $modalidadesIDX, $academiaDO, $horariosCOL, $tutoriaDO);
+    				} else {
+    					$mensajesDocumentacionARR[] = 'S-10: El curso actual aún no tiene un centro asignado.';
+    				}
     				
     			break;
     			
@@ -1432,7 +1441,7 @@ class cursoController extends PplController{
 		            	$candidatosARR[] = $this->helper->escapeInjection($candidato);
 		            }
 		        }
-		
+		        
 		        // Alumnos
 		    	$alumnosARR = array();
 		        if ( array_key_exists('alumnos', $_POST) ){
@@ -1467,7 +1476,7 @@ class cursoController extends PplController{
 		    		}
 		    		
 		    	}
-	
+		    	
 		    	// Candidatos
 		    	if ( $correcto ){
 		    		
@@ -1493,19 +1502,52 @@ class cursoController extends PplController{
 		    	// Alumnos
 		    	if ( $correcto ){
 		    		
-	    			$sql = 'DELETE FROM tblAlumno WHERE fkCurso = ' . $idCurso;
+		    		// Necesito el listado de alumnos del curso para enviarles el correo de alta en el curso
+		    		$sql = 'SELECT fkPersona FROM trelAlumno WHERE fkCurso = ' . $idCurso;
+		    		$this->db->executeQuery($sql);
+		    		$idsAlumnosCursoARR = array();
+		    		while ( $id = $this->db->fetchRow() ){
+			    		array_push($idsAlumnosCursoARR, $id['fkPersona']); 
+		    		}
+		    		
+		    		///////////////////
+		    		//// TrelAlumno  //
+		    		///////////////////
+		    		
+		    		// En trelAlumno tenemos las dependencias entre curso y persona. Si se elimina una persona, se elimina la dependencia.
+		    		
+		    		// Elimino todos los alumnos y luego los inserto de nuevo con las modificaciones
+		    		$sql = 'DELETE FROM trelAlumno WHERE fkCurso = ' . $idCurso;
 	    			if ( !$this->db->executeQuery($sql) ){
 	    				$correcto = false;
 	    			}
 		    		
+		    		if ( $correcto && !empty($alumnosARR) ){
+		    			$sql = "INSERT INTO trelAlumno VALUES ";
+		    			$valuesARR = array();
+		    			foreach ( $alumnosARR as $idAlumno ){
+			    			$valuesARR[] = '(' . $idAlumno . ',' . $idCurso . ',\'' . date('Y-m-d') . '\')';
+				    	}
+				    	$sql .= implode(',', $valuesARR);
+		    			if ( !$this->db->executeQuery($sql) ){
+		    				$correcto = false;
+		    			}
+		    		}
+		    		
+		    		
+		    		//////////////////
+		    		//// TblAlumno  //
+		    		//////////////////
+		    		
+		    		// En tblAlumno se almacena un histórico de todos los alumnos y los cursos, no se elimina un alumno si se elimina la persona.
 		    		if ( $correcto ){
 		    			
 		    			if ( !empty($alumnosARR) ){
 		    				
 				    		// Obtenemos las personas para copiar como alumnos
 				    		$sql = "SELECT * FROM tblPersona WHERE idPersona IN (" . implode(', ', $alumnosARR) . ")";
-				    		
 				    		$personasCOL = OwlGenericDO::createCollection($this->db, $sql, 'tblPersona');
+				    		
 				    		$estadosCivilesIDX = $this->cacheBO->getEstadosCiviles();
 				    		$estadosLaboralesIDX = $this->cacheBO->getEstadosLaborales();
 				    		$nivelesEstudioIDX = $this->cacheBO->getNivelesEstudio();
@@ -1513,34 +1555,78 @@ class cursoController extends PplController{
 				    		$provinciasIDX = $this->cacheBO->getProvincias();
 				    		$tiposIdentificacionIDX = $this->cacheBO->getTiposIdentificacion();
 				    		
+				    		// Obtenemos los alumnos ya inscritos para no volverlos a inscribir
+				    		$sql = 'SELECT iPersona FROM tblAlumno WHERE fkCurso = ' . $idCurso;
+				    		$this->db->executeQuery($sql);
+				    		$idsAlumnosInscritosARR = array();
+				    		while ( $id = $this->db->fetchRow() ){
+					    		array_push($idsAlumnosInscritosARR, $id['iPersona']); 
+				    		}
+				    		
 				    		foreach ( $personasCOL as $personaDO ){
 				    			
-				    			$alumnoDO = new TblAlumno($this->db);
-				    			$alumnoDO->setDAlta(date('Y-m-d'));
-				    			$alumnoDO->setDNacimiento($personaDO->getDNacimiento());
-				    			$alumnoDO->setFkCurso($cursoDO->getIdCurso());
-				    			$alumnoDO->setIPersona($personaDO->getIdPersona());
-				    			$alumnoDO->setIUsuario($personaDO->getFkUsuario());
-				    			$alumnoDO->setVDireccion($personaDO->getVDireccion());
-				    			$alumnoDO->setVEmail($personaDO->getTblUsuario()->getVEmail());
-				    			$alumnoDO->setVEstadoCivil($estadosCivilesIDX[$personaDO->getFkEstadoCivil()]->getVNombre());
-				    			$alumnoDO->setVEstadoLaboral($estadosLaboralesIDX[$personaDO->getFkEstadoLaboral()]->getVNombre());
-								$alumnoDO->setVNivelEstudios($nivelesEstudioIDX[$personaDO->getFkNivelEstudios()]->getVNombre());
-								$alumnoDO->setVNombre($personaDO->getVNombre());
-								$alumnoDO->setVNumeroIdentificacion($personaDO->getVNumeroIdentificacion());
-								$alumnoDO->setVPais($paisesIDX[$personaDO->getFkPais()]->getVIso());
-								$alumnoDO->setVPoblacion($personaDO->getVPoblacion());
-								$alumnoDO->setVPrimerApellido($personaDO->getVPrimerApellido());
-								$alumnoDO->setVProvincia( ( is_null($personaDO->getFkProvincia()) || $personaDO->getFkProvincia() == 0 ) ? null : $provinciasIDX[$personaDO->getFkProvincia()]->getVNombre());
-								$alumnoDO->setVSegundoApellido($personaDO->getVSegundoApellido());
-								$alumnoDO->setVNumeroSS($personaDO->getVNumeroSS());
-								$alumnoDO->setVTipoIdentificacion($tiposIdentificacionIDX[$personaDO->getFkTipoIdentificacion()]->getVNombre());
+				    			// Comprobamos si la persona ya estaba inscrita como alumno para ese curso. Si ya lo estaba no lo insertamos de nuevo.
+				    			if ( !in_array($personaDO->getIdPersona(), $idsAlumnosInscritosARR) ){
+					    			$alumnoDO = new TblAlumno($this->db);
+					    			$alumnoDO->setDAlta(date('Y-m-d'));
+					    			$alumnoDO->setDNacimiento($personaDO->getDNacimiento());
+					    			$alumnoDO->setFkCurso($cursoDO->getIdCurso());
+					    			$alumnoDO->setIPersona($personaDO->getIdPersona());
+					    			$alumnoDO->setIUsuario($personaDO->getFkUsuario());
+					    			$alumnoDO->setVDireccion($personaDO->getVDireccion());
+					    			$alumnoDO->setVEmail($personaDO->getTblUsuario()->getVEmail());
+					    			$alumnoDO->setVEstadoCivil($estadosCivilesIDX[$personaDO->getFkEstadoCivil()]->getVNombre());
+					    			$alumnoDO->setVEstadoLaboral($estadosLaboralesIDX[$personaDO->getFkEstadoLaboral()]->getVNombre());
+									$alumnoDO->setVNivelEstudios($nivelesEstudioIDX[$personaDO->getFkNivelEstudios()]->getVNombre());
+									$alumnoDO->setVNombre($personaDO->getVNombre());
+									$alumnoDO->setVNumeroIdentificacion($personaDO->getVNumeroIdentificacion());
+									$alumnoDO->setVPais($paisesIDX[$personaDO->getFkPais()]->getVIso());
+									$alumnoDO->setVPoblacion($personaDO->getVPoblacion());
+									$alumnoDO->setVPrimerApellido($personaDO->getVPrimerApellido());
+									$alumnoDO->setVProvincia( ( is_null($personaDO->getFkProvincia()) || $personaDO->getFkProvincia() == 0 ) ? null : $provinciasIDX[$personaDO->getFkProvincia()]->getVNombre());
+									$alumnoDO->setVSegundoApellido($personaDO->getVSegundoApellido());
+									$alumnoDO->setVNumeroSS($personaDO->getVNumeroSS());
+									$alumnoDO->setVTipoIdentificacion($tiposIdentificacionIDX[$personaDO->getFkTipoIdentificacion()]->getVNombre());
 								
-								if ( !$alumnoDO->insert() ){
-									$correcto = false;
-								}
+									if ( !$alumnoDO->insert() ){
+										$correcto = false;
+									}
+				    			}
 								
 				    		}
+				    		
+				    		// ----------------- //
+				    		//   EMAIL DE AVISO 
+				    		// ----------------- //
+				    		if ( $correcto ){
+				    			
+				    			foreach ( $personasCOL as $personaDO ){
+				    				
+				    				if ( !in_array($personaDO->getIdPersona(), $idsAlumnosCursoARR) ){
+				    					
+				    					// Email de alumno
+					        			$mailTemplate = new OwlMailerTemplate();
+					        			$mailTemplate->setTemplate( LAYOUTDIR . 'alumno.txt');
+					        			$mailTemplate->addField('CURSO', $cursoDO->getVNombre());
+					        			$mailTemplate->addField('INICIO', OwlDate::getDiaMesAno($cursoDO->getDInicio()) );
+					        			$mailTemplate->addField('FIN', OwlDate::getDiaMesAno($cursoDO->getDFin()) );
+					        			$mailTemplate->addField('ENLACE', 'http://www.pimeb.org/cursos/ficha.html/' . $cursoDO->getIdCurso() );
+					        			$mailTemplate->addField('WEB', 'http://www.pimeb.org' );
+					        			
+					        			//Envío
+					        			$mailer = new OwlMailer($this->getApplicationConfig()->getMailerConfiguration());
+					        			$mailer->addTo($personaDO->getTblUsuario()->getVEmail());
+					        			$mailer->setSubject("Formación PIME - Alumno de curso");
+				            			$mailer->setFrom('<noreply@planespime.es>', 'PlanesPIME');
+					        			$mailer->setBody($mailTemplate->getContent());
+					        			$mailer->send();
+				    				}
+				    				
+				    			}
+				    			
+				    		}
+				    		
+				    		
 		    			}
 		    		}
 		    		
@@ -1567,13 +1653,14 @@ class cursoController extends PplController{
             $this->view->cursoDO = $cursoDO;
             
 	    	// Precandidatos
-        	$this->view->precandidatosCursoCOL = TrelPrecandidato::findByTblCurso($this->db, $cursoDO->getIdCurso());
+        	$this->view->precandidatosCursoCOL = TrelPrecandidato::findByTblCurso($this->db, $cursoDO->getIdCurso(), 'dAlta DESC');
         
     	    // Alumnos
-		    $this->view->alumnosCursoCOL = $alumnosCOL = TblAlumno::findByTblCurso($this->db, $cursoDO->getIdCurso());
-
+//		    $this->view->alumnosCursoCOL = TblAlumno::findByTblCurso($this->db, $cursoDO->getIdCurso(), 'dAlta DESC');
+		    $this->view->alumnosCursoCOL = TrelAlumno::findByTblCurso($this->db, $cursoDO->getIdCurso(), 'dAlta DESC');
+		    
 	        // Candidatos
-		    $this->view->candidatosCursoCOL = TrelCandidato::findByTblCurso($this->db, $cursoDO->getIdCurso());
+		    $this->view->candidatosCursoCOL = TrelCandidato::findByTblCurso($this->db, $cursoDO->getIdCurso(), 'dAlta DESC');
 		    
 		    // Personas
 	        $this->view->personasIDX = $this->cacheBO->getPersonas();			    

@@ -86,4 +86,10 @@ define('ZEND_FRAMEWORK', EXTLIBDIR . 'Zend/');
 // Directorio de loggin
 define('LOGDIR', APPDIR . 'log/');
 
+// Directorio de locale
+define('LOCALEDIR', APPDIR . 'locale/');
+
+// Directorio de temas
+define('THEMEDIR', PUBDIR . 'themes/');
+
 ?>

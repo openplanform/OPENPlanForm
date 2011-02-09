@@ -24,7 +24,7 @@
 
 		<legend>Alumnos del curso</legend>
 		
-		<p class="desc">Una vez realizadas las gestiones de alumnos, se deberán guardar los cambios.</p>
+		<p class="desc">Una vez realizadas las gestiones de alumnos, se deberán guardar los cambios.<br />Los listados se encuentran ordenados por fecha, siendo más recientes los que se encuentran en la parte superior.</p>
 		
 		<input type="hidden" name="sent" value="1" />
             
@@ -96,7 +96,7 @@
 		            	if ( count($this->alumnosCursoCOL) > 0 ){
 			            	foreach ( $this->alumnosCursoCOL as $alumnoCursoDO ){
 			            		
-			            		?><option value="<?= $alumnoCursoDO->getIPersona() ?>"><?= $this->personasIDX[$alumnoCursoDO->getIPersona()]->getVNombre() . ' ' . $this->personasIDX[$alumnoCursoDO->getIPersona()]->getVPrimerApellido() . ' ' . $this->personasIDX[$alumnoCursoDO->getIPersona()]->getVSegundoApellido() ?></option><?
+			            		?><option value="<?= $alumnoCursoDO->getfkPersona() ?>"><?= $this->personasIDX[$alumnoCursoDO->getfkPersona()]->getVNombre() . ' ' . $this->personasIDX[$alumnoCursoDO->getfkPersona()]->getVPrimerApellido() . ' ' . $this->personasIDX[$alumnoCursoDO->getfkPersona()]->getVSegundoApellido() ?></option><?
 			            		
 			            	}
 		            	}

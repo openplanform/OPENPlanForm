@@ -79,6 +79,15 @@ class PplController extends OwlController{
         // Se globaliza el usuario actual
         $this->usuario = $usuarioBO;
         
+    	// ROLES
+	    /*if (!$this->aclManager->hasPerms($this->controllerName, $this->actionName)){
+	    	
+	    	$this->stopExecution();
+	    	echo OwlHtmlHelper::getHtmlErrorPage('Forbidden', 403, 'Acceso no autorizado', '<p>No dispone de los privilegios necesarios para acceder a este área.</p>');
+	    	
+	    	return;
+	    }*/
+        
         // ------------ MÓDULO - MENÚ PRINCIPAL -----------
         $menuPrincipalModule = new menuPrincipalModule('contenedor_menu');
             
@@ -122,7 +131,7 @@ class PplController extends OwlController{
             
             
         // Casos especiales en los que no es necesario un layout
-    	if ( $this->actionName == "eliminar" || $this->actionName == "duplicar" ){
+    	if ($this->actionName == "duplicar" ){
     		$this->bypassLayout();
     	}
     	
