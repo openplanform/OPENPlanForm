@@ -152,7 +152,7 @@
 				?><h3>Precandidatos</h3>
 				
 				<div class="scroll">
-					<table class="listado">
+					<table class="listado fijo">
 						<thead>
 							<tr>
 								<th>Nombre</th>
@@ -187,7 +187,7 @@
 				?><h3>Candidatos</h3>
 				
 				<div class="scroll">
-					<table class="listado">
+					<table class="listado fijo">
 						<thead>
 							<tr>
 								<th>Nombre</th>
@@ -238,7 +238,7 @@
 							?>
 							
 		            		<tr <?= $alter ? 'class="alter"' : '' ?>>
-		            			<td><a href="/alumno/ficha.html/<?= $alumnoCursoDO->getIPersona() ?>"><?= $this->personasIDX[$alumnoCursoDO->getIPersona()]->getVNombre() . ' ' . $this->personasIDX[$alumnoCursoDO->getIPersona()]->getVPrimerApellido() . ' ' . $this->personasIDX[$alumnoCursoDO->getIPersona()]->getVSegundoApellido() ?></a></td>
+		            			<td><a href="/alumno/ficha.html/<?= $alumnoCursoDO->getIdPersona() ?>"><?= $alumnoCursoDO->getVNombre() . ' ' . $alumnoCursoDO->getVPrimerApellido() . ' ' . $alumnoCursoDO->getVSegundoApellido() ?></a></td>
 		            		</tr>
 		            		
 		            		<?

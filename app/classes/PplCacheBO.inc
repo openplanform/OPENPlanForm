@@ -1158,8 +1158,8 @@ class PplCacheBO {
 				FROM tblCurso c 
 				WHERE EXISTS( 
 					SELECT null 
-					FROM tblAlumno a
-					WHERE c.idCurso = a.fkCurso and a.iPersona = " . $idPersona . " )";
+					FROM trelAlumno a
+					WHERE c.idCurso = a.fkCurso and a.fkPersona = " . $idPersona . " )";
 		
 		$this->db->executeQuery($sql);
 		
@@ -1188,8 +1188,8 @@ class PplCacheBO {
 				) AND NOT EXISTS (
 				                
 				            SELECT NULL
-				            FROM tblAlumno a 
-				            WHERE a.iPersona = " . $idPersona . " AND a.fkCurso = c.idCurso
+				            FROM trelAlumno a 
+				            WHERE a.fkPersona = " . $idPersona . " AND a.fkCurso = c.idCurso
 				                
 				) AND c.dInicio > NOW()";
 		
@@ -1257,16 +1257,52 @@ class PplCacheBO {
 	/**
 	 * Devuelve una colección con todos los alumnos de un curso
 	 * @param integer $idCurso
+	 * @return $alumnosCOL
 	 */
 	public function getAlumnosCurso($idCurso){
 		
-		$sql = "SELECT * FROM tblAlumno WHERE fkCurso = $idCurso;";
-		$aux = OwlGenericDO::createCollection($this->db, $sql, 'TblAlumno');
+//		$sql = "SELECT * FROM tblAlumno WHERE fkCurso = $idCurso;";
+//		$aux = OwlGenericDO::createCollection($this->db, $sql, 'TblAlumno');
 		
-		return $aux;
+		$sql = "SELECT * 
+				FROM tblPersona p
+				WHERE EXISTS(
+				
+			    	SELECT null 
+			    	FROM trelAlumno a
+			    	WHERE a.fkPersona = p.idPersona AND a.fkCurso = " .$idCurso . ");";
+
+    	$alumnosCOL = OwlGenericDO::createCollection($this->db, $sql, 'tblPersona');
+		
+		return $alumnosCOL;
 		
 	}
 	
+	/**
+	 * Devuelve una colección de personas con sus usuarios que forman parte de un curso
+	 * @param integer $idCurso
+	 * @return array
+	 */
+	public function getPersonaUsuarioCurso($idCurso){
+		
+		$sql = "SELECT * FROM tblPersona p
+				LEFT JOIN tblUsuario u
+				ON p.fkUsuario = u.idUsuario
+				WHERE EXISTS(
+					SELECT null 
+					FROM trelAlumno a
+					WHERE a.fkPersona = p.idPersona AND a.fkCurso = " . $idCurso . " );";
+		
+		$this->db->executeQuery($sql);
+		$returnARR = array();
+		
+		while ($row = $this->db->fetchRow()){
+			$returnARR[] = $row;
+		}
+		
+		return $returnARR;
+		
+	}
 	
 	/**
 	 * Retorna una colección de todos los precandidatos de un curso 

@@ -96,7 +96,7 @@
 		            	if ( count($this->alumnosCursoCOL) > 0 ){
 			            	foreach ( $this->alumnosCursoCOL as $alumnoCursoDO ){
 			            		
-			            		?><option value="<?= $alumnoCursoDO->getIPersona() ?>"><?= $this->personasIDX[$alumnoCursoDO->getIPersona()]->getVNombre() . ' ' . $this->personasIDX[$alumnoCursoDO->getIPersona()]->getVPrimerApellido() . ' ' . $this->personasIDX[$alumnoCursoDO->getIPersona()]->getVSegundoApellido() ?></option><?
+			            		?><option value="<?= $alumnoCursoDO->getfkPersona() ?>"><?= $this->personasIDX[$alumnoCursoDO->getfkPersona()]->getVNombre() . ' ' . $this->personasIDX[$alumnoCursoDO->getfkPersona()]->getVPrimerApellido() . ' ' . $this->personasIDX[$alumnoCursoDO->getfkPersona()]->getVSegundoApellido() ?></option><?
 			            		
 			            	}
 		            	}

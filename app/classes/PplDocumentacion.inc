@@ -305,7 +305,7 @@ class PplDocumentacion{
 			$this->pdf->addFieldValue('segApellido' . $x, $alumnoDO->getVSegundoApellido(), 'text');
 			$this->pdf->addFieldValue('nif' . $x, $alumnoDO->getVNumeroIdentificacion(), 'text');
 			$this->pdf->addFieldValue('niss' . $x, $alumnoDO->getVNumeroSS(), 'text');
-			$this->pdf->addFieldValue('sitLaboral' . $x, $alumnoDO->getVEstadoLaboral(), 'text');
+			$this->pdf->addFieldValue('sitLaboral' . $x, $alumnoDO->getTblEstadoLaboral()->getVNombre(), 'text');
 			
 			$x++;
 			
