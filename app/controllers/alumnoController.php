@@ -863,7 +863,9 @@ class alumnoController extends PplController{
                 $this->view->id = $id;
 //                $queryString .= '&amp;idPersona=' . $id;
                 $queryARR['idPersona'] = $id;
-            }
+            } else {
+	            $queryARR['idPersona'] = '';
+	        }
             
             // KW
             if (!empty($kw)){
@@ -871,7 +873,9 @@ class alumnoController extends PplController{
                 $this->view->kw = $kw;
 //                $queryString .= '&amp;kw=' . $kw;
                 $queryARR['kw'] = $kw;
-            }
+            } else {
+	            $queryARR['kw'] = '';
+	        }
             
             // PAIS
             if (!empty($pais)){
@@ -879,15 +883,19 @@ class alumnoController extends PplController{
                 $this->view->pais = $pais;
 //                $queryString .= '&amp;pais=' . $pais;
 				$queryARR['pais'] = $pais;
-            }
+            } else {
+	            $queryARR['pais'] = '';
+	        }
             
             // PROVINCIA
             if (!empty($provincia)){
                 $where[] = "fkProvincia= $provincia";
                 $this->view->provincia = $provincia;
 //                $queryString .= '&amp;provincia=' . $provincia;
-                $queryARR['provinci'] = $provincia;
-            }
+                $queryARR['provincia'] = $provincia;
+            } else {
+	            $queryARR['provincia'] = '';
+	        }
             
             // Se instancia y configura el paginador
             $rolAlumno = PplAclManager::ROL_ALUMNO;

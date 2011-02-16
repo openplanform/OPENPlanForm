@@ -776,41 +776,46 @@ class cursoController extends PplController{
             if (!empty($id)){
                 $where[] = " idCurso = $id";
                 $this->view->id = $id;
-//                $queryString .= "&amp;idCurso=$id";
                 $queryARR['idCurso'] = $id;
+            } else {
+            	$queryARR['idCurso'] = '';
             }
             
             // PLAN
             if (!empty($plan)){
                 $where[] = " fkPlan = $plan";
                 $this->view->plan = $plan;
-//                $queryString .= "&amp;idPlan=$plan";
                 $queryARR['idPlan'] = $plan;
+            } else {
+            	$queryARR['idPlan'] = '';
             }
 
             // CATEGORÍA
             if (!empty($cat)){
                 $where[] = " fkCategoria = $cat";
                 $this->view->cat = $cat;
-//                $queryString .= "&amp;cat=$cat";
                 $queryARR['cat'] = $cat;
                 $this->view->htmlSelectCategorias = $this->_getSelectHtml($arbolDS, 0, $cat);
+            } else {
+            	$queryARR['cat'] = '';
             }
 
             // COLECTIVO
             if (!empty($colectivo)){
                 $where[] = " fkColectivo = $colectivo";
                 $this->view->colectivo = $colectivo;
-//                $queryString .= "&amp;colectivoCurso=$colectivo";
                 $queryARR['colectivoCurso'] = $colectivo;
+            } else {
+            	$queryARR['colectivoCurso'] = '';
             }
 
             // MODALIDAD
             if (!empty($modalidad)){
                 $where[] = " fkModalidad = $modalidad";
                 $this->view->modalidad = $modalidad;
-//                $queryString .= "&amp;mod=$modalidad";
                 $queryARR['mod'] = $modalidad;
+            } else {
+            	$queryARR['mod'] = '';
             }
             
             
@@ -819,8 +824,9 @@ class cursoController extends PplController{
                 //$where[] = "vNombre LIKE '%$kw%' OR vDescripcion LIKE '%$kw%'";
                 $where[] = "vNombre LIKE '%$kw%'";
                 $this->view->kw = $kw;
-//                $queryString .= "&amp;keyword=$kw";
                 $queryARR['keyword'] = $kw;             
+            } else {
+            	$queryARR['keyword'] = '';
             }
             
             // Se constuye el where
@@ -832,15 +838,14 @@ class cursoController extends PplController{
             
             // Se ejecuta la búsqueda
             $paginador = new OwlPaginator($this->db, $where, 'tblCurso', $this->helper);
-            $paginador->setItemsPorPagina(10);
+            $paginador->setItemsPorPagina(20);
             $paginaActual = $this->helper->escapeInjection($this->helper->get('p'));
             $paginaActual = empty($paginaActual) ? 1 : $paginaActual;
             $paginador->setPaginaActual($paginaActual);
             $paginador->setOrderBy($orderBy);
             $paginador->setOrder($order);
-//            $paginador->setExtraParams($queryString);
             $paginador->setExtraParams($queryARR);
-        
+            
             // Obtengo las convocatorias
             $cursosCOL = $paginador->getItemCollection();
             $this->view->cursosCOL = $cursosCOL;        
@@ -854,7 +859,26 @@ class cursoController extends PplController{
             }
             $this->view->querystring = $queryString;
             
-            
+            // Centros
+	        $this->view->centrosIDX = $this->cacheBO->getCentros();
+	        
+	    	// Profesores
+	        $profesoresIDX = $this->cacheBO->getProfesores();
+	        
+	        // Profesores curso
+	        $profesoresCursosIDX = OwlDatabase::groupBy( 'fkCurso', TrelProfesor::findAll($this->db, 'fkCurso') );
+	        foreach ($cursosCOL as $cursoDO) {
+	        	if ( array_key_exists($cursoDO->getIdCurso(), $profesoresCursosIDX) ){
+					$profesoresCursoCOL = $profesoresCursosIDX[$cursoDO->getIdCurso()];
+					$nombreProfesoresARR = array();
+					foreach ( $profesoresCursoCOL as $profesorCursoDO ){
+						array_push($nombreProfesoresARR, $profesoresIDX[$profesorCursoDO->getFkPersona()] );
+					}
+					$profesoresCursosIDX[$cursoDO->getIdCurso()] = implode(', ', $nombreProfesoresARR);
+	        	}
+	        }
+	    	$this->view->profesoresCursosIDX = $profesoresCursosIDX;
+	    	
         }        
         
     }

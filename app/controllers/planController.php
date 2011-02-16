@@ -481,40 +481,45 @@ class planController extends PplController{
             if (!empty($id)){
                 $where[] = " idPlan = $id";
                 $this->view->id = $id;
-//                $queryString .= "&amp;idPlan=$id";
                 $queryARR['idPlan'] = $id;
+            } else {
+            	$queryARR['idPlan'] = '';
             }
             
             // TIPO
             if (!empty($tipo)){
                 $where[] = " fkTipoPlan = $tipo";
                 $this->view->tipo = $tipo;
-//                $queryString .= "&amp;tipoPlan=$tipo";
                 $queryARR['tipoPlan'] = $tipo;
+            } else {
+            	$queryARR['tipoPlan'] = '';
             }
 
             // CONVOCATORIA
             if (!empty($convocatoria)){
                 $where[] = " fkConvocatoria = $convocatoria";
                 $this->view->convocatoria = $convocatoria;
-//                $queryString .= "&amp;convocatoriaPlan=$convocatoria";
                 $queryARR['convocatoriaPlan'] = $convocatoria;
+            } else {
+            	$queryARR['convocatoriaPlan'] = '';
             }
 
             // CONSULTORA
             if (!empty($consultora)){
                 $where[] = " fkEmpresaConsultora = $consultora";
                 $this->view->consultora = $consultora;
-//                $queryString .= "&amp;consultoraPlan=$consultora";
                 $queryARR['consultoraPlan'] = $consultora;
+            } else {
+            	$queryARR['consultoraPlan'] = '';
             }
 
             // ESTADO
             if (!empty($estado)){
                 $where[] = " fkConvocatoria = $estado";
                 $this->view->estado = $estado;
-//                $queryString .= "&amp;estadoPlan=$estado";
                 $queryARR['estadoPlan'] = $estado;
+            } else {
+            	$queryARR['estadoPlan'] = '';
             }
             
             // KEYWORD
@@ -523,6 +528,8 @@ class planController extends PplController{
                 $this->view->kw = $kw;
                 $queryString .= "&amp;keyword=$kw";
                 $queryARR['keyword'] = $kw;             
+            } else {
+            	$queryARR['keyword'] = '';
             }
             
             // Se construye el where
@@ -540,7 +547,6 @@ class planController extends PplController{
             $paginador->setPaginaActual($paginaActual);
             $paginador->setOrderBy($orderBy);
             $paginador->setOrder($order);
-//            $paginador->setExtraParams($queryString);
             $paginador->setExtraParams($queryARR);
         
             // Obtengo los Planes
