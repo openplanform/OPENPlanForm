@@ -22,7 +22,8 @@
  * @author   Sam Collett (http://www.texotela.co.uk)
  * @example  $(".numeric").numeric();
  * @example  $(".numeric").numeric(",");
- * @example  $(".numeric").numeric(null, callback);
+ * @example  $(".numeric").numeric("none"); - No permite número decimales
+ * @example  $(".numeric").numeric("none", "none"); - No permite número decimales ni miles
  *
  */
 jQuery.fn.numeric = function(decimal, miles, callback)

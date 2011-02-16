@@ -512,24 +512,27 @@ class centroController extends PplController{
             if (!empty($id)){
                 $where[] = " idCentro = $id";
                 $this->view->id = $id;
-//                $queryString .= "&amp;idCentro=$id";
                 $queryARR['idCentro'] = $id;
+            } else {
+            	$queryARR['idCentro'] = '';
             }
             
             // PAIS
             if (!empty($pais)){
                 $where[] = " fkPais = '$pais'";
                 $this->view->pais = $pais;
-//                $queryString .= "&amp;pais=$pais";
                 $queryARR['pais'] = $pais;
+            } else {
+            	$queryARR['pais'] = '';
             }
 
             // PROVINCIA
             if (!empty($provincia)){
                 $where[] = " fkProvincia = $provincia";
                 $this->view->provincia = $provincia;
-//                $queryString .= "&amp;provincia=$provincia";
                 $queryARR['provincia'] = $provincia;
+            } else {
+            	$queryARR['provincia'] = '';
             }
             
             // KEYWORD
@@ -537,8 +540,9 @@ class centroController extends PplController{
                 //$where[] = "vNombre LIKE '%$kw%' OR vDescripcion LIKE '%$kw%'";
                 $where[] = "vNombre LIKE '%$kw%'";
                 $this->view->kw = $kw;
-//                $queryString .= "&amp;keyword=$kw";
                 $queryARR['keyword'] = $kw;
+            } else {
+            	$queryARR['keyword'] = '';
             }
             
             // Se constuye el where
@@ -556,7 +560,6 @@ class centroController extends PplController{
             $paginador->setPaginaActual($paginaActual);
             $paginador->setOrderBy($orderBy);
             $paginador->setOrder($order);
-//            $paginador->setExtraParams($queryString);
             $paginador->setExtraParams($queryARR);
         
             // Obtengo los centros

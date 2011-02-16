@@ -858,7 +858,9 @@ class profesorController extends PplController{
                 $this->view->id = $id;
 //                $queryString .= '&amp;idPersona=' . $id;
                 $queryARR['idPersona'] = $id;
-            }
+            } else {
+	            $queryARR['idPersona'] = '';
+	        }
             
             // KW
             if (!empty($kw)){
@@ -866,7 +868,9 @@ class profesorController extends PplController{
                 $this->view->kw = $kw;
 //                $queryString .= '&amp;kw=' . $kw;
                 $queryARR['kw'] = $kw;
-            }
+            } else {
+	            $queryARR['kw'] = '';
+	        }
             
             // PAIS
             if (!empty($pais)){
@@ -874,7 +878,9 @@ class profesorController extends PplController{
                 $this->view->pais = $pais;
 //                $queryString .= '&amp;pais=' . $pais;
                 $queryARR['pais'] = $pais;
-            }
+            } else {
+	            $queryARR['pais'] = '';
+	        }
             
             // PROVINCIA
             if (!empty($provincia)){
@@ -882,7 +888,9 @@ class profesorController extends PplController{
                 $this->view->provincia = $provincia;
 //                $queryString .= '&amp;provincia=' . $provincia;
                 $queryARR['provincia'] = $provincia;
-            }
+            } else {
+	            $queryARR['provincia'] = '';
+	        }
             
 	         // POBLACIÓN
             if (!empty($poblacion)){
@@ -890,7 +898,9 @@ class profesorController extends PplController{
                 $this->view->poblacion = $poblacion;
 //                $queryString .= '&amp;poblacion=' . $poblacion;
                 $queryARR['poblacion'] = $poblacion;
-            }
+            } else {
+	            $queryARR['poblacion'] = '';
+	        }
             
             // CATEGORÍAS
             // Pueden venir como un array o como un string

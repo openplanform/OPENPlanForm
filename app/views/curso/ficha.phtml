@@ -25,7 +25,7 @@
 			<p><strong>Categoría:</strong><span> <?= empty($this->categoriaDO) ? '-' : $this->categoriaDO->getVNombre() ?></span></p>
 			<p><strong>Colectivo:</strong><span> <?= $this->cursoDO->getTblColectivo()->getVNombre() ?></span></p>
 			<p><strong>Modalidad:</strong><span> <?= $this->modalidadesIDX[$this->cursoDO->getFkModalidad()] ?></span></p>
-			<p><strong>Centro:</strong><span> <?= $this->cursoDO->getTblCentro()->getVNombre() ?></span></p><?
+			<p><strong>Centro:</strong><span> <?= ($this->cursoDO->getTblCentro() instanceof TblCentro) ? $this->cursoDO->getTblCentro()->getVNombre() : '' ?></span></p><?
 			
 			$alumnos = $this->cursoDO->getINumeroAlumnos();
             ?><p><strong>Cantidad de plazas:</strong><span class="min"> <?= $alumnos ?></span></p>

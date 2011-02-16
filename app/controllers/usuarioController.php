@@ -478,7 +478,6 @@ class usuarioController extends PplController{
             if (!empty($id)){
                 $where[] = "idUsuario = $id";
                 $this->view->id = $id;
-//                $queryString .= '&amp;idUsuario=' . $id;
 				$queryARR['idUsuario'] = $id;
             }
             
@@ -486,7 +485,6 @@ class usuarioController extends PplController{
             if (!empty($username)){
                 $where[] = "LOWER(vNombre) LIKE '%$username%'";
                 $this->view->username = $username;
-//                $queryString .= '&amp;username=' . $username;
                 $queryARR['username'] = $username;
             }
             
@@ -494,7 +492,6 @@ class usuarioController extends PplController{
             if (!empty($email)){
                 $where[] = "vEmail LIKE '%$email%'";
                 $this->view->email = $email;
-//                $queryString .= '&amp;email=' . $email;
                 $queryARR['email'] = $email;
             }
             
@@ -509,7 +506,6 @@ class usuarioController extends PplController{
                 }
                 $where[] = " EXISTS (SELECT null FROM trelRolUsuario WHERE tblUsuario.idUsuario = trelRolUsuario.fkUsuario AND trelRolUsuario.fkRol IN($rolesStr))";
                 $this->view->roles = $roles;
-//                $queryString .= '&amp;roles=' . $rolesStr;
                 $queryARR['roles'] = $rolesStr;
             }
             
@@ -528,7 +524,6 @@ class usuarioController extends PplController{
             $paginador->setPaginaActual($paginaActual);
             $paginador->setOrderBy($orderBy);
             $paginador->setOrder($order);
-//            $paginador->setExtraParams($queryString);
             $paginador->setExtraParams($queryARR);
         
             // Obtengo las convocatorias
