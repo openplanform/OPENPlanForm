@@ -339,7 +339,7 @@ class cursoController extends PplController{
 		    	$this->view->modalidadesIDX = $this->cacheBO->getModalidades();
 		    	
 				// Tutoría
-		        $this->view->tutoriaDO = $this->cacheBO->getTutoriaCurso($idCurso);		    	
+		        $this->view->tutoriaDO = $this->cacheBO->getTutoriaCurso($idCurso);
 
         	}
         	
@@ -418,7 +418,7 @@ class cursoController extends PplController{
     
     
     /**
-     * 
+     *
      * prepara el código html para el árbol de categoria
      * @param array $arbolDS
      */
@@ -750,7 +750,7 @@ class cursoController extends PplController{
                 $order   = 'asc';
                 $orderBy = 'vNombre';
                 $aliasOrderBy = 'nom';
-            }            
+            }
 
             // Envío el orden a la vista
             if ( $order == 'asc' ){
@@ -758,7 +758,7 @@ class cursoController extends PplController{
             } else {
                 $this->view->order = 'asc';
             }
-            $this->view->orderBy = $aliasOrderBy;            
+            $this->view->orderBy = $aliasOrderBy;
             
             // Se prepara el query
             $id = $this->helper->getAndEscape('idCurso');
@@ -824,7 +824,7 @@ class cursoController extends PplController{
                 //$where[] = "vNombre LIKE '%$kw%' OR vDescripcion LIKE '%$kw%'";
                 $where[] = "vNombre LIKE '%$kw%'";
                 $this->view->kw = $kw;
-                $queryARR['keyword'] = $kw;             
+                $queryARR['keyword'] = $kw;
             } else {
             	$queryARR['keyword'] = '';
             }
@@ -848,7 +848,7 @@ class cursoController extends PplController{
             
             // Obtengo las convocatorias
             $cursosCOL = $paginador->getItemCollection();
-            $this->view->cursosCOL = $cursosCOL;        
+            $this->view->cursosCOL = $cursosCOL;
             
             // Envío el paginador a la vista
             $this->view->paginador = $paginador->getPaginatorHtml();
@@ -879,7 +879,7 @@ class cursoController extends PplController{
 	        }
 	    	$this->view->profesoresCursosIDX = $profesoresCursosIDX;
 	    	
-        }        
+        }
         
     }
     
@@ -901,7 +901,7 @@ class cursoController extends PplController{
 			$horasAsignadas = 0;
 			foreach ($horariosCOL as $horarioDO){
 				$horasAsignadas += OwlDate::timeToMinutes($horarioDO->getIHoras());
-			}        	
+			}
         	
         	if ( !empty($cursoDO) ){
 	        	
@@ -1023,7 +1023,7 @@ class cursoController extends PplController{
 	        				// Obtenemos las sesiones
 	        				$fechasARR = $this->actualizarSesiones($fechasARR, $cursoDO->getIdCurso(), $fechaInicioCurso, $fechaFinCurso);
 	        				
-	        			}	
+	        			}
 	        			
 	        		}
 	
@@ -1159,7 +1159,7 @@ class cursoController extends PplController{
 							$this->db->commit(); // np
 						} else {
 							$this->db->rollback();
-						}		        		
+						}
 		        		
 		        	}
 		        	
@@ -1212,7 +1212,7 @@ class cursoController extends PplController{
     
     /**
      * Devuelve un array con los días, horas y sesiones del curso. Indexado por fecha
-     * 
+     *
      * @param array $fechasUsuarioARR
      * @param integer $idCurso
      * @param date $fechaInicio
@@ -1233,7 +1233,7 @@ class cursoController extends PplController{
 			$diaCurso = array(
 				'inicio' => $row['iDesde'],
 				'fin' => $row['iHasta'],
-				'dia' => $dia,			
+				'dia' => $dia,
 			);
 
 			// En la base de datos puede haber dos sesiones en un mismo día
@@ -1291,19 +1291,19 @@ class cursoController extends PplController{
 				
 			} elseif (array_key_exists($diaCurso, $fechasUsuarioARR)){
 				
-				array_push($fechasSesionARR, $fechasUsuarioARR[$diaCurso]);	
+				array_push($fechasSesionARR, $fechasUsuarioARR[$diaCurso]);
 				
 			}
 			
 		}
 		
-	   	return $fechasSesionARR; 
+	   	return $fechasSesionARR;
     	
     }
     
     
     /**
-     * Página donde se genera toda la documentación dinámica disponible 
+     * Página donde se genera toda la documentación dinámica disponible
      * para un curso en particular.
      */
     public function documentacionAction(){
@@ -1317,7 +1317,7 @@ class cursoController extends PplController{
     	// El curso no existe
     	if (!$cursoDO = TblCurso::findByPrimaryKey($this->db, $idCurso)){
 			$this->redirectTo('curso');
-    		return;    		
+    		return;
     	}
     	
     	$idPlan = $cursoDO->getFkPlan();
@@ -1474,33 +1474,29 @@ class cursoController extends PplController{
 		            }
 		        }
 		        
-		        $correcto = count($precandidatosARR) || count($candidatosARR) || count($alumnosARR);
+		        $correcto = true;
 		        
 	    		// Se inicia la transacción
 	    		$this->db->begin();
 	    		
 			    // Precandidatos
-		    	if ( $correcto ){
-
-	    			$sql = 'DELETE FROM trelPrecandidato WHERE fkCurso = ' . $idCurso;
+    			$sql = 'DELETE FROM trelPrecandidato WHERE fkCurso = ' . $idCurso;
+    			if ( !$this->db->executeQuery($sql) ){
+    				$correcto = false;
+    			}
+	    		
+	    		if ( $correcto && !empty($precandidatosARR) ){
+	    			$sql = "INSERT INTO trelPrecandidato VALUES ";
+	    			$valuesARR = array();
+	    			foreach ( $precandidatosARR as $idPrecandidato ){
+		    			$valuesARR[] = '(' . $idPrecandidato . ',' . $idCurso . ',\'' . date('Y-m-d') . '\')';
+			    	}
+			    	$sql .= implode(',', $valuesARR);
 	    			if ( !$this->db->executeQuery($sql) ){
 	    				$correcto = false;
 	    			}
+	    		}
 		    		
-		    		if ( $correcto && !empty($precandidatosARR) ){
-		    			$sql = "INSERT INTO trelPrecandidato VALUES ";
-		    			$valuesARR = array();
-		    			foreach ( $precandidatosARR as $idPrecandidato ){
-			    			$valuesARR[] = '(' . $idPrecandidato . ',' . $idCurso . ',\'' . date('Y-m-d') . '\')';
-				    	}
-				    	$sql .= implode(',', $valuesARR);
-		    			if ( !$this->db->executeQuery($sql) ){
-		    				$correcto = false;
-		    			}
-		    		}
-		    		
-		    	}
-		    	
 		    	// Candidatos
 		    	if ( $correcto ){
 		    		
@@ -1531,7 +1527,7 @@ class cursoController extends PplController{
 		    		$this->db->executeQuery($sql);
 		    		$idsAlumnosCursoARR = array();
 		    		while ( $id = $this->db->fetchRow() ){
-			    		array_push($idsAlumnosCursoARR, $id['fkPersona']); 
+			    		array_push($idsAlumnosCursoARR, $id['fkPersona']);
 		    		}
 		    		
 		    		///////////////////
@@ -1584,7 +1580,7 @@ class cursoController extends PplController{
 				    		$this->db->executeQuery($sql);
 				    		$idsAlumnosInscritosARR = array();
 				    		while ( $id = $this->db->fetchRow() ){
-					    		array_push($idsAlumnosInscritosARR, $id['iPersona']); 
+					    		array_push($idsAlumnosInscritosARR, $id['iPersona']);
 				    		}
 				    		
 				    		foreach ( $personasCOL as $personaDO ){
@@ -1620,7 +1616,7 @@ class cursoController extends PplController{
 				    		}
 				    		
 				    		// ----------------- //
-				    		//   EMAIL DE AVISO 
+				    		//   EMAIL DE AVISO
 				    		// ----------------- //
 				    		if ( $correcto ){
 				    			
@@ -1654,22 +1650,23 @@ class cursoController extends PplController{
 		    			}
 		    		}
 		    		
-		    		if ($correcto){
-		    			
-		    			$this->db->commit();
-		    			
-		    		} else {
-		    			
-		    			$this->db->rollback();
-    			        $this->view->popup = array(
-		                	'estado' => 'ko',
-		                	'titulo' => 'Error',
-		                    'mensaje'=> 'Ha ocurrido un error con la edición de los alumnos del curso. Inténtelo de nuevo en unos instantes por favor.<br/>Muchas gracias.',
-		                    'url'=> '',
-		                );
-		    		}
 		    		
-		    	}		        
+		    	}
+		    		        
+		    	if ($correcto){
+		    			
+		    		$this->db->commit();
+		    			
+		    	} else {
+		    			
+		    		$this->db->rollback();
+    			    $this->view->popup = array(
+		            	'estado' => 'ko',
+		                'titulo' => 'Error',
+		                'mensaje'=> 'Ha ocurrido un error con la edición de los alumnos del curso. Inténtelo de nuevo en unos instantes por favor.<br/>Muchas gracias.',
+		                'url'=> '',
+		            );
+		    	}
 		    	
 		    }
 		    
@@ -1687,7 +1684,7 @@ class cursoController extends PplController{
 		    $this->view->candidatosCursoCOL = TrelCandidato::findByTblCurso($this->db, $cursoDO->getIdCurso(), 'dAlta DESC');
 		    
 		    // Personas
-	        $this->view->personasIDX = $this->cacheBO->getPersonas();			    
+	        $this->view->personasIDX = $this->cacheBO->getPersonas();
     
             
         } else {
@@ -1714,7 +1711,7 @@ class cursoController extends PplController{
     	// El curso no existe
     	if (!$cursoDO = TblCurso::findByPrimaryKey($this->db, $idCurso)){
 			$this->redirectTo('curso');
-    		return;    		
+    		return;
     	}
     	
     	$sent = $this->helper->getAndEscape('sent');
@@ -1757,7 +1754,7 @@ class cursoController extends PplController{
 	    	
 	    	// Finaliza la transacción
     		if ( $correcto ){
-    			$this->db->commit();	
+    			$this->db->commit();
     		} else {
     			$this->db->rollback();
     			$this->view->popup = array(

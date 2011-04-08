@@ -1,5 +1,18 @@
 $j = jQuery;
 
+function resaltaFila(){
+	
+	$j(".listado tbody tr").mouseover(function() {
+	     $j(this).addClass("tr_hover");
+	});
+
+	$j(".listado tbody tr").mouseout(function() {
+	     $j(this).removeClass("tr_hover");
+	});
+
+	
+}
+
 jQuery(document).ready(function(){
 	
 	// Controlo que los campos numéricos sólo permitan números
@@ -40,6 +53,9 @@ jQuery(document).ready(function(){
 		});
 		
 	});
+	
+	// Resalta una fila de listado al pasar el ratón por encima
+	resaltaFila();
 	
 });
 
