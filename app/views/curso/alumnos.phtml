@@ -3,7 +3,7 @@
 	$this->addJavascriptInclude('/js/curso.js');
 	
 	if ( !is_null($this->popup) ){
-    	echo '<script type="text/javascript">ventana' . ucfirst($this->popup['estado']) . '("' . $this->popup['titulo'] . '", "' . $this->popup['mensaje'] . '", "' . $this->popup['url'] . '");</script>'; 
+    	echo '<script type="text/javascript">ventana' . ucfirst($this->popup['estado']) . '("' . $this->popup['titulo'] . '", "' . $this->popup['mensaje'] . '", "' . $this->popup['url'] . '");</script>';
 	}
 	
 	if ( !is_null($this->cursoDO) ){
@@ -53,7 +53,7 @@
 	        		</li>
 	        		<li>
 	        			<input type="button" value="&lt;" onclick="mueveAlumno('candidatos','precandidatos');"/>
-	        		</li>	
+	        		</li>
 	        	</ul>
 	        </div>
 	        
@@ -82,11 +82,11 @@
 	        		</li>
 	        		<li>
 	        			<input type="button" value="&lt;" onclick="mueveAlumno('alumnos','candidatos');"/>
-	        		</li>	
+	        		</li>
 	        	</ul>
 	        </div>
 	        
-            <div class="campo multi">
+            <div class="campo multi ultimo">
             	<label>Alumnos (<?= count($this->alumnosCursoCOL) ?>)</label>
 	            <div class="contenedorMultiselect">
 	            	<a title="Ir a la ficha de alumno" class="btnFicha" href="javascript:fichaAlumno('alumnos');hidePopups();"><span>ficha</span></a>
@@ -106,7 +106,7 @@
         	</div>
             
             <div class="separadorH"></div>
-	</fieldset>            
+	</fieldset>
 </form><?
 
 	}

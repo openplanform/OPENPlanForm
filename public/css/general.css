@@ -261,7 +261,10 @@ textarea{
 }
 .campo.multi{
     float: left;
-    margin-right: 15px;
+    margin-right: 12px;
+}
+.campo.multi.ultimo{
+	margin-right: 0;
 }
 .checkbox,
 .radioOpt{
@@ -547,6 +550,9 @@ a.btnAlumnos{
 table.listado tbody tr.alter{
 	background-color: #EFEFEF;
 }
+table.listado tbody tr.tr_hover{background-color: #FCFBDE;}
+table.listado tbody tr.alter.tr_hover{background-color: #FCFBDE;}
+
 .contenedorMultiselect{
 	position: relative;
 }
